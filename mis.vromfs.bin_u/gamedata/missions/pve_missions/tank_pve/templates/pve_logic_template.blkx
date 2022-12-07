@@ -102,11 +102,7 @@
           "team": "A",
           "separate_fuel_time": false,
           "modular_airfield": false,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
+          "offset": [0.0,0.0,0.0],
           "tags": {
             "tank": true,
             "type_heavy_tank": true,
@@ -2429,11 +2425,7 @@
           "unitRespawn": [
             {
               "delay": 0.01,
-              "offset": [
-                10.0,
-                0.0,
-                10.0
-              ],
+              "offset": [10.0,0.0,10.0],
               "object": "@wave_name_var",
               "object_type": "isInactive",
               "target": "@direction_respawn",
@@ -2444,11 +2436,7 @@
             },
             {
               "delay": 0.01,
-              "offset": [
-                -10.0,
-                0.0,
-                -10.0
-              ],
+              "offset": [-10.0,0.0,-10.0],
               "object": "@wave_name_var",
               "object_type": "isInactive",
               "target": "@direction_respawn",
@@ -2500,11 +2488,7 @@
           "unitRespawn": [
             {
               "delay": 0.01,
-              "offset": [
-                10.0,
-                0.0,
-                10.0
-              ],
+              "offset": [10.0,0.0,10.0],
               "object": "@wave_name_var",
               "object_type": "isInactive",
               "target": "@direction_respawn",
@@ -2515,11 +2499,7 @@
             },
             {
               "delay": 0.01,
-              "offset": [
-                -10.0,
-                0.0,
-                -10.0
-              ],
+              "offset": [-10.0,0.0,-10.0],
               "object": "@wave_name_var",
               "object_type": "isInactive",
               "target": "@direction_respawn",
@@ -2731,14 +2711,8 @@
           "unitSetFormation": {
             "formation_type": "rows",
             "formation_div": 3,
-            "formation_step": [
-              2.5,
-              3.0
-            ],
-            "formation_noise": [
-              0.2,
-              0.4
-            ],
+            "formation_step": [2.5,3.0],
+            "formation_noise": [0.2,0.4],
             "object": "all_enemy_units",
             "useForTriggerFiltered": true
           },
@@ -2996,11 +2970,7 @@
         "actions": {
           "unitRespawn": {
             "delay": 0.01,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "offset": [0.0,0.0,0.0],
             "object": "enemy_air_assaults",
             "object_type": "isInactive",
             "target": "enemy_airspawn",
@@ -3286,19 +3256,9 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [
-              1.0,
-              1.0
-            ],
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radiusOffset": [
-              10.0,
-              15.0
-            ],
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
             "target": [
               "all_enemy_units",
               "enemy_air_assaults"
@@ -3386,19 +3346,9 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [
-              1.0,
-              1.0
-            ],
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radiusOffset": [
-              10.0,
-              15.0
-            ],
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
             "target": "all_enemy_units",
             "explodeAmmo": true,
             "doExplosion": true,
@@ -3475,19 +3425,9 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [
-              1.0,
-              1.0
-            ],
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radiusOffset": [
-              10.0,
-              15.0
-            ],
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
             "target": [
               "all_enemy_units",
               "enemy_air_assaults"
@@ -3637,11 +3577,7 @@
           },
           "unitRespawn": {
             "delay": 0.5,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "offset": [0.0,0.0,0.0],
             "object": "enemy_spaa",
             "object_type": "isInactive",
             "target": "spaa_spawn_squad",
@@ -3794,26 +3730,10 @@
     "structures": {
       "name": "dummy_wave_indicator",
       "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1391.94,
-          -8011.65,
-          -480.211
-        ]
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1391.94,-8011.65,-480.211]
       ],
       "unit_class": "dummy",
       "objLayer": 2,
@@ -3834,14 +3754,8 @@
         "count": 1,
         "formation_type": "rows",
         "formation_div": 3,
-        "formation_step": [
-          2.5,
-          2.0
-        ],
-        "formation_noise": [
-          0.1,
-          0.1
-        ],
+        "formation_step": [2.5,2.0],
+        "formation_noise": [0.1,0.1],
         "uniqueName": "",
         "attack_type": "fire_at_will",
         "isDelayed": true,
@@ -3852,26 +3766,10 @@
     "squad": {
       "name": "players_squad",
       "tm": [
-        [
-          0.935187,
-          0.0,
-          0.354153
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.354153,
-          0.0,
-          0.935187
-        ],
-        [
-          1861.69,
-          631.198,
-          2493.37
-        ]
+        [0.935187,0.0,0.354153],
+        [0.0,1.0,0.0],
+        [-0.354153,0.0,0.935187],
+        [1861.69,631.198,2493.37]
       ],
       "props": {
         "object_marking": 0,
@@ -3915,26 +3813,10 @@
       {
         "name": "player_tank01",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2299.26
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2299.26]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -3955,14 +3837,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -3972,26 +3848,10 @@
       {
         "name": "player_tank02",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2298.57
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2298.57]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4012,14 +3872,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4029,26 +3883,10 @@
       {
         "name": "player_tank03",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2297.87
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2297.87]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4069,14 +3907,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4086,26 +3918,10 @@
       {
         "name": "player_tank04",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2297.18
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2297.18]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4126,14 +3942,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4143,26 +3953,10 @@
       {
         "name": "player_tank05",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2296.49
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2296.49]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4183,14 +3977,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4200,26 +3988,10 @@
       {
         "name": "player_tank06",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2295.79
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2295.79]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4240,14 +4012,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4257,26 +4023,10 @@
       {
         "name": "player_tank07",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2295.1
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2295.1]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4297,14 +4047,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4314,26 +4058,10 @@
       {
         "name": "player_tank08",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2294.41
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2294.41]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4354,14 +4082,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4371,26 +4093,10 @@
       {
         "name": "player_tank09",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2293.72
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2293.72]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4411,14 +4117,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4428,26 +4128,10 @@
       {
         "name": "player_tank10",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2293.02
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2293.02]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4468,14 +4152,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4485,26 +4163,10 @@
       {
         "name": "player_tank11",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2292.33
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2292.33]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4525,14 +4187,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4542,26 +4198,10 @@
       {
         "name": "player_tank12",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2291.64
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2291.64]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4582,14 +4222,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4599,26 +4233,10 @@
       {
         "name": "player_tank13",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2290.94
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2290.94]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4639,14 +4257,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4656,26 +4268,10 @@
       {
         "name": "player_tank14",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2290.25
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2290.25]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4696,14 +4292,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4713,26 +4303,10 @@
       {
         "name": "player_tank15",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2289.56
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2289.56]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4753,14 +4327,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4770,26 +4338,10 @@
       {
         "name": "player_tank16",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2288.86
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2288.86]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4810,14 +4362,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4827,26 +4373,10 @@
       {
         "name": "player_tank17",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2288.23
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2288.23]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4867,14 +4397,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4884,26 +4408,10 @@
       {
         "name": "player_tank18",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2287.59
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2287.59]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4924,14 +4432,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4941,26 +4443,10 @@
       {
         "name": "player_tank19",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2286.96
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2286.96]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -4981,14 +4467,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -4998,26 +4478,10 @@
       {
         "name": "player_tank20",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2286.33
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2286.33]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5038,14 +4502,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5055,26 +4513,10 @@
       {
         "name": "player_tank21",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2285.69
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2285.69]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5095,14 +4537,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5112,26 +4548,10 @@
       {
         "name": "player_tank22",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2285.06
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2285.06]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5152,14 +4572,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5169,26 +4583,10 @@
       {
         "name": "player_tank23",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2284.43
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2284.43]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5209,14 +4607,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5226,26 +4618,10 @@
       {
         "name": "player_tank24",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2283.79
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2283.79]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5266,14 +4642,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5283,26 +4653,10 @@
       {
         "name": "player_tank25",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2283.16
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2283.16]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5323,14 +4677,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5340,26 +4688,10 @@
       {
         "name": "player_tank26",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2282.53
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2282.53]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5380,14 +4712,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5397,26 +4723,10 @@
       {
         "name": "player_tank27",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2281.89
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2281.89]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5437,14 +4747,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5454,26 +4758,10 @@
       {
         "name": "player_tank28",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2281.26
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2281.26]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5494,14 +4782,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5511,26 +4793,10 @@
       {
         "name": "player_tank29",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2280.63
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2280.63]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5551,14 +4817,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5568,26 +4828,10 @@
       {
         "name": "player_tank30",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2279.99
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2279.99]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5608,14 +4852,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5625,26 +4863,10 @@
       {
         "name": "player_tank31",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2279.36
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2279.36]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5665,14 +4887,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -5682,26 +4898,10 @@
       {
         "name": "player_tank32",
         "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            1735.74,
-            453.473,
-            2278.73
-          ]
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1735.74,453.473,2278.73]
         ],
         "unit_class": "aaa_dummy",
         "objLayer": 1,
@@ -5722,14 +4922,8 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true

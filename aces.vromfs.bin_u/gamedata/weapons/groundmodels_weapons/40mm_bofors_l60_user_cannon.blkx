@@ -2,11 +2,7 @@
   "cannon": true,
   "weaponType": 3,
   "bUseHookAsRel": true,
-  "emitColor": [
-    1.0,
-    1.0,
-    0.0
-  ],
+  "emitColor": [1.0,1.0,0.0],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -34,26 +30,17 @@
   "isBulletBelt": false,
   "overheat": {
     "overheat": [
-      [
-        14.0,
-        0.0
-      ],
-      [
-        18.0,
-        0.05
-      ],
-      [
-        22.0,
-        0.5
-      ]
+      [14.0,0.0],
+      [18.0,0.05],
+      [22.0,0.5]
     ]
   },
   "bullet": [
     {
-      "mass": 0.884505,
+      "mass": 0.8845,
       "caliber": 0.04,
       "speed": 874.776,
-      "Cx": 0.36243,
+      "Cx": 0.3624,
       "maxDistance": 9000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
@@ -64,21 +51,11 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
+      "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/ap_belt.ivf",
       "bulletName": "40mm_M81A1",
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_ap",
       "groundCollisionEffect": "hit_28_38mm_dirt_ap",
@@ -86,38 +63,17 @@
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
       "stabilityRicochetModifier": {
-        "mod1": [
-          0.0,
-          0.05
-        ],
-        "mod2": [
-          20.0,
-          0.1
-        ],
+        "mod1": [0.0,0.05],
+        "mod2": [20.0,0.1],
         "mod3": [
-          [
-            30.0,
-            0.2
-          ],
-          [
-            45.0,
-            0.3
-          ]
+          [30.0,0.2],
+          [45.0,0.3]
         ]
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
+        "HitPower0m": [1.0,0.0],
+        "HitPower1000m": [0.9,0.0],
+        "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
@@ -129,10 +85,7 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
+        "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
         "tracer": "37mmWhite",
         "trail": "black"
@@ -219,12 +172,12 @@
       }
     },
     {
-      "mass": 0.829394,
+      "mass": 0.8294,
       "caliber": 0.04,
       "explosiveType": "tnt",
       "explosiveMass": 0.063,
       "speed": 874.0,
-      "Cx": 0.31071,
+      "Cx": 0.3107,
       "maxDistance": 9000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "heat",
@@ -236,11 +189,7 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
       "slopeEffectPreset": "ap",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
+      "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he_belt.ivf",
@@ -255,35 +204,17 @@
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 1.0,
       "stabilityRicochetModifier": {
-        "mod1": [
-          0.0,
-          0.5
-        ],
-        "mod2": [
-          15.0,
-          0.7
-        ],
-        "mod3": [
-          30.0,
-          0.99
-        ]
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          500.0
-        ],
-        "HitPower5000m": [
-          0.5,
-          5000.0
-        ],
-        "HitPower7000m": [
-          0.1,
-          7000.0
-        ]
+        "HitPower0m": [1.0,500.0],
+        "HitPower5000m": [0.5,5000.0],
+        "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
         "kinetic": {
@@ -296,19 +227,13 @@
             "radiusScale": 3.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
+            "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
       },
       "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
+        "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
         "tracer": "37mmRed",
         "trail": "black"
@@ -397,12 +322,12 @@
   ],
   "40mm_usa_M2_HE": {
     "bullet": {
-      "mass": 0.829394,
+      "mass": 0.8294,
       "caliber": 0.04,
       "explosiveType": "tnt",
       "explosiveMass": 0.063,
       "speed": 874.0,
-      "Cx": 0.31071,
+      "Cx": 0.3107,
       "maxDistance": 9000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "heat",
@@ -414,11 +339,7 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
       "slopeEffectPreset": "ap",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
+      "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he_belt.ivf",
@@ -433,35 +354,17 @@
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 1.0,
       "stabilityRicochetModifier": {
-        "mod1": [
-          0.0,
-          0.5
-        ],
-        "mod2": [
-          15.0,
-          0.7
-        ],
-        "mod3": [
-          30.0,
-          0.99
-        ]
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          500.0
-        ],
-        "HitPower5000m": [
-          0.5,
-          5000.0
-        ],
-        "HitPower7000m": [
-          0.1,
-          7000.0
-        ]
+        "HitPower0m": [1.0,500.0],
+        "HitPower5000m": [0.5,5000.0],
+        "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
         "kinetic": {
@@ -474,19 +377,13 @@
             "radiusScale": 3.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
+            "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
       },
       "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
+        "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
         "tracer": "37mmRed",
         "trail": "black"
@@ -575,10 +472,10 @@
   },
   "40mm_usa_M2_AP": {
     "bullet": {
-      "mass": 0.884505,
+      "mass": 0.8845,
       "caliber": 0.04,
       "speed": 874.776,
-      "Cx": 0.36243,
+      "Cx": 0.3624,
       "maxDistance": 9000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
@@ -589,21 +486,11 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
+      "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/ap_belt.ivf",
       "bulletName": "40mm_M81A1",
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_ap",
       "groundCollisionEffect": "hit_28_38mm_dirt_ap",
@@ -611,38 +498,17 @@
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
       "stabilityRicochetModifier": {
-        "mod1": [
-          0.0,
-          0.05
-        ],
-        "mod2": [
-          20.0,
-          0.1
-        ],
+        "mod1": [0.0,0.05],
+        "mod2": [20.0,0.1],
         "mod3": [
-          [
-            30.0,
-            0.2
-          ],
-          [
-            45.0,
-            0.3
-          ]
+          [30.0,0.2],
+          [45.0,0.3]
         ]
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
+        "HitPower0m": [1.0,0.0],
+        "HitPower1000m": [0.9,0.0],
+        "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
@@ -654,10 +520,7 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
+        "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
         "tracer": "37mmWhite",
         "trail": "black"

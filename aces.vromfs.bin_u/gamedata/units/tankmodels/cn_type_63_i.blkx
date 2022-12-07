@@ -3,18 +3,8 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [
-    0.0,
-    -1.5,
-    0.0,
-    5.0
-  ],
-  "collisionSphere1": [
-    5.0,
-    2.0,
-    0.0,
-    1.0
-  ],
+  "collisionSphere0": [0.0,-1.5,0.0,5.0],
+  "collisionSphere1": [5.0,2.0,0.0,1.0],
   "exhaustFx": "tank_exhaust",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -49,11 +39,7 @@
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
+  "smokeScreenOffset": [-3.0,0.0,2.0],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
@@ -1564,11 +1550,7 @@
   "VehiclePhys": {
     "tracks": {
       "animationMultiplier": 0.68,
-      "tracksTensionK": [
-        3.5,
-        14.0,
-        9.0
-      ],
+      "tracksTensionK": [3.5,14.0,9.0],
       "trackMesh": "ussr_pt_76b_phys_track_line",
       "trackLen": 0.128,
       "trackCount": 96,
@@ -1591,17 +1573,10 @@
       "minRPM": 600.0
     },
     "suspension": {
-      "suspensionOffsets": [
-        -0.115,
-        -0.115,
-        0.14
-      ],
+      "suspensionOffsets": [-0.115,-0.115,0.14],
       "defaultGearRadius": 0.335,
       "frontBackGearRadius": 0.2,
-      "defaultDampeningForce": [
-        50000.0,
-        50000.0
-      ],
+      "defaultDampeningForce": [50000.0,50000.0],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.25,
@@ -1613,20 +1588,9 @@
       "Empty": 18200.0,
       "Fuel": 500.0,
       "TakeOff": 18700.0,
-      "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
-      ],
-      "CenterOfGravity": [
-        0.05,
-        0.5,
-        0.0
-      ],
-      "CenterOfGravityClampY": [
-        0.0,
-        0.5
-      ],
+      "momentOfInertia": [2.0,2.0,4.0],
+      "CenterOfGravity": [0.05,0.5,0.0],
+      "CenterOfGravityClampY": [0.0,0.5],
       "AdvancedMass": false,
       "trackMass": 980.0
     },
@@ -1649,85 +1613,27 @@
     },
     "floats": {
       "volume": [
-        [
-          2.6,
-          1.0,
-          1.0,
-          0.85
-        ],
-        [
-          2.6,
-          1.0,
-          -1.0,
-          0.85
-        ],
-        [
-          1.6,
-          1.0,
-          0.0,
-          0.85
-        ],
-        [
-          0.9,
-          1.0,
-          1.0,
-          0.8
-        ],
-        [
-          0.9,
-          1.0,
-          -1.0,
-          0.8
-        ],
-        [
-          -0.7,
-          1.0,
-          1.0,
-          0.8
-        ],
-        [
-          -0.7,
-          1.0,
-          -1.0,
-          0.8
-        ],
-        [
-          -1.5,
-          1.0,
-          0.0,
-          0.9
-        ],
-        [
-          -2.6,
-          1.0,
-          1.0,
-          0.91
-        ],
-        [
-          -2.6,
-          1.0,
-          -1.0,
-          0.91
-        ]
+        [2.6,1.0,1.0,0.85],
+        [2.6,1.0,-1.0,0.85],
+        [1.6,1.0,0.0,0.85],
+        [0.9,1.0,1.0,0.8],
+        [0.9,1.0,-1.0,0.8],
+        [-0.7,1.0,1.0,0.8],
+        [-0.7,1.0,-1.0,0.8],
+        [-1.5,1.0,0.0,0.9],
+        [-2.6,1.0,1.0,0.91],
+        [-2.6,1.0,-1.0,0.91]
       ],
       "waterJet": [
         {
           "exhaustNode": "emtr_waterjet_l",
-          "intake": [
-            -1.25,
-            0.4,
-            0.85
-          ],
+          "intake": [-1.25,0.4,0.85],
           "thrust": 25000.0,
           "reverseMult": 0.35
         },
         {
           "exhaustNode": "emtr_waterjet_r",
-          "intake": [
-            -1.25,
-            0.4,
-            -0.85
-          ],
+          "intake": [-1.25,0.4,-0.85],
           "thrust": 25000.0,
           "reverseMult": 0.35
         }
@@ -1742,16 +1648,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [
-          -1000.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          1000.0,
-          0.0,
-          0.0
-        ]
+        "limitMin": [-1000.0,0.0,0.0],
+        "limitMax": [1000.0,0.0,0.0]
       }
     },
     "constraints": {
@@ -1764,54 +1662,21 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [
-      0.3,
-      0.9
-    ],
+    "detonatePortion": [0.3,0.9],
     "explodeHitPower": 1000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [
-      1.5,
-      10.0
-    ]
+    "explodeRadius": [1.5,10.0]
   },
   "wreckedParts": {
     "part": {
@@ -2463,26 +2328,15 @@
     "optics": "commander_optics_square",
     "zoomOutFov": 80.0,
     "zoomInFov": 14.7,
-    "sightSize": [
-      1.775,
-      1.25
-    ]
+    "sightSize": [1.775,1.25]
   },
   "cockpit": {
     "zoomOutFov": 22.0,
     "zoomInFov": 18.5,
     "sightFov": 11.0,
     "sightName": "tshk_66",
-    "headPos": [
-      0.0,
-      4.0,
-      -8.0
-    ],
-    "headPosOnShooting": [
-      0.0,
-      2.9,
-      -0.35
-    ],
+    "headPos": [0.0,4.0,-8.0],
+    "headPosOnShooting": [0.0,2.9,-0.35],
     "detectionHeight": 2.195
   },
   "commonWeapons": {
@@ -2523,14 +2377,8 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -4.0,
-            22.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-4.0,22.0]
         }
       },
       {
@@ -2568,14 +2416,8 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
+          "yaw": [-0.0,0.0],
+          "pitch": [0.0,0.0]
         }
       },
       {
@@ -2596,14 +2438,8 @@
           "horDriveDm": "commander_panoramic_sight_dm"
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            10.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-5.0,10.0]
         }
       }
     ]

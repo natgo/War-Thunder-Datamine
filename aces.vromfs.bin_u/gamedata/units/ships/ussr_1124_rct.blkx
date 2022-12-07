@@ -29,11 +29,7 @@
   "smokeScreenActivateTime": 2.5,
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
+  "smokeScreenOffset": [-3.0,0.0,2.0],
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
   "rearmTimeOnField": 60.0,
@@ -464,7 +460,7 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.00375,
+            "fire": 0.0037,
             "damage": 10.0,
             "fHitCritical": false
           },
@@ -493,7 +489,7 @@
         "onHit": [
           {
             "damageType": "generic",
-            "fire": 0.00125,
+            "fire": 0.0012,
             "damage": 20.0,
             "fHitCritical": false
           },
@@ -548,7 +544,7 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.00025,
+            "fire": 0.0003,
             "damage": 10.0,
             "fHitCritical": false
           }
@@ -602,7 +598,7 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.00025,
+            "fire": 0.0003,
             "damage": 10.0,
             "fHitCritical": false
           }
@@ -780,70 +776,36 @@
   "ShipPhys": {
     "mass": {
       "Empty": 39800.0,
-      "momentOfInertia": [
-        10.0,
-        43.0,
-        27.0
-      ],
-      "CenterOfGravity": [
-        -0.8,
-        0.1,
-        0.0
-      ]
+      "momentOfInertia": [10.0,43.0,27.0],
+      "CenterOfGravity": [-0.8,0.1,0.0]
     },
     "engines": {
       "maxSpeed": 10.88,
       "maxReverseSpeed": 4.8,
       "speedToTime": {
         "row": [
-          [
-            3.0,
-            5.5
-          ],
-          [
-            6.5,
-            12.8
-          ],
-          [
-            10.88,
-            18.6
-          ]
+          [3.0,5.5],
+          [6.5,12.8],
+          [10.88,18.6]
         ]
       },
       "reverseSpeedToTime": {
         "row": [
-          [
-            1.0,
-            2.0
-          ],
-          [
-            2.0,
-            3.5
-          ],
-          [
-            4.8,
-            6.5
-          ]
+          [1.0,2.0],
+          [2.0,3.5],
+          [4.8,6.5]
         ]
       },
       "engine": [
         {
-          "pos": [
-            -10.5,
-            -0.6,
-            1.1
-          ],
+          "pos": [-10.5,-0.6,1.1],
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_01_dm",
           "transmissionDmPart": "transmission_01_dm",
           "propeller": "propeller_01"
         },
         {
-          "pos": [
-            -10.5,
-            -0.6,
-            -1.1
-          ],
+          "pos": [-10.5,-0.6,-1.1],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_02_dm",
           "transmissionDmPart": "transmission_02_dm",
@@ -863,21 +825,13 @@
       "bodyArea": 0.0,
       "rudder": [
         {
-          "pos": [
-            -10.7,
-            -0.35,
-            1.0
-          ],
+          "pos": [-10.7,-0.35,1.0],
           "area": 0.7,
           "deflection": 37.0,
           "dmPart": "steering_gear_01_dm"
         },
         {
-          "pos": [
-            -10.7,
-            -0.35,
-            -1.0
-          ],
+          "pos": [-10.7,-0.35,-1.0],
           "area": 0.7,
           "deflection": 37.0,
           "dmPart": "steering_gear_01_dm"
@@ -886,16 +840,8 @@
     }
   },
   "cockpit": {
-    "headPos": [
-      0.0,
-      5.5,
-      -20.0
-    ],
-    "headPosOnShooting": [
-      2.1,
-      5.3,
-      0.0
-    ],
+    "headPos": [0.0,5.5,-20.0],
+    "headPosOnShooting": [2.1,5.3,0.0],
     "detectionHeigh": 5.5
   },
   "sound": {
@@ -1566,11 +1512,7 @@
     "sideSplashUpDirMult": 0.4,
     "sideSplashSpawnRate": 2.0,
     "sideSplashNormalMult": 0.8,
-    "sideSplashemissionCurve": [
-      1.0,
-      0.0,
-      0.0
-    ],
+    "sideSplashemissionCurve": [1.0,0.0,0.0],
     "waterSplashFxBow": "water_splash_small_bow",
     "bowSplashSpeedMult": 0.8,
     "bowSplashUpDirMult": 0.5,
@@ -1613,12 +1555,7 @@
     "repairSpeed": 15.0,
     "waterMassVel": -4000.0,
     "waterMassMult": 90.0,
-    "sizeToRepair": [
-      0.01,
-      2.0,
-      10.0,
-      300.0
-    ],
+    "sizeToRepair": [0.01,2.0,10.0,300.0],
     "additionalWaterDeathThreshold": 120000.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
@@ -1632,10 +1569,7 @@
   "ammo": {
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 50.0,
-    "explodeRadius": [
-      50.0,
-      100.0
-    ],
+    "explodeRadius": [50.0,100.0],
     "explodeHitPower": 50.0
   },
   "winch": {
@@ -2115,14 +2049,8 @@
           "gunnerDm": "main_caliber_turret_01_dm"
         },
         "limits": {
-          "yaw": [
-            -160.0,
-            160.0
-          ],
-          "pitch": [
-            -5.0,
-            25.0
-          ]
+          "yaw": [-160.0,160.0],
+          "pitch": [-5.0,25.0]
         }
       },
       {
@@ -2133,10 +2061,7 @@
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
-        "emitterGenRange": [
-          1,
-          16
-        ],
+        "emitterGenRange": [1,16],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "barrelDP": "main_caliber_gun_02_dm",
@@ -2168,14 +2093,8 @@
           "gunnerDm": "main_caliber_turret_02_dm"
         },
         "limits": {
-          "yaw": [
-            -150.0,
-            150.0
-          ],
-          "pitch": [
-            -5.0,
-            60.0
-          ]
+          "yaw": [-150.0,150.0],
+          "pitch": [-5.0,60.0]
         }
       },
       {
@@ -2215,14 +2134,8 @@
           "gunnerDm": "auxiliary_caliber_turret_01_dm"
         },
         "limits": {
-          "yaw": [
-            -130.0,
-            130.0
-          ],
-          "pitch": [
-            -5.0,
-            88.0
-          ]
+          "yaw": [-130.0,130.0],
+          "pitch": [-5.0,88.0]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
@@ -2234,14 +2147,8 @@
           "verticalSpeedLimitKPH": 80.0,
           "errorKPHToDegrees": {
             "row": [
-              [
-                5.0,
-                0.01
-              ],
-              [
-                70.0,
-                0.05
-              ]
+              [5.0,0.01],
+              [70.0,0.05]
             ]
           }
         }
@@ -2283,14 +2190,8 @@
           "gunnerDm": "auxiliary_caliber_turret_01_dm"
         },
         "limits": {
-          "yaw": [
-            -130.0,
-            130.0
-          ],
-          "pitch": [
-            -5.0,
-            88.0
-          ]
+          "yaw": [-130.0,130.0],
+          "pitch": [-5.0,88.0]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
@@ -2302,14 +2203,8 @@
           "verticalSpeedLimitKPH": 80.0,
           "errorKPHToDegrees": {
             "row": [
-              [
-                5.0,
-                0.01
-              ],
-              [
-                70.0,
-                0.05
-              ]
+              [5.0,0.01],
+              [70.0,0.05]
             ]
           }
         }

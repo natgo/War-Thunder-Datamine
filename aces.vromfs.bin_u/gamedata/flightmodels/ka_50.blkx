@@ -12,16 +12,8 @@
   "haveCCRPForTurret": true,
   "gearSinkRangeLR": 0.22,
   "gearSinkRangeC": 0.25,
-  "tpsCameraTargetOffsetAtZoom": [
-    50.0,
-    20.0,
-    0.0
-  ],
-  "tpsCameraOffset": [
-    -1.0,
-    0.0,
-    0.0
-  ],
+  "tpsCameraTargetOffsetAtZoom": [50.0,20.0,0.0],
+  "tpsCameraOffset": [-1.0,0.0,0.0],
   "enginesInfraRedBrightnessMult": 0.7,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -1050,66 +1042,34 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          0.2
-        ],
+        "flexionDir": [0.0,-1.0,0.2],
         "type": "leftHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          -90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          -0.5
-        ],
+        "flexionDir": [0.0,-1.0,-0.5],
         "type": "rightHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          0.3
-        ]
+        "flexionDir": [0.0,1.0,0.3]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          -0.3
-        ]
+        "flexionDir": [0.0,1.0,-0.3]
       }
     ]
   },
@@ -1143,8 +1103,8 @@
         "transition": 10.0
       },
       "descendant": {
-        "start": 1E+10,
-        "transition": 1E+10
+        "start": 10000000000.0,
+        "transition": 10000000000.0
       }
     }
   },
@@ -1159,38 +1119,14 @@
     "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
-    "headPos": [
-      2.35,
-      0.556,
-      0.0
-    ],
-    "headPosOnShooting": [
-      2.35,
-      0.556,
-      0.0
-    ],
+    "headPos": [2.35,0.556,0.0],
+    "headPosOnShooting": [2.35,0.556,0.0],
     "mirror": true,
-    "mirrorPos": [
-      2.731,
-      0.974,
-      0.0
-    ],
-    "mirrorNorm": [
-      -1.0,
-      -0.3,
-      0.0
-    ],
+    "mirrorPos": [2.731,0.974,0.0],
+    "mirrorNorm": [-1.0,-0.3,0.0],
     "gunLightRadiusMul": 0.01,
-    "lightPos": [
-      2.908533,
-      0.111968,
-      0.000123
-    ],
-    "lightColor": [
-      0.01,
-      0.6,
-      0.1
-    ],
+    "lightPos": [2.908533,0.111968,0.000123],
+    "lightColor": [0.01,0.6,0.1],
     "lightRadius": 0.45,
     "zoomOutFov": 3.6,
     "zoomInFov": 1.2,
@@ -1198,473 +1134,155 @@
     "sightOutFov": -1.0,
     "sightFov": 0.1,
     "devices": {
-      "stick_ailerons": [
-        -1.0,
-        1.0
-      ],
-      "stick_elevator": [
-        -1.0,
-        1.0
-      ],
-      "pedals": [
-        -1.0,
-        1.0
-      ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "pedals2": [
-        -1.0,
-        1.0
-      ],
-      "pedals3": [
-        -1.0,
-        1.0
-      ],
-      "pedals4": [
-        -1.0,
-        1.0
-      ],
-      "throttle": [
-        0.0,
-        1.0
-      ],
-      "weapon2": [
-        0.0,
-        1.0
-      ],
-      "weapon3": [
-        0.0,
-        1.0
-      ],
-      "gears": [
-        0.0,
-        1.0
-      ],
-      "gears_lamp": [
-        0.0,
-        0.0
-      ],
-      "speed": [
-        0.0,
-        97.222
-      ],
-      "compass": [
-        0.0,
-        360.0
-      ],
-      "compass1": [
-        0.0,
-        360.0
-      ],
-      "vario": [
-        -30.0,
-        30.0
-      ],
-      "g_meter": [
-        -2.0,
-        4.0
-      ],
-      "g_meter_min": [
-        -2.0,
-        4.0
-      ],
-      "g_meter_max": [
-        -2.0,
-        4.0
-      ],
-      "altitude_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude_min": [
-        0.0,
-        1000.0
-      ],
-      "radio_altitude": [
-        0.0,
-        300.0
-      ],
+      "stick_ailerons": [-1.0,1.0],
+      "stick_elevator": [-1.0,1.0],
+      "pedals": [-1.0,1.0],
+      "pedals1": [-1.0,1.0],
+      "pedals2": [-1.0,1.0],
+      "pedals3": [-1.0,1.0],
+      "pedals4": [-1.0,1.0],
+      "throttle": [0.0,1.0],
+      "weapon2": [0.0,1.0],
+      "weapon3": [0.0,1.0],
+      "gears": [0.0,1.0],
+      "gears_lamp": [0.0,0.0],
+      "speed": [0.0,97.222],
+      "compass": [0.0,360.0],
+      "compass1": [0.0,360.0],
+      "vario": [-30.0,30.0],
+      "g_meter": [-2.0,4.0],
+      "g_meter_min": [-2.0,4.0],
+      "g_meter_max": [-2.0,4.0],
+      "altitude_hour": [0.0,10000.0],
+      "altitude_min": [0.0,1000.0],
+      "radio_altitude": [0.0,300.0],
       "altitude_koef": 1.0,
-      "bank": [
-        -8.0,
-        8.0
-      ],
-      "bank1": [
-        -8.0,
-        8.0
-      ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "aviahorizon_pitch": [
-        -90.0,
-        90.0
-      ],
-      "aviahorizon_roll": [
-        -60.0,
-        60.0
-      ],
-      "aviahorizon_pitch1": [
-        -90.0,
-        90.0
-      ],
-      "aviahorizon_roll1": [
-        -60.0,
-        60.0
-      ],
-      "clock_hour": [
-        0.0,
-        12.0
-      ],
-      "clock_min": [
-        0.0,
-        60.0
-      ],
-      "clock_sec": [
-        0.0,
-        60.0
-      ],
-      "rpm": [
-        0.0,
-        16400.0
-      ],
-      "rpm1": [
-        0.0,
-        16400.0
-      ],
-      "prop_rpm": [
-        0.0,
-        300.0
-      ],
-      "oil_temperature": [
-        0.0,
-        150.0
-      ],
-      "oil_temperature1": [
-        0.0,
-        150.0
-      ],
-      "water_temperature_hour": [
-        0.0,
-        1200.0
-      ],
-      "water_temperature1_hour": [
-        0.0,
-        1200.0
-      ],
-      "water_temperature_min": [
-        0.0,
-        1200.0
-      ],
-      "water_temperature1_min": [
-        0.0,
-        1200.0
-      ],
-      "fuel": [
-        0.0,
-        800.0
-      ],
-      "fuel1": [
-        0.0,
-        800.0
-      ]
+      "bank": [-8.0,8.0],
+      "bank1": [-8.0,8.0],
+      "turn": [-0.23562,0.23562],
+      "aviahorizon_pitch": [-90.0,90.0],
+      "aviahorizon_roll": [-60.0,60.0],
+      "aviahorizon_pitch1": [-90.0,90.0],
+      "aviahorizon_roll1": [-60.0,60.0],
+      "clock_hour": [0.0,12.0],
+      "clock_min": [0.0,60.0],
+      "clock_sec": [0.0,60.0],
+      "rpm": [0.0,16400.0],
+      "rpm1": [0.0,16400.0],
+      "prop_rpm": [0.0,300.0],
+      "oil_temperature": [0.0,150.0],
+      "oil_temperature1": [0.0,150.0],
+      "water_temperature_hour": [0.0,1200.0],
+      "water_temperature1_hour": [0.0,1200.0],
+      "water_temperature_min": [0.0,1200.0],
+      "water_temperature1_min": [0.0,1200.0],
+      "fuel": [0.0,800.0],
+      "fuel1": [0.0,800.0]
     },
     "multifunctionDisplays": {
       "display": [
         {
-          "monoDisplayColor": [
-            0.95,
-            0.9,
-            0.4
-          ],
-          "textureArea": [
-            0.0,
-            0.5,
-            0.5,
-            1.0
-          ],
+          "monoDisplayColor": [0.95,0.9,0.4],
+          "textureArea": [0.0,0.5,0.5,1.0],
           "page": {
             "type": "target_tracking",
             "turretIdx": 0
           }
         },
         {
-          "textureArea": [
-            0.5,
-            0.5,
-            1.0,
-            1.0
-          ],
+          "textureArea": [0.5,0.5,1.0,1.0],
           "page": [
             {
               "type": "devices",
               "speed": {
                 "texture": "su_mfd_speed",
-                "position": [
-                  120.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  200.0,
-                  160.0
-                ],
-                "color": "AP8A/w==",
+                "position": [120.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
+                "size": [200.0,160.0],
+                "color": "#00ff00ff",
                 "valueTextSize": 40.0,
                 "ranges": {
                   "limits": [
-                    [
-                      0.0,
-                      50.0,
-                      -0.5,
-                      -0.46
-                    ],
-                    [
-                      50.0,
-                      100.0,
-                      -0.46,
-                      -0.26
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      -0.26,
-                      0.0
-                    ],
-                    [
-                      150.0,
-                      250.0,
-                      0.0,
-                      0.5
-                    ],
-                    [
-                      250.0,
-                      450.0,
-                      0.5,
-                      1.38
-                    ]
+                    [0.0,50.0,-0.5,-0.46],
+                    [50.0,100.0,-0.46,-0.26],
+                    [100.0,150.0,-0.26,0.0],
+                    [150.0,250.0,0.0,0.5],
+                    [250.0,450.0,0.5,1.38]
                   ]
                 }
               },
               "vario": {
                 "texture": "su_mfd_vario",
-                "position": [
-                  552.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  200.0,
-                  160.0
-                ],
-                "color": "AP8A/w==",
+                "position": [552.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "size": [200.0,160.0],
+                "color": "#00ff00ff",
                 "valueTextSize": 40.0,
                 "ranges": {
                   "limits": [
-                    [
-                      -20.0,
-                      -10.0,
-                      0.25,
-                      0.5
-                    ],
-                    [
-                      -10.0,
-                      10.0,
-                      0.5,
-                      1.5
-                    ],
-                    [
-                      10.0,
-                      20.0,
-                      1.5,
-                      1.75
-                    ]
+                    [-20.0,-10.0,0.25,0.5],
+                    [-10.0,10.0,0.5,1.5],
+                    [10.0,20.0,1.5,1.75]
                   ]
                 }
               },
               "altitude_hour": {
                 "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  160.0
-                ],
+                "position": [552.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.47,0.92,0.86,1.0],
+                "size": [192.0,160.0],
                 "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
+                  "limits": [0.0,10.0,-0.5,1.5]
                 }
               },
               "altitude_min": {
                 "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  192.0,
-                  160.0
-                ],
-                "color": "AP8A/w==",
+                "position": [552.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "size": [192.0,160.0],
+                "color": "#00ff00ff",
                 "valueTextSize": 40.0,
                 "notDrawBackground": true,
                 "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
+                  "limits": [0.0,1000.0,-0.5,1.5]
                 }
               },
               "compass": {
                 "texture": "su_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  232.0,
-                  192.0
-                ],
-                "color": "AP8A/w==",
+                "position": [130.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.5,1.0],
+                "arrowTexCoord": [0.5,0.0,1.0,1.0],
+                "size": [232.0,192.0],
+                "color": "#00ff00ff",
                 "valueTextSize": 40.0,
-                "arrowSize": [
-                  192.0,
-                  232.0
-                ],
+                "arrowSize": [192.0,232.0],
                 "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
+                  "limits": [0.0,360.0,0.0,-2.0]
                 }
               },
               "aviahorizon_pitch": {
                 "texture": "su_mfd_ahorizon",
                 "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "backgroundTexCoord": [
-                  0.11,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  240.0,
-                  200.0
-                ],
+                "position": [340.0,256.0],
+                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.4,1.0,0.6],
+                "size": [240.0,200.0],
                 "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
+                  "limits": [-90.0,90.0,0.35,-0.35]
                 }
               },
               "aviahorizon_roll": {
                 "texture": "su_mfd_ahorizon",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.2,
-                  0.9,
-                  0.8,
-                  1.0
-                ],
-                "size": [
-                  240.0,
-                  200.0
-                ],
+                "position": [340.0,256.0],
+                "arrowTexCoord": [0.2,0.9,0.8,1.0],
+                "size": [240.0,200.0],
                 "notDrawBackground": true,
                 "ranges": {
-                  "limits": [
-                    -180.0,
-                    180.0,
-                    -1.0,
-                    1.0
-                  ]
+                  "limits": [-180.0,180.0,-1.0,1.0]
                 }
               }
             },
@@ -1677,24 +1295,12 @@
           ]
         },
         {
-          "textureArea": [
-            0.0,
-            0.0,
-            0.8,
-            0.8
-          ],
+          "textureArea": [0.0,0.0,0.8,0.8],
           "page": {
             "type": "pilot_hud",
             "ilsNode": "ils",
-            "ilsSize": [
-              0.28,
-              0.28
-            ],
-            "ilsProjSize": [
-              0.184,
-              0.176,
-              -0.03
-            ],
+            "ilsSize": [0.28,0.28],
+            "ilsProjSize": [0.184,0.176,-0.03],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5
           }
@@ -1714,11 +1320,7 @@
     }
   },
   "helicopter": {
-    "rotorBladeAnglesCoeffs": [
-      0.3,
-      0.5,
-      0.5
-    ],
+    "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
     "propellerStrainCoeff": 0.01
   },
   "sensors": {
@@ -1736,18 +1338,9 @@
     ]
   },
   "gunnerOpticFps": {
-    "pos": [
-      5.0,
-      0.0,
-      0.0
-    ],
+    "pos": [5.0,0.0,0.0],
     "head": "optic1_turret",
-    "angularLimits": [
-      -35.0,
-      35.0,
-      -80.0,
-      15.0
-    ],
+    "angularLimits": [-35.0,35.0,-80.0,15.0],
     "crosshairPreset": "test_crosshair"
   },
   "commonWeapons": {
@@ -1854,14 +1447,8 @@
                   "playerControllable": false
                 },
                 "limits": {
-                  "yaw": [
-                    -35.0,
-                    35.0
-                  ],
-                  "pitch": [
-                    -80.0,
-                    15.0
-                  ]
+                  "yaw": [-35.0,35.0],
+                  "pitch": [-80.0,15.0]
                 }
               },
               {
@@ -1892,14 +1479,8 @@
                 "swapLimitsInViewer": true,
                 "parkInDeadzone": false,
                 "limits": {
-                  "yaw": [
-                    -2.5,
-                    37.0
-                  ],
-                  "pitch": [
-                    -2.0,
-                    9.0
-                  ]
+                  "yaw": [-2.5,37.0],
+                  "pitch": [-2.0,9.0]
                 }
               }
             ]
@@ -1925,14 +1506,8 @@
                   "playerControllable": false
                 },
                 "limits": {
-                  "yaw": [
-                    -35.0,
-                    35.0
-                  ],
-                  "pitch": [
-                    -80.0,
-                    15.0
-                  ]
+                  "yaw": [-35.0,35.0],
+                  "pitch": [-80.0,15.0]
                 }
               },
               {
@@ -1963,14 +1538,8 @@
                 "swapLimitsInViewer": true,
                 "parkInDeadzone": false,
                 "limits": {
-                  "yaw": [
-                    -2.5,
-                    37.0
-                  ],
-                  "pitch": [
-                    -2.0,
-                    9.0
-                  ]
+                  "yaw": [-2.5,37.0],
+                  "pitch": [-2.0,9.0]
                 }
               },
               {
@@ -2075,7 +1644,7 @@
               },
               {
                 "name": "cap_6",
-                "part": "su_vyihr_cap_005"
+                "part": "su_vyihr_cap_006"
               }
             ],
             "Weapon": [
@@ -2088,10 +1657,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_1",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher01",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2105,10 +1671,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_2",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2122,10 +1685,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_3",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2139,10 +1699,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_4",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2156,10 +1713,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_5",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2173,10 +1727,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_6",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2488,10 +2039,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_7",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher02",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2505,10 +2053,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_8",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher2",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2522,10 +2067,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_12",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher2",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2539,10 +2081,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_11",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher2",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2556,10 +2095,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_10",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher2",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2573,10 +2109,7 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_9",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
+                "maxPitchRotationAngle": [0.0,10.0],
                 "pitchRotationParamName": "p_launcher2",
                 "mass": 12.0,
                 "dragCx": 0.001
@@ -2655,14 +2188,8 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [
-      28.0,
-      110.0
-    ],
-    "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
-    ],
+    "engineExtinguishFireSpeed": [28.0,110.0],
+    "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
@@ -2729,17 +2256,9 @@
           "flap_airbrake_r_dm",
           "flap_airbrake%d_r_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis1": [0.0,0.0,1.0],
         "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2749,11 +2268,7 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis3": [0.0,0.0,1.0],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
@@ -2821,17 +2336,9 @@
           "flap_airbrake_r_dm",
           "flap_airbrake%d_r_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis1": [0.0,0.0,-1.0],
         "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2841,11 +2348,7 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis3": [0.0,0.0,-1.0],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
@@ -2918,11 +2421,7 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis1": [-1.0,0.0,0.0],
         "dm1": [
           "tail_dm",
           "stab_dm",
@@ -3001,17 +2500,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          1.0,
-          0.0
-        ],
+        "axis1": [0.0,1.0,0.0],
         "side1": -0.65,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3089,17 +2580,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis1": [0.0,0.0,1.0],
         "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3177,17 +2660,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis1": [0.0,0.0,-1.0],
         "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3265,17 +2740,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis1": [0.0,0.0,1.0],
         "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3353,17 +2820,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis1": [0.0,0.0,-1.0],
         "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3390,17 +2849,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis1": [0.0,0.0,1.0],
         "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3410,21 +2861,13 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis3": [0.0,0.0,1.0],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis4": [0.0,0.0,-1.0],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -3448,17 +2891,9 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis1": [0.0,0.0,-1.0],
         "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3468,21 +2903,13 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
+        "axis3": [0.0,0.0,-1.0],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [
-          0.0,
-          0.0,
-          1.0
-        ],
+        "axis4": [0.0,0.0,1.0],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -3500,11 +2927,7 @@
           "propeller_shaft%d_dm",
           "transmission%d_dm"
         ],
-        "axis1": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis1": [-1.0,0.0,0.0],
         "dm1": [
           "tail_dm",
           "stab_dm",
@@ -3527,17 +2950,9 @@
           "transmission%d_dm",
           "engine%d_dm"
         ],
-        "axis1": [
-          0.0,
-          1.0,
-          0.0
-        ],
+        "axis1": [0.0,1.0,0.0],
         "side1": -0.65,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
+        "axis2": [-1.0,0.0,0.0],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3914,19 +3329,13 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [
-              1024,
-              768
-            ],
+            "resolution": [1024,768],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "pilotIr": {
-            "resolution": [
-              1024,
-              768
-            ],
+            "resolution": [1024,768],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
@@ -3953,41 +3362,13 @@
     ]
   },
   "cutting": {
-    "emtr_break_wing0_l_from": [
-      -0.110711,
-      -0.0385299,
-      1.65
-    ],
-    "emtr_break_wing0_l_to": [
-      -0.110711,
-      -0.0385299,
-      1.75
-    ],
-    "emtr_break_wing0_r_from": [
-      -0.110711,
-      -0.0385299,
-      -1.65
-    ],
-    "emtr_break_wing0_r_to": [
-      -0.110711,
-      -0.0385299,
-      -1.75
-    ],
-    "emtr_break_wing_tail": [
-      -4.63384,
-      0.0,
-      0.0
-    ],
+    "emtr_break_wing0_l_from": [-0.110711,-0.0385299,1.65],
+    "emtr_break_wing0_l_to": [-0.110711,-0.0385299,1.75],
+    "emtr_break_wing0_r_from": [-0.110711,-0.0385299,-1.65],
+    "emtr_break_wing0_r_to": [-0.110711,-0.0385299,-1.75],
+    "emtr_break_wing_tail": [-4.63384,0.0,0.0],
     "finCut": false,
-    "emtr_break_fin_from": [
-      -7.10099,
-      -0.244996,
-      7.42078E-08
-    ],
-    "emtr_break_fin_to": [
-      -7.10099,
-      0.516845,
-      7.42078E-08
-    ]
+    "emtr_break_fin_from": [-7.10099,-0.244996,7.42078e-08],
+    "emtr_break_fin_to": [-7.10099,0.516845,7.42078e-08]
   }
 }

@@ -5,7 +5,7 @@
     "ranging": {
       "sideLobesAttenuation": -16.0,
       "pulsePower": 5000.0,
-      "pulseWidth": 5E-07,
+      "pulseWidth": 0.0,
       "prf": 600.0,
       "band": 8,
       "rcs": 5.0,
@@ -19,14 +19,8 @@
   },
   "scanPatterns": {
     "ranging": {
-      "azimuthLimits": [
-        -9.0,
-        9.0
-      ],
-      "elevationLimits": [
-        -9.0,
-        9.0
-      ],
+      "azimuthLimits": [-9.0,9.0],
+      "elevationLimits": [-9.0,9.0],
       "type": "no"
     }
   },
@@ -74,14 +68,8 @@
             "value": 0.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [
-              -9.0,
-              9.0
-            ],
-            "distanceRange": [
-              300.0,
-              2750.0
-            ]
+            "azimuthRange": [-9.0,9.0],
+            "distanceRange": [300.0,2750.0]
           }
         },
         "setStandbyMode": {

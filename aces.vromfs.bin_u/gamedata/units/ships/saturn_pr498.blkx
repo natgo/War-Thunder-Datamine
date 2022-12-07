@@ -503,7 +503,7 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.00375,
+            "fire": 0.0037,
             "damage": 10.0,
             "fHitCritical": false
           },
@@ -532,7 +532,7 @@
         "onHit": [
           {
             "damageType": "generic",
-            "fire": 0.00125,
+            "fire": 0.0012,
             "damage": 20.0,
             "fHitCritical": false
           },
@@ -883,16 +883,8 @@
   "ShipPhys": {
     "mass": {
       "Empty": 386000.0,
-      "momentOfInertia": [
-        43.0,
-        170.0,
-        120.0
-      ],
-      "CenterOfGravity": [
-        0.0,
-        -1.0,
-        0.0
-      ],
+      "momentOfInertia": [43.0,170.0,120.0],
+      "CenterOfGravity": [0.0,-1.0,0.0],
       "AdvancedMass": false
     },
     "engines": {
@@ -900,54 +892,28 @@
       "maxReverseSpeed": 3.0,
       "speedToTime": {
         "row": [
-          [
-            2.0,
-            3.0
-          ],
-          [
-            4.0,
-            5.0
-          ],
-          [
-            6.23,
-            13.0
-          ]
+          [2.0,3.0],
+          [4.0,5.0],
+          [6.23,13.0]
         ]
       },
       "reverseSpeedToTime": {
         "row": [
-          [
-            1.0,
-            1.0
-          ],
-          [
-            1.5,
-            3.0
-          ],
-          [
-            3.0,
-            6.0
-          ]
+          [1.0,1.0],
+          [1.5,3.0],
+          [3.0,6.0]
         ]
       },
       "engine": [
         {
-          "pos": [
-            -10.0,
-            -1.9,
-            -1.0
-          ],
+          "pos": [-10.0,-1.9,-1.0],
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_room_01_dm",
           "transmissionDmPart": "transmission_01_dm",
           "propeller": "propeller_01"
         },
         {
-          "pos": [
-            -10.0,
-            -1.9,
-            1.0
-          ],
+          "pos": [-10.0,-1.9,1.0],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_01_dm",
           "transmissionDmPart": "transmission_02_dm",
@@ -969,27 +935,15 @@
     "hydrodynamics": {
       "bodyArea": 0.0,
       "rudder": {
-        "pos": [
-          -11.0,
-          -1.5,
-          0.0
-        ],
+        "pos": [-11.0,-1.5,0.0],
         "area": 20.0,
         "deflection": 35.0
       }
     }
   },
   "cockpit": {
-    "headPos": [
-      0.0,
-      18.0,
-      -36.0
-    ],
-    "headPosOnShooting": [
-      13.0,
-      12.0,
-      0.0
-    ]
+    "headPos": [0.0,18.0,-36.0],
+    "headPosOnShooting": [13.0,12.0,0.0]
   },
   "sound": {
     "EngineName": "engine_ctr01",
@@ -1659,11 +1613,7 @@
     "sideSplashUpDirMult": 0.4,
     "sideSplashSpawnRate": 2.0,
     "sideSplashNormalMult": 0.8,
-    "sideSplashemissionCurve": [
-      1.0,
-      0.0,
-      0.0
-    ],
+    "sideSplashemissionCurve": [1.0,0.0,0.0],
     "waterSplashFxBow": "water_splash_small_bow",
     "bowSplashSpeedMult": 0.8,
     "bowSplashUpDirMult": 0.5,
@@ -1674,12 +1624,7 @@
     "repairSpeed": 20.0,
     "waterMassVel": -14000.0,
     "waterMassMult": 40.0,
-    "sizeToRepair": [
-      0.01,
-      2.0,
-      10.0,
-      300.0
-    ],
+    "sizeToRepair": [0.01,2.0,10.0,300.0],
     "additionalWaterDeathThreshold": 445000.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,

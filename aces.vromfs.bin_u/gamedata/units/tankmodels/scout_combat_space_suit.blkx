@@ -3,18 +3,8 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [
-    0.0,
-    -1.5,
-    0.0,
-    5.0
-  ],
-  "collisionSphere1": [
-    5.0,
-    2.0,
-    0.0,
-    1.0
-  ],
+  "collisionSphere0": [0.0,-1.5,0.0,5.0],
+  "collisionSphere1": [5.0,2.0,0.0,1.0],
   "spawnType": "ah",
   "useSimpleDeathConditionsAndEffects": false,
   "subclass": "suit",
@@ -59,11 +49,7 @@
     "headNode": "Bip01 Head",
     "pelvisNode": "Bip01 Pelvis",
     "pelvisTargetNode": "Bip01 Pelvis_",
-    "crouchDelta": [
-      0.0,
-      0.0,
-      0.0
-    ],
+    "crouchDelta": [0.0,0.0,0.0],
     "suffix": "4",
     "deadHeadAttitudeMin": -55.0,
     "deadHeadAttitudeMax": -40.0,
@@ -73,44 +59,28 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "lefthand_",
-        "flexionDir": [
-          0.5,
-          -0.5,
-          0.3
-        ]
+        "flexionDir": [0.5,-0.5,0.3]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "righthand_",
-        "flexionDir": [
-          -0.5,
-          -0.5,
-          0.3
-        ]
+        "flexionDir": [-0.5,-0.5,0.3]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_",
-        "flexionDir": [
-          -0.2,
-          1.0,
-          -1.0
-        ]
+        "flexionDir": [-0.2,1.0,-1.0]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_",
-        "flexionDir": [
-          -0.6,
-          1.0,
-          -1.0
-        ]
+        "flexionDir": [-0.6,1.0,-1.0]
       }
     ]
   },
@@ -273,23 +243,12 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [
-      0.3,
-      0.9
-    ],
+    "detonatePortion": [0.3,0.9],
     "explodeHitPower": 1000.0
   },
   "cockpit": {
-    "headPos": [
-      0.0,
-      0.5,
-      0.0
-    ],
-    "headPosOnShooting": [
-      0.0,
-      0.5,
-      0.0
-    ]
+    "headPos": [0.0,0.5,0.0],
+    "headPosOnShooting": [0.0,0.5,0.0]
   },
   "unitFx": {
     "event": [
@@ -668,14 +627,8 @@
           "invertedHierarchy": true
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -40.0,
-            80.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-40.0,80.0]
         }
       },
       {
@@ -713,14 +666,8 @@
           "invertedHierarchy": true
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -40.0,
-            80.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-40.0,80.0]
         }
       },
       {
@@ -731,10 +678,7 @@
         "startFx": "",
         "useEmitter": true,
         "emitter": "bone_bomb_01",
-        "emitterGenRange": [
-          1,
-          8
-        ],
+        "emitterGenRange": [1,8],
         "emitterGenFmt": "bone_bomb_%02d",
         "ignoreLoaderPenalty": true,
         "createGunEffects": true,
@@ -766,14 +710,8 @@
           "gun": "bone_rocket_05"
         },
         "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
+          "yaw": [0.0,0.0],
+          "pitch": [0.0,0.0]
         }
       }
     ],

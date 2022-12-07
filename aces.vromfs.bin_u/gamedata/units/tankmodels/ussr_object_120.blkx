@@ -3,18 +3,8 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [
-    0.0,
-    -1.5,
-    0.0,
-    5.0
-  ],
-  "collisionSphere1": [
-    5.0,
-    2.0,
-    0.0,
-    1.0
-  ],
+  "collisionSphere0": [0.0,-1.5,0.0,5.0],
+  "collisionSphere1": [5.0,2.0,0.0,1.0],
   "exhaustFx": "tank_exhaust",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1771,14 +1761,8 @@
           "barrel": "bone_gun_barrel"
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            15.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-5.0,15.0]
         }
       },
       {
@@ -1799,14 +1783,8 @@
           "horDriveDm": "commander_panoramic_sight_dm"
         },
         "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            10.0
-          ]
+          "yaw": [-180.0,180.0],
+          "pitch": [-5.0,10.0]
         }
       }
     ]
@@ -1822,20 +1800,9 @@
       "Empty": 26600.0,
       "Fuel": 200.0,
       "TakeOff": 27000.0,
-      "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
-      ],
-      "CenterOfGravity": [
-        0.1,
-        0.5,
-        0.0
-      ],
-      "CenterOfGravityClampY": [
-        0.0,
-        0.7
-      ],
+      "momentOfInertia": [2.5,2.5,6.0],
+      "CenterOfGravity": [0.1,0.5,0.0],
+      "CenterOfGravityClampY": [0.0,0.7],
       "AdvancedMass": false,
       "trackMass": 1150.0
     },
@@ -1873,18 +1840,11 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [
-        -0.2,
-        -0.14,
-        0.14
-      ],
+      "suspensionOffsets": [-0.2,-0.14,0.14],
       "defaultGearRadius": 0.3,
       "frontBackGearRadius": 0.25,
       "topGearRadius": 0.1,
-      "defaultDampeningForce": [
-        108000.0,
-        108000.0
-      ],
+      "defaultDampeningForce": [108000.0,108000.0],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }
@@ -1897,16 +1857,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [
-          -1000.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          1000.0,
-          0.0,
-          0.0
-        ]
+        "limitMin": [-1000.0,0.0,0.0],
+        "limitMax": [1000.0,0.0,0.0]
       }
     },
     "constraints": {
@@ -1919,54 +1871,21 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.5,
-    "detonatePortion": [
-      0.5,
-      0.9
-    ],
+    "detonatePortion": [0.5,0.9],
     "explodeHitPower": 4000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [
-      1.5,
-      10.0
-    ]
+    "explodeRadius": [1.5,10.0]
   },
   "wreckedParts": {
     "part": {
@@ -2612,20 +2531,11 @@
     "optics": "commander_optics_square",
     "zoomOutFov": 15.0,
     "zoomInFov": 14.7,
-    "sightSize": [
-      0.29,
-      0.2
-    ],
+    "sightSize": [0.29,0.2],
     "ircmProjector": {
       "node": "bone_commander_sight_v",
-      "beamRadius": [
-        600.0,
-        50.0
-      ],
-      "projectorPower": [
-        0.02,
-        0.04
-      ]
+      "beamRadius": [600.0,50.0],
+      "projectorPower": [0.02,0.04]
     }
   },
   "cockpit": {
@@ -2633,28 +2543,14 @@
     "zoomInFov": 10.5,
     "sightFov": 10.0,
     "sightName": "tsh2_22",
-    "headPos": [
-      0.0,
-      4.5,
-      -8.0
-    ],
-    "headPosOnShooting": [
-      -0.95,
-      3.3,
-      0.64
-    ],
+    "headPos": [0.0,4.5,-8.0],
+    "headPosOnShooting": [-0.95,3.3,0.64],
     "detectionHeight": 2.82
   },
   "ircmProjector": {
     "node": "ex_lantern_01",
-    "beamRadius": [
-      1400.0,
-      100.0
-    ],
-    "projectorPower": [
-      0.02,
-      0.07
-    ]
+    "beamRadius": [1400.0,100.0],
+    "projectorPower": [0.02,0.07]
   },
   "modifications": {
     "new_tank_tracks": {},
@@ -2683,28 +2579,19 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
+            "resolution": [800,600],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
+            "resolution": [800,600],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
+            "resolution": [800,600],
             "lightMult": 5.0,
             "ghosting": 0.7,
             "noiseFactor": 0.2

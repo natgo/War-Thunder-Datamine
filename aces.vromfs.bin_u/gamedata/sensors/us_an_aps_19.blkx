@@ -5,7 +5,7 @@
     "common": {
       "sideLobesAttenuation": -15.0,
       "pulsePower": 40000.0,
-      "pulseWidth": 5E-07,
+      "pulseWidth": 0.0,
       "prf": 2000.0,
       "band": 8,
       "rcs": 3.0,
@@ -21,14 +21,8 @@
   "scanPatterns": {
     "search135": {
       "type": "pyramide",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -70.0,
-        70.0
-      ],
+      "azimuthLimits": [-70.0,70.0],
+      "elevationLimits": [-70.0,70.0],
       "rollStabLimit": 60.0,
       "period": 1.52,
       "width": 67.5,
@@ -38,14 +32,8 @@
     },
     "search30": {
       "type": "pyramide",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -70.0,
-        70.0
-      ],
+      "azimuthLimits": [-70.0,70.0],
+      "elevationLimits": [-70.0,70.0],
       "rollStabLimit": 60.0,
       "period": 0.1,
       "width": 15.0,
@@ -55,28 +43,16 @@
     },
     "lock": {
       "type": "cone",
-      "azimuthLimits": [
-        -15.0,
-        15.0
-      ],
-      "elevationLimits": [
-        -15.0,
-        15.0
-      ],
+      "azimuthLimits": [-15.0,15.0],
+      "elevationLimits": [-15.0,15.0],
       "period": 0.5,
       "width": 2.5,
       "indicate": true
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [
-        -15.0,
-        15.0
-      ],
-      "elevationLimits": [
-        -15.0,
-        15.0
-      ]
+      "azimuthLimits": [-15.0,15.0],
+      "elevationLimits": [-15.0,15.0]
     }
   },
   "signals": {
@@ -139,14 +115,8 @@
             "value": 8.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [
-              -15.0,
-              15.0
-            ],
-            "distanceRange": [
-              0.0,
-              1500.0
-            ]
+            "azimuthRange": [-15.0,15.0],
+            "distanceRange": [0.0,1500.0]
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
