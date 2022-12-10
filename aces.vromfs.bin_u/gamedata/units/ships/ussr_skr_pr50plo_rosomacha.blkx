@@ -447,10 +447,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -1772,7 +1784,7 @@
   },
   "ikGunner": [
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1815,7 +1827,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1858,7 +1870,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1901,7 +1913,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1944,7 +1956,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1987,7 +1999,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2030,7 +2042,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2073,7 +2085,7 @@
       ]
     },
     {
-      "model": "ussr_officer_char",
+      "model": "ussr_officer_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2116,7 +2128,7 @@
       ]
     },
     {
-      "model": "ussr_sailor_char",
+      "model": "ussr_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2160,15 +2172,15 @@
     }
   ],
   "attach": {
-    "Bip01 Pelvis_1": "ussr_sailor_sit",
-    "Bip01 Pelvis_2": "ussr_sailor_sit",
-    "Bip01 Pelvis_3": "ussr_sailor_sit",
-    "Bip01 Pelvis_4": "ussr_sailor_sit",
-    "Bip01 Pelvis_5": "ussr_sailor_sit",
-    "Bip01 Pelvis_6": "ussr_sailor_sit",
-    "Bip01 Pelvis_7": "ussr_sailor_sit",
-    "Bip01 Pelvis_8": "ussr_officer_standing",
-    "Bip01 Pelvis_9": "ussr_sailor_sit"
+    "Bip01 Pelvis_1": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_2": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_3": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_4": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_5": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_6": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_7": "ussr_sailor_modern_sit",
+    "Bip01 Pelvis_8": "ussr_officer_modern_standing",
+    "Bip01 Pelvis_9": "ussr_sailor_modern_sit"
   },
   "DamageParts": {
     "formatVersion": 2,
@@ -2201,6 +2213,7 @@
       "armorThrough": 15.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 300.0
       },
       "radio_station_dm": {
@@ -2323,7 +2336,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,

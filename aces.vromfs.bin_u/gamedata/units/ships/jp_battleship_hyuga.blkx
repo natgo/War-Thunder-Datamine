@@ -670,6 +670,7 @@
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 760.0
       },
       "radio_station_dm": {
@@ -1078,7 +1079,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_engine_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 16.0,
       "armorThrough": 500.0,
@@ -2658,6 +2658,18 @@
             "damage": 350.0
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
