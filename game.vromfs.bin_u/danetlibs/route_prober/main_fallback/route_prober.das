@@ -1,6 +1,3 @@
-require auth
-require ClientNet
-require wtCircuit
 require DagorDataBlock
 require DagorMath
 require DagorRandom
@@ -9,15 +6,14 @@ require DagorTime
 require %danetlibs.route_prober.main.net_events
 require daslib/algorithm
 require ecs
-require jsonwriter
+require ClientNet
 require net
-require OnlineStorage
 require statsd
 
 let MAIN_HOST_ROUTE_ID : uint = 0u// strong assumption, but currently there is no way to know, which route is the host
 let PERMILLE_PER_PERCENT : int = 10
 
-// TODO(k.zakharchenko): update to description when the logic is established
+// TODO: update to description when the logic is established
 // When the route evaluation is enabled, there is one route_prober and several route_stats entities (one for each route to the server).
 // Route evaluation is executed in a regular period. Route prober takes the last 10 seconds stats of the currently enabled route and
 // compares them with the stats of alternative routes. The alternative route stats may be stale because they were obtained the last time
@@ -112,47 +108,11 @@ def get_diff_bucket_str(rtt_diff : int) : string
     lb -= 1
   return "_{buckets[lb]}" // "_" because of grafana bug: https://github.com/grafana/grafana/issues/38993
 
-def save_availability_data(count : int;
-                           rttList : array<uint>;
-                           availabilityList : array<bool>;
-                           add_rtt : uint) : void
-  jw_writer() <| $(var jw : JsonWriter)
-    jw_start_obj(jw)
-
-    jw_key_value(jw, "platform", get_platform_string_id())
-    jw_key_value(jw, "session", get_session_id())
-    jw_key_value(jw, "country", get_country_code())
-    jw_key_value(jw, "add", add_rtt)
-
-    jw_key(jw, "addr")
-    jw_start_array(jw)
-    for i in range(count)
-      jw_value(jw, get_server_route_host(uint(i)))
-    jw_end_array(jw)
-
-    jw_key(jw, "rtt")
-    jw_start_array(jw)
-    for i in range(count)
-      jw_value(jw, rttList[i])
-    jw_end_array(jw)
-
-    jw_key(jw, "avail")
-    jw_start_array(jw)
-    for i in range(count)
-      jw_value(jw, availabilityList[i])
-    jw_end_array(jw)
-
-    jw_end_obj(jw)
-    add_bigquery_record("route_availability", jw.result)
-    print("RP: reporting connectivity to BQ: {jw.result}")
-    // The BQ record isn't sent immediately, but will be sent at the end of the session
-
-def report_route_prober_statistics(add_rtt : uint) : void
+def report_route_prober_statistics() : void
   var mainRouteRtt : uint = RTT_MAX
   var mainRouteAvailable : bool = false
   var bestProxyRtt : uint = RTT_MAX
   var bestProxyAvailable : bool = false
-  var availableRoutes : uint = 0u
 
   query() <| $ [es(REQUIRE=routeStats)] (route_id : uint; rtt_estimation : uint; last_echoes_mask : int)
     if route_id == MAIN_HOST_ROUTE_ID
@@ -161,8 +121,6 @@ def report_route_prober_statistics(add_rtt : uint) : void
     elif rtt_estimation < bestProxyRtt
       bestProxyRtt = rtt_estimation
       bestProxyAvailable = (last_echoes_mask != 0)
-    if last_echoes_mask != 0
-      ++availableRoutes
 
   let rtt_diff : int = int(mainRouteRtt) - int(bestProxyRtt)
   let percent_diff : int = get_percent_diff(mainRouteRtt, bestProxyRtt)
@@ -177,19 +135,7 @@ def report_route_prober_statistics(add_rtt : uint) : void
                  "main", "{mainRouteAvailable ? 1 : 0}",
                  "proxy", "{bestProxyAvailable ? 1 : 0}",
                  "host_url", mainHostUrl)
-
-  let count = int(get_server_route_count())
-  var rttList : array<uint>
-  var availabilityList : array<bool>
-  rttList |> resize(count)
-  availabilityList |> resize(count)
-
-  query() <| $ [es(REQUIRE=routeStats)] (route_id : uint; rtt_estimation : uint; last_echoes_mask : int)
-    rttList[route_id] = rtt_estimation
-    availabilityList[route_id] = (last_echoes_mask != 0)
-
-  // We send stats for all routes paired with the main route stats, so we can see, if there are mains with "bad" proxies.
-  save_availability_data(count, rttList, availabilityList, add_rtt)
+  // TODO: send additional info to BQ, so the availability issues can be solved easier
 
 def report_route_availability(routeId : uint; lastEchoesMask : int) : void
   let hostUrl = get_server_route_host(routeId)
@@ -229,17 +175,16 @@ def route_prober_timers(info : UpdateStageInfoAct;
                         evaluation_period_seconds : float;
                         var next_evaluation : float&;
                         var next_echo_broadcast : float&)
-  next_echo_broadcast -= info.dt
-  if next_echo_broadcast <= 0.f
-    next_echo_broadcast = echo_period_seconds
+  if info.curTime > next_echo_broadcast
+    next_echo_broadcast = info.curTime + echo_period_seconds
     // Maybe do round-robing instead of broadcasting all at once?
     for route_id in urange(route_count)
       send_echo_msg(route_id)
-
-  next_evaluation -= info.dt
-  if next_evaluation <= 0.f
-    next_evaluation = evaluation_period_seconds
-    broadcastEvent([[ChangeServerRoute currentIsUnresponsive=false]])
+  if info.curTime > next_evaluation
+    if next_evaluation != 0.
+      // skip the avaluation the first time, because there is not enough echo packets were sent yet
+      broadcastEvent([[ChangeServerRoute currentIsUnresponsive=false]])
+    next_evaluation = info.curTime + evaluation_period_seconds
 
 [es(no_order, REQUIRE=routeStats)]
 def receive_echo_response(response : NetEchoReponse; route_id : uint; var echo_history : UInt32List&; var last_echoes_mask : int&)
@@ -261,12 +206,9 @@ def evaluate_server_route(evt : ChangeServerRoute)
   let hasRouteProber = find_query() <| $ [es(REQUIRE=routeProber)] (diff_sum_min : int;
                                                                     rtt_sum_threshold : int;
                                                                     add_rtt : uint;
-                                                                    echo_period_seconds : float;
-                                                                    var statistics_reported : bool&;
-                                                                    var next_evaluation : float&)
+                                                                    var statistics_reported : bool&)
     let currentRoute : uint = get_current_server_route_id()
     var currentRttEstimation : uint = RTT_MAX
-    var minEchoHistory : int = ECHO_HISTORY_MAX_LENGTH
 
     query() <| $ [es(REQUIRE=routeStats)] (route_id : uint;
                                            echo_history : UInt32List;
@@ -277,17 +219,11 @@ def evaluate_server_route(evt : ChangeServerRoute)
 
       if route_id == currentRoute && !evt.currentIsUnresponsive // if unresponsive, estimation is RTT_MAX
         currentRttEstimation = rtt_estimation
-      minEchoHistory = min(minEchoHistory, length(echo_history))
 
     let forceChange : bool = evt.currentIsUnresponsive
     var bestRoute : uint = currentRoute
     var bestRttEstimation : uint = currentRttEstimation
     var maxDiffSum : int = diff_sum_min
-
-    if !forceChange && minEchoHistory < ECHO_HISTORY_MAX_LENGTH
-      next_evaluation = float(ECHO_HISTORY_MAX_LENGTH - minEchoHistory) * echo_period_seconds
-      print("RP: not enough echo packets {minEchoHistory} / {ECHO_HISTORY_MAX_LENGTH}; trying again in {next_evaluation}s")
-      return true
 
     query() <| $ [es(REQUIRE=routeStats)] (route_id : uint;
                                            rtt_estimation : uint;
@@ -320,7 +256,7 @@ def evaluate_server_route(evt : ChangeServerRoute)
 
     // don't report statistics if ChangeServerRoute was forced and we maybe haven't gathered enough stats yet
     if !statistics_reported && !forceChange
-      report_route_prober_statistics(add_rtt)
+      report_route_prober_statistics()
       statistics_reported = true
 
     return true

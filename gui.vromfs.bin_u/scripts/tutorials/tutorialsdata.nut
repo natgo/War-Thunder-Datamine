@@ -66,6 +66,13 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     suitableForUnit = @(unit) unit?.isShip() ?? false
     isNeedAskInMainmenu = true
   }
+  {
+    id = "fighter"
+    tutorial = "tutorialB_takeoff_and_landing"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) (unit?.isAir() ?? false) || (unit?.isHelicopter() ?? false)
+    isNeedAskInMainmenu = false
+  }
 ]
 
 let reqTutorial = {
