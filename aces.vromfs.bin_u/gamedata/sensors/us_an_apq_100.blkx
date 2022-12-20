@@ -542,6 +542,18 @@
             "setStandbyMode": {}
           }
         },
+        "abortedBoresightTrack": {
+          "stateFrom": "boresightTrack",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setSearchMode": {}
+          }
+        },
         "switchScanPattern": {
           "stateFrom": [
             "standby",

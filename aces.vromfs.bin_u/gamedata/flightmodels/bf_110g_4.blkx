@@ -1125,10 +1125,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2364,6 +2372,23 @@
         "blk": "gameData/FlightModels/weaponPresets/bf-110g-2_default.blk",
         "tags": {
           "free": true
+        },
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonMG15120.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
         }
       },
       {

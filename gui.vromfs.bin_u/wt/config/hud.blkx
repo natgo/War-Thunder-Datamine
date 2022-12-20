@@ -246,6 +246,7 @@
     "icon_enemy_marker": "chat_icon_attention",
     "icon_attack_enemy_marker": "chat_icon_attention",
     "icon_artillery_attack": "chat_icon_artillery_attack",
+    "icon_marker_from_uav": "chat_icon_attention",
     "respawnbase_select": "respawnbase_select.svg:44:54:K",
     "iconArtilleryAttackBlinkTime": 20.0,
     "iconArtilleryAttackDist": 150.0,
@@ -573,9 +574,6 @@
     "overheatReloadColor": "#b4b4b4f0",
     "crosshairForestallDist": 750.0,
     "crosshairForestallDistForTanks": 2500.0,
-    "gyroscopicSightOmegaFilterTau": 0.2,
-    "gyroscopicSightDistanceDefault": 274.0,
-    "gyroscopicSightDistanceMax": 500.0,
     "colorShipGunReady": "#99ff99ff",
     "crosshairDifferentDistanceAlpha": 255,
     "blinkingMouseAimScale": 1.1,
@@ -935,6 +933,8 @@
     "colorHitUnitIndicator": "#c83208e6",
     "colorSquadTargetIndicator": "#fafa08e6",
     "colorSquadTargetIndicatorText": "#fafa08e6",
+    "colorUavTargetIndicator": "#c83208e6",
+    "colorUavTargetIndicatorText": "#c83208e6",
     "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K",
     "iconRepairInProgressOuter": "capturezone_big_ring.svg:132:168:K",
     "formatBasezoneBig": "basezone_big_mark_%c.svg:60:60:K",
@@ -964,6 +964,7 @@
     "iconWinch": "winch_icon.svg:50:50:K",
     "iconHitUnitIndicator": "hit_unit_icon.svg:19:28:K",
     "iconAttentionUnitIndicator": "attention_unit_icon.svg:19:28:K",
+    "iconUavTargetIndicator": "uav_target_icon.svg:19:28:K",
     "iconScoutingUnitIndicator": "scouting_unit_icon.svg:20:26:K",
     "iconWwUnitIndicator": "big_bomber_radar",
     "iconWwMissionTargetUnitIndicator": "target_unit_icon.svg:22:30:K",
@@ -1066,6 +1067,7 @@
     "tankHudIndicatorAlpha": 140,
     "squadTargetGroundIndicatorScale": 1.0,
     "squadTargetAirIndicatorScale": 1.0,
+    "uavTargetIndicatorScale": 1.0,
     "topPictureShift": 0.0,
     "airfieldIndicatorHeight": 50.0,
     "minCZIconHeightAboveGround": 35.0,
@@ -1358,6 +1360,23 @@
     "dmIconYOffset": 0
   },
   "hit_indicator": {
+    "hit_fire": "hit_icon_fire.svg:50:50:K",
+    "hit_module": "hit_icon_module.svg:50:50:K",
+    "hit_crew": "hit_icon_crew.svg:50:50:K",
+    "hit_bg_pen": "hit_bg_pen",
+    "hit_bg_no_pen": "hit_bg_no_pen",
+    "minAngle": 3.0,
+    "relativeRadius": 0.33,
+    "scale": 0.45,
+    "radiusCoefIcon": 0.985,
+    "scaleCoefIcon": 1.0,
+    "colorMin": "#ffffff96",
+    "colorMax": "#ffffffbe",
+    "hitsForColorMax": 3,
+    "maxHits": 5,
+    "timeHide": 2.0
+  },
+  "hit_indicator_simple": {
     "segment": "hit_segment",
     "minAngle": 1.0,
     "relativeRadius": 0.66,
@@ -1962,6 +1981,9 @@
       },
       "unlimited_control": {
         "shortcutIdx": 44
+      },
+      "designate_target": {
+        "shortcutIdx": 45
       }
     },
     "wheelActions": {

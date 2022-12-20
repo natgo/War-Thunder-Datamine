@@ -795,10 +795,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -1873,7 +1881,24 @@
       },
       {
         "name": "me-163b_0_mg15120",
-        "blk": "gameData/FlightModels/weaponPresets/me-163b_0_mg15120.blk"
+        "blk": "gameData/FlightModels/weaponPresets/me-163b_0_mg15120.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonMG15120.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
       }
     ]
   },

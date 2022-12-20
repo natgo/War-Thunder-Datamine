@@ -85,6 +85,9 @@
       "body_bottom_dm": {
         "armorThickness": 20.0
       },
+      "turret_02_bottom_dm": {
+        "armorThickness": 20.0
+      },
       "superstructure_bottom_dm": {
         "armorThickness": 25.0
       },
@@ -94,7 +97,7 @@
       "gun_mask_01_dm": {
         "armorThickness": 30.0
       },
-      "gun_mask_02_dm": {
+      "turret_03_front_dm": {
         "armorThickness": 80.0
       },
       "turret_bottom_dm": {
@@ -122,6 +125,12 @@
         "armorThickness": 5.0
       },
       "turret_06_top_dm": {
+        "armorThickness": 80.0
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 30.0
+      },
+      "turret_01_top_dm": {
         "armorThickness": 80.0
       },
       "turret_07_side_dm": {
@@ -154,6 +163,7 @@
       "ex_decor_02_dm": {},
       "ex_decor_body_r_03_dm": {},
       "ex_decor_body_l_01_dm": {},
+      "ex_decor_body_r_01_dm": {},
       "ex_decor_body_r_02_dm": {}
     },
     "mask": {
@@ -278,6 +288,7 @@
       "loader_dm": {},
       "loader_01_dm": {},
       "loader_02_dm": {},
+      "loader_03_dm": {},
       "gunner_dm": {},
       "gunner_01_dm": {},
       "gunner_02_dm": {},
@@ -546,6 +557,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -565,7 +580,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -715,6 +734,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -735,6 +758,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1570,6 +1597,9 @@
         "yaw": [-14.0,14.0],
         "pitch": [-8.0,14.0]
       }
+    },
+    "hideNodes": {
+      "node": "ex_decor_01"
     }
   },
   "weapon_presets": {
@@ -1584,8 +1614,8 @@
       "Fuel": 500.0,
       "TakeOff": 65000.0,
       "momentOfInertia": [5.0,6.0,8.0],
-      "CenterOfGravity": [1.5,0.8,0.0],
-      "AdvancedMass": true,
+      "CenterOfGravity": [0.0,0.8,0.0],
+      "AdvancedMass": false,
       "trackMass": 3300.0,
       "CenterOfGravityClampY": [0.0,0.7]
     },

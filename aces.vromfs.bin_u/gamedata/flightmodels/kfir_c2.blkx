@@ -854,10 +854,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -1808,6 +1816,10 @@
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_aim9g.blk"
       },
       {
+        "name": "kfir_c2_shafrir2",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_shafrir2.blk"
+      },
+      {
         "name": "kfir_c2_mk82",
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk82.blk"
       },
@@ -2739,7 +2751,7 @@
       "prevModification": "new_compressor_jet",
       "tier": 2,
       "effects": {
-        "aileronBooster": 0.6,
+        "aileronBooster": 1.0,
         "elevatorBooster": 0.9
       }
     },

@@ -39,9 +39,15 @@
       },
       "cannon2_dm": {
         "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -303,6 +309,12 @@
       },
       {
         "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
       },
       {
         "name": "cover1_dm"
@@ -885,10 +897,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -1962,6 +1982,12 @@
         "gunpod_cc_420_001"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2028,7 +2054,7 @@
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 92,
+                "bullets": 126,
                 "external": true,
                 "separate": true
               },
@@ -2037,7 +2063,7 @@
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 92,
+                "bullets": 126,
                 "external": true,
                 "separate": true
               }
@@ -2336,6 +2362,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare3",
               "flash": "flare3",
+              "dm": "cannon3_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -2646,6 +2673,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare4",
               "flash": "flare4",
+              "dm": "cannon4_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -3036,7 +3064,7 @@
     "emtr_break_wing2_r_from": [-0.152138,0.375242,-2.53928],
     "emtr_break_wing2_r_to": [-0.152138,0.375242,-3.21162],
     "emtr_break_wing_tail": [-3.16721,0.0,0.0],
-    "finCut": true,
+    "finCut": false,
     "emtr_break_tail_from": [-3.13008,0.0275823,-2.98023e-08],
     "emtr_break_tail_to": [-5.1859,0.0275823,-2.98023e-08]
   }

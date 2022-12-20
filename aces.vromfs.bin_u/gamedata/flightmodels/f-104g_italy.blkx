@@ -46,7 +46,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -769,10 +769,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -1836,7 +1844,6 @@
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9b",
-            "reqModification": "us_aim_9b",
             "ShowNodes": {
               "node": "aim_9_pylon_001"
             },
@@ -2196,7 +2203,6 @@
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9b",
-            "reqModification": "us_aim_9b",
             "ShowNodes": {
               "node": "aim_9_pylon_002"
             },
@@ -2381,11 +2387,6 @@
           }
         }
       }
-    },
-    "us_aim_9b": {
-      "prevModification": "countermeasures_belt_pack",
-      "tier": 2,
-      "modClass": "weapon"
     }
   },
   "user_skin": {
