@@ -13705,7 +13705,10 @@
           },
           {
             "type": "weaponType",
-            "weapon": "generic"
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
           },
           {
             "type": "bulletCaliber",
@@ -13768,7 +13771,10 @@
           },
           {
             "type": "weaponType",
-            "weapon": "generic"
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
           },
           {
             "type": "bulletCaliber",
@@ -13831,7 +13837,10 @@
           },
           {
             "type": "weaponType",
-            "weapon": "generic"
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
           },
           {
             "type": "bulletCaliber",
@@ -58434,6 +58443,104 @@
             "type": "timeRange",
             "beginDate": "2021-12-24 12:00:00",
             "endDate": "2022-01-03 07:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_new_year_decal_trophy_gift",
+      "locDescId": "2023_new_year_decal_trophy_gift/desc",
+      "userLogId": "2023_black_rabbit_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "new_year",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-12-22 14:00:00",
+            "endDate": "2023-01-02 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_new_year_tank_decor_trophy_gift",
+      "locDescId": "2023_new_year_tank_decor_trophy_gift/desc",
+      "userLogId": "2023_christmas_gnome_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "new_year",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 30,
+        "mulArcade": 1,
+        "mulRealistic": 1,
+        "mulHardcore": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-12-22 14:00:00",
+            "endDate": "2023-01-02 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_new_year_ship_decor_trophy_gift",
+      "locDescId": "2023_new_year_ship_decor_trophy_gift/desc",
+      "userLogId": "2023_decor_christmas_sleigh_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "new_year",
+      "mode": {
+        "type": "awardDamage",
+        "num": 50000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-12-22 14:00:00",
+            "endDate": "2023-01-02 11:30:00"
           }
         ]
       }
