@@ -21,6 +21,7 @@
     "mass": 350.0,
     "explosiveType": "tgaf_5",
     "explosiveMass": 15.0,
+    "massEnd": 286.0,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
     "length": 4.7,
@@ -33,10 +34,6 @@
     "finsLatAccel": 25.0,
     "force": 73600.0,
     "timeFire": 2.0,
-    "massEnd": 286.0,
-    "force1": 25575.0,
-    "timeFire1": 7.0,
-    "massEnd1": 208.0,
     "fireDelay": 0.0,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
@@ -86,6 +83,9 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_type_b_air_to_air_midrange",
+    "force1": 25575.0,
+    "timeFire1": 7.0,
+    "massEnd1": 208.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.05],
       "mod2": [20.0,0.1],
@@ -366,10 +366,11 @@
       "lockAfterLaunch": true,
       "lockTimeOut": 0.75,
       "afterLaunchSpeedUp": 200.0,
-      "breakLockMaxTime": 20.0,
+      "breakLockMaxTime": 60.0,
       "inertialGuidance": {
         "inertialNavigationDriftSpeed": 10.0,
-        "datalink": true
+        "datalink": true,
+        "reconnectDatalink": true
       },
       "radarSeeker": {
         "band": 8,
@@ -407,7 +408,7 @@
         "dopplerSpeedGate": {
           "filterAlpha": 0.25,
           "filterBetta": 0.03,
-          "dopplerSpeedGateSearchRange": 320.0
+          "dopplerSpeedGateSearchRange": 100.0
         }
       },
       "guidanceAutopilot": {
@@ -434,7 +435,7 @@
         "targetMach": [-0.743,-0.908],
         "targetMach2Mult": -1.0,
         "rangeMin": [1700.0,250.0,2600.0,250.0],
-        "rangeMax": [15000.0,6800.0,16300.0,5650.0],
+        "rangeMax": [25900.0,11400.0,28400.0,10000.0],
         "altDiff": [500.0,600.0]
       },
       "table1": {
@@ -443,7 +444,7 @@
         "targetMach": [-0.78,-0.953],
         "targetMach2Mult": -1.0,
         "rangeMin": [1700.0,250.0,2600.0,250.0],
-        "rangeMax": [22000.0,10000.0,23600.0,9200.0],
+        "rangeMax": [39000.0,18400.0,35000.0,14900.0],
         "altDiff": [500.0,600.0]
       },
       "table2": {
@@ -452,7 +453,7 @@
         "targetMach": [-0.835,-1.02],
         "targetMach2Mult": -1.0,
         "rangeMin": [1700.0,250.0,2600.0,250.0],
-        "rangeMax": [30500.0,14600.0,35000.0,13650.0],
+        "rangeMax": [63000.0,28500.0,60000.0,26600.0],
         "altDiff": [500.0,550.0]
       }
     },

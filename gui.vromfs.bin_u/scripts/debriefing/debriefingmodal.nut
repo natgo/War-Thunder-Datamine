@@ -1633,7 +1633,8 @@ let statTooltipColumnParamByType = {
     if (logs.len() == 0)
       return
 
-    if (!("tournamentResult" in logs[0]))
+    let { tournamentResult = null, eventId = null } = logs[0]
+    if (tournamentResult == null || ::events.getEvent(eventId)?.leaderboardEventTable != null)
       return
 
     let gapSides = this.guiScene.calcString("@tablePad", null)
@@ -1648,15 +1649,15 @@ let statTooltipColumnParamByType = {
       margin = "0"
     }
 
-    let now = getTblValue("newStat", logs[0].tournamentResult)
-    let was = getTblValue("oldStat", logs[0].tournamentResult)
+    let now = tournamentResult.newStat
+    let was = tournamentResult.oldStat
 
     let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
     let items = []
     foreach (lbFieldsConfig in ::events.eventsTableConfig)
     {
       if (!(lbFieldsConfig.field in now)
-        || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId = logs[0]?.eventId }))
+        || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue
 
       let isFirstInRow = items.len() % DEBR_LEADERBOARD_LIST_COLUMNS == 0
@@ -3123,9 +3124,7 @@ let statTooltipColumnParamByType = {
 
     let wpdata = ::get_session_warpoints()
 
-    if (this.debriefingResult.exp.activity == 0
-      && this.debriefingResult.exp.sessionTime > 10
-      && (this.debriefingResult?.checkActivityByPlayerDamage ?? false))
+    if (this.debriefingResult.exp?.noActivityPlayer ?? false)
     {
       infoText = loc("MISSION_NO_ACTIVITY")
       infoColor = "bad"
