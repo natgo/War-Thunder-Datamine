@@ -1,3 +1,4 @@
+rm -r *.bin_u/
 cp "../SteamLibrary/steamapps/common/War Thunder/aces.vromfs.bin" .
 cp "../SteamLibrary/steamapps/common/War Thunder/ui/atlases.vromfs.bin" .
 cp "../SteamLibrary/steamapps/common/War Thunder/char.vromfs.bin" .
