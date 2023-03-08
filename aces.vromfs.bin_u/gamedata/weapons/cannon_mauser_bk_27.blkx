@@ -20,6 +20,7 @@
   "preset_cost": 200,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "recoilMultiplier": 0.25,
   "bullet": [
     {
       "mass": 0.26,
@@ -173,7 +174,6 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-      "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
       "explodeTreshold": 9.0,
@@ -312,7 +312,6 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-      "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
       "explodeTreshold": 9.0,
@@ -451,7 +450,6 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-      "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
       "explodeTreshold": 9.0,
@@ -724,7 +722,6 @@
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sapi_shell.ivf",
-        "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,
@@ -993,7 +990,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "bulletName": "27x145mm_DM73_MP",
         "fuseDelayDist": [
           0.3,
           1.2
@@ -1267,7 +1263,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/ap_shell.ivf",
-        "bulletName": "27x145mm_DM103_FAP",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -1403,7 +1398,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/ap_shell.ivf",
-        "bulletName": "27x145mm_DM103_FAP",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -1811,7 +1805,6 @@
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sapi_shell.ivf",
-        "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,
@@ -1985,20 +1978,29 @@
           "ArmorPower1500m": [0.0,1500.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,180.0],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -2106,7 +2108,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "27x145mm_DM23_APHEI_SD",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -2249,7 +2250,6 @@
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sapi_shell.ivf",
-        "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,
@@ -2384,7 +2384,6 @@
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sapi_shell.ivf",
-        "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,
@@ -2520,7 +2519,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "bulletName": "27x145mm_DM13_APHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,
@@ -2659,7 +2657,6 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "bulletName": "27x145mm_DM13_APHE",
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
         "explodeTreshold": 9.0,

@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -1910,7 +1911,9 @@
   },
   "Sound": {
     "Engine": "engine05_06_J47_N1_WEP",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [4.65,0.884,0.06],
@@ -2732,27 +2735,15 @@
         "from": "f3h_2_a*"
       },
       {
-        "from": "f3h_2_a_dmg*"
-      },
-      {
         "from": "f3h_2_n*"
-      },
-      {
-        "from": "f3h_2_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f3h_2_a*",
-        "to": "f3h_2_a_tomoe*"
-      },
-      {
-        "from": "f3h_2_a_dmg*",
-        "to": "f3h_2_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f3h_2_a*",
+      "to": "f3h_2_a_tomoe*"
+    }
   },
   "parachutes": {
     "emitterRange": [1,1],

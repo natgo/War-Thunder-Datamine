@@ -2071,13 +2071,7 @@
         "from": "p_51d_20_na_a*"
       },
       {
-        "from": "p_51d_20_na_a_dmg*"
-      },
-      {
         "from": "p_51d_20_na_n*"
-      },
-      {
-        "from": "p_51d_20_na_n_dmg*"
       }
     ]
   },
@@ -2181,16 +2175,8 @@
         "to": "p_51d_30_usaaf_korea_a_tomoe*"
       },
       {
-        "from": "p_51d_20_na_a_dmg*",
-        "to": "p_51d_30_usaaf_korea_a_tomoe_dmg*"
-      },
-      {
         "from": "p_51d_20_na_n*",
         "to": "p_51d_30_usaaf_korea_tomoe_n*"
-      },
-      {
-        "from": "p_51d_20_na_n_dmg*",
-        "to": "p_51d_30_usaaf_korea_tomoe_n_dmg*"
       }
     ]
   },
@@ -2202,16 +2188,8 @@
         "to": "p_51d_30_usaaf_korea_a*"
       },
       {
-        "from": "p_51d_20_na_a_dmg*",
-        "to": "p_51d_30_usaaf_korea_a_dmg*"
-      },
-      {
         "from": "p_51d_20_na_n*",
         "to": "p_51d_30_usaaf_korea_n*"
-      },
-      {
-        "from": "p_51d_20_na_n_dmg*",
-        "to": "p_51d_30_usaaf_korea_n_dmg*"
       }
     ]
   },
@@ -2235,6 +2213,19 @@
         "name": "p-51d-20_6xbazooka",
         "blk": "gameData/FlightModels/weaponPresets/p-51d-20_6xbazooka.blk",
         "reqModification": "bazooka_pylon"
+      },
+      {
+        "name": "p-51d-30_mk78_mod2",
+        "blk": "gameData/FlightModels/weaponPresets/p-51d-30_mk78_mod2.blk",
+        "reqModification": "us_mk78_mod0"
+      },
+      {
+        "name": "p-51d-30_mk78_mod2_hvar",
+        "blk": "gameData/FlightModels/weaponPresets/p-51d-30_mk78_mod2_hvar.blk",
+        "reqModification": [
+          "frc_mk2",
+          "us_mk78_mod0"
+        ]
       }
     ]
   },
@@ -2264,6 +2255,10 @@
     "bmg50_new_gun": {
       "reqModification": "bmg50_belt_pack",
       "tier": 3
+    },
+    "us_mk78_mod0": {
+      "tier": 1,
+      "modClass": "weapon"
     },
     "frc_mk2": {
       "reqModLevel": 8.0,

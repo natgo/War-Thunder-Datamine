@@ -2254,20 +2254,29 @@
         "name": "Bf-110C-7_SC1000_SC250",
         "blk": "gameData/FlightModels/weaponPresets/bf-110c-7_sc1000_sc250.blk",
         "reqModification": "Bf-110C-7_SC1000"
+      },
+      {
+        "name": "bf-110c-4_2x_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110c-4_2x_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "bf-110c-4_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110c-4_flamm_500.blk",
+        "reqModification": "flamm_500"
+      },
+      {
+        "name": "bf-110c-7_2x_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110c-7_2x_flamm_500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_110c_7_c*",
-        "to": "bf_110c_7_c_tomoe*"
-      },
-      {
-        "from": "bf_110c_7_c_dmg*",
-        "to": "bf_110c_7_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_110c_7_c*",
+      "to": "bf_110c_7_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "bf_110c_7",
@@ -2276,13 +2285,7 @@
         "from": "bf_110c_7_c*"
       },
       {
-        "from": "bf_110c_7_c_dmg*"
-      },
-      {
         "from": "bf_110c_7_n*"
-      },
-      {
-        "from": "bf_110c_7_n_dmg*"
       }
     ]
   },
@@ -2428,6 +2431,15 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "Bf-110C-4_SC500"
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "flamm_500": {
+      "reqModification": "flamm_250",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "cutting": {

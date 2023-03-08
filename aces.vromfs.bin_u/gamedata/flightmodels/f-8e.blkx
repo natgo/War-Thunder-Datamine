@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -2003,10 +2004,15 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apq_94.blk",
-      "dmPart": "radar_dm"
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apq_94.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_apr_27.blk"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -3507,27 +3513,15 @@
         "from": "f_8e_c*"
       },
       {
-        "from": "f_8e_c_dmg*"
-      },
-      {
         "from": "f_8e_n*"
-      },
-      {
-        "from": "f_8e_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_8e_c*",
-        "to": "f_8e_c_tomoe*"
-      },
-      {
-        "from": "f_8e_c_dmg*",
-        "to": "f_8e_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_8e_c*",
+      "to": "f_8e_c_tomoe*"
+    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [0.619278,0.65116,1.89656],

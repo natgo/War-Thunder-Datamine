@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -143,7 +143,7 @@
     "turret": {
       "armorClass": "RHA_tank_modern",
       "turret_01_back_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 10.0
       },
       "turret_08_bottom_dm": {
         "armorThickness": 40.0
@@ -152,7 +152,8 @@
         "armorThickness": 40.0
       },
       "turret_07_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "ignoreSolidDimension": true
       },
       "turret_07_front_dm": {
         "armorThickness": 20.0,
@@ -171,7 +172,8 @@
         "armorThickness": 14.0
       },
       "turret_04_side_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "ignoreSolidDimension": true
       },
       "turret_05_side_dm": {
         "armorThickness": 45.0,
@@ -193,7 +195,7 @@
         "genericArmorQuality": 0.16
       },
       "turret_03_bottom_dm": {
-        "armorThickness": 14.0,
+        "armorThickness": 10.0,
         "createSecondaryShatters": false
       },
       "turret_02_side_dm": {
@@ -254,9 +256,7 @@
         "armorClass": "hull_side_special_armor"
       },
       "turret_09_back_dm": {
-        "armorThickness": 90.0,
-        "armorEffectiveThicknessMax": 90.0,
-        "armorClass": "CHA_tank_modern"
+        "armorThickness": 14.0
       },
       "turret_09_bottom_dm": {
         "armorThickness": 20.0,
@@ -320,7 +320,7 @@
     },
     "tank_structural_steel_elements": {
       "armorClass": "tank_structural_steel",
-      "armorThickness": 5.0,
+      "armorThickness": 4.0,
       "hp": 200.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
@@ -337,9 +337,9 @@
       "ex_armor_body_06_dm": {}
     },
     "body_screens": {
-      "armorClass": "RHA_tank_modern",
-      "hp": 300.0,
-      "armorThickness": 12.0,
+      "armorClass": "tank_structural_steel",
+      "hp": 200.0,
+      "armorThickness": 4.0,
       "ex_armor_body_l_08_dm": {},
       "ex_armor_body_l_09_dm": {},
       "ex_armor_body_l_10_dm": {},
@@ -2150,7 +2150,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_OTO_Breda_120_44_Ariete_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/120mm_OTO_Breda_120_44_Ariete_AMV_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.1667,
@@ -3187,7 +3187,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_OTO_Breda_120_44_Ariete_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/120mm_OTO_Breda_120_44_Ariete_AMV_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.1667,

@@ -16,6 +16,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "ilsLCOSS": true,
   "havePointOfInterestDesignator": true,
   "gyroscopicSightOverSensors": true,
@@ -2328,7 +2329,9 @@
   },
   "Sound": {
     "Engine": "engine05_04_J79GE_N1_WEP",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [5.4,0.434,0.0],
@@ -3783,16 +3786,8 @@
         "to": "f_4f_late_norm81b_c*"
       },
       {
-        "from": "f_4f_c_dmg*",
-        "to": "f_4f_late_norm81b_c_dmg*"
-      },
-      {
         "from": "f_4f_n*",
         "to": "f_4f_late_n*"
-      },
-      {
-        "from": "f_4f_n_dmg*",
-        "to": "f_4f_late_n_dmg*"
       }
     ]
   },
@@ -3803,13 +3798,7 @@
         "from": "f_4f_late_norm81b_c*"
       },
       {
-        "from": "f_4f_late_norm81b_c_dmg*"
-      },
-      {
         "from": "f_4f_late_n*"
-      },
-      {
-        "from": "f_4f_late_n_dmg*"
       }
     ]
   },
@@ -3824,16 +3813,8 @@
         "to": "f_4f_late_norm81b_c_tomoe*"
       },
       {
-        "from": "f_4f_c_dmg*",
-        "to": "f_4f_late_norm81b_c_tomoe_dmg*"
-      },
-      {
         "from": "f_4f_n*",
         "to": "f_4f_late_n*"
-      },
-      {
-        "from": "f_4f_n_dmg*",
-        "to": "f_4f_late_n_dmg*"
       }
     ]
   },

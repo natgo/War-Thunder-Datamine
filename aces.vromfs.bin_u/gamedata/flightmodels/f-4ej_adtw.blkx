@@ -15,6 +15,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -2289,7 +2290,9 @@
   },
   "Sound": {
     "Engine": "engine05_04_J79GE_N1_WEP",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [5.4,0.434,0.0],
@@ -3308,7 +3311,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_25.blk"
+        "blk": "gameData/sensors/jp_j_apr_2.blk"
       }
     ]
   },
@@ -3526,13 +3529,7 @@
         "from": "f_4ej_c*"
       },
       {
-        "from": "f_4ej_c_dmg*"
-      },
-      {
         "from": "f_4ej_n*"
-      },
-      {
-        "from": "f_4ej_n_dmg*"
       }
     ]
   },
@@ -3560,27 +3557,15 @@
     "emtr_break_tail_to": [-7.37561,-0.0996002,4.57764e-07]
   },
   "default_skin": {
-    "replace_tex": [
-      {
-        "from": "f_4ej_c*",
-        "to": "f_4ej_black_c*"
-      },
-      {
-        "from": "f_4ej_c_dmg*",
-        "to": "f_4ej_black_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_4ej_c*",
+      "to": "f_4ej_black_c*"
+    }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_4ej_c*",
-        "to": "f_4ej_black_c_tomoe*"
-      },
-      {
-        "from": "f_4ej_c_dmg*",
-        "to": "f_4ej_black_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_4ej_c*",
+      "to": "f_4ej_black_c_tomoe*"
+    }
   }
 }

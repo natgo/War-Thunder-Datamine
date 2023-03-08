@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -1500,6 +1500,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1543,7 +1544,7 @@
         "forestallTime": 0.1,
         "turret": {
           "head": "bone_turret",
-          "gun": "bone_gun_01",
+          "gun": "bone_gun",
           "barrel": "bone_gun_barrel_01",
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
@@ -1634,7 +1635,7 @@
         "timeOffset": 0.024,
         "turret": {
           "head": "bone_turret",
-          "gun": "bone_gun_01",
+          "gun": "bone_gun",
           "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
@@ -1709,7 +1710,7 @@
         "timeOffset": 0.024,
         "turret": {
           "head": "bone_turret",
-          "gun": "bone_gun_01",
+          "gun": "bone_gun",
           "barrel": "bone_gun_barrel_03",
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
@@ -1782,7 +1783,7 @@
         "reusePitchTrigger": 10,
         "turret": {
           "head": "bone_turret",
-          "gun": "bone_gun_01",
+          "gun": "bone_gun",
           "barrel": "bone_gun_barrel_04",
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
@@ -1850,8 +1851,8 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "bone_gun",
-          "gun": "bone_gun",
+          "head": "bone_turret",
+          "gun": "bone_gun_02",
           "gunnerDm": "gunner_dm",
           "rotatedTurret": "bone_turret"
         },
@@ -2753,10 +2754,11 @@
       "effects": {
         "rcostAddParam": 0.92,
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38M1_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
@@ -2796,7 +2798,7 @@
               "forestallTime": 0.1,
               "turret": {
                 "head": "bone_turret",
-                "gun": "bone_gun_01",
+                "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_01",
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": "drive_turret_v_dm",
@@ -2845,7 +2847,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38M1_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
@@ -2887,7 +2889,7 @@
               "timeOffset": 0.024,
               "turret": {
                 "head": "bone_turret",
-                "gun": "bone_gun_01",
+                "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_02",
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": "drive_turret_v_dm",
@@ -2919,7 +2921,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38M1_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_03",
               "flash": "emtr_gun_flame_03",
@@ -2962,7 +2964,7 @@
               "timeOffset": 0.024,
               "turret": {
                 "head": "bone_turret",
-                "gun": "bone_gun_01",
+                "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_03",
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": "drive_turret_v_dm",
@@ -2994,7 +2996,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38M1_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_04",
               "flash": "emtr_gun_flame_04",
@@ -3035,7 +3037,7 @@
               "reusePitchTrigger": 10,
               "turret": {
                 "head": "bone_turret",
-                "gun": "bone_gun_01",
+                "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_04",
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": "drive_turret_v_dm",
@@ -3103,8 +3105,8 @@
               "errTargetting": 3.0,
               "errExplTime": 0.0,
               "turret": {
-                "head": "bone_gun",
-                "gun": "bone_gun",
+                "head": "bone_turret",
+                "gun": "bone_gun_02",
                 "gunnerDm": "gunner_dm",
                 "rotatedTurret": "bone_turret"
               },

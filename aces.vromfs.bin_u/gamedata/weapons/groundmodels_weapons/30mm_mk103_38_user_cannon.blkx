@@ -171,9 +171,9 @@
     },
     {
       "mass": 0.33,
+      "caliber": 0.03,
       "explosiveType": "hta",
       "explosiveMass": 0.07,
-      "caliber": 0.03,
       "speed": 920.0,
       "Cx": 0.4503,
       "maxDistance": 7000.0,
@@ -190,7 +190,7 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
       "bulletName": "30mm_MGr",
-      "hitPowerMult": 5.0,
+      "hitPowerMult": 2.0,
       "nearHitPower": [1.0,50.0],
       "midHitPower": [0.9,300.0],
       "farHitPower": [0.1,700.0],
@@ -198,15 +198,6 @@
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "explodeHitPower": 30.0,
-      "explodeArmorPower": 8.0,
-      "explodeRadius": [0.2,1.0],
-      "fuseDelayDist": 0.4,
-      "shutterDamage": true,
-      "shutterDamageRadius": 2.5,
-      "shutterAmount": 30,
-      "shutterArmorPower": 4.0,
-      "shutterHit": 2.5,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
       "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -224,6 +215,11 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower5000m": [0.5,5000.0],
+        "HitPower7000m": [0.1,7000.0]
+      },
       "armorpower": {
         "ArmorPower0m": [2.0,10.0],
         "ArmorPower100m": [2.0,100.0],
@@ -231,6 +227,31 @@
         "ArmorPower1000m": [1.0,1000.0],
         "ArmorPower1450m": [0.5,1450.0],
         "ArmorPower1500m": [0.0,1500.0]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.3,
+          "segment": [
+            {
+              "radiusScale": 1.065,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [0.0,179.0],
+              "countPortion": 0.5
+            },
+            {
+              "radiusScale": 1.065,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [180.0,359.0],
+              "countPortion": 0.5
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -720,9 +741,9 @@
       },
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -739,7 +760,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -747,15 +768,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -773,6 +785,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -780,6 +797,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1014,9 +1056,9 @@
       },
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -1033,7 +1075,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -1041,15 +1083,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -1067,6 +1100,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -1074,6 +1112,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1164,9 +1227,9 @@
       },
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -1183,7 +1246,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -1191,15 +1254,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -1217,6 +1271,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -1224,6 +1283,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1318,9 +1402,9 @@
     "bullet": [
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -1337,7 +1421,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -1345,15 +1429,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -1371,6 +1446,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -1378,6 +1458,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1468,9 +1573,9 @@
       },
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -1487,7 +1592,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -1495,15 +1600,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -1521,6 +1617,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -1528,6 +1629,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1618,9 +1744,9 @@
       },
       {
         "mass": 0.33,
+        "caliber": 0.03,
         "explosiveType": "hta",
         "explosiveMass": 0.07,
-        "caliber": 0.03,
         "speed": 920.0,
         "Cx": 0.4503,
         "maxDistance": 7000.0,
@@ -1637,7 +1763,7 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
         "bulletName": "30mm_MGr",
-        "hitPowerMult": 5.0,
+        "hitPowerMult": 2.0,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,300.0],
         "farHitPower": [0.1,700.0],
@@ -1645,15 +1771,6 @@
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 0.1,
-        "explodeHitPower": 30.0,
-        "explodeArmorPower": 8.0,
-        "explodeRadius": [0.2,1.0],
-        "fuseDelayDist": 0.4,
-        "shutterDamage": true,
-        "shutterDamageRadius": 2.5,
-        "shutterAmount": 30,
-        "shutterArmorPower": 4.0,
-        "shutterHit": 2.5,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
         "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -1671,6 +1788,11 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower5000m": [0.5,5000.0],
+          "HitPower7000m": [0.1,7000.0]
+        },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
           "ArmorPower100m": [2.0,100.0],
@@ -1678,6 +1800,31 @@
           "ArmorPower1000m": [1.0,1000.0],
           "ArmorPower1450m": [0.5,1450.0],
           "ArmorPower1500m": [0.0,1500.0]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.3,
+            "segment": [
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [0.0,179.0],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [180.0,359.0],
+                "countPortion": 0.5
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],

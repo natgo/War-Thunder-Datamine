@@ -1780,6 +1780,10 @@
       {
         "name": "douglas_ad_4_torpedo",
         "blk": "gameData/FlightModels/weaponPresets/douglas_ad_4_torpedo.blk"
+      },
+      {
+        "name": "douglas_ad_4_2x_mk78_mod2",
+        "blk": "gameData/FlightModels/weaponPresets/douglas_ad_4_2x_mk78_mod2.blk"
       }
     ]
   },
@@ -2138,6 +2142,23 @@
               "bullets": 1,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk78",
+            "reqModification": "us_mk78_mod0",
+            "ShowNodes": {
+              "node": "pylon7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_mk_78_mod_2.blk",
+              "emitter": "us_1000lbs_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2306,6 +2327,23 @@
               "external": true,
               "separate": true,
               "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk78",
+            "reqModification": "us_mk78_mod0",
+            "ShowNodes": {
+              "node": "pylon8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_mk_78_mod_2.blk",
+              "emitter": "us_1000lbs_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           }
@@ -2601,10 +2639,25 @@
     "turnTime": 23.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "hp_105": {},
     "new_radiator": {},
     "new_compressor": {},
@@ -2619,6 +2672,10 @@
     "anm3_new_gun": {
       "reqModification": "anm3_belt_pack",
       "tier": 3
+    },
+    "us_mk78_mod0": {
+      "tier": 1,
+      "modClass": "weapon"
     },
     "btd_sbc": {
       "modClass": "weapon",
@@ -2695,28 +2752,16 @@
         "from": "douglas_ad_4_usn_gloss_sea_blue_a*"
       },
       {
-        "from": "douglas_ad_4_usn_gloss_sea_blue_a_dmg*"
-      },
-      {
         "from": "douglas_ad_4_usn_gloss_sea_blue_n*"
-      },
-      {
-        "from": "douglas_ad_4_usn_gloss_sea_blue_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
     "name": "gloss_sea_blue_tomoe",
-    "replace_tex": [
-      {
-        "from": "douglas_ad_4_usn_gloss_sea_blue_a*",
-        "to": "douglas_ad_4_usn_gloss_sea_blue_a_tomoe*"
-      },
-      {
-        "from": "douglas_ad_4_usn_gloss_sea_blue_a_dmg*",
-        "to": "douglas_ad_4_usn_gloss_sea_blue_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "douglas_ad_4_usn_gloss_sea_blue_a*",
+      "to": "douglas_ad_4_usn_gloss_sea_blue_a_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [0.252663,-0.578221,1.20144],

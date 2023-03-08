@@ -2337,20 +2337,24 @@
         "name": "bf-110f-2_rz65_rockets",
         "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_rz65_rockets.blk",
         "reqModification": "bf_110f-2_rz65"
+      },
+      {
+        "name": "bf-110f-2_2xflamm250",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_2xflamm250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "bf-110f-2_2xflamm500",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_2xflamm500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_110f_2_c*",
-        "to": "bf_110f_2_c_tomoe*"
-      },
-      {
-        "from": "bf_110f_2_c_dmg*",
-        "to": "bf_110f_2_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_110f_2_c*",
+      "to": "bf_110f_2_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "bf_110f_2",
@@ -2359,13 +2363,7 @@
         "from": "bf_110f_2_c*"
       },
       {
-        "from": "bf_110f_2_c_dmg*"
-      },
-      {
         "from": "bf_110f_2_n*"
-      },
-      {
-        "from": "bf_110f_2_n_dmg*"
       }
     ]
   },
@@ -2524,6 +2522,15 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 4
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "flamm_500": {
+      "reqModification": "flamm_250",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "cutting": {

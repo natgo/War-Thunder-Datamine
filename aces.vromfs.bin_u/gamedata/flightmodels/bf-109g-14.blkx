@@ -2016,7 +2016,19 @@
       }
     ],
     "hideDmParts": {
-      "node": "cannon2_dm"
+      "node": [
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cover5_dm",
+        "cover6_dm"
+      ]
+    },
+    "hideNodes": {
+      "node": [
+        "pylon_cannon_r6_l",
+        "pylon_cannon_r6_r"
+      ]
     }
   },
   "weapon_presets": {
@@ -2029,6 +2041,11 @@
         "name": "Bf-109G-14_SC250",
         "blk": "gameData/FlightModels/weaponPresets/bf_109g-14_sc250.blk",
         "reqModification": "Bf-109G-14_SC250"
+      },
+      {
+        "name": "bf_109g-14_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/bf_109g-14_flamm_250.blk",
+        "reqModification": "flamm_250"
       },
       {
         "name": "Bf-109G-14_cannons",
@@ -2077,16 +2094,10 @@
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_109g_14_a*",
-        "to": "bf_109g_14_a_tomoe*"
-      },
-      {
-        "from": "bf_109g_14_a_dmg*",
-        "to": "bf_109g_14_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_109g_14_a*",
+      "to": "bf_109g_14_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "bf_109g_14",
@@ -2095,13 +2106,7 @@
         "from": "bf_109g_14_a*"
       },
       {
-        "from": "bf_109g_14_a_dmg*"
-      },
-      {
         "from": "bf_109g_14_n*"
-      },
-      {
-        "from": "bf_109g_14_n_dmg*"
       }
     ]
   },
@@ -2287,6 +2292,10 @@
       "modClass": "weapon",
       "tier": 3,
       "reqModLevel": 16.0
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
     }
   },
   "cutting": {

@@ -2230,7 +2230,7 @@
         "blk": "gameData/Weapons/gunVikkersK_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun1",
-        "flash": "flare9",
+        "flash": "flare11",
         "dm": "gunner1_dm",
         "gunnerDm": "gunner1_dm",
         "gunDm": "gun1_dm",
@@ -2266,7 +2266,7 @@
     ]
   },
   "gunnerFps": {
-    "pos": [-0.25,0.25,0.0],
+    "pos": [-0.25,0.17,0.0],
     "head": "turret1"
   },
   "weapon_presets": {
@@ -2294,6 +2294,29 @@
             "iconType": "rockets_he_small"
           }
         }
+      },
+      {
+        "name": "beaufighter_mk21_mc250_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc250_bomb.blk",
+        "reqModification": "sea_hawk_2x250lb"
+      },
+      {
+        "name": "beaufighter_mk21_mc500_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc500_bomb.blk",
+        "reqModification": "sea_hawk_2x500lb"
+      },
+      {
+        "name": "beaufighter_mk21_mc250_mc500_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc250_mc500_bomb.blk",
+        "reqModification": [
+          "sea_hawk_2x250lb",
+          "sea_hawk_2x500lb"
+        ]
+      },
+      {
+        "name": "beaufighter_mk21_mc1000_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc1000_bomb.blk",
+        "reqModification": "sea_hawk_2x1000lb"
       }
     ]
   },
@@ -2365,9 +2388,9 @@
   "modifications": {
     "cd_98": {},
     "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher.png",
-      "tier": 4,
-      "modClass": "weapon",
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 3,
+      "modClass": "armor",
       "invertEnableLogic": false
     },
     "CdMin_Fuse": {},
@@ -2419,10 +2442,24 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "sea_hawk_2x250lb": {
+      "reqModification": "beaufighter_tsc",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "sea_hawk_2x500lb": {
+      "reqModification": "sea_hawk_2x250lb",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "sea_hawk_2x1000lb": {
+      "reqModification": "sea_hawk_2x500lb",
+      "modClass": "weapon",
+      "tier": 4
+    },
     "beaufighter_rsc": {
       "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "beaufighter_tsc"
+      "tier": 2
     }
   },
   "user_skin": {
@@ -2432,13 +2469,7 @@
         "from": "beaufighter_mk21_a*"
       },
       {
-        "from": "beaufighter_mk21_a_dmg*"
-      },
-      {
         "from": "beaufighter_mk21_n*"
-      },
-      {
-        "from": "beaufighter_mk21_n_dmg*"
       }
     ]
   },

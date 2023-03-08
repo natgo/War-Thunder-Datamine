@@ -2,12 +2,14 @@
   "model": "mig_21_f13",
   "fmFile": "fm/mig-21_f13.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "haveCCIPForRocket": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.157,
   "gearSinkRangeC": 0.308,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2427,13 +2429,7 @@
         "from": "mig_21_f13_c*"
       },
       {
-        "from": "mig_21_f13_c_dmg*"
-      },
-      {
         "from": "mig_21_f13_n*"
-      },
-      {
-        "from": "mig_21_f13_n_dmg*"
       }
     ]
   },
