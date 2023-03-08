@@ -2,7 +2,7 @@
   "model": "mi_4av",
   "fmFile": "fm/mi_4av.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.316,
   "gearSinkRangeC": 0.25,
@@ -113,9 +113,9 @@
         "hp": 20.0
       }
     },
-    "steel_tank_m": {
+    "steel_tank_s": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 80.5
       }
     }
   },
@@ -490,11 +490,6 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -504,27 +499,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -1021,13 +1021,7 @@
         "from": "mi_4av_c*"
       },
       {
-        "from": "mi_4av_c_dmg*"
-      },
-      {
         "from": "mi_4av_n*"
-      },
-      {
-        "from": "mi_4av_n_dmg*"
       }
     ]
   },
@@ -1037,6 +1031,12 @@
     },
     "cd_98_main_rotor": {
       "tier": 2
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
     },
     "hp_105": {
       "tier": 3,

@@ -202,13 +202,13 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 51.8
+        "hp": 43.6
       },
       "tank2_dm": {
         "hp": 39.5
       },
       "tank3_dm": {
-        "hp": 51.8
+        "hp": 43.6
       }
     }
   },
@@ -976,34 +976,39 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1013,34 +1018,39 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1050,34 +1060,39 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1744,9 +1759,9 @@
   "cockpit": {
     "headPos": [-0.788,0.607,0.0],
     "headPosOnShooting": [-0.76,0.607,0.0],
-    "lightPos": [-0.344528,0.293089,-0.349479],
+    "lightPos": [-0.12,0.18,0.0],
     "lightColor": [0.62,0.3,0.21],
-    "lightAttenuation": 10.0,
+    "lightRadius": 0.35,
     "devices": {
       "speed": [0.0,222.222],
       "compass": [0.0,360.0],
@@ -1840,27 +1855,16 @@
   },
   "default_skin": {
     "name": "yak_3_france",
-    "replace_tex": [
-      {
-        "from": "yak_3_a*",
-        "to": "yak_3_france_a*"
-      },
-      {
-        "from": "yak_3_a_dmg*",
-        "to": "yak_3_france_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yak_3_a*",
+      "to": "yak_3_france_a*"
+    }
   },
   "user_skin": {
     "name": "userskin",
-    "replace_tex": [
-      {
-        "from": "yak_3_france_a*"
-      },
-      {
-        "from": "yak_3_france_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yak_3_france_a*"
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,

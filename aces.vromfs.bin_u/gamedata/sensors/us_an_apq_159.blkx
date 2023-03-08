@@ -121,7 +121,9 @@
           "setTargetDesignationRange": {
             "azimuthRange": [-45.0,45.0],
             "elevationRange": [-40.0,45.0],
-            "distanceRange": [0.0,18500.0]
+            "distanceRange": [0.0,18500.0],
+            "distanceWidth": 2000.0,
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyMode": {
@@ -215,7 +217,7 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 2000.0
           },
           "setRelSpeedGatePos": {
             "source": "targetDesignation",
@@ -495,6 +497,18 @@
             "setStandbyMode": {}
           }
         },
+        "abortedBoresightTrack": {
+          "stateFrom": "boresightTrack",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setSearchMode": {}
+          }
+        },
         "switchScanPattern": {
           "stateFrom": [
             "standby",
@@ -605,7 +619,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -616,7 +632,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

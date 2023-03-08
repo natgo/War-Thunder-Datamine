@@ -1,11 +1,14 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 let { get_time_msec } = require("dagor.time")
+let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
+  requestCustomEventLeaderboardData, convertLeaderboardData
+} = require("%scripts/leaderboard/requestLeaderboardData.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -19,11 +22,14 @@ let { get_time_msec } = require("dagor.time")
     economicName = null,
     lbField = "",
     pos = 0,
-    rowsInPage = max(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, EVENTS_SHORT_LB_VISIBLE_ROWS)
+    rowsInPage = EVENTS_SHORT_LB_VISIBLE_ROWS
     inverse = false,
     forClans = false,
     tournament = false,
     tournament_mode = GAME_EVENT_TYPE.TM_NONE
+
+    lbTable = null
+    lbMode = null
   }
 
   defaultRequest = {
@@ -35,6 +41,9 @@ let { get_time_msec } = require("dagor.time")
     forClans = false
     tournament = false,
     tournament_mode = -1
+
+    lbTable = null
+    lbMode = null
   }
 
   canRequestEventLb    = true
@@ -44,10 +53,8 @@ let { get_time_msec } = require("dagor.time")
    * Function requests leaderboards asynchronously and puts result
    * as argument to callback function
    */
-  function requestLeaderboard(requestData, id, callback, context)
-  {
-    if (type(id) == "function")
-    {
+  function requestLeaderboard(requestData, id, callback, context) {
+    if (type(id) == "function") {
       context  = callback
       callback = id
       id = null
@@ -58,8 +65,7 @@ let { get_time_msec } = require("dagor.time")
     let cachedData = this.getCachedLbResult(requestData, "leaderboards")
 
     //trigging callback if data is lready here
-    if (cachedData)
-    {
+    if (cachedData) {
       if (context)
         callback.call(context, cachedData)
       else
@@ -75,10 +81,8 @@ let { get_time_msec } = require("dagor.time")
    * Function requests self leaderboard row asynchronously and puts result
    * as argument to callback function
    */
-  function requestSelfRow(requestData, id, callback, context)
-  {
-    if (type(id) == "function")
-    {
+  function requestSelfRow(requestData, id, callback, context) {
+    if (type(id) == "function") {
       context  = callback
       callback = id
       id = null
@@ -89,8 +93,7 @@ let { get_time_msec } = require("dagor.time")
     let cachedData = this.getCachedLbResult(requestData, "selfRow")
 
     //trigging callback if data is lready here
-    if (cachedData)
-    {
+    if (cachedData) {
       if (context)
         callback.call(context, cachedData)
       else
@@ -102,8 +105,7 @@ let { get_time_msec } = require("dagor.time")
     this.updateEventLbSelfRow(requestData, id)
   }
 
-  function updateEventLbInternal(requestData, id, requestFunc, handleFunc)
-  {
+  function updateEventLbInternal(requestData, id, requestFunc, handleFunc) {
     let requestAction = Callback(function() {
       requestFunc(
         requestData,
@@ -119,7 +121,7 @@ let { get_time_msec } = require("dagor.time")
         Callback(function(_errorId) {
           this.canRequestEventLb = true
         }, this)
-      )}, this)
+      ) }, this)
 
     if (this.canRequestEventLb)
       return requestAction()
@@ -129,16 +131,14 @@ let { get_time_msec } = require("dagor.time")
         if (id == request)
           this.leaderboardsRequestStack.remove(index)
 
-    this.leaderboardsRequestStack.append({fn = requestAction, id = id})
+    this.leaderboardsRequestStack.append({ fn = requestAction, id = id })
   }
 
-  function updateEventLb(requestData, id)
-  {
+  function updateEventLb(requestData, id) {
     this.updateEventLbInternal(requestData, id, this.requestUpdateEventLb, this.handleLbRequest)
   }
 
-  function updateEventLbSelfRow(requestData, id)
-  {
+  function updateEventLbSelfRow(requestData, id) {
     this.updateEventLbInternal(requestData, id, this.requestEventLbSelfRow, this.handleLbSelfRowRequest)
   }
 
@@ -146,77 +146,37 @@ let { get_time_msec } = require("dagor.time")
    * To request persoanl data for clan tournaments (TM_ELO_GROUP)
    * need to override tournament_mode by TM_ELO_GROUP_DETAIL
    */
-  function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb)
-  {
-    let blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = requestData.pos
-    blk.count = requestData.rowsInPage
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.version = 1
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
-
-    if (blk.start == null || blk.start < 0)
-    {
-      let event = blk.event  // warning disable: -declared-never-used
-      let start = blk.start  // warning disable: -declared-never-used
-      let count = blk.count  // warning disable: -declared-never-used
-      ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
-      log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
-
-      blk.start = 0
+  function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb) {
+    if (requestData.lbTable == null) {
+      requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb)
+      return
     }
-    if (blk.count == null || blk.count <= 0)
-    {
-      let event = blk.event  // warning disable: -declared-never-used
-      let count = blk.count  // warning disable: -declared-never-used
-      let start = blk.start  // warning disable: -declared-never-used
-      ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
-      log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
-
-      blk.count = 49  // unusual value indicate problem
-    }
-
-    let event = ::events.getEvent(requestData.economicName)
-    if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+    requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb)
   }
 
   /**
    * to request persoanl data for clan tournaments (TM_ELO_GROUP)
    * need to override tournament_mode by TM_ELO_GROUP_DETAIL
    */
-  function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb)
-  {
-    let blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = -1
-    blk.count = -1
-    blk.clanId = ::clan_get_my_clan_id();
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.version = 1
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
+  function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb) {
+    if (requestData.lbTable == null) {
+      requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
+      return
+    }
 
-    let event = ::events.getEvent(requestData.economicName)
-    if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+    requestCustomEventLeaderboardData(
+      requestData.__merge({
+        pos = null
+        rowsInPage = 0
+        userId = ::my_user_id_int64
+      }),
+      onSuccessCb, onErrorCb)
   }
 
   /**
    * Function generates hash string from leaderboard request data
    */
-  function hashLbRequest(request_data)
-  {
+  function hashLbRequest(request_data) {
     local res = ""
     res += request_data.lbField
     res += getTblValue("rowsInPage", request_data, "")
@@ -227,8 +187,7 @@ let { get_time_msec } = require("dagor.time")
     return res
   }
 
-  function handleLbRequest(requestData, id, requestResult)
-  {
+  function handleLbRequest(requestData, id, requestResult) {
     let lbData = this.getLbDataFromBlk(requestResult, requestData)
 
     if (!(requestData.economicName in this.__cache.leaderboards))
@@ -251,8 +210,7 @@ let { get_time_msec } = require("dagor.time")
         requestData.callBack(lbData)
   }
 
-  function handleLbSelfRowRequest(requestData, id, requestResult)
-  {
+  function handleLbSelfRowRequest(requestData, id, requestResult) {
     let lbData = this.getSelfRowDataFromBlk(requestResult, requestData)
 
     if (!(requestData.economicName in this.__cache.selfRow))
@@ -265,7 +223,8 @@ let { get_time_msec } = require("dagor.time")
 
     if (id)
       foreach (request in this.leaderboardsRequestStack)
-        if (request.id == id) return
+        if (request.id == id)
+          return
 
     if ("callBack" in requestData)
       if ("handler" in requestData)
@@ -278,8 +237,7 @@ let { get_time_msec } = require("dagor.time")
    * Checks cached response and if response exists and fresh returns it.
    * Otherwise returns null.
    */
-  function getCachedLbResult(request_data, storage_name)
-  {
+  function getCachedLbResult(request_data, storage_name) {
     if (!(request_data.economicName in this.__cache[storage_name]))
       return null
 
@@ -287,16 +245,14 @@ let { get_time_msec } = require("dagor.time")
     if (!(hash in this.__cache[storage_name][request_data.economicName]))
       return null
 
-    if (get_time_msec() - this.__cache[storage_name][request_data.economicName][hash].timestamp > this.cashLifetime)
-    {
+    if (get_time_msec() - this.__cache[storage_name][request_data.economicName][hash].timestamp > this.cashLifetime) {
       this.__cache[storage_name][request_data.economicName].rawdelete(hash)
       return null
     }
     return this.__cache[storage_name][request_data.economicName][hash].data
   }
 
-  function getMainLbRequest(event)
-  {
+  function getMainLbRequest(event) {
     let newRequest = {}
     foreach (name, item in this.shortLbrequest)
       newRequest[name] <- (name in this) ? this[name] : item
@@ -315,27 +271,28 @@ let { get_time_msec } = require("dagor.time")
                       : ::events.getTableConfigShortRowByEvent(event)
     newRequest.inverse = shortRow.inverse
     newRequest.lbField = shortRow.field
+    if (event?.leaderboardEventTable ?? false) {
+      newRequest.lbTable = event.leaderboardEventTable
+      newRequest.lbMode = "stats"
+      newRequest.lbField = event?.leaderboardEventBestStat ?? shortRow.field
+    }
 
     return newRequest
   }
 
-  function isClanLbRequest(requestData)
-  {
+  function isClanLbRequest(requestData) {
     return getTblValue("forClans", requestData, false)
   }
 
-  function validateRequestData(requestData)
-  {
-    foreach(name, field in this.defaultRequest)
-      if(!(name in requestData))
+  function validateRequestData(requestData) {
+    foreach (name, field in this.defaultRequest)
+      if (!(name in requestData))
         requestData[name] <- field
     return requestData
   }
 
-  function compareRequests(req1, req2)
-  {
-    foreach(name, _field in this.defaultRequest)
-    {
+  function compareRequests(req1, req2) {
+    foreach (name, _field in this.defaultRequest) {
       if ((name in req1) != (name in req2))
         return false
       if (!(name in req1)) //no name in both req
@@ -346,8 +303,7 @@ let { get_time_msec } = require("dagor.time")
     return true
   }
 
-  function dropLbCache(event)
-  {
+  function dropLbCache(event) {
     let economicName = ::events.getEventEconomicName(event)
 
     if (economicName in this.__cache.leaderboards)
@@ -356,58 +312,56 @@ let { get_time_msec } = require("dagor.time")
     if (economicName in this.__cache.selfRow)
       this.__cache.selfRow.rawdelete(economicName)
 
-    ::broadcastEvent("EventlbDataRenewed", {eventId = event.name})
+    ::broadcastEvent("EventlbDataRenewed", { eventId = event.name })
   }
 
-  function getLbDataFromBlk(blk, requestData)
-  {
+  function getLbDataFromBlk(blk, requestData) {
     let lbRows = this.lbBlkToArray(blk)
     if (this.isClanLbRequest(requestData))
-      foreach(lbRow in lbRows)
+      foreach (lbRow in lbRows)
         this.postProcessClanLbRow(lbRow)
 
-    let superiorityBattlesThreshold = blk.getInt("superiorityBattlesThreshold", 0)
+    let superiorityBattlesThreshold = blk?.superiorityBattlesThreshold ?? 0
     if (superiorityBattlesThreshold > 0)
-      foreach(lbRow in lbRows)
+      foreach (lbRow in lbRows)
         lbRow["superiorityBattlesThreshold"] <- superiorityBattlesThreshold
 
-    let res = {}
-    res["rows"] <- lbRows
-    res["updateTime"] <- blk.getStr("lastUpdateTime", "0").tointeger()
+    let res = {
+      rows = lbRows
+      updateTime = (blk?.lastUpdateTime ?? "0").tointeger()
+    }
     return res
   }
 
-  function getSelfRowDataFromBlk(blk, requestData)
-  {
+  function getSelfRowDataFromBlk(blk, requestData) {
     let res = this.lbBlkToArray(blk)
     if (this.isClanLbRequest(requestData))
-      foreach(lbRow in res)
+      foreach (lbRow in res)
         this.postProcessClanLbRow(lbRow)
     return res
   }
 
-  function lbBlkToArray(blk)
-  {
+  function lbBlkToArray(blk) {
+    if (type(blk) == "table") {
+      return convertLeaderboardData(blk).rows
+    }
     let res = []
-    foreach (row in blk % "event")
-    {
+    foreach (row in blk % "event") {
       let table = {}
-      for(local i = 0; i < row.paramCount(); i++)
+      for (local i = 0; i < row.paramCount(); i++)
         table[row.getParamName(i)] <- row.getParamValue(i)
       res.append(table)
     }
     return res
   }
 
-  function isClanLeaderboard(event)
-  {
+  function isClanLeaderboard(event) {
     if (!getTblValue("tournament", event, false))
       return ::events.isEventForClan(event)
     return ::events.getEventTournamentMode(event) == GAME_EVENT_TYPE.TM_ELO_GROUP
   }
 
-  function postProcessClanLbRow(lbRow)
-  {
+  function postProcessClanLbRow(lbRow) {
     //check clan name for tag.
     //new leaderboards name param is in forma  "<tag> <name>"
     //old only "<name>"
@@ -417,17 +371,14 @@ let { get_time_msec } = require("dagor.time")
       return
 
     local searchIdx = -1
-    for(local skipSpaces = 0; skipSpaces >= 0; skipSpaces--)
-    {
+    for (local skipSpaces = 0; skipSpaces >= 0; skipSpaces--) {
       searchIdx = name.indexof(" ", searchIdx + 1)
-      if (searchIdx == null) //no tag at all
-      {
+      if (searchIdx == null) { //no tag at all
         lbRow.tag <- name
         break
       }
       //tag dont have spaces, but it decoaration can be double space
-      if (searchIdx == 0)
-      {
+      if (searchIdx == 0) {
         skipSpaces = 2
         continue
       }

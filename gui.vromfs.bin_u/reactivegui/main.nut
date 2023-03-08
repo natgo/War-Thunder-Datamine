@@ -6,10 +6,11 @@
 
 from "%rGui/globals/ui_library.nut" import *
 
-gui_scene.setConfigProps({clickRumbleEnabled = false})
+gui_scene.setConfigProps({ clickRumbleEnabled = false })
 
 require("%rGui/hudChatCtrlsState.nut") //need this for controls mask updated
 require("%rGui/ctrlsState.nut")
+require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("darg")
 
 require("consoleCmd.nut")
 

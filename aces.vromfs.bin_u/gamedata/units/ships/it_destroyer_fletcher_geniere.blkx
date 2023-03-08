@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -36,7 +36,6 @@
   "smokeScreenOffset": [-45.0,2.0,0.0],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
-  "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
   "haveAnchor": true,
@@ -113,6 +112,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -575,6 +582,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -3035,7 +3052,7 @@
     "ship_torpedoes": {},
     "new_aux_caliber_turrets": {},
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_bomb_mortar": {}
   },
@@ -4849,6 +4866,39 @@
       "from": "destroyer_fletcher_geniere_c*",
       "to": "destroyer_fletcher_geniere_skin_c*",
       "param": "camo_skin_tex"
+    },
+    "replace_tex": {
+      "from": "camo_light_ghostgrey*",
+      "to": "camo_blackgray_geometry*"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "it_camo_navy_turquoise",
+      "nameLocId": "skin/it_camo_navy_turquoise",
+      "descLocId": "skin/it_camo_navy_turquoise/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_navy_turquoise*"
+      }
+    },
+    {
+      "name": "it_camo_modern_geometry",
+      "nameLocId": "skin/it_camo_modern_geometry",
+      "descLocId": "skin/it_camo_modern_geometry/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_modern_geometry*"
+      }
+    },
+    {
+      "name": "it_camo_modern_spots",
+      "nameLocId": "skin/it_camo_modern_spots",
+      "descLocId": "skin/it_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_modern_spots*"
+      }
+    }
+  ]
 }

@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -93,9 +93,6 @@
       "turret_05_top_dm": {
         "armorThickness": 25.4
       },
-      "turret_04_side_dm": {
-        "armorThickness": 25.4
-      },
       "turret_02_side_dm": {
         "armorThickness": 12.7
       },
@@ -112,7 +109,7 @@
         "armorThickness": 82.5
       },
       "turret_front_dm": {
-        "armorThickness": 250.0
+        "armorThickness": 101.6
       },
       "turret_bottom_dm": {
         "armorThickness": 25.4
@@ -540,6 +537,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -559,7 +560,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -709,6 +714,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -729,6 +738,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1849,8 +1862,15 @@
     },
     "tracks": {
       "animationMultiplier": 0.605,
-      "height": 0.045,
-      "width": 0.4
+      "height": 0.065,
+      "width": 0.59,
+      "tracksTensionK": [6.5,10.0,3.0],
+      "trackMesh": "us_t14_phys_track_line",
+      "trackLen": 0.14,
+      "trackCount": 109,
+      "trackFadeTime": 1.1,
+      "trackConnector": true,
+      "trackStartOffset": 0.105
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1890,7 +1910,9 @@
       "frontBackGearRadius": 0.37,
       "defaultDampeningForce": [160000.0,160000.0],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_l_drive": 0.31,
+      "wheel_r_drive": 0.31
     }
   },
   "ammoLoadDistribution": {

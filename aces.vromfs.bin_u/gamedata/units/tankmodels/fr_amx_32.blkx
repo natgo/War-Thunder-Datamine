@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -83,6 +83,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -270,7 +280,9 @@
         "armorThickness": 20.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "createSecondaryShatters": false
       },
       "turret_03_top_dm": {
         "armorThickness": 20.0
@@ -334,7 +346,7 @@
         "armorThickness": 29.0
       },
       "turret_08_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 35.0
       },
       "turret_09_top_dm": {
         "armorThickness": 30.0
@@ -1052,6 +1064,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -1072,6 +1088,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -2870,8 +2890,8 @@
     "sightSize": [0.74,0.52]
   },
   "cockpit": {
-    "zoomOutFov": 8.3,
-    "zoomInFov": 7.3,
+    "zoomOutFov": 7.37,
+    "zoomInFov": 7.37,
     "sightFov": 3.9,
     "sightName": "cotac_m581",
     "headPos": [0.0,4.0,-8.5],

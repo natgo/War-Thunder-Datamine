@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,10 +14,9 @@ let function getWorldWarPromoText(isWwEnabled = null) {
   if (!::is_worldwar_enabled())
     return text
 
-  if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle()))
-  {
+  if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle())) {
     let operationText = ::g_world_war.getPlayedOperationText(false)
-    if (operationText !=null)
+    if (operationText != "")
       text = operationText
   }
 
@@ -37,7 +37,7 @@ addPromoButtonConfig({
     let id = promoButtonId
     let isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
     let isVisible = ::g_promo.getShowAllPromoBlocks()
-      || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
+      || (isWwEnabled && ::g_world_war.isWWSeasonActive())
 
     let buttonObj = ::showBtn(id, isVisible, this.scene)
     if (!isVisible || !checkObj(buttonObj))
@@ -52,5 +52,5 @@ addPromoButtonConfig({
       ::g_promo.toggleItem(buttonObj.findObject(id + "_toggle"))
   }
   updateByEvents = ["WWLoadOperation", "WWStopWorldWar",
-    "WWShortGlobalStatusChanged", "CrossPlayOptionChanged"]
+    "WWGlobalStatusChanged", "CrossPlayOptionChanged"]
 })

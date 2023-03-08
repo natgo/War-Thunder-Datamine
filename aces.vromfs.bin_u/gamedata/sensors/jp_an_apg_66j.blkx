@@ -21,7 +21,7 @@
       "power": 350.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 35000.0,
+      "range": 45000.0,
       "rangeMax": 150000.0,
       "timeGainControl": true,
       "antenna": {
@@ -136,8 +136,7 @@
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 60.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -146,10 +145,10 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 30.0,
+        "minValue": -1500.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 30.0
       }
     },
     "pulseTrack": {
@@ -183,10 +182,10 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 40.0,
+        "minValue": 20.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 20.0
       }
     }
   },
@@ -204,10 +203,10 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 18500.0,
-      "range2": 37000.0,
-      "range3": 74000.0,
-      "range4": 148000.0
+      "range1": 37000.0,
+      "range2": 74000.0,
+      "range3": 148000.0,
+      "range4": 18500.0
     },
     "boresightLock": {
       "range1": 18500.0
@@ -229,8 +228,11 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-60.0,60.0],
+            "azmithWidth": 5.0,
             "elevationRange": [-30.0,30.0],
-            "distanceRange": [0.0,74000.0]
+            "distanceRange": [0.0,74000.0],
+            "distanceWidth": 2000.0,
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyModeCommon": {
@@ -363,12 +365,19 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 2000.0
           },
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
+          "setRelSpeedGatePos": [
+            {
+              "source": "targetDesignation",
+              "width": 30.0
+            },
+            {
+              "source": "constRange",
+              "pos": 0.0,
+              "width": 1800.0
+            }
+          ],
           "setFsmActive": {
             "fsm": "lock",
             "active": true
@@ -431,8 +440,8 @@
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
-            "pos": 675.0,
-            "width": 1350.0
+            "pos": 0.0,
+            "width": 1800.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
@@ -1078,7 +1087,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -1089,7 +1100,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -1117,7 +1130,7 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 1.0
+              "timeOut": 3.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

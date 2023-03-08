@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,7 +10,7 @@ let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let soundDevice = require("soundDevice")
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -17,7 +18,6 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 
 let getSystemOptions = @() {
@@ -71,9 +71,7 @@ let getMainOptions = function() {
 
 
       [::USEROPT_FONTS_CSS, "spinner"],
-      [::USEROPT_GAMMA, "slider", !::is_hdr_enabled() && platformId != "macosx"
-                                  && (!is_platform_windows
-                                      || ::getSystemConfigOption("video/mode") == "fullscreen") ],
+      [::USEROPT_GAMMA, "slider", !::is_hdr_enabled()],
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !::is_in_flight()],
       [::USEROPT_REVEAL_NOTIFICATIONS, "button"],
@@ -81,7 +79,6 @@ let getMainOptions = function() {
       [::USEROPT_HDR_SETTINGS, "button", ::is_hdr_enabled()],
 
       ["options/header/commonBattleParameters"],
-      [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
       [::USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
       [::USEROPT_CAMERA_SHAKE_MULTIPLIER, "slider"],
       [::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER, "slider", is_stereo_mode()],
@@ -116,7 +113,7 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_RADAR_TARGET_CYCLING, "spinner"],
-      [::USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner", hasFeature("RadarElevationControl")],
+      [::USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
@@ -124,7 +121,7 @@ let getMainOptions = function() {
       [::USEROPT_CROSSHAIR_COLOR, "combobox"],
       [::USEROPT_INDICATED_SPEED_TYPE, "spinner"],
       [::USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
-      [::USEROPT_GYRO_SIGHT_DEFLECTION, "spinner"],
+      [::USEROPT_GYRO_SIGHT_DEFLECTION, "spinner", hasFeature("allowShowGyroSightDeflection")],
       [::USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
@@ -159,12 +156,18 @@ let getMainOptions = function() {
       [::USEROPT_COMMANDER_CAMERA_IN_VIEWS, "spinner"],
       [::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER, "spinner"],
       [::USEROPT_HUD_SHOW_TANK_GUNS_AMMO, "spinner", hasFeature("MachineGunsAmmoIndicator")],
+      [::USEROPT_HIT_INDICATOR_SIMPLIFIED, "switchbox", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_RADIUS, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_ALPHA, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_SCALE, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_FADE_TIME, "slider", hasFeature("advancedHitIndicator")],
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
       [::USEROPT_USE_PERFECT_RANGEFINDER, "spinner"],
       [::USEROPT_SAVE_AI_TARGET_TYPE, "spinner"],
       [::USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner"],
+      [::USEROPT_TORPEDO_AUTO_SWITCH, "spinner"],
       [::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE, "spinner"],
       [::USEROPT_BULLET_FALL_INDICATOR_SHIP, "spinner"],
       [::USEROPT_BULLET_FALL_SPOT_SHIP, "spinner"],
@@ -192,6 +195,11 @@ let getMainOptions = function() {
       [::USEROPT_HUD_SHOW_AMMO, "spinner"],
       [::USEROPT_HUD_SHOW_TEMPERATURE, "spinner"],
       [::USEROPT_INGAME_VIEWTYPE, "spinner", ::is_in_flight() && canChangeViewType],
+      [::USEROPT_HUD_VISIBLE_ORDERS, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_REWARDS_MSG, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_KILLLOG, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_CHAT_PLACE, "switchbox"],
 
       ["options/header/measureUnits"],
       [::USEROPT_MEASUREUNITS_SPEED, "spinner"],
@@ -283,8 +291,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   ]
 }
 
-let getVoicechatOptions = function()
-{
+let getVoicechatOptions = function() {
   let voiceOptions = {
     name = "voicechat"
     fillFuncName = "fillVoiceChatOptions"
@@ -296,19 +303,12 @@ let getVoicechatOptions = function()
     ]
   }
 
-  if (!isPlatformSony && !isPlatformXboxOne)
-  {
+  if (!isPlatformSony) {
     if (soundDevice.get_record_devices().len() > 0)
       voiceOptions.options.insert(1, [::USEROPT_VOICE_DEVICE_IN, "combobox"])
   }
 
   return voiceOptions
-}
-
-let getSocialOptions = @() {
-  name = "social"
-  fillFuncName = "fillSocialOptions"
-  options = []
 }
 
 let getInternetRadioOptions = @() {
@@ -333,9 +333,6 @@ let getOptionsList = function() {
 
   if (hasFeature("Radio"))
     options.append(getInternetRadioOptions())
-
-  if (isAvailableFacebook())
-    options.append(getSocialOptions())
 
   return options
 }

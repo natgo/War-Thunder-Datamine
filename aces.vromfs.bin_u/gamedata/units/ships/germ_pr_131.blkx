@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -36,9 +36,6 @@
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
   "perfectRangefinder": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -111,6 +108,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -265,6 +270,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -556,7 +571,7 @@
     }
   },
   "tank_crew": {
-    "minCrewMemberRepairCount": 1,
+    "minCrewMemberRepairCount": 0,
     "minCrewMemberAliveCount": 1,
     "sailor1": {
       "dmPart": "bridge_dm",
@@ -1061,10 +1076,30 @@
     ]
   },
   "MetaParts": {
+    "bridge": {
+      "part": "bridge_dm",
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 274.0,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "conditionDamageType": "generic",
+          "conditionDamage": 700.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      ]
+    },
     "cover": [
       {
         "part": "compartment_01_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
@@ -1083,6 +1118,9 @@
         "part": "compartment_02_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
             "kill": true,
@@ -1100,6 +1138,9 @@
         "part": "compartment_03_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
             "kill": true,
@@ -1114,23 +1155,6 @@
         ]
       }
     ],
-    "bridge": {
-      "part": "bridge_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 274.0,
-          "kill": true,
-          "killEffect": "destruction"
-        },
-        {
-          "conditionDamageType": "generic",
-          "conditionDamage": 700.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      ]
-    },
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",
@@ -1162,12 +1186,7 @@
         "aa_turret_07_dm",
         "aa_turret_08_dm",
         "aa_turret_09_dm",
-        "aa_turret_10_dm",
-        "compartment_01_dm",
-        "compartment_02_dm",
-        "compartment_03_dm",
-        "compartment_04_dm",
-        "compartment_05_dm"
+        "aa_turret_10_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -1184,13 +1203,13 @@
       "speedLossOnManeuver": 0.15
     },
     "engines": {
-      "maxSpeed": 24.69,
+      "maxSpeed": 24.8,
       "maxReverseSpeed": 9.0,
       "speedToTime": {
         "row": [
           [5.0,2.2],
           [10.0,3.7],
-          [24.69,8.5]
+          [24.8,8.5]
         ]
       },
       "reverseSpeedToTime": {
@@ -2235,6 +2254,30 @@
           "count": 1000
         }
       }
+    },
+    "ammo2": {
+      "weaponTrigger": "mines",
+      "entityMunition": "mines",
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "fireEvent": "torpedo_fire",
+      "explosionEvent": "torpedo_explosion",
+      "fireParamsPreset": "ship_torpedo_fire",
+      "shells": [
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_02_dm": {
+            "count": 1
+          }
+        }
+      ]
     }
   },
   "winch": {
@@ -2300,6 +2343,34 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "mast_01_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "pr_131",
+    "replace_tex": [
+      {
+        "from": "camo_glossmediumgreen*"
+      },
+      {
+        "from": "camo_medium_bluegray*"
+      },
+      {
+        "from": "camo_lightgreen*"
+      }
+    ],
+    "set_tex": [
+      {
+        "from": "turret_23mm_zu_2_23_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_minethrowers_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "pr_131_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }

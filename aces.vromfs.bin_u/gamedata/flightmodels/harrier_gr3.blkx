@@ -18,6 +18,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -1768,7 +1769,8 @@
   },
   "Sound": {
     "Engine": "engine05_pegasus_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "eventNozzleTurn": "nozzle_turning"
   },
   "cockpit": {
     "headPos": [3.65,0.43,0.0],
@@ -2207,7 +2209,7 @@
           },
           {
             "iconType": "bombs_large_group_x2",
-            "name": "1000lbs_x2",
+            "name": "1000lbs_x2_slot2",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
@@ -2355,7 +2357,7 @@
           },
           {
             "iconType": "bombs_large_group_x2",
-            "name": "1000lbs_x2",
+            "name": "1000lbs_x2_slot4",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
@@ -2368,7 +2370,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_right_wing.blk",
               "emitter": "dlt_002"
             }
           }
@@ -2583,13 +2585,7 @@
         "from": "harrier_gr3_c*"
       },
       {
-        "from": "harrier_gr3_c_dmg*"
-      },
-      {
         "from": "harrier_gr3_n*"
-      },
-      {
-        "from": "harrier_gr3_n_dmg*"
       }
     ]
   },

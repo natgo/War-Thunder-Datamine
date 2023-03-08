@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,7 +7,6 @@ from "%scripts/dagui_library.nut" import *
 // warning disable: -file:forbidden-function
 
 let fonts = require("fonts")
-let { reloadDargUiScript } = require("reactiveGuiCommand")
 let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 
@@ -15,10 +15,8 @@ let function debug_change_font_size(shouldIncrease = true) {
   let curFont = ::g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
-  if (::g_font.setCurrent(availableFonts[idx])) {
+  if (::g_font.setCurrent(availableFonts[idx]))
     ::handlersManager.getActiveBaseHandler().fullReloadScene()
-    reloadDargUiScript(false)
-  }
   dlog($"Loaded fonts: {availableFonts[idx].id}")
 }
 
@@ -44,17 +42,14 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
     scene = null
     guiScene = null
 
-    function onCreate(obj)
-    {
+    function onCreate(obj) {
       this.scene = obj
       this.guiScene = obj.getScene()
     }
 
-    function updateAllObjs(func)
-    {
+    function updateAllObjs(func) {
       this.guiScene.setUpdatesEnabled(false, false)
-      foreach (id in fonts.getFontsList())
-      {
+      foreach (id in fonts.getFontsList()) {
         let obj = this.scene.findObject(id)
         if (checkObj(obj))
           func(obj)
@@ -62,22 +57,19 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
       this.guiScene.setUpdatesEnabled(true, true)
     }
 
-    function onColorChange(obj)
-    {
+    function onColorChange(obj) {
       isActiveColor = obj.getValue()
       let color = this.guiScene.getConstantValue(getColor())
       this.updateAllObjs(function(obj) { obj.color = color })
     }
 
-    function onBorderChange(obj)
-    {
+    function onBorderChange(obj) {
       needBorder = obj.getValue()
       let borderText = needBorder ? "yes" : "no"
       this.updateAllObjs(function(obj) { obj.border = borderText })
     }
 
-    function onTextChange(obj)
-    {
+    function onTextChange(obj) {
       let text = obj.getValue()
       fontsAdditionalText = text.len() ? "\n" + text : ""
       this.updateAllObjs(function(obj) { obj.setValue(obj.id + fontsAdditionalText) })

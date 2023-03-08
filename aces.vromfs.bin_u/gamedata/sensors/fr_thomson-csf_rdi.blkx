@@ -287,7 +287,7 @@
             "azmithWidth": 1.5,
             "elevationRange": [-55.0,55.0],
             "distanceRange": [0.0,148000.0],
-            "distanceWidth": 1000.0,
+            "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
             "dopplerSpeedRange": [-300.0,1850.0],
             "dopplerSpeedWidth": 50.0,
@@ -386,7 +386,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS standby"
+            "name": "TWS HDN standby"
           }
         },
         "resetStandbyMode": {
@@ -459,7 +459,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS search"
+            "name": "TWS HDN search"
           }
         },
         "resetSearchMode": {
@@ -499,7 +499,7 @@
           "setDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 2000.0
           },
           "setScanPattern": {
             "scanPattern": "designationLockSearch"
@@ -521,7 +521,7 @@
           "setDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 2000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -570,7 +570,7 @@
             "signal": "pulseDopplerTrack"
           },
           "setModeName": {
-            "name": "TWS acquisition"
+            "name": "TWS HDN acquisition"
           }
         },
         "designatedTargetSearch": {
@@ -952,6 +952,19 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "setStandbyMode"
+            }
+          }
+        },
+        "acmTrackToSearch": {
+          "stateFrom": "acmTrack",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "disableTrackModes": {},
+            "resetTrackMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },
@@ -1447,7 +1460,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -1458,7 +1473,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

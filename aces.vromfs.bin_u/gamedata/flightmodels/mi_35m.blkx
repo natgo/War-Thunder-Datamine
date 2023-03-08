@@ -1,7 +1,7 @@
 {
   "model": "mi_35m",
   "fmFile": "fm/mi_35m.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
@@ -30,6 +30,18 @@
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
+        "hp": 15.0
+      },
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
+      },
+      "cannon5_dm": {
         "hp": 15.0
       }
     },
@@ -92,6 +104,20 @@
         "hp": 50.5
       }
     },
+    "dural": {
+      "cover5_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
+        "hp": 19.5
+      },
+      "cover7_dm": {
+        "hp": 19.5
+      },
+      "cover8_dm": {
+        "hp": 19.5
+      }
+    },
     "glass55": {
       "armor3_dm": {
         "hp": 100.0
@@ -145,18 +171,18 @@
         "hp": 20.0
       }
     },
-    "steel_tank_m": {
+    "steel_tank_s": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 76.4
       },
       "tank2_dm": {
-        "hp": 75.5
+        "hp": 80.5
       },
       "tank3_dm": {
-        "hp": 75.5
+        "hp": 80.5
       },
       "tank4_dm": {
-        "hp": 75.5
+        "hp": 80.5
       }
     }
   },
@@ -176,6 +202,30 @@
       },
       {
         "name": "cannon1_dm"
+      },
+      {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
+      },
+      {
+        "name": "cannon5_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
+      },
+      {
+        "name": "cover7_dm"
+      },
+      {
+        "name": "cover8_dm"
       },
       {
         "name": "elevator0_dm",
@@ -591,11 +641,6 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -605,27 +650,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -633,11 +683,6 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -647,27 +692,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -675,11 +725,6 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -689,27 +734,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -717,11 +767,6 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -731,27 +776,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -1570,6 +1620,20 @@
         "lipa_off"
       ]
     },
+    "HideDmParts": {
+      "dmPart": [
+        "cover5_dm",
+        "cover6_dm",
+        "cover7_dm",
+        "cover8_dm"
+      ],
+      "node": [
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cannon5_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -1957,6 +2021,12 @@
             "ShowNodes": {
               "node": "upk_23_250_b002"
             },
+            "ShowDmParts": {
+              "node": [
+                "cover6_dm",
+                "cannon3_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
@@ -1966,7 +2036,8 @@
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
-              "external": true
+              "external": true,
+              "dm": "cannon3_dm"
             }
           }
         ]
@@ -2006,6 +2077,12 @@
             "ShowNodes": {
               "node": "upk_23_250_b003"
             },
+            "ShowDmParts": {
+              "node": [
+                "cover7_dm",
+                "cannon4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
@@ -2015,7 +2092,8 @@
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
-              "external": true
+              "external": true,
+              "dm": "cannon4_dm"
             }
           }
         ]
@@ -3290,7 +3368,7 @@
       "prevModification": "heli_counterMeasures",
       "tier": 4,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -3320,13 +3398,7 @@
         "from": "mi_35m_gray_c*"
       },
       {
-        "from": "mi_35m_gray_c_dmg*"
-      },
-      {
         "from": "mi_35m_gray_n*"
-      },
-      {
-        "from": "mi_35m_gray_n_dmg*"
       },
       {
         "from": "mi_35m_gray1_c*"

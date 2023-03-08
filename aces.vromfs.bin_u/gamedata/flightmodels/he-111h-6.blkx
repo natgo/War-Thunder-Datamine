@@ -2420,6 +2420,11 @@
         "blk": "gameData/FlightModels/weaponPresets/he-111h-6_8xSC250.blk"
       },
       {
+        "name": "he-111h-6_8x_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/he-111h-6_8x_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
         "name": "He_111H6_2x1000kg",
         "blk": "gameData/FlightModels/weaponPresets/he-111h-6_2xsc1000.blk",
         "reqModification": "he-111_2x1000kg_pylon"
@@ -2449,16 +2454,10 @@
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "he_111h_6_a*",
-        "to": "he_111h_6_a_tomoe*"
-      },
-      {
-        "from": "he_111h_6_a_dmg*",
-        "to": "he_111h_6_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "he_111h_6_a*",
+      "to": "he_111h_6_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "he_111h_6",
@@ -2467,13 +2466,7 @@
         "from": "he_111h_6_a*"
       },
       {
-        "from": "he_111h_6_a_dmg*"
-      },
-      {
         "from": "he_111h_6_n*"
-      },
-      {
-        "from": "he_111h_6_n_dmg*"
       }
     ]
   },
@@ -2598,6 +2591,10 @@
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "he-111_2x1000kg_250kg_pylon"
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
     }
   },
   "cutting": {

@@ -2,7 +2,7 @@
   "model": "bo_105cb2",
   "fmFile": "fm/bo_105cb2.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -794,8 +794,8 @@
     "lightPos": [1.908577,-0.014779,-0.063221],
     "lightColor": [0.01,1.5,0.1],
     "lightRadius": 0.33,
-    "sightInFov": 3.68,
-    "sightOutFov": -1.0,
+    "sightInFov": 6.14,
+    "sightOutFov": 24.74,
     "sightFov": 5.5,
     "devices": {
       "stick_elevator": [-1.0,1.0],
@@ -1143,16 +1143,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "bo105cb2_green_c*",
-        "to": "bo105cb2_green_c_tomoe*"
-      },
-      {
-        "from": "bo105cb2_green_c_dmg*",
-        "to": "bo105cb2_green_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bo105cb2_green_c*",
+      "to": "bo105cb2_green_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "bo_105cb2",
@@ -1161,13 +1155,7 @@
         "from": "bo105cb2_green_c*"
       },
       {
-        "from": "bo105cb2_green_c_dmg*"
-      },
-      {
         "from": "bo105cb2_green_n*"
-      },
-      {
-        "from": "bo105cb2_green_n_dmg*"
       }
     ]
   }

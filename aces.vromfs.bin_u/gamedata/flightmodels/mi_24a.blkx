@@ -2,7 +2,7 @@
   "model": "mi_24a",
   "fmFile": "fm/mi_24a.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
   "gearSinkRangeLR": 0.311,
@@ -164,18 +164,18 @@
         "hp": 20.0
       }
     },
-    "steel_tank_m": {
+    "steel_tank_s": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 76.4
       },
       "tank2_dm": {
-        "hp": 75.5
+        "hp": 80.5
       },
       "tank3_dm": {
-        "hp": 75.5
+        "hp": 80.5
       },
       "tank4_dm": {
-        "hp": 75.5
+        "hp": 80.5
       }
     }
   },
@@ -631,11 +631,6 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -645,27 +640,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -673,11 +673,6 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -687,27 +682,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -715,11 +715,6 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -729,27 +724,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -757,11 +757,6 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.005,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
             "fire": 0.01,
             "leak": 0.5
           },
@@ -771,27 +766,32 @@
             "leak": 0.7
           },
           {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.4,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 45.0,
+            "damage": 30.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
-            "leak": 20.0
+            "leak": 30.0
           }
         ]
       },
@@ -1471,6 +1471,7 @@
           {
             "iconType": "doublebarreled_box",
             "name": "upk250",
+            "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {
               "node": "upk_23_250_b001"
             },
@@ -1546,6 +1547,7 @@
           {
             "iconType": "doublebarreled_box",
             "name": "upk250",
+            "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {
               "node": "upk_23_250_b002"
             },
@@ -1621,6 +1623,7 @@
           {
             "iconType": "doublebarreled_box",
             "name": "upk250",
+            "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {
               "node": "upk_23_250_b003"
             },
@@ -1680,6 +1683,7 @@
           {
             "iconType": "doublebarreled_box",
             "name": "upk250",
+            "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {
               "node": "upk_23_250_b004"
             },
@@ -2820,8 +2824,21 @@
     },
     "YaK-B_new_gun": {
       "reqModification": "YaK-B_belt_pack",
-      "tier": 3
+      "tier": 2
     },
+    "il_28sh_upk23_gunpod": {
+      "prevModification": "YaK-B_new_gun",
+      "deactivationIsAllowed": false,
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "ns23_belt_pack": {
+      "reqModification": "il_28sh_upk23_gunpod",
+      "tier": 4
+    },
+    "ns23_air_targets": {},
+    "ns23_armor_targets": {},
+    "ns23_stealth": {},
     "mi_24_su_9M17M": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",
@@ -2864,13 +2881,7 @@
         "from": "mi_24a_soviet_c*"
       },
       {
-        "from": "mi_24a_soviet_c_dmg*"
-      },
-      {
         "from": "mi_24a_soviet_n*"
-      },
-      {
-        "from": "mi_24a_soviet_n_dmg*"
       }
     ]
   },

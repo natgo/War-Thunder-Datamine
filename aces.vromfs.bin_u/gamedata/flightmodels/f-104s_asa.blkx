@@ -12,6 +12,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "hasMissileCommandLine": false,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
@@ -1577,7 +1578,9 @@
   },
   "Sound": {
     "Engine": "engine05_05_J79_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [6.05,0.23,0.0],
@@ -2775,13 +2778,7 @@
         "from": "f_104s_asa_c*"
       },
       {
-        "from": "f_104s_asa_c_dmg*"
-      },
-      {
         "from": "f_104s_asa_n*"
-      },
-      {
-        "from": "f_104s_asa_n_dmg*"
       }
     ]
   },

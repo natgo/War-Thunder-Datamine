@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -111,6 +111,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -395,6 +403,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -1212,76 +1230,6 @@
     ]
   },
   "MetaParts": {
-    "cover": [
-      {
-        "part": "compartment_01_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_02_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_03_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_04_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      }
-    ],
     "bridge": {
       "part": "bridge_dm",
       "effect": [
@@ -1302,6 +1250,88 @@
         }
       ]
     },
+    "cover": [
+      {
+        "part": "compartment_01_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_02_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_03_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_04_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      }
+    ],
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",
@@ -1340,12 +1370,7 @@
         "rangefinder_04_dm",
         "rangefinder_05_dm",
         "fire_director_01_dm",
-        "fire_director_02_dm",
-        "compartment_01_dm",
-        "compartment_02_dm",
-        "compartment_03_dm",
-        "compartment_04_dm",
-        "compartment_05_dm"
+        "fire_director_02_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -1700,6 +1725,13 @@
     ]
   },
   "modifications": {
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {},
+    "new_ship_pumps": {},
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    },
+    "new_aux_caliber_turrets": {},
     "new_ship_hull": {},
     "new_ship_rudder": {
       "prevModification": "new_ship_hull"
@@ -1708,10 +1740,7 @@
     "new_ship_engine": {
       "prevModification": "new_ship_screw"
     },
-    "ship_tool_kit": {},
-    "manual_ship_extinguisher": {},
     "ship_smoke_screen_system_mod": {},
-    "new_ship_pumps": {},
     "20mm_it_breda_universal": {},
     "20mm_it_breda_he": {},
     "20mm_it_breda_he_ammo_pack": {},
@@ -1729,10 +1758,6 @@
     "ship_torpedoes": {},
     "ship_depth_charge": {
       "prevModification": "20mm_it_breda_ap_ammo_pack"
-    },
-    "new_aux_caliber_turrets": {},
-    "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
     },
     "ship_main_caliber_support": {},
     "torpedoes_movement_mode": {

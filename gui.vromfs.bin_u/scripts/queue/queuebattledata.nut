@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -47,8 +48,14 @@ let function actualizeQueueData(cb = null) {
   let curCountry = profileCountrySq.value
   let function fullSuccessCb(res) {
     isInRequestQueueData(false)
-    lastResult(res)
-    successResultByCountry.mutate(@(v) v[curCountry] <- res)
+    let { decodError = null } = decodeJwtAndHandleErrors(res)
+    if (decodError == null) {
+      lastResult(res)
+      successResultByCountry.mutate(@(v) v[curCountry] <- res)
+    }
+    else
+      res = successResultByCountry.value?[curCountry]
+
     cb?(res)
   }
   let function fullErrorCb(res) {
@@ -96,7 +103,8 @@ register_command(function() {
     needDebugNewResult(true)
     actualizeQueueData()
     console_print("Actualize queue data")
-  } else
+  }
+  else
     printQueueDataResult()
 }, "meta.debugJwtQueueData")
 

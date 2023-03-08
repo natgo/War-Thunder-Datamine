@@ -1,11 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode
-} = require_native("guiOptions")
-let { set_gui_option, get_gui_option } = require("guiOptions")
+let { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode,
+  set_gui_option, get_gui_option
+} = require("guiOptions")
 
 global enum optionControlType {
   LIST
@@ -234,7 +235,7 @@ global enum AIR_MOUSE_USAGE {
 ::USEROPT_SHOW_INDICATORS <- 197
 ::USEROPT_HUD_SCREENSHOT_LOGO <- 198
 ::USEROPT_SAVE_ZOOM_CAMERA <- 199
-::USEROPT_HUD_SHOW_BONUSES <- 200
+::USEROPT_HUD_VISIBLE_STREAKS <- 200
 ::USEROPT_HUD_SHOW_FUEL <- 201
 ::USEROPT_HUD_SHOW_AMMO <- 202
 ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO <- 203
@@ -287,6 +288,7 @@ global enum AIR_MOUSE_USAGE {
 ::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN <- 250
 ::USEROPT_SAVE_AI_TARGET_TYPE <- 251
 ::USEROPT_DEFAULT_AI_TARGET_TYPE <- 252
+::USEROPT_TORPEDO_AUTO_SWITCH <- 408
 ::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE <- 253
 ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN <- 254
 ::USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON <- 255
@@ -463,38 +465,48 @@ global enum AIR_MOUSE_USAGE {
 
 ::USEROPT_ALTERNATIVE_TPS_CAMERA <- 395
 
-::USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK <-396
-::USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK <-397
+::USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK <- 396
+::USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK <- 397
 
 ::USEROPT_GYRO_SIGHT_DEFLECTION <- 398
+
+::USEROPT_HUD_VISIBLE_ORDERS <- 399
+::USEROPT_HUD_VISIBLE_REWARDS_MSG <- 400
+::USEROPT_HUD_VISIBLE_KILLLOG <- 401
+::USEROPT_HUD_VISIBLE_CHAT_PLACE <- 402
+::USEROPT_HIT_INDICATOR_RADIUS <- 403
+::USEROPT_HIT_INDICATOR_SIMPLIFIED <- 404
+::USEROPT_HIT_INDICATOR_ALPHA <- 405
+::USEROPT_HIT_INDICATOR_SCALE <- 406
+::USEROPT_HIT_INDICATOR_FADE_TIME <- 407
 
 ::user_option_name_by_idx <- {}
 
 let sortedoptmodes = []
-foreach(modeName, idx in getroottable()) {
+foreach (modeName, idx in getroottable()) {
   if (!modeName.startswith("OPTIONS_MODE_"))
     continue
-  sortedoptmodes.append({modeName, idx})
+  sortedoptmodes.append({ modeName, idx })
 }
-sortedoptmodes.sort(@(a,b) a.idx <=> b.idx)
+sortedoptmodes.sort(@(a, b) a.idx <=> b.idx)
 
-foreach(modeNameIdx in sortedoptmodes) {
-  let {modeName, idx} = modeNameIdx
+foreach (modeNameIdx in sortedoptmodes) {
+  let { modeName, idx } = modeNameIdx
   let res = addOptionMode(modeName)
   let realIdx = (res != null) ? res : idx
   getroottable()[modeName] <- realIdx
 }
 
 let sorted_useropt = []
-foreach(useropt, idx in getroottable()) {
+foreach (useropt, idx in getroottable()) {
   if (!useropt.startswith("USEROPT_"))
     continue
-  sorted_useropt.append({useropt, idx})
+  sorted_useropt.append({ useropt, idx })
 }
-sorted_useropt.sort(@(a,b) a.idx <=> b.idx)
+sorted_useropt.sort(@(a, b) a.idx <=> b.idx)
 
-foreach(uidx in sorted_useropt) {
-  let {useropt, idx} = uidx
+foreach (uidx in sorted_useropt) {
+  let { useropt, idx } = uidx
   let res = addUserOption(useropt)
   let realIdx = (res != null) ? res : idx
 //  log("DD:", useropt, "idx:", idx, "realIdx:", realIdx)

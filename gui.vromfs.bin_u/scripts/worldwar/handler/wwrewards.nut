@@ -1,21 +1,47 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let userstat = require("userstat")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
+const USERSTAT_REQUEST_TIMEOUT = 600
 
-::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+local lastRequestTime = null
+local rewardsTimeData = null
+let fetchRewardsTimeData = function(cb) {
+  let now = ::get_charserver_time_sec()
+  if (lastRequestTime && now < lastRequestTime + USERSTAT_REQUEST_TIMEOUT)
+    return cb()
+
+  lastRequestTime = now
+  userstat.request({
+      add_token = true
+      headers = { appid = "1134" }
+      action = "GetTablesInfo"
+    },
+    function(userstatTbl) {
+      rewardsTimeData = {}
+      foreach (key, val in userstatTbl.response.tables) {
+        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
+          val?.prevInterval?.end : val?.interval?.end
+        rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
+      }
+      cb()
+    })
+}
+
+::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
   isClanRewards = false
   rewardsBlk = null
-  rewardsTime = 0
+  day       = ""
   lbMode    = null
   lbDay     = null
   lbMap     = null
@@ -24,36 +50,31 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   rewardsListObj = null
   rewards = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.rewardsListObj = this.scene.findObject("rewards_list")
     if (!checkObj(this.rewardsListObj))
       return this.goBack()
 
     let wndTitle = ::g_string.implode([
       (this.lbMode ? loc("worldwar/leaderboard/" + this.lbMode) : ""),
-      (this.lbDay ? loc("enumerated_day", {number=this.lbDay}) : !this.isClanRewards ? loc("worldwar/allSeason") : ""),
+      (this.lbDay ? loc("enumerated_day", { number = this.lbDay }) : !this.isClanRewards ? loc("worldwar/allSeason") : ""),
       (this.lbMap ? this.lbMap.getNameText() : loc("worldwar/allMaps")),
       (this.lbCountry ? loc(this.lbCountry) : loc("worldwar/allCountries")),
     ], loc("ui/comma")) + " " + loc("ui/mdash") + " " + loc("worldwar/btn_rewards")
     this.scene.findObject("wnd_title").setValue(wndTitle)
 
     this.showSceneBtn("nav-help", true)
-    this.updateRerwardsStartTime()
 
     this.rewards = []
-    foreach (rewardBlk in this.rewardsBlk)
-    {
+    foreach (rewardBlk in this.rewardsBlk) {
       let reward = this.getRewardData(rewardBlk)
       if (!reward)
         continue
 
       let blockCount = rewardBlk.blockCount()
-      if (blockCount)
-      {
+      if (blockCount) {
         reward.internalRewards <- []
-        for (local i = 0; i < rewardBlk.blockCount(); i++)
-        {
+        for (local i = 0; i < rewardBlk.blockCount(); i++) {
           let internalReward = this.getRewardData(rewardBlk.getBlock(i), false)
           if (internalReward)
             reward.internalRewards.append(internalReward)
@@ -64,10 +85,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     this.updateRewardsList()
+    fetchRewardsTimeData(Callback(@() this.updateRerwardsStartTime(), this))
   }
 
-  function getRewardData(rewardBlk, needPlace = true)
-  {
+  function getRewardData(rewardBlk, needPlace = true) {
     let reward = {}
     for (local i = 0; i < rewardBlk.paramCount(); i++)
       reward[rewardBlk.getParamName(i)] <- rewardBlk.getParamValue(i)
@@ -75,8 +96,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return (!needPlace || (reward?.tillPlace ?? 0)) ? reward : null
   }
 
-  function getItemsMarkup(items)
-  {
+  function getItemsMarkup(items) {
     local view = { items = [] }
     foreach (item in items)
       view.items.append(item.getViewData({
@@ -91,16 +111,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return ::handyman.renderCached("%gui/items/item.tpl", view)
   }
 
-  function getPlaceText(tillPlace, prevPlace, isClan = false)
-  {
+  function getPlaceText(tillPlace, prevPlace, isClan = false) {
     if (!tillPlace)
       tillPlace = ::g_clan_type.NORMAL.maxMembers
     return loc(isClan ? "multiplayer/clan_place" : "multiplayer/place") + loc("ui/colon")
       + ((tillPlace - prevPlace == 1) ? tillPlace : (prevPlace + 1) + loc("ui/mdash") + tillPlace)
   }
 
-  function getRewardTitle(tillPlace, prevPlace)
-  {
+  function getRewardTitle(tillPlace, prevPlace) {
     if (!tillPlace)
       return loc("multiplayer/place/to_other")
 
@@ -112,8 +130,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return loc("clan/season_award/place/top", { top = tillPlace })
   }
 
-  function getRewardsView()
-  {
+  function getRewardsView() {
     local prevPlace = 0
     return {
       rewardsList = ::u.map(this.rewards, function(reward) {
@@ -124,28 +141,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         prevPlace = reward.tillPlace
 
         let trophyId = reward?.itemdefid
-        if (trophyId)
-        {
+        if (trophyId) {
           let trophyItem = ::ItemsManager.findItemById(trophyId)
-          if (trophyItem)
-          {
+          if (trophyItem) {
               rewardRowView.trophyMarkup <- this.getItemsMarkup([trophyItem])
               rewardRowView.trophyName <- trophyItem.getName()
           }
         }
 
         let internalRewards = reward?.internalRewards
-        if (internalRewards)
-        {
+        if (internalRewards) {
           rewardRowView.internalRewardsList <- []
 
           let internalRewardsList = []
           local internalPrevPlace = 0
-          foreach (internalReward in internalRewards)
-          {
+          foreach (internalReward in internalRewards) {
             let internalTrophyId = internalReward?.itemdefid
-            if (internalTrophyId)
-            {
+            if (internalTrophyId) {
               let internalTrophyItem = ::ItemsManager.findItemById(internalTrophyId)
               if (internalTrophyItem)
                 internalRewardsList.append({
@@ -155,8 +167,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
             }
             internalPrevPlace = internalReward?.tillPlace ?? 0
           }
-          if (internalRewardsList.len())
-          {
+          if (internalRewardsList.len()) {
             rewardRowView.internalRewardsList <- internalRewardsList
             rewardRowView.hasInternalRewards <- true
           }
@@ -167,17 +178,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function updateRerwardsStartTime()
-  {
+  function updateRerwardsStartTime() {
     local text = ""
-    if (this.rewardsTime > 0)
+    let rewardsTime = rewardsTimeData?[this.day] ?? 0
+    if (rewardsTime > 0)
       text = loc("worldwar/rewards_start_time") + loc("ui/colon") +
-        time.buildDateTimeStr(this.rewardsTime, false, false)
+        time.buildDateTimeStr(rewardsTime, false, false)
     this.scene.findObject("statusbar_text").setValue(text)
   }
 
-  function onBtnMoreInfo(_obj)
-  {
+  function onBtnMoreInfo(_obj) {
     let rewardsArray = []
     let addItem = @(item) ::u.appendOnce(item?.itemdefid, rewardsArray, true)
     this.rewards.each(@(reward) reward?.internalRewards.each(addItem) ?? addItem(reward))
@@ -188,8 +198,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onItemSelect(_obj) {}
 
-  function updateRewardsList()
-  {
+  function updateRewardsList() {
     local val = ::get_obj_valid_index(this.rewardsListObj)
     let markup = ::handyman.renderCached("%gui/worldWar/wwRewardItem.tpl", this.getRewardsView())
     this.guiScene.replaceContentFromText(this.rewardsListObj, markup, markup.len(), this)
@@ -200,8 +209,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.rewardsListObj.setValue(val)
   }
 
-  function onEventItemsShopUpdate(_obj)
-  {
+  function onEventItemsShopUpdate(_obj) {
     this.updateRewardsList()
   }
 

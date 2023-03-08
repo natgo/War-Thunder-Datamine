@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -26,7 +27,6 @@ foreach (fn in [
                  "externalServices/worldWarTopMenuSectionsConfigs.nut"
                  "externalServices/wwTopMenuOperationMapConfig.nut"
                  "externalServices/wwQueue.nut"
-                 "externalServices/inviteWwOperation.nut"
                  "externalServices/inviteWwOperationBattle.nut"
                  "bhvWorldWarMap.nut"
                  "model/wwUnitType.nut"
@@ -96,8 +96,12 @@ foreach (fn in [
 
 // Independed Modules
 require("%scripts/worldWar/wwPromo.nut")
+require("%scripts/worldWar/wwSquadManager.nut")
+require("%scripts/worldWar/wwInvites.nut")
+require("%scripts/worldWar/wwInviteOperation.nut")
 
-foreach(bhvName, bhvClass in ::ww_gui_bhv)
+
+foreach (bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)
 
 ::ww_event <- function ww_event(name, params = {}) {

@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -1574,7 +1575,9 @@
   },
   "Sound": {
     "Engine": "engine05_05_J79_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [6.05,0.23,0.0],
@@ -1698,7 +1701,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_25.blk"
+        "blk": "gameData/sensors/jp_j_apr_1.blk"
       }
     ]
   },
@@ -2134,16 +2137,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_104j_c*",
-        "to": "f_104j_c_tomoe*"
-      },
-      {
-        "from": "f_104j_c_dmg*",
-        "to": "f_104j_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_104j_c*",
+      "to": "f_104j_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "f_104j",
@@ -2152,13 +2149,7 @@
         "from": "f_104j_c*"
       },
       {
-        "from": "f_104j_c_dmg*"
-      },
-      {
         "from": "f_104j_n*"
-      },
-      {
-        "from": "f_104j_n_dmg*"
       }
     ]
   },

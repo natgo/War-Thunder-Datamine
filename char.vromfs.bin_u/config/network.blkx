@@ -59,7 +59,8 @@
       },
       "substFileTypes": {
         ".tga": "*ui/subst/pic.tga",
-        ".jpg": "*ui/subst/pic.jpg",
+        "": "*ui/subst/pic.ddsx",
+        ".avif": "*ui/subst/pic.avif",
         ".png": "*ui/subst/pic.png",
         ".svg": "*ui/subst/pic.svg",
         ".ddsx": "*ui/subst/pic.ddsx"
@@ -114,13 +115,14 @@
       "mgate22am-uk.warthunder.com:7853",
       "mgate23am-uk.warthunder.com:7853",
       "mgate24am-uk.warthunder.com:7853",
-      "mgate25am-uk.warthunder.com:7853"
-    ],
-    "_matchServer": [
+      "mgate25am-uk.warthunder.com:7853",
       "mgate26am-uk.warthunder.com:7853",
       "mgate27am-uk.warthunder.com:7853",
-      "mgate28am-uk.warthunder.com:7853"
+      "mgate28am-uk.warthunder.com:7853",
+      "mgate29am-uk.warthunder.com:7853",
+      "mgate30am-uk.warthunder.com:7853"
     ],
+    "_matchServer": "mgate31am-uk.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -284,7 +286,7 @@
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
-    "ircServer": "chat-devstable.warthunder.com:443",
+    "ircServer": "chat-devstable.warthunder.com:6667",
     "charServer": [
       "https://char-dev-10.warthunder.com:10443/char",
       "https://char-dev-09.warthunder.com:10443/char"
@@ -325,7 +327,7 @@
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
-    "ircServer": "chat-dev.warthunder.com:443",
+    "ircServer": "chat-dev.warthunder.com:6667",
     "charServer": [
       "https://char-dev-12.warthunder.com:443/char",
       "https://char-dev-11.warthunder.com:443/char"
@@ -450,8 +452,8 @@
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
     "charServer": [
-      "https://warthunder.gaijin.lan:443/char",
-      "https://warthunder.gaijin.lan:10443/char"
+      "http://warthunder.gaijin.lan:10080/char",
+      "http://warthunder.gaijin.lan:10085/char"
     ],
     "circuitPostfix": "-test",
     "queryTimeoutMs": 180000,
@@ -479,12 +481,20 @@
     },
     "userstat": {
       "servers": {
-        "url": "https://test-char-01.gaijin.ops:13080/char"
+        "url": [
+          "http://test-char-01.gaijin.ops:13085/char",
+          "http://test-char-01.gaijin.ops:13086/char"
+        ]
       }
     },
     "nickserver": {
       "servers": {
         "url": "https://nick-server.gaijin.net/public/resolve/nicks"
+      }
+    },
+    "contacts": {
+      "servers": {
+        "url": "http://moon-contact.gaijin.ops:7443/json"
       }
     },
     "unstableClusters": {

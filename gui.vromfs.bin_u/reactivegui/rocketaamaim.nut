@@ -1,20 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
+let { GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
   TrackerSize, TrackerX, TrackerY, TrackerVisible, GuidanceLockSnr,
-  AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor} = require("rocketAamAimState.nut")
-let {relativCircle, isDarkColor} = require("style/airHudStyle.nut")
+  AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor } = require("rocketAamAimState.nut")
+let { relativCircle, isDarkColor } = require("style/airHudStyle.nut")
 
 let math = require("%sqstd/math.nut")
 
-enum GuidanceLockResult {
-  RESULT_INVALID = -1
-  RESULT_STANDBY = 0
-  RESULT_WARMING_UP = 1
-  RESULT_LOCKING = 2
-  RESULT_TRACKING = 3
-  RESULT_LOCK_AFTER_LAUNCH = 4
-}
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 
 let gimbalLines = {
   size = flex()
@@ -38,7 +31,7 @@ let aamAimGimbal = @(color_watched, alert_color_watched) function() {
 
   let shadowLines = gimbalLines.__merge({
     lineWidth = shadowLineWidth
-    color = isDarkColor(colorGimbal) ? Color(255,255,255, 255) : Color(0,0,0,255)
+    color = isDarkColor(colorGimbal) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
     opacity = shadowOpacity
   })
 
@@ -72,7 +65,7 @@ let trackerLines = {
 
 let aamAimTracker = @(color_watched, alert_color_watched) function() {
 
-  if(!TrackerVisible.value)
+  if (!TrackerVisible.value)
     return { watch = TrackerVisible }
 
   local snrDb = 10.0 * math.log(clamp(GuidanceLockSnr.value, 0.1, 10.0)) / math.log(10.0)
@@ -89,7 +82,7 @@ let aamAimTracker = @(color_watched, alert_color_watched) function() {
 
   local shadowLines = trackerLines.__merge({
     lineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
-    color = isDarkColor(colorTracker) ? Color(255,255,255, 255) : Color(0,0,0, 255)
+    color = isDarkColor(colorTracker) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
     opacity = isDarkColor(colorTracker) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
   })
 
@@ -105,7 +98,7 @@ let aamAimTracker = @(color_watched, alert_color_watched) function() {
 
     local shadowLinesSNR = linesSNR.__merge({
       lineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
-      color = isDarkColor(colorTracker) ? Color(255,255,255, 255) : Color(0,0,0,255)
+      color = isDarkColor(colorTracker) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
       opacity = isDarkColor(colorTracker) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
     })
 

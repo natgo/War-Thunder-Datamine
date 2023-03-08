@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -83,6 +83,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -261,9 +271,6 @@
       "turret_08_back_dm": {
         "armorThickness": 20.0
       },
-      "ex_decor_09_dm": {
-        "armorThickness": 5.0
-      },
       "turret_commander_dm": {
         "armorThickness": 35.0
       },
@@ -277,13 +284,15 @@
         "armorThickness": 35.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 25.0
       },
       "turret_top_dm": {
         "armorThickness": 20.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "createSecondaryShatters": false
       },
       "turret_03_top_dm": {
         "armorThickness": 20.0
@@ -322,9 +331,6 @@
       "turret_02_bottom_dm": {
         "armorThickness": 5.0
       },
-      "turret_02_back_dm": {
-        "armorThickness": 15.0
-      },
       "turret_07_top_dm": {
         "armorThickness": 15.0
       },
@@ -344,7 +350,7 @@
         "armorThickness": 30.0
       },
       "turret_08_side_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 40.0
       },
       "turret_09_side_dm": {
         "armorThickness": 25.0
@@ -355,6 +361,7 @@
       "hp": 400.0,
       "armorThickness": 6.0,
       "createSecondaryShatters": false,
+      "hidableInViewer": true,
       "ex_armor_body_l_01_dm": {},
       "ex_armor_body_l_02_dm": {},
       "ex_armor_body_l_03_dm": {},
@@ -1059,6 +1066,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -1079,6 +1090,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -2073,6 +2088,46 @@
           "yaw": [-120.0,120.0],
           "pitch": [-10.0,40.0]
         }
+      },
+      {
+        "trigger": "gunner5",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [5.0,0.0],
+              [45.0,0.00015],
+              [80.0,0.0002]
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [-180.0,180.0],
+          "pitch": [-20.0,40.0]
+        }
       }
     ]
   },
@@ -2103,9 +2158,9 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 700.0,
+      "horsePowers": 680.0,
       "maxRPM": 2400.0,
-      "minRPM": 700.0
+      "minRPM": 600.0
     },
     "mechanics": {
       "maxBrakeForce": 270000.0,
@@ -2836,10 +2891,10 @@
     "sightSize": [0.74,0.52]
   },
   "cockpit": {
-    "zoomOutFov": 8.3,
-    "zoomInFov": 7.3,
-    "sightFov": 3.9,
-    "sightName": "cotac_m581",
+    "zoomOutFov": 7.37,
+    "zoomInFov": 7.37,
+    "sightFov": 4.0,
+    "sightName": "m544",
     "headPos": [0.0,4.0,-8.5],
     "headPosOnShooting": [-0.7,3.5,0.6],
     "detectionHeight": 2.96
@@ -3181,6 +3236,46 @@
               "limits": {
                 "yaw": [-120.0,120.0],
                 "pitch": [-10.0,40.0]
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 120.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "forceEnabled": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [5.0,0.0],
+                    [45.0,0.00015],
+                    [80.0,0.0002]
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [-180.0,180.0],
+                "pitch": [-20.0,40.0]
               }
             },
             {

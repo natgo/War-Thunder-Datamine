@@ -1937,7 +1937,7 @@
       "oil_temperature": [50.0,100.0],
       "oil_pressure": [0.0,100.0],
       "water_temperature": [50.0,140.0],
-      "fuel1": [0.0,320.0],
+      "fuel": [0.0,320.0],
       "fuel_pressure": [0.0,10.0],
       "aviahorizon_pitch": [-45.0,45.0],
       "aviahorizon_roll": [-180.0,180.0],
@@ -2175,16 +2175,10 @@
   },
   "default_skin": {
     "name": "rcaf_ep",
-    "replace_tex": [
-      {
-        "from": "spitfire_mk2a_raf_camo_c*",
-        "to": "spitfire_mk2a_rcaf_ep_c*"
-      },
-      {
-        "from": "spitfire_mk2a_raf_camo_c_dmg*",
-        "to": "spitfire_mk2a_rcaf_ep_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "spitfire_mk2a_raf_camo_c*",
+      "to": "spitfire_mk2a_rcaf_ep_c*"
+    }
   },
   "user_skin": {
     "name": "spitfire_mk2a_rcaf_ep",
@@ -2193,13 +2187,7 @@
         "from": "spitfire_mk2a_rcaf_ep_c*"
       },
       {
-        "from": "spitfire_mk2a_rcaf_ep_c_dmg*"
-      },
-      {
         "from": "spitfire_mk2a_raf_camo_n*"
-      },
-      {
-        "from": "spitfire_mk2a_raf_camo_n_dmg*"
       }
     ]
   },

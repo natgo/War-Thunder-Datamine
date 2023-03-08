@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -89,7 +90,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
     textCode = "UT_WATER"
     sortCode = WW_UNIT_SORT_CODE.WATER
     esUnitCode = ES_UNIT_TYPE_BOAT
-    name = "Boat"
+    name = "Ship"
     fontIcon = loc("worldwar/iconWater")
     canBeControlledByPlayer = true
   }
@@ -138,8 +139,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
 })
 
 
-::g_ww_unit_type.getUnitTypeByCode <- function getUnitTypeByCode(wwUnitTypeCode)
-{
+::g_ww_unit_type.getUnitTypeByCode <- function getUnitTypeByCode(wwUnitTypeCode) {
   return enums.getCachedType(
     "code",
     wwUnitTypeCode,
@@ -150,8 +150,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
 }
 
 
-::g_ww_unit_type.getUnitTypeByTextCode <- function getUnitTypeByTextCode(wwUnitTypeTextCode)
-{
+::g_ww_unit_type.getUnitTypeByTextCode <- function getUnitTypeByTextCode(wwUnitTypeTextCode) {
   return enums.getCachedType(
     "textCode",
     wwUnitTypeTextCode,

@@ -2021,6 +2021,11 @@
         "reqModification": "Bf-109G-2_SC250"
       },
       {
+        "name": "Bf-109G-2_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/bf_109_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
         "name": "Bf-109G-2_R6",
         "blk": "gameData/FlightModels/weaponPresets/bf-109G-2_R6.blk",
         "reqModification": "Bf-109G-2_R6",
@@ -2231,6 +2236,10 @@
     "Bf-109G-2_R6": {
       "modClass": "weapon",
       "tier": 4
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
     }
   },
   "user_skin": {
@@ -2240,27 +2249,15 @@
         "from": "bf_109g_2_roman_a*"
       },
       {
-        "from": "bf_109g_2_roman_a_dmg*"
-      },
-      {
         "from": "bf_109g_2_n*"
-      },
-      {
-        "from": "bf_109g_2_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_109g_2_roman_a*",
-        "to": "bf_109g_2_a_tomoe*"
-      },
-      {
-        "from": "bf_109g_2_roman_a_dmg*",
-        "to": "bf_109g_2_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_109g_2_roman_a*",
+      "to": "bf_109g_2_a_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [-0.514255,-0.31106,0.65902],

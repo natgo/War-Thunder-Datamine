@@ -1,13 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { saveClanUnitResearchChosen } = require("%scripts/unit/squadronUnitAction.nut")
-
-let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null)
-{
-  let blk = ::DataBlock()
+let DataBlock  = require("DataBlock")
+let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
+  let blk = DataBlock()
   blk["name"] = unit.name
   blk["cost"] = price.wp
   blk["costGold"] = price.gold
@@ -16,7 +15,7 @@ let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null)
 
   let progBox = { showProgressBox = true }
   let onTaskSuccess = function() {
-    ::broadcastEvent("UnitRepaired", {unit = unit})
+    ::broadcastEvent("UnitRepaired", { unit = unit })
     if (onSuccessCb)
       onSuccessCb()
   }
@@ -24,8 +23,7 @@ let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null)
   ::g_tasker.addTask(taskId, progBox, onTaskSuccess, onErrorCb)
 }
 
-let function repair(unit, onSuccessCb = null, onErrorCb = null)
-{
+let function repair(unit, onSuccessCb = null, onErrorCb = null) {
   if (!unit) {
     onErrorCb?()
     return
@@ -40,8 +38,7 @@ let function repair(unit, onSuccessCb = null, onErrorCb = null)
     onErrorCb?()
 }
 
-let function repairWithMsgBox(unit, onSuccessCb = null)
-{
+let function repairWithMsgBox(unit, onSuccessCb = null) {
   if (!unit)
     return
   let price = unit.getRepairCost()
@@ -53,14 +50,14 @@ let function repairWithMsgBox(unit, onSuccessCb = null)
   [
     ["yes", function() { repair(unit, onSuccessCb) }],
     ["no", function() {} ]
-  ], "no", { cancel_fn = function() {}})
+  ], "no", { cancel_fn = function() {} })
 }
 
 let function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
   ::scene_msg_box("ask_flush_squadron_exp",
     null,
     loc("squadronExp/invest/needMoneyQuestion",
-      {exp = ::Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring()}),
+      { exp = ::Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
     [
       ["yes", onDoneCb],
       ["no", onCancelCb]
@@ -77,20 +74,19 @@ let function flushSquadronExp(unit, params = {}) {
     null,
     function() {
       afterDoneFunc()
-      ::broadcastEvent("FlushSquadronExp", {unit = unit})
+      ::broadcastEvent("FlushSquadronExp", { unit = unit })
     })
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
 
-let function take(unit, params={})
-{
-  if(!unit)
+let function take(unit, params = {}) {
+  if (!unit)
     return
 
   ::queues.checkAndStart(
-    function(){
+    function() {
       ::g_squad_utils.checkSquadUnreadyAndDo(
-        function (){
+        function () {
           if (!unit || !unit.isUsable() || ::isUnitInSlotbar(unit))
             return
 
@@ -102,8 +98,7 @@ let function take(unit, params={})
     null, "isCanModifyCrew", null)
 }
 
-let function buy(unit, metric)
-{
+let function buy(unit, metric) {
   if (!unit)
     return
 
@@ -113,8 +108,7 @@ let function buy(unit, metric)
     ::buyUnit(unit)
 }
 
-let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
-{
+let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   let unitName = unit.name
   ::add_big_query_record("choosed_new_research_unit", unitName)
   if (!::canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
@@ -122,11 +116,10 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
 
   local prevUnitName = ::shop_get_researchable_unit_name(::getUnitCountry(unit), ::get_es_unit_type(unit))
   local taskId = -1
-  if (unit.isSquadronVehicle())
-  {
+  if (unit.isSquadronVehicle()) {
      prevUnitName = ::clan_get_researching_unit()
 
-     let blk = ::DataBlock()
+     let blk = DataBlock()
      blk.addStr("unit", unitName);
      taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   }
@@ -137,9 +130,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
     ::destroyMsgBox(progressBox)
     if (afterDoneFunc)
       afterDoneFunc()
-    if (unit.isSquadronVehicle())
-      saveClanUnitResearchChosen(true)
-    ::broadcastEvent("UnitResearch", {unitName = unitName, prevUnitName = prevUnitName})
+    ::broadcastEvent("UnitResearch", { unitName = unitName, prevUnitName = prevUnitName })
   })
 }
 
@@ -147,14 +138,13 @@ let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() n
   let unitName = unit.name
   ::add_big_query_record("choosed_new_research_unit", unitName)
   let prevUnitName = ::clan_get_researching_unit()
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.addStr("unit", unitName)
   blk.addBool("auto", true)
   let taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   let taskCallback = function() {
     afterDoneFunc()
-    saveClanUnitResearchChosen(true)
-    ::broadcastEvent("UnitResearch", {unitName, prevUnitName, unit})
+    ::broadcastEvent("UnitResearch", { unitName, prevUnitName, unit })
   }
   ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)
 }

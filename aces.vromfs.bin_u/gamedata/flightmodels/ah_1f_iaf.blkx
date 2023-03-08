@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/ah_1f_iaf.blk",
   "model": "ah_1f_iaf",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
@@ -11,6 +11,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "tpsCameraTargetOffsetAtZoom": [80.0,60.0,0.0],
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -1042,8 +1043,8 @@
     "lightRadius": 0.5,
     "zoomOutFov": 22.46,
     "zoomInFov": 22.46,
-    "sightInFov": 2.96,
-    "sightOutFov": -1.0,
+    "sightInFov": 5.66,
+    "sightOutFov": 37.46,
     "sightFov": 5.5,
     "devices": {
       "stick_ailerons": [-3.0,3.0],
@@ -2890,13 +2891,7 @@
         "from": "ah_1f_tzefa_c*"
       },
       {
-        "from": "ah_1f_tzefa_c_dmg*"
-      },
-      {
         "from": "ah_1f_tzefa_n*"
-      },
-      {
-        "from": "ah_1f_tzefa_n_dmg*"
       }
     ]
   },

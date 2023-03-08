@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -41,9 +41,6 @@
   "depthTraceCriticalDepth": 2.0,
   "haveAnchor": true,
   "anchorPos": [58.355,6.07,-1.94],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -116,6 +113,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1281,6 +1286,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -1788,10 +1803,10 @@
         "hp": 1500.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1200.0
+        "hp": 1491.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1200.0
+        "hp": 1500.0
       }
     },
     "ammo_storages_charges": {
@@ -1804,7 +1819,7 @@
         "hp": 2000.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 1779.0
+        "hp": 2000.0
       },
       "ammunition_storage_charges_03_dm": {
         "hp": 1779.0
@@ -1821,7 +1836,7 @@
         "hp": 1000.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 1000.0
+        "hp": 800.0
       }
     },
     "ammo_first_stage": {
@@ -2697,12 +2712,6 @@
     ],
     "open_mounts": {
       "part": [
-        "main_caliber_turret_01_dm",
-        "main_caliber_turret_02_dm",
-        "main_caliber_turret_03_dm",
-        "main_caliber_turret_04_dm",
-        "main_caliber_turret_05_dm",
-        "main_caliber_turret_06_dm",
         "auxiliary_caliber_turret_01_dm",
         "auxiliary_caliber_turret_02_dm",
         "auxiliary_caliber_turret_03_dm",
@@ -2934,13 +2943,13 @@
           "gunnerDm": "main_caliber_turret_01_dm"
         },
         "limits": {
-          "yaw": [-145.0,145.0],
+          "yaw": [-147.0,147.0],
           "pitch": [-10.0,55.0]
         },
         "limitsTable": {
-          "lim1": [-145.0,-23.0,-10.0,55.0],
+          "lim1": [-147.0,-23.0,-10.0,55.0],
           "lim2": [-23.0,23.0,-3.0,55.0],
-          "lim3": [23.0,145.0,-10.0,55.0]
+          "lim3": [23.0,147.0,-10.0,55.0]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
@@ -2999,13 +3008,13 @@
           "gunnerDm": "main_caliber_turret_01_dm"
         },
         "limits": {
-          "yaw": [-145.0,145.0],
+          "yaw": [-147.0,147.0],
           "pitch": [-10.0,55.0]
         },
         "limitsTable": {
-          "lim1": [-145.0,-23.0,-10.0,55.0],
+          "lim1": [-147.0,-23.0,-10.0,55.0],
           "lim2": [-23.0,23.0,-3.0,55.0],
-          "lim3": [23.0,145.0,-10.0,55.0]
+          "lim3": [23.0,147.0,-10.0,55.0]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
@@ -5137,10 +5146,10 @@
     "ship_torpedoes": {},
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_rangefinder": {
       "prevModification": "128mm_ger_c41_naval_HE_dist_fuze_ammo_pack"
@@ -6652,5 +6661,50 @@
         "param": "camo_skin_tex"
       }
     }
-  ]
+  ],
+  "user_skin": {
+    "name": "destroyer_class1936c_z47",
+    "replace_tex": [
+      {
+        "from": "camo_hellgrau_50*"
+      },
+      {
+        "from": "camo_black_a26f*"
+      }
+    ],
+    "set_tex": [
+      {
+        "from": "destroyer_class1936c_z47_deckhouse_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_qudruple_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_qudruple_shield_late_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_128mm_twin_lc41_skc41_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_flak_m42_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_vierlingslafette_c38_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_zwillingslafette_c38_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "destroyer_class1936c_z47_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  }
 }

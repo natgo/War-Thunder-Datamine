@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -1618,7 +1619,9 @@
   },
   "Sound": {
     "Engine": "engine05_05_J79_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "nozzleMoveSfx": "nozzle_moving_2",
+    "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
     "headPos": [6.05,0.23,0.0],
@@ -2090,16 +2093,8 @@
         "to": "f_104c_c_tomoe*"
       },
       {
-        "from": "f_104c_c_dmg*",
-        "to": "f_104c_c_tomoe_dmg*"
-      },
-      {
         "from": "f_104c_n*",
         "to": "f_104c_tomoe_n*"
-      },
-      {
-        "from": "f_104c_n_dmg*",
-        "to": "f_104c_tomoe_n_dmg*"
       }
     ]
   },
@@ -2110,13 +2105,7 @@
         "from": "f_104c_c*"
       },
       {
-        "from": "f_104c_c_dmg*"
-      },
-      {
         "from": "f_104c_n*"
-      },
-      {
-        "from": "f_104c_n_dmg*"
       }
     ]
   },

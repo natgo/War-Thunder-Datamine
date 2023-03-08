@@ -59,8 +59,8 @@
     "bulletType": "apcbc_tank",
     "slopeEffectPreset": "apc",
     "fresnel": [0.23,0.1,2.0],
-    "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-    "bulletName": "57mm_br_281",
+    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "bulletName": "57mm_br_281u",
     "guiCustomIcon": "apcbc_tank",
     "relativeVelHitShift": [300.0,1000.0],
     "fuseDelayDist": 1.2,
@@ -202,8 +202,8 @@
       "bulletType": "apcbc_tank",
       "slopeEffectPreset": "apc",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-      "bulletName": "57mm_br_281",
+      "shellAnimation": "video/shells_animations/aphe.ivf",
+      "bulletName": "57mm_br_281u",
       "guiCustomIcon": "apcbc_tank",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
@@ -347,7 +347,7 @@
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
-      "shellAnimation": "video/shells_animations/he_belt.ivf",
+      "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "57mm_or_281u",
       "guiCustomIcon": "he_frag_tank",
       "hitPowerMult": 10.0,
@@ -776,7 +776,7 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "57mm_3uo8",
       "hasProximityFuse": true,
       "hitPowerMult": 5.0,
@@ -817,31 +817,34 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 1.0,
+          "countPortion": 0.8,
           "segment": [
             {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.6,
-              "damageScale": 2.5,
+              "radiusScale": 1.5,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
               "angles": [0.0,20.0],
               "countPortion": 0.1
             },
             {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.0,
-              "damageScale": 3.0,
+              "radiusScale": 1.5,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
               "angles": [20.0,120.0],
               "countPortion": 0.5
             },
             {
-              "radiusScale": 1.0,
+              "radiusScale": 1.5,
               "penetrationScale": 2.0,
-              "damageScale": 3.0,
+              "damageScale": 1.5,
               "angles": [120.0,180.0],
               "countPortion": 0.4
             }
           ]
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "collisions": {
         "default": {

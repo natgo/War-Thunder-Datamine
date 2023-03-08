@@ -1,25 +1,37 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
-{
-  function mapCountriesToView(side, _amountByCountry, joinedCountries)
-  {
-    let cuntriesByTeams = this.descItem.getCountriesByTeams()
-    let countries = cuntriesByTeams?[side] ?? []
+::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription {
+  function mapCountriesToView(side, _amountByCountry, joinedCountries) {
+    let countriesByTeams = this.descItem.getCountriesByTeams()
+    let countries = countriesByTeams?[side] ?? []
     let mapName = this.descItem.getId()
+    let creationCost = this.getCreationCost()
+    let hasCreationCost = creationCost != ""
+
+    let createOperationBtnText = hasCreationCost
+      ? $"{loc("worldwar/btnCreateOperation")} ({creationCost})"
+      : loc("worldwar/btnCreateOperation")
+
+    let buttonWidth = to_pixels("0.35@WWOperationDescriptionWidth - 1@buttonIconHeight")
+    let textWidth = getStringWidthPx(createOperationBtnText, "fontMedium", this.guiScene)
+
+    let smallFont = textWidth >= buttonWidth
+
     return {
       countries = countries.map(function(countryId) {
         let customViewCountryData = getCustomViewCountryData(countryId, mapName)
         let customLocId = customViewCountryData.locId
         let countryNameText = countryId == customLocId
           ? loc(countryId)
-          : "".concat(loc(customLocId), loc("ui/parentheses/space", {text = loc(countryId)}))
+          : "".concat(loc(customLocId), loc("ui/parentheses/space", { text = loc(countryId) }))
         return {
           countryNameText = countryNameText
           countryId       = countryId
@@ -27,13 +39,22 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
           isJoined        = isInArray(countryId, joinedCountries)
           side            = side
           isLeftAligned   = side == SIDE_1
+          hasCreationCost = hasCreationCost
+          createOperationBtnText
+          smallFont
         }
       })
     }
   }
 
-  function updateCountriesList()
-  {
+  function getCreationCost() {
+    let fee = getGlobalStatusData()?.operationCreationFeeWp ?? 0
+    return fee > 0
+      ? ::Cost(fee).toStringWithParams({ isColored = false isWpAlwaysShown = true })
+      : ""
+  }
+
+  function updateCountriesList() {
     let obj = this.scene.findObject("div_before_text")
     if (!checkObj(obj))
       return

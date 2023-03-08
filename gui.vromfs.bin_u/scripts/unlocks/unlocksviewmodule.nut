@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -16,6 +17,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
   getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockTypeById } = require("unlocks")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -130,7 +132,7 @@ let function getUnlockNameText(unlockType, id) {
     return ::g_battle_tasks.getLocalizedTaskNameById(id)
 
   if (unlockType == -1)
-    unlockType = ::get_unlock_type_by_id(id)
+    unlockType = getUnlockTypeById(id)
 
   switch (unlockType) {
     case UNLOCKABLE_AIRCRAFT:
@@ -198,7 +200,7 @@ let function getUnlockNameText(unlockType, id) {
     case UNLOCKABLE_AWARD:
       if (isLoadingBgUnlock(id))
         return getLoadingBgName(getLoadingBgIdByUnlockId(id))
-      return loc("award/"+id)
+      return loc("award/" + id)
 
     case UNLOCKABLE_ENTITLEMENT:
       return getEntitlementName(getEntitlementConfig(id))
@@ -454,7 +456,7 @@ let function addUniqConditionsText(groupsList, condition) {
   let condType = condition.type
 
   if (isTimeRangeCondition(condType)) {
-    foreach(key in ["beginDate", "endDate"])
+    foreach (key in ["beginDate", "endDate"])
       if (key in condition)
         addValueToGroup(groupsList, key, condition[key])
     return true
@@ -509,7 +511,7 @@ let function addCustomConditionsTextData(groupsList, condition) {
       let locValuePrefix = condition?.locValuePrefix ?? "conditions/gameModeInfoString/"
       desc.append(loc($"{locValuePrefix}{v}"))
     }
-    else if (condType == "missionPostfix" ) {
+    else if (condType == "missionPostfix") {
       group = loc($"conditions/{condition.locGroup}")
 
       let locValuePrefix = condition?.locValuePrefix ?? "options/"
@@ -756,26 +758,24 @@ let function getUnlockMultDesc(condition) {
     mulText = $"{mulText}{mulLocParam} (x{num})"
   }
 
-  local mulRankText = ""
+  let mulRanks = []
   if (rankMultiplierTable.len() > 0) {
-    local lastAddedRank = null
+    local lastAddedRank = 0
     for (local rank = 1; rank <= ::max_country_rank; rank++) {
       let curRankMul = rankMultiplierTable[rank]
       let nextRankMul = rankMultiplierTable?[rank + 1]
       if (!curRankMul || (nextRankMul && curRankMul == nextRankMul))
         continue
 
-      let rankText = (rank - 1 == lastAddedRank || rank == 1)
+      let rankText = (rank - 1 == lastAddedRank)
         ? ::get_roman_numeral(rank)
-        : getRangeString(::get_roman_numeral(lastAddedRank ?? 1), ::get_roman_numeral(rank))
+        : getRangeString(::get_roman_numeral(lastAddedRank + 1), ::get_roman_numeral(rank))
 
-      if (mulRankText.len() > 0)
-        mulRankText = $"{mulRankText}, "
-
-      mulRankText = $"{mulRankText}{rankText} (x{curRankMul})"
+      mulRanks.append($"{rankText} (x{curRankMul})")
       lastAddedRank = rank
     }
   }
+  local mulRankText = ", ".join(mulRanks)
 
   mulText = mulText.len() > 0
     ? "{0}{1}{2}".subst(loc("conditions/multiplier"), loc("ui/colon"), mulText)

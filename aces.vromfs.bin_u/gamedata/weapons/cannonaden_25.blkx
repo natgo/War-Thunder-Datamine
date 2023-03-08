@@ -38,7 +38,7 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
       "effectiveDistance": 700.0,
@@ -75,20 +75,20 @@
         "ArmorPower1500m": [0.0,1500.0]
       },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 3.0,
+            "radiusScale": 1.085,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -191,7 +191,7 @@
       "bulletType": "ap",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -328,7 +328,7 @@
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
       "effectiveDistance": 700.0,
@@ -365,20 +365,20 @@
         "ArmorPower1500m": [0.0,1500.0]
       },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 3.0,
+            "radiusScale": 1.085,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -481,7 +481,7 @@
       "bulletType": "ap",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -621,7 +621,7 @@
         "bulletType": "apcr",
         "slopeEffectPreset": "apcr",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/apcr_belt.ivf",
+        "shellAnimation": "video/shells_animations/apcr_shell.ivf",
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -757,8 +757,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -897,7 +896,7 @@
         "bulletType": "apcr",
         "slopeEffectPreset": "apcr",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/apcr_belt.ivf",
+        "shellAnimation": "video/shells_animations/apcr_shell.ivf",
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -1033,8 +1032,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -1177,8 +1175,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -1317,7 +1314,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 2.5,
         "effectiveDistance": 700.0,
@@ -1354,20 +1351,20 @@
           "ArmorPower1500m": [0.0,1500.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1474,7 +1471,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 2.5,
         "effectiveDistance": 700.0,
@@ -1511,20 +1508,20 @@
           "ArmorPower1500m": [0.0,1500.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1631,7 +1628,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 2.5,
         "effectiveDistance": 700.0,
@@ -1668,20 +1665,20 @@
           "ArmorPower1500m": [0.0,1500.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -1788,7 +1785,7 @@
         "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
@@ -1925,8 +1922,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -2065,8 +2061,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,
@@ -2205,8 +2200,7 @@
         "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "50mm_pzgr_40",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [300.0,1000.0],
         "fuseDelayDist": 1.2,

@@ -23,8 +23,8 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
-  "sound": "20mm_oerlikon",
-  "sound_inside": "20mm_oerlikon_interior",
+  "sound": "30mm_hispano_suiza",
+  "sound_inside": "30mm_hispano_suiza_interior",
   "soundLoop": true,
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": false,
@@ -53,7 +53,7 @@
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "20mm_oerlikon_ap",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -196,20 +196,20 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.2,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 1.0,
+            "radiusScale": 1.085,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -314,7 +314,7 @@
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "20mm_oerlikon_ap",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -452,7 +452,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "20mm_oerlikon_he_t",
         "speed": 838.0,
         "maxDistance": 5000.0,
@@ -478,20 +478,20 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -598,7 +598,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_oerlikon_he_i",
         "speed": 838.0,
         "maxDistance": 5000.0,
@@ -624,20 +624,20 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -743,7 +743,7 @@
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_oerlikon_he_i",
         "speed": 838.0,
         "maxDistance": 5000.0,
@@ -769,20 +769,20 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 1.085,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 1.0
             }
           }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
@@ -890,7 +890,7 @@
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "20mm_oerlikon_ap",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],

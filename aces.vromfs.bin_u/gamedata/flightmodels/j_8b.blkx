@@ -3,6 +3,9 @@
   "fmFile": "fm/j_8b.blk",
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "haveCCIPForRocket": true,
+  "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.158,
   "gearSinkRangeC": 0.321,
@@ -23,6 +26,7 @@
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2749,28 +2753,16 @@
         "from": "j_8b_c*"
       },
       {
-        "from": "j_8b_c_dmg*"
-      },
-      {
         "from": "j_8b_n*"
-      },
-      {
-        "from": "j_8b_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
     "name": "j_8b_tomoe",
-    "replace_tex": [
-      {
-        "from": "j_8b_c*",
-        "to": "j_8b_c_tomoe*"
-      },
-      {
-        "from": "j_8b_c_dmg*",
-        "to": "j_8b_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "j_8b_c*",
+      "to": "j_8b_c_tomoe*"
+    }
   },
   "parachutes": {
     "emitterRange": [1,1],

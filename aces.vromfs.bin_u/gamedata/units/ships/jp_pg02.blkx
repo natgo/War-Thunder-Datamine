@@ -117,6 +117,14 @@
         "to": "flag_uk_01_c_tomoe*"
       },
       {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
         "from": "airplane_ger_ar196_c*",
         "to": "airplane_ger_ar196_c_tomoe*"
       },
@@ -309,6 +317,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -1133,10 +1151,30 @@
     ]
   },
   "MetaParts": {
+    "bridge": {
+      "part": "bridge_dm",
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 274.0,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "conditionDamageType": "generic",
+          "conditionDamage": 700.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      ]
+    },
     "cover": [
       {
         "part": "compartment_01_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
@@ -1155,6 +1193,9 @@
         "part": "compartment_02_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
             "kill": true,
@@ -1172,6 +1213,9 @@
         "part": "compartment_03_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 274.0,
             "kill": true,
@@ -1186,22 +1230,42 @@
         ]
       }
     ],
-    "bridge": {
-      "part": "bridge_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 274.0,
-          "kill": true,
-          "killEffect": "destruction"
-        },
-        {
-          "conditionDamageType": "generic",
-          "conditionDamage": 700.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      ]
+    "open_mounts": {
+      "part": [
+        "main_caliber_turret_01_dm",
+        "main_caliber_turret_02_dm",
+        "main_caliber_turret_03_dm",
+        "main_caliber_turret_04_dm",
+        "main_caliber_turret_05_dm",
+        "main_caliber_turret_06_dm",
+        "main_caliber_turret_07_dm",
+        "main_caliber_turret_08_dm",
+        "main_caliber_turret_09_dm",
+        "main_caliber_turret_10_dm",
+        "auxiliary_caliber_turret_01_dm",
+        "auxiliary_caliber_turret_02_dm",
+        "auxiliary_caliber_turret_03_dm",
+        "auxiliary_caliber_turret_04_dm",
+        "auxiliary_caliber_turret_05_dm",
+        "auxiliary_caliber_turret_06_dm",
+        "auxiliary_caliber_turret_07_dm",
+        "auxiliary_caliber_turret_08_dm",
+        "auxiliary_caliber_turret_09_dm",
+        "auxiliary_caliber_turret_10_dm",
+        "aa_turret_01_dm",
+        "aa_turret_02_dm",
+        "aa_turret_03_dm",
+        "aa_turret_04_dm",
+        "aa_turret_05_dm",
+        "aa_turret_06_dm",
+        "aa_turret_07_dm",
+        "aa_turret_08_dm",
+        "aa_turret_09_dm",
+        "aa_turret_10_dm"
+      ],
+      "effect": {
+        "pressureOpen": true
+      }
     }
   },
   "ShipPhys": {
@@ -2317,13 +2381,13 @@
         "collisionNode": "cls_turret_01"
       },
       {
-        "node": "mast_01",
+        "node": "ex_decor_09",
         "idx": 2,
-        "mass": 900.0,
+        "mass": 200.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
-        "collisionNode": "cls_body_03"
+        "collisionNode": "ex_decor_09_dm"
       },
       {
         "node": "ex_decor_26",

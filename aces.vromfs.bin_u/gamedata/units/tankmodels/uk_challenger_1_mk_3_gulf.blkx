@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -2156,7 +2156,14 @@
       "animationMultiplier": 0.62,
       "width": 0.61,
       "height": 0.06,
-      "fricFrontal": [1.0,0.8]
+      "fricFrontal": [1.0,0.8],
+      "tracksTensionK": [5.0,9.0,5.0],
+      "trackMesh": "uk_challenger_1_phys_track_line",
+      "trackLen": 0.167,
+      "trackCount": 94,
+      "trackFadeTime": 1.5,
+      "trackEmitSparks": false,
+      "trackStartOffset": 0.06
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2200,7 +2207,11 @@
       "frontBackGearRadius": 0.3,
       "defaultDampeningForce": [170000.0,170000.0],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_drive": 0.32,
+      "wheel_l_drive": 0.32,
+      "wheel_r_front": 0.32,
+      "wheel_l_front": 0.32
     }
   },
   "PhysSys": {

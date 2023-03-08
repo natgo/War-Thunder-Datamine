@@ -134,7 +134,9 @@
           "setTargetDesignationRange": {
             "azimuthRange": [-50.0,50.0],
             "elevationRange": [-40.0,50.0],
-            "distanceRange": [0.0,148000.0]
+            "distanceRange": [0.0,148000.0],
+            "distanceWidth": 2000.0,
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyMode": {
@@ -485,7 +487,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -496,7 +500,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

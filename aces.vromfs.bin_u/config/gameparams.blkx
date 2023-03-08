@@ -100,6 +100,8 @@
   "turretRotationResyncFilterBetta": 0.005,
   "turretRotationResyncTimeStep": 0.01,
   "returnTimeAfterUgvDead": [3.0,4.0],
+  "defaultTankAimPointOffset": [0.0,0.0,0.0],
+  "defaultShipsAimPointOffset": [0.0,-2.0,0.0],
   "teleScale": 0.03,
   "minSkyAmbientLighting": [0.00954,0.012756,0.026677],
   "propeller_side_angle": 0.1,
@@ -297,7 +299,15 @@
   "preventBotsLeavingBattleArea": true,
   "wheelFireFxName": "tank_fire_track",
   "wheelFireTimers": [7.0,3.0],
-  "enableFlightModelDamageTexture": true,
+  "enableFlightModelDamageTexture": false,
+  "maxDistanceForUpdateWithShipPhys": 800.0,
+  "maxDistanceForDetailedUpdateShipPhys": 400.0,
+  "dynLightsShadows_z_bias": -0.0001,
+  "dynLightsShadows_slope_z_bias": -0.2,
+  "dynLightsShadows_shader_z_bias": 0.006,
+  "dynLightsShadows_shader_slope_z_bias": 0.016,
+  "planeTraceOpacityAoaCritMultRange": [0.5,0.85],
+  "planeTraceOpacityIndSpeedOffsetRange": [-20.0,0.0],
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [400.0,900.0,0.1,1.0],
@@ -369,10 +379,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmRed": {
@@ -387,10 +401,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmRed": {
@@ -405,10 +423,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmRed": {
@@ -423,10 +445,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmRed": {
@@ -441,10 +467,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmRed": {
@@ -459,10 +489,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmRed": {
@@ -477,10 +511,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmRedShip": {
@@ -497,10 +535,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmRed": {
@@ -515,10 +557,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmRedShip": {
@@ -535,10 +581,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmRed": {
@@ -553,10 +603,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmRedShip": {
@@ -573,10 +627,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmRedShip": {
@@ -593,10 +651,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "rocketRed": {
@@ -622,10 +684,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmDarkRed": {
@@ -640,10 +706,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmDarkRed": {
@@ -658,10 +728,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmDarkRed": {
@@ -676,10 +750,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmDarkRed": {
@@ -694,10 +772,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmDarkRed": {
@@ -712,10 +794,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmDarkRed": {
@@ -730,10 +816,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmDarkRedShip": {
@@ -750,10 +840,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmDarkRed": {
@@ -768,10 +862,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmDarkRedShip": {
@@ -788,10 +886,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmDarkRed": {
@@ -806,10 +908,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmDarkRedShip": {
@@ -826,10 +932,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmDarkRedShip": {
@@ -846,10 +956,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmBrightRed": {
@@ -864,10 +978,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmBrightRed": {
@@ -882,10 +1000,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmBrightRed": {
@@ -900,10 +1022,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmBrightRed": {
@@ -918,10 +1044,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmBrightRed": {
@@ -936,10 +1066,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmBrightRed": {
@@ -954,10 +1088,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmBrightRed": {
@@ -972,10 +1110,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmBrightRedShip": {
@@ -992,10 +1134,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmBrightRed": {
@@ -1010,10 +1156,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmBrightRedShip": {
@@ -1030,10 +1180,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmBrightRed": {
@@ -1048,10 +1202,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmBrightRedShip": {
@@ -1068,10 +1226,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmBrightRedShip": {
@@ -1088,10 +1250,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmWhite": {
@@ -1106,10 +1272,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmWhite": {
@@ -1124,10 +1294,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmWhite": {
@@ -1142,10 +1316,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmWhite": {
@@ -1160,10 +1338,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmWhite": {
@@ -1178,10 +1360,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmWhite": {
@@ -1196,10 +1382,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmWhite": {
@@ -1214,10 +1404,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmWhiteShip": {
@@ -1234,10 +1428,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmWhite": {
@@ -1252,10 +1450,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmWhiteShip": {
@@ -1272,10 +1474,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmWhite": {
@@ -1290,10 +1496,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmWhiteShip": {
@@ -1310,10 +1520,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmWhiteShip": {
@@ -1330,10 +1544,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmPaleWhite": {
@@ -1348,10 +1566,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmPaleWhite": {
@@ -1366,10 +1588,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmPaleWhite": {
@@ -1384,10 +1610,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmPaleWhite": {
@@ -1402,10 +1632,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmPaleWhite": {
@@ -1420,10 +1654,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmPaleWhite": {
@@ -1438,10 +1676,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmPaleWhite": {
@@ -1456,10 +1698,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmPaleWhiteShip": {
@@ -1476,10 +1722,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmPaleWhite": {
@@ -1494,10 +1744,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmPaleWhiteShip": {
@@ -1514,10 +1768,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmPaleWhite": {
@@ -1532,10 +1790,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmPaleWhiteShip": {
@@ -1552,10 +1814,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmPaleWhiteShip": {
@@ -1572,10 +1838,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_white",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_white",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmLightRed": {
@@ -1590,10 +1860,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmLightRed": {
@@ -1608,10 +1882,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmLightRed": {
@@ -1626,10 +1904,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmLightRed": {
@@ -1644,10 +1926,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmLightRed": {
@@ -1662,10 +1948,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmLightRed": {
@@ -1680,10 +1970,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmLightRed": {
@@ -1698,10 +1992,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmLightRedShip": {
@@ -1718,10 +2016,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmLightRed": {
@@ -1736,10 +2038,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmLightRedShip": {
@@ -1756,10 +2062,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmLightRed": {
@@ -1774,10 +2084,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmLightRedShip": {
@@ -1794,10 +2108,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmLightRedShip": {
@@ -1814,10 +2132,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "noColor": {
@@ -1837,10 +2159,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmGreenBlue": {
@@ -1855,10 +2181,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmGreenBlue": {
@@ -1873,10 +2203,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmGreenBlue": {
@@ -1891,10 +2225,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmGreenBlue": {
@@ -1909,10 +2247,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmGreenBlue": {
@@ -1927,10 +2269,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmGreenBlue": {
@@ -1945,10 +2291,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmGreenBlueShip": {
@@ -1965,10 +2315,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGreenBlue": {
@@ -1983,10 +2337,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGreenBlueShip": {
@@ -2003,10 +2361,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmGreenBlue": {
@@ -2021,10 +2383,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmGreenBlueShip": {
@@ -2041,10 +2407,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmGreenBlueShip": {
@@ -2061,10 +2431,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmYellow": {
@@ -2079,10 +2453,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmYellow": {
@@ -2097,10 +2475,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmYellow": {
@@ -2115,10 +2497,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmYellow": {
@@ -2133,10 +2519,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmYellow": {
@@ -2151,10 +2541,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmYellow": {
@@ -2169,10 +2563,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmYellow": {
@@ -2187,10 +2585,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmYellowShip": {
@@ -2207,10 +2609,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmYellow": {
@@ -2225,10 +2631,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmYellowShip": {
@@ -2245,10 +2655,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmYellow": {
@@ -2263,10 +2677,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmYellowShip": {
@@ -2283,10 +2701,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmYellowShip": {
@@ -2303,10 +2725,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmBlue": {
@@ -2321,10 +2747,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmBlue": {
@@ -2339,10 +2769,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmBlue": {
@@ -2357,10 +2791,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmBlue": {
@@ -2375,10 +2813,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmBlue": {
@@ -2393,10 +2835,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmBlue": {
@@ -2411,10 +2857,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmBlue": {
@@ -2429,10 +2879,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmBlueShip": {
@@ -2449,10 +2903,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmBlue": {
@@ -2467,10 +2925,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmBlueShip": {
@@ -2487,10 +2949,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmBlue": {
@@ -2505,10 +2971,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmBlueShip": {
@@ -2525,10 +2995,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmBlueShip": {
@@ -2545,10 +3019,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmDark_Blue": {
@@ -2563,10 +3041,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmDark_Blue": {
@@ -2581,10 +3063,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmDark_Blue": {
@@ -2599,10 +3085,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmDark_Blue": {
@@ -2617,10 +3107,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmDark_Blue": {
@@ -2635,10 +3129,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmDark_Blue": {
@@ -2653,10 +3151,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmDark_Blue": {
@@ -2671,10 +3173,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmDark_BlueShip": {
@@ -2691,10 +3197,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmDark_Blue": {
@@ -2709,10 +3219,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmDark_BlueShip": {
@@ -2729,10 +3243,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmDark_Blue": {
@@ -2747,10 +3265,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmDark_BlueShip": {
@@ -2767,10 +3289,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmDark_BlueShip": {
@@ -2787,10 +3313,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_blue",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_blue",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmPink": {
@@ -2805,10 +3335,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmPink": {
@@ -2823,10 +3357,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmPink": {
@@ -2841,10 +3379,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmPink": {
@@ -2859,10 +3401,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmPink": {
@@ -2877,10 +3423,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmPink": {
@@ -2895,10 +3445,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmPink": {
@@ -2913,10 +3467,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmPinkShip": {
@@ -2933,10 +3491,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmPink": {
@@ -2951,10 +3513,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmPinkShip": {
@@ -2971,10 +3537,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmPink": {
@@ -2989,10 +3559,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmPinkShip": {
@@ -3009,10 +3583,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmPinkShip": {
@@ -3029,10 +3607,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_red",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_red",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmOrange": {
@@ -3045,10 +3627,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmOrange": {
@@ -3061,10 +3647,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmOrange": {
@@ -3077,10 +3667,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmOrange": {
@@ -3093,10 +3687,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmOrange": {
@@ -3109,10 +3707,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmOrange": {
@@ -3125,10 +3727,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmOrange": {
@@ -3141,10 +3747,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmOrangeShip": {
@@ -3159,10 +3769,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmOrange": {
@@ -3175,10 +3789,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmOrangeShip": {
@@ -3193,10 +3811,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmOrange": {
@@ -3209,10 +3831,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmOrangeShip": {
@@ -3227,10 +3853,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmOrangeShip": {
@@ -3245,10 +3875,14 @@
       "color2": "#cc1b00f0",
       "startTime": 0.05,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmGreen": {
@@ -3263,10 +3897,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmGreen": {
@@ -3281,10 +3919,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmGreen": {
@@ -3299,10 +3941,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmGreen": {
@@ -3317,10 +3963,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmGreen": {
@@ -3335,10 +3985,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmGreen": {
@@ -3353,10 +4007,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmGreen": {
@@ -3371,10 +4029,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmGreenShip": {
@@ -3391,10 +4053,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGreen": {
@@ -3409,10 +4075,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGreenShip": {
@@ -3429,10 +4099,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmGreen": {
@@ -3447,10 +4121,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmGreenShip": {
@@ -3467,10 +4145,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmGreenShip": {
@@ -3487,10 +4169,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmWhiteGreen": {
@@ -3505,10 +4191,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmWhiteGreen": {
@@ -3523,10 +4213,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmWhiteGreen": {
@@ -3541,10 +4235,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmWhiteGreen": {
@@ -3559,10 +4257,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmWhiteGreen": {
@@ -3577,10 +4279,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmWhiteGreen": {
@@ -3595,10 +4301,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmWhiteGreen": {
@@ -3613,10 +4323,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmWhiteGreenShip": {
@@ -3633,10 +4347,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmWhiteGreen": {
@@ -3651,10 +4369,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmWhiteGreenShip": {
@@ -3671,10 +4393,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmWhiteGreen": {
@@ -3689,10 +4415,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmWhiteGreenShip": {
@@ -3709,10 +4439,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmWhiteGreenShip": {
@@ -3729,10 +4463,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_green",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_green",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "7mmGold": {
@@ -3747,10 +4485,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "12mmGold": {
@@ -3765,10 +4507,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "20mmGold": {
@@ -3783,10 +4529,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_small_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_small_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
       }
     },
     "30mmGold": {
@@ -3801,10 +4551,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "37mmGold": {
@@ -3819,10 +4573,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "50mmGold": {
@@ -3837,10 +4595,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_med_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_med_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.09,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.1,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
       }
     },
     "76mmGold": {
@@ -3855,10 +4617,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "76mmGoldShip": {
@@ -3875,10 +4641,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGold": {
@@ -3893,10 +4663,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "100mmGoldShip": {
@@ -3913,10 +4687,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "152mmGold": {
@@ -3931,10 +4709,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "200mmGoldShip": {
@@ -3951,10 +4733,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "300mmGoldShip": {
@@ -3971,10 +4757,14 @@
       "startColor2": "#fff83246",
       "startTime": 0.025,
       "fx": {
-        "destroyedFxType": "tracers_destroyed_big_yellow",
-        "destroyedFxChance": 0.2,
-        "ricochetedFxType": "tracers_ricocheted_big_yellow",
-        "ricochetedFxChance": 0.2
+        "destroyedFxType": "tracer_destr_big",
+        "destroyedFxChance": 0.15,
+        "ricochetedFxType": "tracer_ricocheted_big",
+        "ricochetedFxChance": 0.2,
+        "destroyedFxVelocity": 15.0,
+        "ricochetedFxVelocity": 40.0,
+        "destroyedFxTtl": 6.0,
+        "ricochetedFxTtl": 7.0
       }
     },
     "12mmYellowAAgun": {
@@ -4133,7 +4923,8 @@
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": false,
       "shipSupportPlanes": true,
-      "lightDM": false
+      "lightDM": false,
+      "checkActivityByPlayerDamage": false
     },
     "realistic": {
       "baseDifficulty": 1,
@@ -4199,7 +4990,8 @@
       "hudSendSquare": true,
       "hudShowAttentionMarkForAircraft": false,
       "shipSupportPlanes": false,
-      "lightDM": false
+      "lightDM": false,
+      "checkActivityByPlayerDamage": false
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -4229,7 +5021,7 @@
       "hudRadar": false,
       "hudDamageModel": 0,
       "hudDamageIndicator": true,
-      "hudLargeAwardMessages": false,
+      "hudLargeAwardMessages": true,
       "hudWarnings": false,
       "noRespawns": false,
       "respDifficulty": 2,
@@ -4264,7 +5056,8 @@
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": false,
-      "shipSupportPlanes": false
+      "shipSupportPlanes": false,
+      "checkActivityByPlayerDamage": false
     }
   },
   "custom_difficulty": {
@@ -4333,6 +5126,7 @@
       "hudShowAttentionMarkForAircraft": true,
       "shipSupportPlanes": false,
       "lightDM": false,
+      "checkActivityByPlayerDamage": false,
       "setDifficulty": 1
     },
     "tank_hardcore": {
@@ -4399,6 +5193,7 @@
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": false,
       "shipSupportPlanes": false,
+      "checkActivityByPlayerDamage": false,
       "setDifficulty": 2
     },
     "ship_arcade": {
@@ -4466,6 +5261,7 @@
       "hudShowAttentionMarkForAircraft": false,
       "shipSupportPlanes": true,
       "lightDM": false,
+      "checkActivityByPlayerDamage": true,
       "setDifficulty": 0
     },
     "ship_realistic": {
@@ -4533,6 +5329,7 @@
       "hudShowAttentionMarkForAircraft": true,
       "shipSupportPlanes": false,
       "lightDM": false,
+      "checkActivityByPlayerDamage": true,
       "setDifficulty": 1
     }
   },
@@ -5248,7 +6045,7 @@
         "allowTargeting": false,
         "hudTankDetectedByAircraft": false,
         "offenderUnmaskingTime": 0.0,
-        "victimUnmaskingTime": 0.0,
+        "victimUnmaskingTime": 10.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
@@ -5264,7 +6061,7 @@
         "allowTargeting": false,
         "hudTankDetectedByAircraft": false,
         "offenderUnmaskingTime": 0.0,
-        "victimUnmaskingTime": 0.0,
+        "victimUnmaskingTime": 10.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 5.0,
         "allowTargetingWOMarkersShips": true,
@@ -5313,7 +6110,7 @@
         "allowTargeting": true,
         "hudTankDetectedByAircraft": false,
         "offenderUnmaskingTime": 0.0,
-        "victimUnmaskingTime": 0.0,
+        "victimUnmaskingTime": 10.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 0.0,
         "detectSpawnTime": 3.0,
@@ -5888,7 +6685,21 @@
         "rearmSupportPlaneOnField": true,
         "returnTimerAfterOwnerDead": 45.0
       }
+    },
+    "checkActivityByPlayerDamage": {
+      "off": {
+        "checkActivityByPlayerDamage": false
+      },
+      "on": {
+        "checkActivityByPlayerDamage": true
+      }
     }
+  },
+  "commonScenes": {
+    "scene": "gameData/scenes/common_scene.blk"
+  },
+  "commonClientScenes": {
+    "scene": "gameData/scenes/common_client_scene.blk"
   },
   "shipBigCaliberPenetrationDistances": {
     "dist": [
@@ -6904,7 +7715,7 @@
     "shotDirDetectAngle": 4.0,
     "depthChargeDetectDistance": 50.0,
     "navalMineDetectDistance": 160.0,
-    "sightLineDistMax": 12000.0
+    "sightLineDistMax": 22000.0
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -11368,10 +12179,6 @@
       "dev": [1.0,0.0]
     }
   },
-  "facebook": {
-    "website": "http://www.facebook.com",
-    "permissions": "public_profile,user_friends"
-  },
   "oculusGui": {
     "uiDepth": 5.0,
     "uiVFovScale": 0.765,
@@ -11585,192 +12392,357 @@
     },
     "viewer_xray": {
       "p": [
-        "aps_sensor_",
-        "aps_launcher_",
-        "driver_",
-        "machine_gunner_",
-        "loader_",
-        "commander_",
-        "gunner_",
-        "optic_",
-        "drive_turret_h_",
-        "drive_turret_v_",
-        "cannon_breech_",
-        "fuel_tank_",
-        "ammo_",
-        "radiator_",
-        "radio_station_",
         "sonar_",
-        "engine_",
-        "transmission_",
-        "steering_gear_",
-        "engine_room_",
-        "gun_barrel_dm",
-        "gun_barrel_0",
-        "gun_barrel_1",
-        "tt_",
-        "torpedo_0",
-        "torpedo_1",
-        "torpedo_2",
-        "torpedo_3",
-        "mg_",
         "composite_armor_hull_",
         "composite_armor_turret_",
         "ex_era_hull_",
         "ex_era_turret_",
-        "antenna_target_location_",
-        "antenna_target_tagging_",
-        "antenna_target_tagging_mount_",
-        "countermeasure_",
-        "fire_director_",
-        "fire_director_mount_",
-        "catapult_",
-        "catapult_mount_",
-        "aircraft_",
-        "coal_bunker_",
-        "fire_control_room_",
-        "rangefinder_",
-        "rangefinder_mount_",
-        "handling_room_",
+        {
+          "name": "aps_sensor_",
+          "xrayColor": "#e3bbe3ff"
+        },
+        {
+          "name": "aps_launcher_",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "driver_",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "machine_gunner_",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "loader_",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "commander_dm",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "gunner_",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "ammo_",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "fuel_tank_",
+          "xrayColor": "#ff9900ff"
+        },
+        {
+          "name": "cannon_breech_",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "drive_turret_v_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "drive_turret_h_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "optic_",
+          "xrayColor": "#9fc5e8ff"
+        },
+        {
+          "name": "commander_panoramic_sight_",
+          "xrayColor": "#9fc5e8ff"
+        },
+        {
+          "name": "radiator_",
+          "xrayColor": "#b9cdb0ff"
+        },
+        {
+          "name": "radio_station_",
+          "xrayColor": "#fdfd94ff"
+        },
+        {
+          "name": "engine_",
+          "xrayColor": "#4ba650ff"
+        },
+        {
+          "name": "transmission_",
+          "xrayColor": "#7bbc5fff"
+        },
+        {
+          "name": "steering_gear_",
+          "xrayColor": "#a298c0ff"
+        },
+        {
+          "name": "engine_room_",
+          "xrayColor": "#4ba650ff"
+        },
+        {
+          "name": "gun_barrel_dm",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "gun_barrel_0",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "gun_barrel_1",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "tt_",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "torpedo_0",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "torpedo_1",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "torpedo_2",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "torpedo_3",
+          "xrayColor": "#cc0000ff"
+        },
+        {
+          "name": "mg_",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "antenna_target_location_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "antenna_target_tagging_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "antenna_target_tagging_mount_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "countermeasure_",
+          "xrayColor": "#e3bbe3ff"
+        },
+        {
+          "name": "fire_director_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "fire_director_mount_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "fire_control_room_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "rangefinder_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "rangefinder_mount_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "handling_room_",
+          "xrayColor": "#58a5ecff"
+        },
+        {
+          "name": "catapult_",
+          "xrayColor": "#decebdff"
+        },
+        {
+          "name": "catapult_mount_",
+          "xrayColor": "#decebdff"
+        },
+        {
+          "name": "aircraft_",
+          "xrayColor": "#decebdff"
+        },
+        {
+          "name": "coal_bunker_",
+          "xrayColor": "#efbb6bff"
+        },
         {
           "name": "depth_charge_0",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_1",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_2",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_3",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_4",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_5",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_6",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_7",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_8",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_9",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_l",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "depth_charge_r",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_0",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_1",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_2",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_3",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_4",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_5",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "mine_6",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "auxiliary_caliber_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#ee5050ff"
         },
         {
           "name": "auxiliary_caliber_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#ee5050ff"
         },
         {
           "name": "main_caliber_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#b42323ff"
         },
         {
           "name": "main_caliber_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#b42323ff"
         },
         {
           "name": "aa_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#ee5050ff"
         },
         {
           "name": "aa_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#ee5050ff"
         },
         {
           "name": "depth_charge_r",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "ammunition_storage",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "ammunition_storage_shells",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "ammunition_storage_charges",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#cc0000ff"
         },
         {
           "name": "ammunition_storage_aux",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "#c83232ff"
         },
         {
-          "name": "coal_bunker",
-          "unit": "ship"
+          "name": "coal_bunker_",
+          "unit": "ship",
+          "xrayColor": "#efbb6bff"
         },
         {
-          "name": "bridge",
-          "unit": "ship"
+          "name": "bridge_",
+          "unit": "ship",
+          "xrayColor": "#a298c0ff"
         },
         {
-          "name": "funnel",
-          "unit": "ship"
+          "name": "funnel_",
+          "unit": "ship",
+          "xrayColor": "#b9cdb0ff"
         },
         {
-          "name": "pump",
-          "unit": "ship"
+          "name": "pump_",
+          "unit": "ship",
+          "xrayColor": "#ccccccff"
         },
         {
-          "name": "elevator",
-          "unit": "ship"
+          "name": "elevator_",
+          "unit": "ship",
+          "xrayColor": "#a0c8e6ff"
         }
       ]
     },
@@ -12559,6 +13531,38 @@
         },
         {
           "name": "wheel_r_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_01_",
           "modelNames": "aubl_74_60_70m"
         },
         {
@@ -12972,6 +13976,118 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "gmc_cckw_353_m45_quad"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_07_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_07_",
+          "modelNames": "sdkfz_251_10"
         },
         {
           "name": "wheel_r_01_",
@@ -12979,6 +14095,54 @@
         },
         {
           "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_07_",
           "modelNames": "sdkfz_251_21"
         },
         {
@@ -12987,6 +14151,54 @@
         },
         {
           "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_07_",
           "modelNames": "sdkfz_251_22"
         },
         {
@@ -13703,14 +14915,6 @@
         },
         {
           "name": "wheel_r_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_r_01_",
           "modelNames": "vab_santal"
         },
         {
@@ -13780,6 +14984,150 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "fiat_cm52"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "fiat_cm52"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "fiat_cm52"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "fiat_cm52"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_16_mod"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "type_16_mod"
         }
       ]
     },
@@ -14091,34 +15439,107 @@
     },
     "viewer_xray": {
       "p": [
-        "pilot",
-        "gunner",
-        "wingcontrol",
-        "wingcontrol",
-        "wingcontrol",
-        "tailcontrol",
-        "transmission",
-        "engine_shaft",
-        "propeller_shaft",
-        "spar",
-        "engine",
-        "tank",
-        "oil",
-        "water",
-        "cannon",
-        "mgun",
-        "gun0",
-        "gun1",
-        "gun2",
-        "gun3",
-        "gun4",
-        "gun5",
-        "gun6",
-        "gun7",
-        "gun8",
-        "gun9",
-        "radar",
-        "ext_armor"
+        "ext_armor",
+        {
+          "name": "pilot",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "gunner",
+          "xrayColor": "#d2c7a6ff"
+        },
+        {
+          "name": "wingcontrol",
+          "xrayColor": "#a298c0ff"
+        },
+        {
+          "name": "tailcontrol",
+          "xrayColor": "#a298c0ff"
+        },
+        {
+          "name": "transmission",
+          "xrayColor": "#7bbc5fff"
+        },
+        {
+          "name": "engine_shaft",
+          "xrayColor": "#7bbc5fff"
+        },
+        {
+          "name": "propeller_shaft",
+          "xrayColor": "#7bbc5fff"
+        },
+        {
+          "name": "spar",
+          "xrayColor": "#ccccccff"
+        },
+        {
+          "name": "engine",
+          "xrayColor": "#4ba650ff"
+        },
+        {
+          "name": "tank",
+          "xrayColor": "#ff9900ff"
+        },
+        {
+          "name": "oil",
+          "xrayColor": "#b9cdb0ff"
+        },
+        {
+          "name": "water",
+          "xrayColor": "#b9cdb0e6"
+        },
+        {
+          "name": "cannon",
+          "xrayColor": "#ee5050ff"
+        },
+        {
+          "name": "mgun",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun0",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun1",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun2",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun3",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun4",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun5",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun6",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun7",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun8",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "gun9",
+          "xrayColor": "#ee5050e6"
+        },
+        {
+          "name": "radar",
+          "xrayColor": "#58a5ecff"
+        }
       ]
     },
     "body": {
@@ -14833,7 +16254,10 @@
         "airfield_flight_light_blue",
         "airfield_flight_light_red",
         "airfield_flight_light_green",
-        "airfield_flight_light_yellow"
+        "airfield_flight_light_yellow",
+        "japan_i_400_dmg_dp_01",
+        "japan_i_400_dmg_dp_02",
+        "japan_i_400_dmg_dp_03"
       ]
     },
     "hideForMode1": {
@@ -15231,7 +16655,13 @@
         "quarry_conveyor_small",
         "ussr_dragline_excavator_esh_20_90",
         "ussr_dragline_excavator_esh_20_90_dmg",
-        "ussr_dragline_excavator_esh_20_90_bucket"
+        "ussr_dragline_excavator_esh_20_90_bucket",
+        "bucket_wheel_excavator_crane_platform",
+        "bucket_wheel_excavator_jib",
+        "bucket_wheel_excavator_hull",
+        "bucket_wheel_excavator_wheel",
+        "searchlight_tower_winter_a",
+        "searchlight_tower_winter_a_dmg"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -15492,7 +16922,7 @@
   },
   "scene": {
     "z_near": 4.5,
-    "z_far": 40000.0,
+    "z_far": 100000.0,
     "tank_z_near": 0.2,
     "tank_z_far": 20000.0
   },
@@ -15597,6 +17027,80 @@
       [10000.0,200.0],
       [20000.0,300.0]
     ]
+  },
+  "tankExhaustSettings": {
+    "scale": {
+      "row": [
+        [0.0,0.3],
+        [0.1,0.5],
+        [0.5,0.6],
+        [0.9,0.7],
+        [1.0,1.0]
+      ]
+    },
+    "alpha": {
+      "row": [
+        [0.0,0.2],
+        [0.1,0.3],
+        [0.5,0.6],
+        [0.9,0.8],
+        [1.0,1.0]
+      ]
+    },
+    "velocity": {
+      "row": [
+        [0.0,0.2],
+        [0.1,0.3],
+        [0.5,0.5],
+        [0.9,0.6],
+        [1.0,1.0]
+      ]
+    },
+    "spawnRate": {
+      "row": [
+        [0.0,0.3],
+        [0.1,0.7],
+        [0.5,0.8],
+        [1.0,1.0]
+      ]
+    }
+  },
+  "shipExhaustSettings": {
+    "scale": {
+      "row": [
+        [0.0,0.3],
+        [0.1,0.6],
+        [0.5,0.7],
+        [0.9,0.9],
+        [1.0,1.0]
+      ]
+    },
+    "alpha": {
+      "row": [
+        [0.0,0.2],
+        [0.1,0.3],
+        [0.5,0.6],
+        [0.9,0.9],
+        [1.0,1.0]
+      ]
+    },
+    "velocity": {
+      "row": [
+        [0.0,0.2],
+        [0.1,0.5],
+        [0.5,0.8],
+        [0.9,0.9],
+        [1.0,1.0]
+      ]
+    },
+    "spawnRate": {
+      "row": [
+        [0.0,0.3],
+        [0.1,0.7],
+        [0.5,0.8],
+        [1.0,1.0]
+      ]
+    }
   },
   "DofGunnerFPSCamera": {
     "enable": true,
@@ -15800,6 +17304,13 @@
   "rocketMotorParams": {
     "rocketYZVelocityMultiplier": 1.0
   },
+  "shellBallisticsParams": {
+    "useCxiMach": false,
+    "applyWingAreaMultToCxAoA": true,
+    "props": {
+      "CxAoA": 0.3
+    }
+  },
   "dropSplashes": {
     "splashesCount": 10000,
     "distance": 50.0,
@@ -15905,7 +17416,7 @@
   },
   "holeRenderingRadiusConstants": {
     "maxRadius": 0.75,
-    "minRadius": 0.05,
+    "minRadius": 0.12,
     "explosionRadiusMult": 0.8,
     "caliberRadiusMult": 1.5,
     "applyCaliberRadiusIfExplosion": false,
@@ -15918,20 +17429,17 @@
     "useCaliberOnRadius": true,
     "holeOneEntryPointForHe": true,
     "mininmumRadiusForShrapnel": 0.01,
-    "minRadiusForBulletHoles": [
-      0.01,
-      0.0
-    ],
     "minCaliberForBulletHoles": 0.014,
     "multForBurnRadius": 0.2,
     "minBurnRadius": 0.01,
     "maxBurnRadius": 1.0,
     "multForBulletHolesRadius": 1.0,
+    "minRadiusForBulletHoles": 0.01,
     "maxRadiusForBulletHoles": 0.1,
     "multForRadiusDiffMark": 1.0,
     "minRadiusDiffMark": -1.0,
     "maxRadiusDiffMark": 1.0,
-    "multForRadiusShrapnelDecal": 3.0,
+    "multForRadiusShrapnelDecal": 1.3,
     "minRadiusShrapnelDecal": 0.15,
     "maxRadiusShrapnelDecal": 10.0,
     "multForRadiusBulletDiffMark": 1.0,
@@ -15948,7 +17456,18 @@
     "holeBurnMarkNoise": [4.0,0.3,0.01,3.0],
     "burnMarkColor": [0.01,0.01,0.01,0.8],
     "useProjectedDecalsForSplashDecals": true,
-    "useExplosionPatch": true
+    "useExplosionPatch": true,
+    "multRadiusForTracedExplosionPatch": 1.0,
+    "multRadiusForProjectedExplosionPatch": 1.0,
+    "burnMarkRadiusMultBomber": 0.8,
+    "burnMarkRadiusMultOther": 0.5,
+    "burnMarkOpacityDeltaTime": 6.0,
+    "burnMarkMaxOpacity": 0.93,
+    "maximumRayPerProximityDamage": 15,
+    "minRadiusProximityDamage": 0.6,
+    "maxRadiusProximityDamage": 0.7,
+    "numProximityDamageVisualPerPart": 3,
+    "showBurnMark": true
   },
   "cutting": {
     "diffMarksTex": "dyn_decals_atlas_a",
@@ -16272,8 +17791,8 @@
   "prefetchEffects": {
     "name": [
       "explosion_ship_big",
-      "tank_exhaust",
-      "ship_exhaust",
+      "tank_exhaust_med",
+      "ship_exhaust_med",
       "ad_metal",
       "ad_metal_small",
       "ad_wood_small",
@@ -16314,5 +17833,16 @@
       "location_ground_papers",
       "dust_pieces"
     ]
+  },
+  "ambientWindParams": {
+    "maxWindNoiseSpeed": 30.0,
+    "minWindNoiseSpeed": 1.0,
+    "maxWindNoiseScale": 100.0,
+    "minWindNoiseScale": 12.0,
+    "minWindNoiseStrength": 8.0,
+    "maxWindNoiseStrength": 40.0,
+    "maxWindNoisePerpendicularStrength": 0.5,
+    "minWindNoisePerpendicularStrength": 0.2,
+    "windNoiseTextureName": "perlin_noise_wind_ati1n"
   }
 }

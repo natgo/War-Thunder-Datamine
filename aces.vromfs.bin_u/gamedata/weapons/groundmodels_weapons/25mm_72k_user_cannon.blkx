@@ -51,7 +51,7 @@
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "25mm_br_132",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -209,20 +209,20 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.2,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 1.0,
+            "radiusScale": 1.085,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -353,20 +353,20 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.2,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 1.0,
+            "radiusScale": 1.085,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 1.0
           }
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -472,7 +472,7 @@
       "bulletType": "ap_t",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "25mm_br_132",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],

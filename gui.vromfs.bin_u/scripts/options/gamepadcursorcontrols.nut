@@ -1,9 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { send } = require("eventbus")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
@@ -11,15 +12,13 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
 ::g_gamepad_cursor_controls <- {
   currentOptionValue = IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
 
-  function init()
-  {
+  function init() {
     this.currentOptionValue = this.getValue()
     ::get_cur_gui_scene()?.setUseGamepadCursorControl(this.currentOptionValue)
   }
 
 
-  function setValue(newValue)
-  {
+  function setValue(newValue) {
     if (!this.canChangeValue() || this.currentOptionValue == newValue)
       return
     ::get_cur_gui_scene()?.setUseGamepadCursorControl(newValue)
@@ -32,12 +31,11 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     this.currentOptionValue = newValue
     ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
     ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-    send("updateExtWatched", { gamepadCursorControl = newValue })
+    updateExtWatched({ gamepadCursorControl = newValue })
   }
 
 
-  function getValue()
-  {
+  function getValue() {
     if (!this.canChangeValue())
       return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
     if (!::g_login.isProfileReceived())
@@ -49,13 +47,11 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     )
   }
 
-  function canChangeValue()
-  {
+  function canChangeValue() {
     return false // ::is_mouse_available()
   }
 
-  function onEventProfileUpdated(_p)
-  {
+  function onEventProfileUpdated(_p) {
     if (!::g_login.isLoggedIn())
       this.setValue(this.getValue())
   }

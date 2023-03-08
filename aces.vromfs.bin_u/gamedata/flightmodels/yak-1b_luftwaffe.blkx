@@ -185,10 +185,10 @@
         "hp": 39.5
       },
       "tank2_dm": {
-        "hp": 42.4
+        "hp": 39.5
       },
       "tank3_dm": {
-        "hp": 43.5
+        "hp": 39.5
       },
       "tank4_dm": {
         "hp": 39.5
@@ -976,34 +976,39 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1013,34 +1018,39 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1050,34 +1060,39 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1087,34 +1102,39 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.03,
+            "fire": 0.01,
             "leak": 0.5
           },
           {
-            "damage": 10.0,
-            "fire": 0.5,
+            "damage": 20.0,
+            "fire": 0.1,
             "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.8,
+            "fire": 0.5,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
           },
           {
             "damage": 30.0,
-            "fire": 15.0,
+            "fire": 5.0,
             "leak": 25.0
           },
           {
-            "damage": 80.0,
+            "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -1733,9 +1753,9 @@
   "cockpit": {
     "headPos": [-0.86,0.675,0.0],
     "headPosOnShooting": [-0.839,0.675,0.0],
-    "lightPos": [-0.417428,0.365032,-0.33633],
+    "lightPos": [-0.13,0.25,0.0],
     "lightColor": [0.62,0.3,0.21],
-    "lightAttenuation": 10.0,
+    "lightRadius": 0.35,
     "collimatorSize": 0.12,
     "devices": {
       "speed": [0.0,222.222],
@@ -1964,29 +1984,17 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "yak_1b_a*",
-        "to": "yak_1b_luftwaffe_a_tomoe*"
-      },
-      {
-        "from": "yak_1b_a_dmg*",
-        "to": "yak_1b_luftwaffe_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yak_1b_a*",
+      "to": "yak_1b_luftwaffe_a_tomoe*"
+    }
   },
   "default_skin": {
     "name": "luftwaffe",
-    "replace_tex": [
-      {
-        "from": "yak_1b_a*",
-        "to": "yak_1b_luftwaffe_a*"
-      },
-      {
-        "from": "yak_1b_a_dmg*",
-        "to": "yak_1b_luftwaffe_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yak_1b_a*",
+      "to": "yak_1b_luftwaffe_a*"
+    }
   },
   "modifications": {
     "cd_98": {},

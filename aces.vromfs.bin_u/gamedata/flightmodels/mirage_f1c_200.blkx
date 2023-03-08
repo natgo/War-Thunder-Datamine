@@ -1,6 +1,6 @@
 {
   "model": "mirage_f1c_200",
-  "fmFile": "fm/mirage_f1c.blk",
+  "fmFile": "fm/mirage_f1c_200.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeC": 0.09,
   "gearSinkRangeLR": 0.19,
@@ -14,6 +14,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -1982,6 +1983,12 @@
         "gunpod_cc_420_001"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2356,6 +2363,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare3",
               "flash": "flare3",
+              "dm": "cannon3_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -2666,6 +2674,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare4",
               "flash": "flare4",
+              "dm": "cannon4_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -3027,13 +3036,7 @@
         "from": "mirage_f1c_200_c*"
       },
       {
-        "from": "mirage_f1c_200_c_dmg*"
-      },
-      {
         "from": "mirage_f1c_200_n*"
-      },
-      {
-        "from": "mirage_f1c_200_n_dmg*"
       }
     ]
   },
@@ -3056,7 +3059,7 @@
     "emtr_break_wing2_r_from": [-0.152138,0.375242,-2.53928],
     "emtr_break_wing2_r_to": [-0.152138,0.375242,-3.21162],
     "emtr_break_wing_tail": [-3.16721,0.0,0.0],
-    "finCut": true,
+    "finCut": false,
     "emtr_break_tail_from": [-3.13008,0.0275823,-2.98023e-08],
     "emtr_break_tail_to": [-5.1859,0.0275823,-2.98023e-08]
   }

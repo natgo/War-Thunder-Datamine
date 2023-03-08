@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -13,7 +14,7 @@ let function decodeJwtAndHandleErrors(jwt) {
   if (payload != null && jwtError == null)
     return { jwt, payload }
 
-  return { error = jwtError }
+  return { decodError = jwtError }
 }
 
 return {

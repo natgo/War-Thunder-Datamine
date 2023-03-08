@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,14 +7,14 @@ let userstat = require("userstat")
 let { get_time_msec } = require("dagor.time")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
+let { APP_ID_CUSTOM_LEADERBOARD
+} = require("%scripts/leaderboard/requestLeaderboardData.nut")
+let DataBlock = require("DataBlock")
+let { json_to_string } = require("json")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
-
-let alwaysForceRefreshEvents = {
-  LoginComplete = true
-}
 
 let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
   let data = Watched(defValue)
@@ -50,13 +51,13 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
 
     prepareToRequest()
 
-    request(function(result){
+    request(function(result) {
       processResult(result, cb)
     })
   }
 
   let function forceRefresh(cb = null) {
-    lastTime.mutate(@(v) v.__update({ update = 0, request = 0}))
+    lastTime.mutate(@(v) v.__update({ update = 0, request = 0 }))
     refresh(cb)
   }
 
@@ -65,10 +66,8 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     forceRefresh()
   }
 
-  addListenersWithoutEnv(
-    alwaysForceRefreshEvents.__merge(forceRefreshEvents).map(@(_v) invalidateConfig),
-    ::g_listener_priority.CONFIG_VALIDATION
-  )
+  addListenersWithoutEnv(forceRefreshEvents.map(@(_v) invalidateConfig),
+    ::g_listener_priority.CONFIG_VALIDATION)
 
   if (lastTime.value.request >= lastTime.value.update)
     forceRefresh()
@@ -94,7 +93,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
     action = "GetUserStatDescList"
   }, cb),
   {},
-  { GameLocalizationChanged = true})
+  { GameLocalizationChanged = true, LoginComplete = true })
 
 let statsUpdatable = makeUpdatable("GetStats",
   @(cb) userstat.request({
@@ -102,13 +101,23 @@ let statsUpdatable = makeUpdatable("GetStats",
       headers = { appid = APP_ID }
       action = "GetStats"
     }, cb),
-  {})
+  {},
+  { LoginComplete = true })
 
 let unlocksUpdatable = makeUpdatable("GetUnlocks",
   @(cb) userstat.request({
       add_token = true
       headers = { appid = APP_ID }
       action = "GetUnlocks"
+    }, cb),
+  {},
+  { LoginComplete = true })
+
+let customLeaderboardStatsUpdatable = makeUpdatable("GetCustomLeaderboardStats",
+  @(cb) userstat.request({
+      add_token = true
+      headers = { appid = APP_ID_CUSTOM_LEADERBOARD }
+      action = "GetStats"
     }, cb),
   {})
 
@@ -122,12 +131,12 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
     unlocksUpdatable.processResult(result, cb)
   }
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.addInt("appid", APP_ID)
 
   let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
     EATT_JSON_REQUEST, blk,
-    ::json_to_string({ unlock = unlockName, stage = stage }, false),
+    json_to_string({ unlock = unlockName, stage }, false),
     -1)
   ::g_tasker.addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }
@@ -149,7 +158,7 @@ let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && hasFe
 
 local validateTaskTimer = -1
 let function validateUserstatData(_dt = 0) {
-  if ( validateTaskTimer >= 0 ) {
+  if (validateTaskTimer >= 0) {
     ::periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1
   }
@@ -177,6 +186,10 @@ addListenersWithoutEnv({
   BattleEnded    = @(_p) validateUserstatData()
 })
 
+let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data
+userstatCustomLeaderboardStats.subscribe(
+  @(_) ::broadcastEvent("UserstatCustomLeaderboardStats"))
+
 return {
   userstatUnlocks
   userstatDescList
@@ -187,4 +200,6 @@ return {
   receiveUnlockRewards
   isUserstatMissingData
   validateUserstatData
+  userstatCustomLeaderboardStats
+  refreshUserstatCustomLeaderboardStats = @() customLeaderboardStatsUpdatable.refresh()
 }

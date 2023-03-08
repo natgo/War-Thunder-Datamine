@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,8 +25,7 @@ let list = {
   }
   WW_OPERATIONS = {
     text = "#worldWar/menu/selectOperation"
-    onClickFunc = function(_obj, _handler)
-    {
+    onClickFunc = function(_obj, _handler) {
       let curOperation = getOperationById(::ww_get_operation_id())
       if (!curOperation)
         return ::g_world_war.openOperationsOrQueues()
@@ -81,14 +81,14 @@ let list = {
   WW_LEADERBOARDS = {
     text = "#mainmenu/titleLeaderboards"
     onClickFunc = @(_obj, _handler) ::gui_start_modal_wnd(::gui_handlers.WwLeaderboard,
-      {beginningMode = "ww_clans"})
+      { beginningMode = "ww_clans" })
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_ACHIEVEMENTS = {
     text = "#mainmenu/btnUnlockAchievement"
     onClickFunc = @(_obj, handler) handler?.onOpenAchievements()
     isHidden = @(...) ::g_unlocks.getUnlocksByType("achievement").findindex(
-      @(u) u?.chapter && u.chapter == "worldwar") == null
+      @(u) u?.chapter && u.chapter == "worldwar" && u?.hidden != true) == null
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_SCENARIO_DESCR = {

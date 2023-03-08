@@ -24,7 +24,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -104,6 +104,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -742,6 +750,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -1757,10 +1775,30 @@
     ]
   },
   "MetaParts": {
+    "bridge": {
+      "part": "bridge_dm",
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 415.0,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "conditionDamageType": "generic",
+          "conditionDamage": 3500.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      ]
+    },
     "cover": [
       {
         "part": "compartment_01_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
@@ -1779,6 +1817,9 @@
         "part": "compartment_02_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -1795,6 +1836,9 @@
       {
         "part": "compartment_03_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
@@ -1813,6 +1857,9 @@
         "part": "compartment_04_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -1830,6 +1877,9 @@
         "part": "compartment_05_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -1844,23 +1894,6 @@
         ]
       }
     ],
-    "bridge": {
-      "part": "bridge_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 415.0,
-          "kill": true,
-          "killEffect": "destruction"
-        },
-        {
-          "conditionDamageType": "generic",
-          "conditionDamage": 3500.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      ]
-    },
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",
@@ -1899,13 +1932,7 @@
         "rangefinder_04_dm",
         "rangefinder_05_dm",
         "fire_director_01_dm",
-        "fire_director_02_dm",
-        "compartment_01_dm",
-        "compartment_02_dm",
-        "compartment_03_dm",
-        "compartment_04_dm",
-        "compartment_05_dm",
-        "compartment_06_dm"
+        "fire_director_02_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -3577,10 +3604,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_rangefinder": {
       "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack"

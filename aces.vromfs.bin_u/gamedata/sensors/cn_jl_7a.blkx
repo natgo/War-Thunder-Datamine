@@ -1,11 +1,11 @@
 {
-  "name": "Sapphire-21",
+  "name": "JL-7A",
   "type": "radar",
   "showMissileLaunchZone": true,
   "transivers": {
     "search": {
-      "sideLobesAttenuation": -20.0,
-      "power": 300.0,
+      "sideLobesAttenuation": -18.0,
+      "power": 250.0,
       "band": 8,
       "rcs": 3.0,
       "range": 18000.0,
@@ -13,52 +13,52 @@
       "timeGainControl": true,
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 4.8,
-          "sideLobesSensitivity": -27.0
+          "angleHalfSens": 3.4,
+          "sideLobesSensitivity": -25.0
         },
         "elevation": {
-          "angleHalfSens": 8.0,
-          "sideLobesSensitivity": -27.0
+          "angleHalfSens": 5.6,
+          "sideLobesSensitivity": -25.0
         }
       }
     },
     "track": {
-      "sideLobesAttenuation": -20.0,
-      "power": 300.0,
+      "sideLobesAttenuation": -18.0,
+      "power": 250.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 15000.0,
-      "rangeMax": 30000.0,
+      "range": 12000.0,
+      "rangeMax": 20000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 4.8,
+        "angleHalfSens": 3.4,
         "sideLobesSensitivity": -25.0
       }
     }
   },
   "signals": {
     "search": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [40.0,3.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "friendFoeId": true,
+      "friendFoeId": false,
       "distance": {
         "presents": true,
         "minValue": 300.0,
-        "maxValue": 30000.0,
+        "maxValue": 20000.0,
         "width": 300.0
       }
     },
     "track": {
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "angularAccuracy": 0.05,
+      "angularAccuracy": 0.07,
       "distanceAccuracy": 15.0,
       "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
-        "maxValue": 30000.0,
+        "maxValue": 20000.0,
         "width": 300.0
       }
     }
@@ -72,11 +72,11 @@
     "search3Bars": {
       "type": "pyramide",
       "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-3.0,17.0],
+      "elevationLimits": [-13.0,17.0],
       "rollStabLimit": 70.0,
       "period": 2.5,
       "width": 30.0,
-      "barHeight": 6.7,
+      "barHeight": 8.0,
       "barsCount": 3,
       "rowMajor": true,
       "barsOneWay": false
@@ -84,19 +84,19 @@
     "search2Bars": {
       "type": "pyramide",
       "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-3.0,17.0],
+      "elevationLimits": [-13.0,17.0],
       "rollStabLimit": 70.0,
       "period": 1.7,
       "width": 30.0,
-      "barHeight": 6.7,
+      "barHeight": 8.0,
       "barsCount": 2,
       "rowMajor": true,
       "barsOneWay": true
     },
     "lock": {
       "type": "cone",
-      "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-17.0,17.0],
+      "azimuthLimits": [-35.0,35.0],
+      "elevationLimits": [-13.0,17.0],
       "rollStabLimit": 30.0,
       "period": 0.5,
       "width": 2.5,
@@ -104,8 +104,8 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-17.0,17.0],
+      "azimuthLimits": [-35.0,35.0],
+      "elevationLimits": [-13.0,17.0],
       "rollStabLimit": 30.0
     }
   },
@@ -133,7 +133,7 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-5.0,5.0],
-            "distanceRange": [0.0,15000.0]
+            "distanceRange": [0.0,10000.0]
           }
         },
         "setLockMode": {
@@ -187,11 +187,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 7500.0,
-            "width": 15000.0
-          },
-          "setIllumination": {
-            "illumination": false
+            "pos": 5000.0,
+            "width": 10000.0
           }
         },
         "setTrackMode": {
@@ -249,9 +246,6 @@
           },
           "setSignal": {
             "signal": "track"
-          },
-          "setIllumination": {
-            "illumination": true
           }
         }
       },
@@ -415,7 +409,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.0
+            "value": -1.5
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
@@ -423,9 +417,6 @@
           "setFsmActive": {
             "fsm": "searchPattern",
             "active": false
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setSearchMode": {
@@ -459,13 +450,10 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.0
+            "value": -1.5
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "resetSearchMode": {
@@ -546,7 +534,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -557,7 +547,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -614,7 +606,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 3.5
+            "value": 3.0
           }
         },
         "setSearch3Bars": {
@@ -623,7 +615,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.0
+            "value": -1.5
           }
         },
         "setSearch2BarsHigh": {
@@ -632,7 +624,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 5.0
+            "value": 5.5
           }
         }
       },

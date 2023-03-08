@@ -1,19 +1,22 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
+let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, DistToTarget,
   GunfireSolution, RadarTargetAngle } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet, GuidanceLockResult, feetToNavMile} = require("ilsConstants.nut")
-let { AdlPoint, CurWeaponName, ShellCnt, BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
-let {Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach} = require("%rGui/planeState/planeFlyState.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet, feetToNavMile } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
+let { Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
-let {floor} = require("%sqstd/math.nut")
-let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
-let {sin, cos, abs} = require("math")
+let { floor } = require("%sqstd/math.nut")
+let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { sin, cos, abs } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
-let {cvt} = require("dagor.math")
-let {compassWrap, generateCompassMarkElbit} = require("ilsCompasses.nut")
+let { cvt } = require("dagor.math")
+let { compassWrap, generateCompassMarkElbit } = require("ilsCompasses.nut")
+let { bulletsImpactLine } = require("commonElements.nut")
+
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
@@ -24,7 +27,7 @@ let generateSpdMark = function(num) {
     size = [pw(100), ph(7.5)]
     pos = [pw(30), 0]
     children = [
-      ( num % 5 > 0 ? null :
+      (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -53,7 +56,7 @@ let function speed(height, generateFunc) {
   let children = []
 
   for (local i = 1000; i >= 0; i -= 10) {
-    children.append(generateFunc(i/10))
+    children.append(generateFunc(i / 10))
   }
 
   let getOffset = @() ((1000.0 - Speed.value * mpsToKnots) * 0.00745 - 0.5) * height
@@ -125,7 +128,7 @@ let speedVal = @() {
 }
 
 let BarAltitudeValue = Computed(@() (BarAltitude.value * metrToFeet).tointeger())
-let AltVal = @(){
+let AltVal = @() {
   size = [pw(15), ph(4)]
   pos = [pw(82), ph(43)]
   halign = ALIGN_RIGHT
@@ -166,7 +169,7 @@ let generateAltMark = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 5 > 0 ? null :
+      (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -225,7 +228,18 @@ let overload = @() {
   text = string.format("%.1f", OverloadWatch.value / 10.0)
 }
 
-let armLabel = @(){
+let MaxOverloadWatch = Computed(@() (floor(MaxOverload.value * 10)).tointeger())
+let maxOverload = @() {
+  watch = [MaxOverloadWatch, IlsColor]
+  size = flex()
+  pos = [pw(10), ph(78)]
+  rendObj = ROBJ_TEXT
+  color = IlsColor.value
+  fontSize = 40
+  text = string.format("%.1f", MaxOverloadWatch.value / 10.0)
+}
+
+let armLabel = @() {
   watch = IlsColor
   size = flex()
   pos = [pw(20), ph(70)]
@@ -336,19 +350,19 @@ let roll = @() {
   ]
 }
 
-let ilsMode = @(){
+let ilsMode = @() {
   watch = [IlsColor, isAAMMode, CCIPMode, BombingMode, ShellCnt, CurWeaponName]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(10), ph(82)]
   color = IlsColor.value
   fontSize = 40
-  text = isAAMMode.value ? string.format("%d %s", ShellCnt.value, loc(CurWeaponName.value)) : (BombingMode.value ? "CCRP" : (CannonMode.value ? "STRF" : (CCIPMode.value ? "CCIP" : "EEGS")))
+  text = isAAMMode.value ? string.format("%d SRM", ShellCnt.value) : (BombingMode.value ? "CCRP" : (CannonMode.value ? "STRF" : (CCIPMode.value ? "CCIP" : "EEGS")))
 }
 
 let TargetAngle = Computed(@() cvt(RadarTargetAngle.value, -1.0, 1.0, 0, 180).tointeger())
 let function aamReticle(width, height) {
-  return @(){
+  return @() {
     watch = isAAMMode
     size = flex()
     children = isAAMMode.value ? [
@@ -452,7 +466,7 @@ let function ccipGun(width, height) {
               }
             }
           },
-          @(){
+          @() {
             watch = DistMarkAngle
             size = flex()
             rendObj = ROBJ_VECTOR_CANVAS
@@ -490,7 +504,7 @@ let function ccipGun(width, height) {
 
 
 let function ccipShell(width, height) {
-  return @(){
+  return @() {
     watch = [RocketMode, BombCCIPMode, TargetPosValid]
     size = flex()
     children = (RocketMode.value || BombCCIPMode.value) && TargetPosValid.value ? [
@@ -511,7 +525,7 @@ let function ccipShell(width, height) {
           }
         }
       },
-      (BombCCIPMode.value ? @(){
+      (BombCCIPMode.value ? @() {
         watch = TargetPos
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
@@ -525,44 +539,6 @@ let function ccipShell(width, height) {
       } : null)
     ] : null
   }
-}
-
-let function getBulletImpactLineCommand() {
-  let commands = []
-  for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i){
-    let point1 = BulletImpactPoints1.value[i]
-    let point2 = BulletImpactPoints1.value[i + 1]
-    if (point1.x == -1 && point1.y == -1)
-      continue
-    if (point2.x == -1 && point2.y == -1)
-      continue
-    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
-  }
-  for (local i = 0; i < BulletImpactPoints2.value.len() - 2; ++i){
-    let point1 = BulletImpactPoints2.value[i]
-    let point2 = BulletImpactPoints2.value[i + 1]
-    if (point1.x == -1 && point1.y == -1)
-      continue
-    if (point2.x == -1 && point2.y == -1)
-      continue
-    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
-  }
-  return commands
-}
-
-let bulletsImpactLine = @() {
-  watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
-  size = flex()
-  children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? [
-    @(){
-      watch = [BulletImpactPoints1, BulletImpactPoints2]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
-      color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = getBulletImpactLineCommand()
-    }
-  ] : null
 }
 
 let gunfireSolution = @() {
@@ -594,7 +570,7 @@ let orientation = @() {
   watch = [HasRadarTarget, CCIPMode, isAAMMode]
   size = flex()
   children = HasRadarTarget.value && !CCIPMode.value && !isAAMMode.value ? [
-    @(){
+    @() {
       watch = OrientationSector
       rendObj = ROBJ_VECTOR_CANVAS
       size = [pw(20), ph(20)]
@@ -804,18 +780,18 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.05]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
       }
     }
   }
 }
 
 let function TvvLinked(width, height) {
-  return @(){
+  return @() {
     watch = [HasRadarTarget, isAAMMode, CCIPMode, BombingMode]
     size = flex()
     children = [
-      @(){
+      @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = [pw(6), ph(6)]
@@ -850,6 +826,7 @@ let function Elbit967(width, height) {
       speedVal,
       AltVal,
       overload,
+      maxOverload,
       armLabel,
       mach,
       radioAlt,

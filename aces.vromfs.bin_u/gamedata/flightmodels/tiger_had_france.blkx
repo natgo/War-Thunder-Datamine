@@ -1,7 +1,7 @@
 {
   "model": "tiger_had_france",
   "fmFile": "fm/tiger_had_france.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
@@ -1495,21 +1495,21 @@
                 "recoilOffset": 0.0,
                 "parkInDeadzone": false,
                 "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
+                  "yaw": [-90.0,90.0],
+                  "pitch": [-25.0,28.0]
                 },
                 "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
+                  "lim1": [-90.0,-85.0,-25.0,15.0],
+                  "lim2": [-85.0,-75.0,-25.0,19.0],
+                  "lim3": [-75.0,-52.0,-25.0,24.0],
+                  "lim4": [-52.0,-35.0,-25.0,25.0],
+                  "lim5": [-35.0,-15.0,-25.0,23.0],
+                  "lim6": [-15.0,15.0,-25.0,20.0],
+                  "lim7": [15.0,35.0,-25.0,23.0],
+                  "lim8": [35.0,52.0,-25.0,25.0],
+                  "lim9": [52.0,75.0,-25.0,24.0],
+                  "lim10": [75.0,85.0,-25.0,19.0],
+                  "lim11": [85.0,90.0,-25.0,15.0]
                 }
               }
             ]
@@ -1562,21 +1562,21 @@
                 "recoilOffset": 0.0,
                 "parkInDeadzone": false,
                 "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
+                  "yaw": [-90.0,90.0],
+                  "pitch": [-25.0,28.0]
                 },
                 "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
+                  "lim1": [-90.0,-85.0,-25.0,15.0],
+                  "lim2": [-85.0,-75.0,-25.0,19.0],
+                  "lim3": [-75.0,-52.0,-25.0,24.0],
+                  "lim4": [-52.0,-35.0,-25.0,25.0],
+                  "lim5": [-35.0,-15.0,-25.0,23.0],
+                  "lim6": [-15.0,15.0,-25.0,20.0],
+                  "lim7": [15.0,35.0,-25.0,23.0],
+                  "lim8": [35.0,52.0,-25.0,25.0],
+                  "lim9": [52.0,75.0,-25.0,24.0],
+                  "lim10": [75.0,85.0,-25.0,19.0],
+                  "lim11": [85.0,90.0,-25.0,15.0]
                 }
               },
               {
@@ -1584,7 +1584,7 @@
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 30,
+                "bullets": 32,
                 "external": true,
                 "separate": false
               },
@@ -1593,7 +1593,7 @@
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 30,
+                "bullets": 32,
                 "external": true,
                 "separate": false
               }
@@ -1963,7 +1963,7 @@
       "prevModification": "MAW_system_heli_false_thermal_targets",
       "tier": 3,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -1993,13 +1993,7 @@
         "from": "tiger_had_france_c*"
       },
       {
-        "from": "tiger_had_france_c_dmg*"
-      },
-      {
         "from": "tiger_had_france_n*"
-      },
-      {
-        "from": "tiger_had_france_n_dmg*"
       }
     ]
   },

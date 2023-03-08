@@ -8,6 +8,7 @@
   "jetEnginePowerFullScale": true,
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
+  "haveCCRPForGun": true,
   "ilsEP12": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
@@ -19,6 +20,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
@@ -32,9 +34,6 @@
   "fireParamsPreset": "2000kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -200,6 +199,11 @@
       },
       "tank8_dm": {
         "hp": 51.1
+      }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
       }
     },
     "wood": {
@@ -1205,6 +1209,48 @@
         ]
       },
       {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -1828,7 +1874,6 @@
         },
         {
           "textureArea": [0.0,0.5,0.5,1.0],
-          "monoDisplayColor": [0.0,0.4,0.0],
           "page": {
             "type": "map"
           }
@@ -1929,6 +1974,9 @@
         "boy_401_container_l",
         "boy_401_container_r"
       ]
+    },
+    "HideDmParts": {
+      "node": "tank9_dm"
     },
     "WeaponSlot": [
       {
@@ -2212,6 +2260,27 @@
             }
           }
         ]
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb",
+          "showInWeaponMenu": true,
+          "ShowDmParts": {
+            "node": "tank9_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/sw_1250l_late_saab_ja37d.blk",
+            "emitter": "sw_1250l_late_drop_tank",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
       },
       {
         "index": 5,
@@ -2537,33 +2606,21 @@
     }
   },
   "user_skin": {
-    "name": "saab_ja37",
+    "name": "saab_ja37d",
     "replace_tex": [
       {
-        "from": "saab_ja37_camo_c*"
+        "from": "saab_ja37d_c*"
       },
       {
-        "from": "saab_ja37_camo_c_dmg*"
-      },
-      {
-        "from": "saab_ja37_n*"
-      },
-      {
-        "from": "saab_ja37_n_dmg*"
+        "from": "saab_ja37d_n*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "saab_ja37_camo_c*",
-        "to": "saab_ja37_camo_c_tomoe*"
-      },
-      {
-        "from": "saab_ja37_camo_c_dmg*",
-        "to": "saab_ja37_camo_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "saab_ja37_camo_c*",
+      "to": "saab_ja37_camo_c_tomoe*"
+    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [-1.72161,-0.264284,2.75163],

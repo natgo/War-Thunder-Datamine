@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 let ww_leaderboard = require("ww_leaderboard")
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 let { round } = require("math")
+let { requestLeaderboardData, convertLeaderboardData
+} = require("%scripts/leaderboard/requestLeaderboardData.nut")
 
 let modes = [
   {
@@ -50,8 +53,7 @@ let modes = [
     hasDaysData = false
   }]
 
-let function getModeByName(mName)
-{
+let function getModeByName(mName) {
   return ::u.search(modes, @(m) m.mode == mName
     && (!m?.needFeature || hasFeature(m.needFeature)))
 }
@@ -68,32 +70,15 @@ dataParams = {
 headersParams = {
   userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard
 } */
-let function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {})
-{
+let function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {}) {
   let mode = getModeByName(modeName)
   if (!mode)
     return
 
-  let requestData = {
-    add_token = true
-    action = ("userId" in headersParams) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
-
-    headers = {
-      appid  = mode.appId
-      format = "json"    // TODO: remove me after leaderboard update
-    }.__update(headersParams)
-
-    data = {
-      valueType   = LEADERBOARD_VALUE_TOTAL
-      resolveNick = true
-    }.__update(dataParams)
-  }
-
-  ww_leaderboard.request(requestData, cb)
+  requestLeaderboardData(dataParams, headersParams.__merge({ appId = mode.appId }), cb)
 }
 
-let function requestWwLeaderboardModes(modeName, cb)
-{
+let function requestWwLeaderboardModes(modeName, cb) {
   if (!::g_login.isLoggedIn())
     return
 
@@ -110,15 +95,13 @@ let function requestWwLeaderboardModes(modeName, cb)
   ww_leaderboard.request(requestData, cb)
 }
 
-let function getSeasonDay(days)
-{
+let function getSeasonDay(days) {
   if (!days)
     return 0
 
   local seasonDay = 0
   foreach (dayId in days)
-    if (dayId.slice(0, 3) == "day")
-    {
+    if (dayId.slice(0, 3) == "day") {
       let dayNumberText = dayId.slice(3)
       if (::g_string.isStringInteger(dayNumberText))
         seasonDay = max(seasonDay, dayNumberText.tointeger())
@@ -127,60 +110,8 @@ let function getSeasonDay(days)
   return seasonDay
 }
 
-let wwLeaderboardValueFactors = {
-  rating = 0.0001
-  operation_winrate = 0.0001
-  battle_winrate = 0.0001
-  avg_place = 0.0001
-  avg_score = 0.0001
-}
-let wwLeaderboardKeyCorrection = {
-  idx = "pos"
-  playerAKills = "air_kills_player"
-  playerGKills = "ground_kills_player"
-  playerNKills = "naval_kills_player"
-  aiAKills = "air_kills_ai"
-  aiGKills = "ground_kills_ai"
-  aiNKills = "naval_kills_ai"
-}
-
-let function convertWwLeaderboardData(result, applyLocalisationToName = false)
-{
-  let list = []
-  foreach (rowId, rowData in result)
-  {
-    if (type(rowData) != "table")
-      continue
-
-    let lbData = {
-      name = applyLocalisationToName ? loc(rowId) : rowId
-    }
-    foreach (columnId, columnData in rowData)
-    {
-      let key = wwLeaderboardKeyCorrection?[columnId] ?? columnId
-      if (key in lbData && ::u.isEmpty(columnData))
-        continue
-
-      let valueFactor = wwLeaderboardValueFactors?[columnId]
-      local value = type(columnData) == "table"
-        ? columnData?.value_total
-        : columnId == "name" && applyLocalisationToName
-            ? loc(columnData)
-            : columnData
-      if (valueFactor)
-        value = value * valueFactor
-
-      lbData[key] <- value
-    }
-    list.append(lbData)
-  }
-  list.sort(@(a, b) a.pos < 0 <=> b.pos < 0 || a.pos <=> b.pos)
-
-  return { rows = list }
-}
-
 let function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToName = false) {
-  let lbRows = convertWwLeaderboardData(result, applyLocalisationToName)
+  let lbRows = convertLeaderboardData(result, applyLocalisationToName)
   let mode = getModeByName(modeName)
   if (!(mode?.needAddClanInfo ?? false))
     return lbRows
@@ -198,9 +129,8 @@ let function isUsersLeaderboard(lbModeData) {
   return lbModeData.appId == "1134"
 }
 
-let function updateClanByWWLBAndDo(clanInfo, afterUpdate)
-{
-  if(!::g_world_war.isWWSeasonActive())
+let function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
+  if (!::g_world_war.isWWSeasonActive())
     return afterUpdate(clanInfo)
 
   requestWwLeaderboardData("ww_clans",
@@ -211,20 +141,19 @@ let function updateClanByWWLBAndDo(clanInfo, afterUpdate)
       count    = 0
       category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field
     },
-    function (response){
+    function (response) {
       let lbData = response?[clanInfo.tag]
-      if(lbData)
-      {
+      if (lbData) {
         let idx = lbData?.idx
         let rating = lbData?.rating?.value_total
-        if(rating != null)
+        if (rating != null)
           clanInfo.rating <- round(rating / 10000.0).tointeger()
-        if(idx != null)
+        if (idx != null)
           clanInfo.place <- idx + 1
       }
       clanInfo.hasLBData <- lbData != null && clanInfo.canShowActivity()
       afterUpdate(clanInfo)
-    }, {userId =  clanInfo.id})
+    }, { userId =  clanInfo.id })
 }
 
 return {
@@ -234,7 +163,6 @@ return {
   getModeByName = getModeByName
   requestWwLeaderboardData = requestWwLeaderboardData
   requestWwLeaderboardModes = requestWwLeaderboardModes
-  convertWwLeaderboardData = convertWwLeaderboardData
   isUsersLeaderboard = isUsersLeaderboard
   updateClanByWWLBAndDo = updateClanByWWLBAndDo
   addClanInfoIfNeedAndConvert = addClanInfoIfNeedAndConvert

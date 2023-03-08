@@ -96,7 +96,7 @@ contactItem {
         background-image:t='#ui/gameuiskin#btn_blacklist_remove.svg';
       }
     }
-
+    <<#hasMenuChatPrivate>>
     Button_text {
       id:t='btn_message';
       tooltip:t='#contacts/message';
@@ -110,7 +110,7 @@ contactItem {
         background-image:t='#ui/gameuiskin#btn_send_private_message.svg';
       }
     }
-
+    <</hasMenuChatPrivate>>
     Button_text {
       id:t='btn_squadInvite';
       tooltip:t='#contacts/invite';
@@ -136,6 +136,25 @@ contactItem {
       enable:t='no';
       img {
         background-image:t='#ui/gameuiskin#btn_usercard.svg';
+      }
+    }
+
+    Button_text {
+      id:t='btn_ww_invite'
+      tooltip:t='#worldwar/inviteToOperation'
+      on_click:t='onWwOperationInvite'
+      class:t='image'
+      imgSize:t='small'
+      showConsoleImage:t='no'
+      input-transparent:t='yes'
+      enable:t='no'
+      display:t='hide'
+
+      btnText {
+        style:t='font:@fontSmall'
+        pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+        position:t='absolute'
+        text:t='#icon/worldWar'
       }
     }
 

@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -184,6 +185,11 @@
         "engine4"
       ]
     }
+  },
+  "flexWing": {
+    "wingStrainCoeff": 0.5,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2286,14 +2292,6 @@
       {
         "from": "mig_9_ussr_n*",
         "to": "mig_9_knr2_n*"
-      },
-      {
-        "from": "mig_9_ussr_a_dmg*",
-        "to": "mig_9_knr2_a_dmg*"
-      },
-      {
-        "from": "mig_9_ussr_n_dmg*",
-        "to": "mig_9_knr2_n_dmg*"
       }
     ]
   },
@@ -2305,16 +2303,8 @@
         "to": "mig_9_knr2_a_tomoe*"
       },
       {
-        "from": "mig_9_ussr_a_dmg*",
-        "to": "mig_9_knr2_a_tomoe_dmg*"
-      },
-      {
         "from": "mig_9_ussr_n*",
         "to": "mig_9_knr2_tomoe_n*"
-      },
-      {
-        "from": "mig_9_ussr_n_dmg*",
-        "to": "mig_9_knr2_tomoe_n_dmg*"
       }
     ]
   }

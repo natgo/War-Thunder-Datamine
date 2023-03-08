@@ -11,7 +11,7 @@
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
   "jetEnginePowerFullScale": true,
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "radarCScope": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
@@ -21,6 +21,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2914,13 +2915,7 @@
         "from": "jaguar_e_c*"
       },
       {
-        "from": "jaguar_e_c_dmg*"
-      },
-      {
         "from": "jaguar_e_n*"
-      },
-      {
-        "from": "jaguar_e_n_dmg*"
       }
     ]
   },
@@ -3051,13 +3046,13 @@
     "_emtr_break_wing0_l_to": [-0.0938195,0.743883,1.4757],
     "emtr_break_wing1_l_from": [-0.0938195,0.743883,1.9198],
     "emtr_break_wing1_l_to": [-0.0938195,0.743883,2.08459],
-    "emtr_break_wing2_l_from": [-0.0938195,0.743883,3.08178],
+    "emtr_break_wing2_l_from": [-0.0938195,0.743883,3.06178],
     "emtr_break_wing2_l_to": [-0.0938195,0.743883,3.57296],
     "_emtr_break_wing0_r_from": [-0.0938195,0.743883,-1.17962],
     "_emtr_break_wing0_r_to": [-0.0938195,0.743883,-1.4757],
     "emtr_break_wing1_r_from": [-0.0938195,0.743883,-1.9198],
     "emtr_break_wing1_r_to": [-0.0938195,0.743883,-2.08459],
-    "emtr_break_wing2_r_from": [-0.0938195,0.743883,-3.08178],
+    "emtr_break_wing2_r_from": [-0.0938195,0.743883,-3.06178],
     "emtr_break_wing2_r_to": [-0.0938195,0.743883,-3.57296],
     "emtr_break_wing_tail": [-3.90902,0.0,0.0],
     "finCut": true,

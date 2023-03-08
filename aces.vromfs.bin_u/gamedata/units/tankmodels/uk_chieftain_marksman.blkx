@@ -5,13 +5,14 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
+  "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -79,6 +80,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -883,6 +894,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -903,6 +918,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -2701,15 +2720,15 @@
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_square",
-    "zoomOutFov": 37.5,
-    "zoomInFov": 9.21,
-    "sightSize": [0.74,0.52]
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.37,
+    "sightSize": [0.45,0.32]
   },
   "cockpit": {
-    "zoomOutFov": 10.2,
-    "zoomInFov": 9.2,
-    "sightFov": 5.0,
-    "sightName": "periscope_no59",
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.37,
+    "sightFov": 12.0,
+    "sightName": "abrams_sight",
     "headPos": [0.0,4.2,-9.0],
     "headPosOnShooting": [0.0,3.99,-0.3],
     "detectionHeight": 2.51
@@ -2747,6 +2766,30 @@
     "35mm_kda_HE_ammo_pack": {},
     "35mm_kda_APHEI_ammo_pack": {},
     "35mm_kda_APDS_ammo_pack": {},
+    "modern_tank_laser_rangefinder": {
+      "tier": 1,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [1.0,1.0,5.0,10.0],
+        "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+        "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+        "distanceErrorRealistic": [1.0,1.0,5.0,10.0],
+        "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+        "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+        "timeMeasurementRange": [0.5,0.5],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": {
+            "blk": "gameData/sensors/uk_marconi_s_400.blk",
+            "turretIndex": 0,
+            "designationFromBody": true,
+            "designationTurretIndex": 0,
+            "dmPart": "antenna_target_location_dm"
+          }
+        }
+      }
+    },
     "tank_smoke_screen_system_mod": {
       "tier": 3,
       "effects": {

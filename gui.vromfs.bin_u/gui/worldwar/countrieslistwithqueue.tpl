@@ -85,11 +85,11 @@ Button_text {
   pos:t='0.5pw-0.5w, 2@blockInterval'
   position:t='relative'
   class:t='battle'
-  text:t='#worldwar/btnCreateOperation'
+  text:t='<<createOperationBtnText>>'
   navButtonFont:t='yes'
   hasConsoleImage:t='yes'
   on_click:t='onJoinQueue'
-
+  <<#smallFont>>smallFont:t='yes'<</smallFont>>
   pattern{}
   buttonWink { _transp-timer:t='0' }
   buttonGlance {}
@@ -98,8 +98,11 @@ Button_text {
     showOnSelect:t='yes'
   }
   btnText {
-    text:t='#worldwar/btnCreateOperation'
+    text:t='<<createOperationBtnText>>'
   }
+  <<#hasCreationCost>>
+  tooltip:t='#worldwar/creation_cost_tooltip'
+  <</hasCreationCost>>
 }
 
 Button_text {

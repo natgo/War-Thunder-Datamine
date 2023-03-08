@@ -115,7 +115,9 @@
           "setTargetDesignationRange": {
             "azimuthRange": [-10.0,10.0],
             "azimuthWidth": 10.0,
-            "distanceRange": [300.0,18500.0]
+            "distanceRange": [300.0,18500.0],
+            "distanceWidth": 4000.0,
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyMode": {
@@ -238,7 +240,7 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 4000.0
           },
           "setRelSpeedGatePos": {
             "source": "targetDesignation",
@@ -500,7 +502,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -511,7 +515,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

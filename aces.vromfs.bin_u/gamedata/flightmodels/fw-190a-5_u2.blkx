@@ -1809,16 +1809,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "fw_190a_5_a*",
-        "to": "fw_190a_5_a_tomoe*"
-      },
-      {
-        "from": "fw_190a_5_a_dmg*",
-        "to": "fw_190a_5_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "fw_190a_5_a*",
+      "to": "fw_190a_5_a_tomoe*"
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2017,6 +2011,16 @@
         "name": "Fw-190A-5_R6",
         "blk": "gameData/FlightModels/weaponPresets/fw-190a-5_R6.blk",
         "reqModification": "Fw-190A-5_R6"
+      },
+      {
+        "name": "fw_190_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/fw_190_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "fw_190_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/fw_190_flamm_500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
@@ -2063,6 +2067,15 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "Fw-190A-5_SC500"
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "flamm_500": {
+      "reqModification": "flamm_250",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "user_skin": {
@@ -2072,13 +2085,7 @@
         "from": "fw_190a_5_a*"
       },
       {
-        "from": "fw_190a_5_a_dmg*"
-      },
-      {
         "from": "fw_190a_5_n*"
-      },
-      {
-        "from": "fw_190a_5_n_dmg*"
       }
     ]
   }

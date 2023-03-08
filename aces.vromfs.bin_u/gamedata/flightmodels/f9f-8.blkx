@@ -11,6 +11,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "arcadeHP": 10000.0,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2132,6 +2133,8 @@
         "aero_15a_pylon1_lb",
         "aero_15a_pylon1_r",
         "aero_15a_pylon1_rb",
+        "aero_15a_pylon2_rb",
+        "aero_15a_pylon2_lb",
         "aero_65a_pylon_l",
         "aero_65a_pylon_r"
       ]
@@ -2358,7 +2361,10 @@
             "iconType": "nar_ap_small",
             "name": "aero6",
             "ShowNodes": {
-              "node": "aero_65a_pylon_l"
+              "node": [
+                "aero_65a_pylon_l",
+                "aero_15a_pylon2_lb"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
@@ -2373,7 +2379,10 @@
             "name": "aero7",
             "reqModification": "us_2_75_in_ffar",
             "ShowNodes": {
-              "node": "aero_65a_pylon_l"
+              "node": [
+                "aero_65a_pylon_l",
+                "aero_15a_pylon2_lb"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
@@ -2388,7 +2397,10 @@
             "name": "1000lbs",
             "reqModification": "flbc_mk2",
             "ShowNodes": {
-              "node": "aero_65a_pylon_l"
+              "node": [
+                "aero_65a_pylon_l",
+                "aero_15a_pylon2_lb"
+              ]
             },
             "Weapon": {
               "trigger": "bombs",
@@ -2409,7 +2421,10 @@
             "iconType": "nar_ap_small",
             "name": "aero6",
             "ShowNodes": {
-              "node": "aero_65a_pylon_r"
+              "node": [
+                "aero_65a_pylon_r",
+                "aero_15a_pylon2_rb"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
@@ -2424,7 +2439,10 @@
             "name": "aero7",
             "reqModification": "us_2_75_in_ffar",
             "ShowNodes": {
-              "node": "aero_65a_pylon_r"
+              "node": [
+                "aero_65a_pylon_r",
+                "aero_15a_pylon2_rb"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
@@ -2439,7 +2457,10 @@
             "name": "1000lbs",
             "reqModification": "flbc_mk2",
             "ShowNodes": {
-              "node": "aero_65a_pylon_r"
+              "node": [
+                "aero_65a_pylon_r",
+                "aero_15a_pylon2_rb"
+              ]
             },
             "Weapon": {
               "trigger": "bombs",
@@ -4296,27 +4317,15 @@
         "from": "f9f_8_navy_blue_a*"
       },
       {
-        "from": "f9f_8_navy_blue_a_dmg*"
-      },
-      {
         "from": "f9f_8_navy_blue_n*"
-      },
-      {
-        "from": "f9f_8_navy_blue_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f9f_8_navy_blue_a*",
-        "to": "f9f_8_navy_blue_a_tomoe*"
-      },
-      {
-        "from": "f9f_8_navy_blue_a_dmg*",
-        "to": "f9f_8_navy_blue_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f9f_8_navy_blue_a*",
+      "to": "f9f_8_navy_blue_a_tomoe*"
+    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [-1.70844,-0.310907,1.61498],

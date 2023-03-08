@@ -246,7 +246,7 @@
     "icon_enemy_marker": "chat_icon_attention",
     "icon_attack_enemy_marker": "chat_icon_attention",
     "icon_artillery_attack": "chat_icon_artillery_attack",
-    "icon_marker_from_uav": "chat_icon_target_uav",
+    "icon_marker_from_uav": "chat_icon_attention",
     "respawnbase_select": "respawnbase_select.svg:44:54:K",
     "iconArtilleryAttackBlinkTime": 20.0,
     "iconArtilleryAttackDist": 150.0,
@@ -520,6 +520,8 @@
     "rocketSight": "rocket_sight.svg:60:90:K",
     "ccipRocketSight": "ccip_rocket_sight.svg:42:42:K",
     "ccipGunIndication": "ccip_gun_indication.svg:24:24:K",
+    "ccrpGunIndication": "",
+    "gyroGunIndication": "",
     "groundTarget": "ground_target.svg:30:30:K",
     "bombSightRadius": 100.0,
     "bombSightLineWidth": 2.5,
@@ -933,8 +935,8 @@
     "colorHitUnitIndicator": "#c83208e6",
     "colorSquadTargetIndicator": "#fafa08e6",
     "colorSquadTargetIndicatorText": "#fafa08e6",
-    "colorUavTargetIndicator": "#08fafae6",
-    "colorUavTargetIndicatorText": "#08fafae6",
+    "colorUavTargetIndicator": "#c83208e6",
+    "colorUavTargetIndicatorText": "#c83208e6",
     "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K",
     "iconRepairInProgressOuter": "capturezone_big_ring.svg:132:168:K",
     "formatBasezoneBig": "basezone_big_mark_%c.svg:60:60:K",
@@ -1360,6 +1362,23 @@
     "dmIconYOffset": 0
   },
   "hit_indicator": {
+    "hit_fire": "hit_icon_fire.svg:50:50:K",
+    "hit_module": "hit_icon_module.svg:50:50:K",
+    "hit_crew": "hit_icon_crew.svg:50:50:K",
+    "hit_bg_pen": "hit_bg_pen",
+    "hit_bg_no_pen": "hit_bg_no_pen",
+    "hit_bg_simple": "hit_bg_no_pen_red",
+    "minAngle": 3.0,
+    "relativeRadius": 0.33,
+    "scale": 0.45,
+    "scaleCoefIcon": 1.0,
+    "iconOffset": [0.0,4.0],
+    "alphaMin": 150.0,
+    "alphaMax": 190.0,
+    "hitsForColorMax": 3,
+    "maxHits": 5
+  },
+  "hit_indicator_simple": {
     "segment": "hit_segment",
     "minAngle": 1.0,
     "relativeRadius": 0.66,
@@ -1967,6 +1986,21 @@
       },
       "designate_target": {
         "shortcutIdx": 45
+      },
+      "rocket_activate_air": {
+        "shortcutIdx": -1
+      },
+      "agm_activate_air": {
+        "shortcutIdx": -1
+      },
+      "aam_activate_air": {
+        "shortcutIdx": -1
+      },
+      "bomb_activate_air": {
+        "shortcutIdx": -1
+      },
+      "guided_bomb_activate_air": {
+        "shortcutIdx": -1
       }
     },
     "wheelActions": {

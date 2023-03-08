@@ -5,7 +5,7 @@
   "hasQualityModels": true,
   "collisionSphere0": [0.0,-1.5,0.0,5.0],
   "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -147,8 +147,7 @@
       "ex_decor_l_02_dm": {},
       "ex_decor_l_04_dm": {},
       "ex_decor_l_01_dm": {},
-      "ex_armor_01_dm": {},
-      "ex_decor_01_dm": {}
+      "ex_armor_01_dm": {}
     },
     "turret_grille_armor": {
       "hp": 300.0,
@@ -915,6 +914,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -935,6 +938,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1785,6 +1792,7 @@
       {
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/105mm_ZPL94_user_cannon.blk",
+        "shotFreq": 0.1167,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1880,7 +1888,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Type_54_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": -180.0,
@@ -1911,12 +1919,12 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-10.0,60.0]
+          "pitch": [-4.5,82.0]
         },
         "limitsTable": {
-          "lim1": [-180.0,43.0,-10.0,60.0],
-          "lim2": [43.0,100.0,-2.0,60.0],
-          "lim3": [100.0,180.0,-10.0,60.0]
+          "lim1": [-180.0,43.0,-4.5,82.0],
+          "lim2": [43.0,100.0,-2.0,82.0],
+          "lim3": [100.0,180.0,-4.5,82.0]
         }
       },
       {
@@ -2897,6 +2905,7 @@
             {
               "trigger": "gunner0",
               "blk": "gameData/Weapons/groundModels_weapons/105mm_ZPL94_user_cannon.blk",
+              "shotFreq": 0.1167,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -2992,7 +3001,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Type_54_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_aa_flame_01",
               "defaultYaw": -180.0,
@@ -3023,12 +3032,12 @@
               },
               "limits": {
                 "yaw": [-180.0,180.0],
-                "pitch": [-10.0,60.0]
+                "pitch": [-4.5,82.0]
               },
               "limitsTable": {
-                "lim1": [-180.0,43.0,-10.0,60.0],
-                "lim2": [43.0,100.0,-2.0,60.0],
-                "lim3": [100.0,180.0,-10.0,60.0]
+                "lim1": [-180.0,43.0,-4.5,82.0],
+                "lim2": [43.0,100.0,-2.0,82.0],
+                "lim3": [100.0,180.0,-4.5,82.0]
               }
             },
             {

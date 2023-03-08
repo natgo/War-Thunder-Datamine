@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -107,6 +107,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -437,6 +445,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -1354,76 +1372,6 @@
     ]
   },
   "MetaParts": {
-    "cover": [
-      {
-        "part": "compartment_01_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_02_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_03_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      },
-      {
-        "part": "compartment_04_dm",
-        "effect": [
-          {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 289.0,
-            "kill": true,
-            "killEffect": "destruction"
-          },
-          {
-            "conditionDamageType": "generic",
-            "conditionDamage": 1000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        ]
-      }
-    ],
     "bridge": {
       "part": "bridge_dm",
       "effect": [
@@ -1444,6 +1392,88 @@
         }
       ]
     },
+    "cover": [
+      {
+        "part": "compartment_01_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_02_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_03_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_04_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 289.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 1000.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      }
+    ],
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",
@@ -1528,7 +1558,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 12.0,
         "speedPitch": 2.9,
-        "bullets": 170,
+        "bullets": 512,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "allowableDelta": 2.0,
@@ -1855,7 +1885,7 @@
         "weaponType": "bombs",
         "blk": "gameData/weapons/bombguns/bomb_uk_107mm_17.blk",
         "emitter": "emtr_gun_flame_01",
-        "bullets": 50,
+        "bullets": 110,
         "external": true,
         "dropSpeed": 100.0,
         "useEmitter": true,
@@ -2598,10 +2628,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_main_caliber_support": {}
   },
@@ -2628,7 +2658,7 @@
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 3820
+          "count": 4222
         }
       }
     },

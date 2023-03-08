@@ -13,6 +13,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat_supersonic.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -1821,6 +1822,11 @@
         "name": "f_100a_4xaim9b",
         "blk": "gameData/flightModels/weaponPresets/f_100a_4xaim9b.blk",
         "reqModification": "us_aim_9b"
+      },
+      {
+        "name": "f_100a_2x_m116a2",
+        "blk": "gameData/flightModels/weaponPresets/f_100a_2x_m116a2.blk",
+        "reqModification": "us_750_lb_m116a2"
       }
     ]
   },
@@ -2009,6 +2015,10 @@
       "reqModification": "t_160_belt_pack",
       "tier": 4
     },
+    "us_750_lb_m116a2": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_750lb_m117": {
       "modClass": "weapon",
       "tier": 1
@@ -2029,16 +2039,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_100a_alum_rocaf_a*",
-        "to": "f_100a_alum_rocaf_a_tomoe*"
-      },
-      {
-        "from": "f_100a_alum_rocaf_a_dmg*",
-        "to": "f_100a_alum_rocaf_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_100a_alum_rocaf_a*",
+      "to": "f_100a_alum_rocaf_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "f_100a_china",
@@ -2047,13 +2051,7 @@
         "from": "f_100a_alum_rocaf_a*"
       },
       {
-        "from": "f_100a_alum_rocaf_a_dmg*"
-      },
-      {
         "from": "f_100a_alum_rocaf_n*"
-      },
-      {
-        "from": "f_100a_alum_rocaf_n_dmg*"
       }
     ]
   },
