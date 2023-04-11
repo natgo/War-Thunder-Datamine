@@ -280,6 +280,7 @@ global enum SEEN {
   EVENTS = "events"
   WW_MAPS_AVAILABLE = "wwMapsAvailable"
   WW_MAPS_OBJECTIVE = "wwMapsObjective"
+  WW_OPERATION_AVAILABLE = "wwOperationAvailable"
   INVENTORY = "inventory"
   ITEMS_SHOP = "items_shop"
   WORKSHOP = "workshop"
@@ -289,6 +290,7 @@ global enum SEEN {
   EXT_EPIC_SHOP = "ext_epic_shop"
   BATTLE_PASS_SHOP = "battle_pass_shop"
   UNLOCK_MARKERS = "unlock_markers"
+  MANUAL_UNLOCKS = "manual_unlocks"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"
@@ -426,7 +428,7 @@ foreach (fn in [
 
   "%scripts/options/gamepadCursorControls.nut"
   "%scripts/unit/unitType.nut"
-  "%scripts/loading/loadingTips.nut"
+  "%scripts/loading/bhvLoadingTip.nut"
   "%scripts/options/countryFlagsPreset.nut"
 
   "%scripts/hangarLights.nut"

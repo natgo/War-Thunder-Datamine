@@ -10,6 +10,7 @@ let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission } = require("guiMission")
 let { getUnlockTypeById } = require("unlocks")
+let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -147,7 +148,7 @@ let { getUnlockTypeById } = require("unlocks")
 
   function getCost(ignoreCanBuy = false) {
     return (this.isCanBuy() || ignoreCanBuy) && !this.isUnlocked()
-      ? ::get_unlock_cost(this.id).multiply(this.getSellAmount())
+      ? getUnlockCost(this.id).multiply(this.getSellAmount())
       : ::Cost()
   }
 
@@ -182,7 +183,7 @@ let { getUnlockTypeById } = require("unlocks")
   }
 
   function _buy(cb, _params = null) {
-    ::g_unlocks.buyUnlock(this.id, Callback(@() cb(true), this))
+    buyUnlock(this.id, Callback(@() cb(true), this))
   }
 
   function getTagsDesc() {

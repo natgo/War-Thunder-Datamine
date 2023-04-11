@@ -11,6 +11,8 @@ let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings
@@ -80,7 +82,7 @@ let function invalidateCache() {
 }
 
 let function getDoableUnlocks() {
-  return getMarkerUnlocks().filter(@(u) ::g_unlocks.canDo(u))
+  return getMarkerUnlocks().filter(@(u) canDoUnlock(u))
 }
 
 let function checkUnlockMarkers() {
@@ -144,7 +146,7 @@ let function hasActiveUnlock(unlockId, ediff) {
 }
 
 let function getUnitListByUnlockId(unlockId) {
-  let modeBlk = ::g_unlocks.getUnlockById(unlockId)?.mode
+  let modeBlk = getUnlockById(unlockId)?.mode
   if (!modeBlk)
     return []
 

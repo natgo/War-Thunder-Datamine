@@ -77,7 +77,7 @@ expandable {
       height:t='1*@scrn_tgt/100.0';
       width:t='2h';
       pos:t='50%pw-50%w, ph-h-0.7*@sf/100.0'; position:t='absolute';
-      background-image:t='#ui/gameuiskin#expand_info.png';
+      background-image:t='#ui/gameuiskin#expand_info';
       background-color:t='@premiumColor';
       display:t='hide';
     }
@@ -93,9 +93,10 @@ expandable {
     img {
       id:t="lock_icon"
       display:t="hide"
-      position:t="absolute"
-      background-image:t="#ui/gameuiskin#locked_white.png"
-      size:t="@mIco,@mIco"
+      pos:t="10@sf/@pf, 10@sf/@pf"; position:t="absolute"
+      background-image:t="#ui/gameuiskin#locked.svg"
+      size:t="@cIco,@cIco"
+      background-svg-size:t="@cIco,@cIco"
       background-color:t="@white"
     }
   }

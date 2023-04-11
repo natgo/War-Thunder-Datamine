@@ -1129,7 +1129,7 @@
     "_extends": "simple_ground_unit"
   },
   "human": {
-    "_extends": "simple_unit"
+    "_extends": "simple_ground_unit"
   },
   "aircraft": {
     "_extends": "unit"
@@ -1258,6 +1258,24 @@
       "smoke__fx_id": -1
     },
     "smoke__smoke_fx": {
+      "_tags": "render"
+    }
+  },
+  "ecs_fx": {
+    "_extends": "replicating",
+    "_replicate": true,
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "ecs_fx__res": "",
+    "ecs_fx__velocity": [0.0,0.0,0.0],
+    "ecs_fx__spawn_rate": 1.0,
+    "ecs_fx__color_mult": [1.0,1.0,1.0,1.0],
+    "ecs_fx__light_radius_mult": 1.0,
+    "ecs_fx__effect_ref": {
       "_tags": "render"
     }
   },

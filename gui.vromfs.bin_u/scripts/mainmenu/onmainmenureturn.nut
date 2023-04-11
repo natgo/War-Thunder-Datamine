@@ -23,6 +23,8 @@ let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadMa
 let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
 let { checkShowPersonalOffers } = require("%scripts/user/personalOffers.nut")
 let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
+let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
+let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -93,7 +95,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  if (isAllowPopups && hasFeature("Invites") && !guiScene.hasModalObject())
+  if (isAllowPopups && hasFeature("Invites") && !isGuestLogin.value && !guiScene.hasModalObject())
     handler.doWhenActiveOnce("checkShowViralAcquisition")
 
   if (isAllowPopups && !guiScene.hasModalObject())
@@ -116,14 +118,12 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration())
     handler.doWhenActive(@() checkGaijinPassReminder())
 
-    handler.doWhenActive(::check_tutorial_on_start)
+    handler.doWhenActive(checkTutorialOnStart)
     handler.doWhenActiveOnce("checkNoviceTutor")
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
     handler.doWhenActive(steamCheckNewItems)
-
-    if (isAfterLogin)
-      checkShowPersonalOffers()
+    handler.doWhenActive(checkShowPersonalOffers)
   }
 
   if (!isAfterLogin && isAllowPopups) {

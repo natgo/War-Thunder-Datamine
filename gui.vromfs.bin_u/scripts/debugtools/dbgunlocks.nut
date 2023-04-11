@@ -12,13 +12,15 @@ let { getFullUnlockDesc, getUnlockCostText,
   getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { register_command } = require("console")
+let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
+let json = require("%sqstd/json.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
     return
 
   let awardsList = []
-  foreach (_id, unlock in ::g_unlocks.getAllUnlocks())
+  foreach (_id, unlock in getAllUnlocks())
     if ((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
   let titleText = "debug_show_test_unlocks (total: " + awardsList.len() + ")"
@@ -31,7 +33,7 @@ let function debug_show_all_streaks() {
 
   local total = 0
   let awardsList = []
-  foreach (_id, unlock in ::g_unlocks.getAllUnlocks()) {
+  foreach (_id, unlock in getAllUnlocks()) {
     if (unlock.type != "streak" || unlock?.hidden)
       continue
     total++
@@ -59,7 +61,7 @@ let function debug_show_all_streaks() {
 let function gen_all_unlocks_desc(showCost = false) {
   dlog("GP: gen all unlocks description")
   local res = ""
-  foreach (_id, unlock in ::g_unlocks.getAllUnlocks()) {
+  foreach (_id, unlock in getAllUnlocks()) {
     let cfg = ::build_conditions_config(unlock)
     local desc = getFullUnlockDesc(cfg)
     if (showCost)
@@ -80,7 +82,7 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
     curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
   }
 
-  foreach (id, unlock in ::g_unlocks.getAllUnlocks()) {
+  foreach (id, unlock in getAllUnlocks()) {
     let cfg = ::build_conditions_config(unlock)
     local desc = getFullUnlockDesc(cfg, params)
     if (showCost)
@@ -95,19 +97,31 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
   res.saveToTextFile(fullPath)
 }
 
-let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang) {
+let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
   let self = callee()
   let lang = langsInfo.pop()
   ::g_language.setGameLocalization(lang.id, false, false)
-  gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+  try {
+    gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+    status[lang.id] <- {
+      success=true
+    }
+  } catch (e) {
+    logerr($"Failed to get unlocks desc blk for '{lang}' lang")
+    status[lang.id] <- {
+      success=false
+    }
+  }
 
-  if (!langsInfo.len())
+  if (!langsInfo.len()) {
+    json.save($"{path}/status.json", status)
     return ::g_language.setGameLocalization(curLang, false, false)
+  }
 
   //delayed to easy see progress, and avoid watchdog crash.
   let guiScene = ::get_main_gui_scene()
   guiScene.performDelayed(this, function() {
-    self(path, showCost, showValue, langsInfo, curLang)
+    self(path, showCost, showValue, langsInfo, curLang, status)
   })
 }
 
@@ -132,7 +146,7 @@ let function debug_show_unlock_popup(unlockId) {
   ::gui_start_unlock_wnd(
     ::build_log_unlock_data(
       ::build_conditions_config(
-        ::g_unlocks.getUnlockById(unlockId)
+        getUnlockById(unlockId)
       )
     )
   )

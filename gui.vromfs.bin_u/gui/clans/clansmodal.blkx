@@ -390,7 +390,7 @@
                       "height": "w",
                       "max-height": "0.14@sf",
                       "max-width": "0.14@sf",
-                      "background-image": "#ui/images/avatars/cardicon_default.png",
+                      "background-image": "#ui/images/avatars/cardicon_default",
                       "display": "hide"
                     },
                     "tdiv": {
@@ -584,27 +584,30 @@
               }
             },
             {
+              "size": "pw, fh",
+              "overflow-y": "auto",
+              "table": {
+                "id": "clan_members_list",
+                "width": "pw",
+                "padding-top": "1@blockInterval",
+                "class": "lbTable",
+                "useNavigatorOrInteractiveCells": "yes",
+                "text-valign": "center",
+                "text-halign": "center",
+                "navigatorShortcuts": "yes",
+                "selfFocusBorder": "yes",
+                "on_select": "onSelectUser",
+                "on_r_click": "onUserRClick",
+                "on_dbl_click": "onUserCard",
+                "on_set_focus": "onMembersListFocus"
+              }
+            },
+            {
               "id": "lb_table_nest",
               "size": "pw, fh",
               "padding-top": "1@blockInterval"
             }
           ],
-          "table": {
-            "id": "clan_members_list",
-            "size": "pw, fh",
-            "padding-top": "1@blockInterval",
-            "class": "lbTable",
-            "useNavigatorOrInteractiveCells": "yes",
-            "text-valign": "center",
-            "text-halign": "center",
-            "navigatorShortcuts": "yes",
-            "selfFocusBorder": "yes",
-            "on_select": "onSelectUser",
-            "on_r_click": "onUserRClick",
-            "on_dbl_click": "onUserCard",
-            "on_set_focus": "onMembersListFocus",
-            "overflow-y": "auto"
-          },
           "animated_wait_icon": {
             "id": "clan_loading",
             "pos": "0.5pw-0.5w, 0.5ph-0.5h",
@@ -795,7 +798,7 @@
                     "pos": "0, ph-h",
                     "position": "absolute",
                     "background-repeat": "expand",
-                    "background-image": "#ui/gameuiskin#optionlist_background_top.png",
+                    "background-image": "#ui/gameuiskin#optionlist_background_top",
                     "background-color": "#90909090",
                     "background-position": "0, 0.25h, 0, 0"
                   }
@@ -1044,6 +1047,34 @@
                                 "position": "relative",
                                 "text-align": "left",
                                 "isDarkWhenDisabled": "no"
+                              },
+                              "div": {
+                                "id": "gc_manual_unlocks_unseen",
+                                "position": "absolute",
+                                "size": "pw,ph",
+                                "popup_menu": {
+                                  "behaviour": "bhvUnseen",
+                                  "pos": "(pw-w)/2, ph+2@dp",
+                                  "position": "absolute",
+                                  "menu_align": "bottom",
+                                  "noPadding": "yes",
+                                  "value": "manual_unlocks",
+                                  "display": "hide",
+                                  "tdiv": {
+                                    "margin-right": "@dp",
+                                    "img": {
+                                      "size": "@cIco, @cIco",
+                                      "pos": "0, ph/2-h/2",
+                                      "position": "relative",
+                                      "background-image": "#ui/gameuiskin#new_icon.svg",
+                                      "background-svg-size": "@cIco, @cIco"
+                                    },
+                                    "textareaNoTab": {
+                                      "text": "#mainmenu/rewardsNotCollected"
+                                    }
+                                  },
+                                  "popup_menu_arrow": {}
+                                }
                               }
                             }
                           ]
@@ -1250,7 +1281,7 @@
                   "pos": "0, ph",
                   "position": "absolute",
                   "background-repeat": "expand",
-                  "background-image": "#ui/gameuiskin#optionlist_background_top.png",
+                  "background-image": "#ui/gameuiskin#optionlist_background_top",
                   "background-color": "#90909090",
                   "background-position": "0, 0.25h, 0, 0"
                 },
@@ -1346,7 +1377,7 @@
                           },
                           {
                             "id": "iconGlow",
-                            "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                            "background-image": "#ui/gameuiskin#mail_new_glow",
                             "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                             "_transp-timer": "0",
                             "display": "hide"
@@ -1388,7 +1419,7 @@
                           },
                           {
                             "id": "iconGlow",
-                            "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                            "background-image": "#ui/gameuiskin#mail_new_glow",
                             "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                             "_transp-timer": "0",
                             "display": "hide"
@@ -1420,7 +1451,7 @@
                           },
                           {
                             "id": "iconGlow",
-                            "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                            "background-image": "#ui/gameuiskin#mail_new_glow",
                             "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                             "_transp-timer": "0",
                             "display": "hide"

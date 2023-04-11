@@ -128,23 +128,33 @@ expandable {
       <</taskImage>>
       <</isOnlyInfo>>
 
+      <<#rewardOnTop>>
+      <<#reward>>
+      rewardBlock {
+        margin-bottom:t='1@blockInterval'
+        textareaNoTab {
+          text:t='<<rewardText>>'
+        }
+        <<@itemMarkUp>>
+      }
+      <</reward>>
+      <</rewardOnTop>>
+
       <<@description>>
 
+      <<^rewardOnTop>>
       <<#reward>>
-      tdiv {
+      rewardBlock {
         left:t='pw-w'
         position:t='relative'
-        flow:t='vertical'
         textareaNoTab {
-          max-width:t='fw'
-          removeParagraphIndent:t='yes';
           text:t='<<rewardText>>'
-          overlayTextColor:t='active'
           text-align:t='right'
         }
         <<@itemMarkUp>>
       }
       <</reward>>
+      <</rewardOnTop>>
 
       <<^isOnlyInfo>>
       tdiv {
@@ -196,7 +206,7 @@ expandable {
       height:t='0.01@scrn_tgt'
       width:t='2h'
       pos:t='50%pw-50%w, ph-h'; position:t='absolute'
-      background-image:t='#ui/gameuiskin#expand_info.png'
+      background-image:t='#ui/gameuiskin#expand_info'
       background-color:t='@premiumColor'
       <<#isOnlyInfo>> hideExpandImg:t='yes' <</isOnlyInfo>>
     }

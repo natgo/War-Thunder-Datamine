@@ -492,6 +492,7 @@
         },
         "moAddMissionObjective": {
           "target": "wakeIs_mission3_fly00",
+          "object_marking": 0,
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
@@ -535,7 +536,8 @@
           "target": "wakeIs_mission3_fly00",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": [
           {
@@ -589,6 +591,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "enemy_squad01",
             "speed": 250.0
           },
@@ -609,6 +614,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "enemy_squad02",
             "speed": 250.0
           },
@@ -629,6 +637,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "ally",
             "move_type": "teleport",
             "speed": 300.0,
@@ -697,6 +708,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "armada_01_cut",
             "move_type": "teleport",
             "lookat": "enemy_squad01",
@@ -719,6 +733,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "armada_01_cut"
           }
         ],
@@ -1036,6 +1053,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "armada_01",
           "move_type": "teleport",
           "speed": 300.0,
@@ -1055,6 +1075,7 @@
         },
         "moAddMissionObjective": {
           "target": "wakeIs_mission3_att00",
+          "object_marking": 0,
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
@@ -1093,7 +1114,7 @@
       },
       "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": {
+        "__missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
           "delta": 0,
@@ -1241,6 +1262,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "enemy_squad01"
           },
           {
@@ -1260,6 +1284,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "enemy_squad02"
           }
         ],
@@ -1339,7 +1366,8 @@
           "target": "wakeIs_mission3_att00",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 3.0
@@ -1400,6 +1428,7 @@
         },
         "moAddMissionObjective": {
           "target": "wakeIs_mission3_att01",
+          "object_marking": 0,
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
@@ -1420,6 +1449,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": [
             "enemy_squad01",
             "enemy_squad02"
@@ -1486,7 +1518,8 @@
           "target": "wakeIs_mission3_att01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "landing_start"
@@ -1542,7 +1575,8 @@
           "target": "wakeIs_mission3_att01",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 3.0
@@ -1616,6 +1650,7 @@
         },
         "moAddMissionObjective": {
           "target": "wakeIs_mission3_fly01",
+          "object_marking": 0,
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
@@ -1664,7 +1699,8 @@
           "target": "wakeIs_mission3_fly01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 2.0
@@ -2015,7 +2051,8 @@
           "target": "wakeIs_mission3_att00",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionFailed": {}
       },
@@ -2084,6 +2121,9 @@
         }
       },
       "actions": {
+        "triggerDisable": {
+          "target": "enemy_bombers_count"
+        },
         "unitSetIndication": {
           "set": true,
           "target_marking": 0,
@@ -2113,7 +2153,7 @@
       },
       "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": {
+        "__missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
           "delta": 0,
@@ -2394,6 +2434,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -2440,6 +2481,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -2473,9 +2515,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -2502,6 +2544,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -2547,6 +2590,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -2593,6 +2637,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -2639,6 +2684,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -2686,6 +2732,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 9,
@@ -2720,9 +2767,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -2749,6 +2796,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -2797,6 +2845,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -2804,8 +2853,8 @@
           "formation_div": 3,
           "formation_step": [0.6,1.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -2831,6 +2880,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -2838,8 +2888,8 @@
           "formation_div": 3,
           "formation_step": [0.6,1.25],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -2865,6 +2915,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -2872,8 +2923,8 @@
           "formation_div": 3,
           "formation_step": [1.0,1.25],
           "formation_noise": [-0.2,-0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -2899,6 +2950,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -2906,8 +2958,8 @@
           "formation_div": 3,
           "formation_step": [1.0,1.25],
           "formation_noise": [0.1,-0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -2933,6 +2985,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -2940,8 +2993,8 @@
           "formation_div": 1,
           "formation_step": [1.0,1.25],
           "formation_noise": [-0.1,0.2],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -2967,6 +3020,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -2974,8 +3028,8 @@
           "formation_div": 1,
           "formation_step": [1.0,1.5],
           "formation_noise": [-0.1,0.2],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -3001,6 +3055,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -3008,8 +3063,8 @@
           "formation_div": 3,
           "formation_step": [8.0,5.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       }
@@ -3037,6 +3092,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -3044,8 +3100,8 @@
           "formation_div": 3,
           "formation_step": [0.8,1.2],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -3071,6 +3127,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -3078,8 +3135,8 @@
           "formation_div": 3,
           "formation_step": [0.6,1.25],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -3105,6 +3162,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -3112,8 +3170,8 @@
           "formation_div": 3,
           "formation_step": [0.6,0.5],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       }
@@ -3128,11 +3186,11 @@
           [-1472.45,21.25,2053.8]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "btry_B00",
             "btry_B01"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -3144,7 +3202,6 @@
           [1077.05,20.2,-1977.55]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "btry_D",
             "btry_B00",
@@ -3155,7 +3212,8 @@
             "btry_A",
             "btry_3inch",
             "btry_30mm"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -3167,11 +3225,11 @@
           [-212.75,16.65,884.55]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "btry_D00",
             "btry_D01"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -3183,11 +3241,11 @@
           [-1713.8,-57.35,-118.3]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "cutscene_plane",
             "cutscene_enemy_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -3199,9 +3257,9 @@
           [4515.05,0.0,-2967.25]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "armada_01",
-          "object_type": "isPlayer"
+          "object_type": "isPlayer",
+          "object_marking": 0
         }
       }
     ]

@@ -725,7 +725,7 @@ let function isInArrayRecursive(v, arr) {
 
     local image = ""
     if (("images" in this.curItem) && (imgId in this.curItem.images))
-      image = $"#ui/images/wizard/{this.curItem.images[imgId]}.png"
+      image = $"#ui/images/wizard/{this.curItem.images[imgId]}"
     this.scene.findObject("shortcut_image")["background-image"] = image
   }
 
@@ -1471,7 +1471,7 @@ let function isInArrayRecursive(v, arr) {
       let previewPreset = ::ControlsPreset(presetPath)
       let currentPreset = ::g_controls_manager.getCurPreset()
 
-      if (previewPreset.basePresetPaths["default"] == currentPreset.basePresetPaths["default"])
+      if (previewPreset.basePresetPaths?["default"] == currentPreset.basePresetPaths?["default"])
         ::g_controls_manager.setPreviewPreset(currentPreset)
       else
         ::g_controls_manager.setPreviewPreset(previewPreset)

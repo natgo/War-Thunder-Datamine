@@ -1,5 +1,7 @@
+@const subUnlockProgressBarWidth: 350@sf/@pf;
+
 substrateImg{
-  background-image: "#ui/gameuiskin#stage_substrate.png";
+  background-image: "#ui/gameuiskin#stage_substrate";
   position: absolute;
   pos: 0, 0;
   display: hide;
@@ -35,6 +37,10 @@ hiddenDiv unlockCondition {
   width:pw/2-1;   margin-left:0;
 }
 
+unlockCondition battleTaskProgress {
+  width: @subUnlockProgressBarWidth;
+}
+
 layeredIconContainer{
   css-hier-invalidate: yes;
 }
@@ -68,7 +74,7 @@ awardDiv > layeredIconContainer {
 
 awardDiv.unlockFrame {
   re-type:9rect;
-  background-image:#ui/gameuiskin#button_.png;
+  background-image:#ui/gameuiskin#button_;
   background-color:@white;
   background-position:6;
   background-repeat:expand;

@@ -67,6 +67,7 @@ local ExchangeRecipes = class {
   isMultipleItems = false
   isFake = false
   hasChestInComponents = false
+  shouldSkipMsgBox = false
 
   craftTime = 0
   initedComponents = null
@@ -91,6 +92,7 @@ local ExchangeRecipes = class {
     this.effectOnStartCraftPresetName = params?.effectOnStartCraftPresetName ?? ""
     this.allowableComponents = params?.allowableComponents
     this.showRecipeAsProduct = params?.showRecipeAsProduct
+    this.shouldSkipMsgBox = !!params?.shouldSkipMsgBox
 
     let parsedRecipe = params.parsedRecipe
     this.initedComponents = parsedRecipe.components
@@ -344,14 +346,8 @@ local ExchangeRecipes = class {
   }
 
   static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
-    let showOnlyCraftTime = componentItem.showAllowableRecipesOnly()
-    let craftTimeText = this.getRecipesCraftTimeText(recipes)
-    if (showOnlyCraftTime) {
-      if (shouldReturnMarkup)
-        return ::PrizesView.getPrizesListView([], { header = craftTimeText })
-      else
-        return ::PrizesView.getPrizesListText([], @(...) craftTimeText)
-    }
+    if (componentItem.showAllowableRecipesOnly())
+      return ""
 
     let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
     let isFullRecipesList = recipes.len() <= maxRecipes
@@ -386,6 +382,7 @@ local ExchangeRecipes = class {
         isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
       }
 
+      let craftTimeText = this.getRecipesCraftTimeText(recipes)
       headerFirst = colorize("grayOptionColor",
         componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),
                                             isMultiExtraItems, hasFakeRecipesInList,
@@ -460,12 +457,7 @@ local ExchangeRecipes = class {
       : "badTextColor"
 
   static function tryUse(recipes, componentItem, params = {}) {
-    local recipe = null
-    foreach (r in recipes)
-      if (r.isUsable) {
-        recipe = r
-        break
-      }
+    let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
 
     if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
       ::scene_msg_box("reached_max_amount", null,
@@ -474,12 +466,12 @@ local ExchangeRecipes = class {
       return false
     }
 
-    if (recipe == null) {
+    if (!recipe?.isUsable) {
       this.showUseErrorMsg(recipes, componentItem)
       return false
     }
 
-    if (params?.shouldSkipMsgBox) {
+    if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
       recipe.doExchange(componentItem, 1, params)
       return true
     }

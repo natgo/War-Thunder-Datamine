@@ -96,35 +96,35 @@ let function getTierIcon(weaponry, itemsNum) {
   let isBlock = (weaponry?.amountPerTier ?? 0) > 1
 
   if (iconType != null)
-    return $"{path}{iconType}.png"
+    return $"{path}{iconType}"
 
   if (triggerType == TRIGGER_TYPE.TORPEDOES)
-    return $"{path}air_torpedo.png"
+    return $"{path}air_torpedo"
 
   if (triggerType == TRIGGER_TYPE.ATGM)
-    return $"{path}atgm_type2_x2.png"
+    return $"{path}atgm_type2_x2"
 
   if (isInArray(triggerType,
     [TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN]))
-      return isBlock || isGroup ? $"{path}multibarrel_gun.png" : $"{path}machine_gun.png"
+      return isBlock || isGroup ? $"{path}multibarrel_gun" : $"{path}machine_gun"
 
   if (triggerType == TRIGGER_TYPE.AGM)
-    return $"{path}missile_air_to_earth.png"
+    return $"{path}missile_air_to_earth"
 
   if (triggerType == TRIGGER_TYPE.AAM)
-    return isBlock || isGroup ? $"{path}missile_air_to_air_group.png" : $"{path}missile_air_to_air.png"
+    return isBlock || isGroup ? $"{path}missile_air_to_air_group" : $"{path}missile_air_to_air"
 
   if (triggerType == TRIGGER_TYPE.FLARES)
-    return $"{path}ltc.png"
+    return $"{path}ltc"
 
   let size = getWeaponrySize(weaponry.massKg)
   let wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
   let groupStr = isBlock || isGroup ? $"{size}_group" : size
 
-  return $"{path}{wStr}_{groupStr}.png"
+  return $"{path}{wStr}_{groupStr}"
 }
 
-local function createTier(weaponry, presetName, itemsNum = 0) {
+local function createTier(weaponry, presetName, unitName, itemsNum = 0) {
   let tierId  = weaponry?.tierId ?? -1
   let tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
   itemsNum = itemsNum > 0 ? itemsNum : weaponry.num
@@ -132,7 +132,7 @@ local function createTier(weaponry, presetName, itemsNum = 0) {
     tierId  = tierId
     weaponry = tierWeaponry
     img = getTierIcon(weaponry, itemsNum)
-    tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(this.unit.name,
+    tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unitName,
       getTierTooltipParams(tierWeaponry, presetName, tierId))
   }
 }
@@ -156,17 +156,17 @@ let function getBlocks(weaponry) {
   return res
 }
 
-let function getWeaponryDistribution(weaponry, preset, isCentral = false) {
+let function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) {
   let isEvenCount = weaponry.num % 2 == 0
   let isAllocateByGroup = preset.totalItemsAmount > preset.weaponsSlotCount
   // Group weapons when numbers of free tiers less then weapon items amount
   if (isAllocateByGroup) {
     if (!isCentral && isEvenCount) {
-      let tier = createTier(weaponry, preset.name, weaponry.num / 2)
+      let tier = createTier(weaponry, preset.name, unitName, weaponry.num / 2)
       return [tier, clone tier]
     }
     else
-      return [createTier(weaponry, preset.name)]
+      return [createTier(weaponry, preset.name, unitName)]
   }
   // Place one weapon item per one tier when tiers amount is enough
   let res = []
@@ -174,7 +174,7 @@ let function getWeaponryDistribution(weaponry, preset, isCentral = false) {
     // Set empty tier in center when count is EVEN
     if (isCentral && isEvenCount && i == weaponry.num / 2)
       res.append({ tierId = -1 })
-    res.append(createTier(weaponry, preset.name, 1))
+    res.append(createTier(weaponry, preset.name,  unitName, 1))
   }
 
   return res
@@ -218,7 +218,7 @@ let function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
   return tiers
 }
 
-let function getPredefinedTiers(preset) {
+let function getPredefinedTiers(preset, unitName) {
   let res = []
   let filledTiers = {}
   foreach (triggerType, triggers in (preset?.weaponsByTypes ?? {}))
@@ -241,7 +241,7 @@ let function getPredefinedTiers(preset) {
             if (currTier) {
               currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
                 itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier) }))
-              currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(this.unit.name,
+              currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unitName,
                 getTierTooltipParams(currTier.weaponry, preset.name, tierId))
             }
 
@@ -251,7 +251,7 @@ let function getPredefinedTiers(preset) {
             filledTiers[tierId] <- weaponry
 
           res.append(createTier(weaponry.__merge(params),
-            preset.name, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
+            preset.name,  unitName, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
         }
       }
 
@@ -269,8 +269,8 @@ let function getPredefinedTiers(preset) {
   return res
 }
 
-let function getTiers(_unit, preset) {
-  let res = getPredefinedTiers(preset)
+let function getTiers(unit, preset) {
+  let res = getPredefinedTiers(preset, unit.name)
   unAllocatedTiers = []
 
   if (!res.len()) {
@@ -280,7 +280,7 @@ let function getTiers(_unit, preset) {
           let group = getWeaponryGroup(preset, GROUP_ORDER[i])
           for (local j = 0; j < group.len(); j++)
             res.extend(getIndexedTiers(getWeaponryDistribution(group[j],
-              preset, res.len() == 0), res.len(), preset.weaponsSlotCount))
+              preset, unit.name, res.len() == 0), res.len(), preset.weaponsSlotCount))
         }
 
     // Check tiers count and remove excess tiers

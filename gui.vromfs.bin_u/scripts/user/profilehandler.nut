@@ -7,7 +7,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
+} = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
@@ -28,12 +29,12 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let seenList = require("%scripts/seen/seenList.nut")
+let { havePlayerTag, isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
@@ -44,10 +45,12 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock,
+  canOpenUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -59,6 +62,8 @@ enum OwnUnitsType {
 }
 
 let selMedalIdx = {}
+let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
+let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
   if (!hasFeature("Profile"))
@@ -122,7 +127,7 @@ let selMedalIdx = {}
   skinsCache = null
   uncollapsedChapterName = null
   curAchievementGroupName = ""
-  curUnlockId = ""
+  initialUnlockId = ""
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
@@ -192,7 +197,7 @@ let selMedalIdx = {}
     local tabImage = null
     local tabText = null
 
-    foreach (cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    foreach (cb in getAllUnlocksWithBlkOrder()) {
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
 
@@ -263,7 +268,9 @@ let selMedalIdx = {}
         id = sheet
         tabImage = tabImage
         tabName = tabText
-        unseenIcon = sheet == "UnlockAchievement" ? seenList.id : null
+        unseenIcon = sheet == "UnlockAchievement"
+          ? makeConfigStrByList([seenUnlockMarkers.id, seenManualUnlocks.id])
+          : null
         navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
         hidden = !this.isSheetVisible(sheet)
       })
@@ -297,7 +304,7 @@ let selMedalIdx = {}
 
   function getUnlockFiltersList(uType, getCategoryFunc) {
     let categories = []
-    let unlocks = ::g_unlocks.getUnlocksByType(uType)
+    let unlocks = getUnlocksByType(uType)
     foreach (unlock in unlocks)
       if (isUnlockVisible(unlock))
         ::u.appendOnce(getCategoryFunc(unlock), categories, true)
@@ -331,7 +338,7 @@ let selMedalIdx = {}
     if (canBuy && buyBtnObj?.isValid())
       placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decor.getCost())
 
-    let canFav = !decor.isUnlocked() && ::g_unlocks.canDo(decor.unlockBlk)
+    let canFav = !decor.isUnlocked() && canDoUnlock(decor.unlockBlk)
     let favBtnObj = this.showSceneBtn("btn_fav", canFav)
     if (canFav)
       favBtnObj.setValue(isUnlockFav(decor.unlockId)
@@ -357,7 +364,7 @@ let selMedalIdx = {}
     let buttonsList = {
       btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
-      btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites")
+      btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
@@ -874,28 +881,33 @@ let selMedalIdx = {}
 
     let isAchievementPage = pageTypeId == UNLOCKABLE_ACHIEVEMENT
     if (isAchievementPage && this.curAchievementGroupName == "")
-      this.curAchievementGroupName = this.curUnlockId == ""
+      this.curAchievementGroupName = this.initialUnlockId == ""
         ? this.findGroupName(@(g) g.len() > 0)
-        : this.findGroupName((@(g) g.contains(this.curUnlockId)).bindenv(this))
+        : this.findGroupName((@(g) g.contains(this.initialUnlockId)).bindenv(this))
 
     let ediff = getShopDiffCode()
 
+    let markerUnlockIds = getUnlockIds(ediff)
+    let manualUnlockIds = getManualUnlocks().map(@(u) u.id)
     let view = { items = [] }
     foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
         curIndex = view.items.len()
 
-      let chapterSeenIds = getUnlockIds(ediff).filter(@(u) chapterItem.rootItems.contains(u)
-        || chapterItem.groups.findindex(@(g) g.contains(u)) != null)
+      local markerSeenIds = markerUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
+        || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
+      local manualSeenIds = manualUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
+        || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
 
       view.items.append({
         itemTag = "campaign_item"
         id = chapterName
         itemText = "#unlocks/chapter/" + chapterName
         isCollapsable = chapterItem.groups.len() > 0
-        unseenIcon = chapterSeenIds.len() > 0
-          ? bhvUnseen.makeConfigStr(seenList.id, chapterSeenIds)
-          : null
+        unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+          makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+          makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+        ])
       })
 
       if (chapterItem.groups.len() > 0)
@@ -904,14 +916,16 @@ let selMedalIdx = {}
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 
-          let groupSeenIds = getUnlockIds(ediff).filter(@(u) groupItem.contains(u))
+          markerSeenIds = markerSeenIds.filter(@(u) groupItem.contains(u))
+          manualSeenIds = manualUnlockIds.filter(@(u) groupItem.contains(u))
 
           view.items.append({
             id = id
             itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
-            unseenIcon = groupSeenIds.len() > 0
-              ? bhvUnseen.makeConfigStr(seenList.id, groupSeenIds)
-              : null
+            unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+              makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+              makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+            ])
           })
         }
     }
@@ -969,7 +983,7 @@ let selMedalIdx = {}
     local chapter = ""
     local group = ""
 
-    foreach (_idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    foreach (_idx, cb in getAllUnlocksWithBlkOrder()) {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
@@ -1186,7 +1200,7 @@ let selMedalIdx = {}
   function fillSkinDescr(name) {
     let unitName = ::g_unlocks.getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? ::getUnitName(unitName) : ""
-    let unlockBlk = ::g_unlocks.getUnlockById(name)
+    let unlockBlk = getUnlockById(name)
     let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
     let progressData = config?.getProgressBarData()
     let canAddFav = !!unlockBlk
@@ -1269,7 +1283,7 @@ let selMedalIdx = {}
     if (::u.isEmpty(unlockId))
       return
 
-    let cost = ::get_unlock_cost(unlockId)
+    let cost = getUnlockCost(unlockId)
     this.msgBox("question_buy_unlock",
       ::warningIfGold(
         loc("onlineShop/needMoneyQuestion",
@@ -1278,7 +1292,7 @@ let selMedalIdx = {}
           }),
         cost),
       [
-        ["ok", @() ::g_unlocks.buyUnlock(unlockId,
+        ["ok", @() buyUnlock(unlockId,
             Callback(@() this.updateUnlockBlock(unlockId), this),
             Callback(@() this.onUnlockGroupSelect(null), this))
         ],
@@ -1289,7 +1303,7 @@ let selMedalIdx = {}
   function updateUnlockBlock(unlockData) {
     local unlock = unlockData
     if (::u.isString(unlockData))
-      unlock = ::g_unlocks.getUnlockById(unlockData)
+      unlock = getUnlockById(unlockData)
 
     let unlockObj = this.scene.findObject(this.getUnlockBlockId(unlock.id))
     if (checkObj(unlockObj))
@@ -1334,6 +1348,7 @@ let selMedalIdx = {}
     ::g_unlock_view.fillUnlockPurchaseButton(itemData, unlockObj)
     ::g_unlock_view.fillUnlockManualOpenButton(itemData, unlockObj)
     ::g_unlock_view.updateLockStatus(itemData, unlockObj)
+    ::g_unlock_view.updateUnseenIcon(itemData, unlockObj)
   }
 
   function printUnlocksList(unlocksList) {
@@ -1357,8 +1372,8 @@ let selMedalIdx = {}
     }
 
     local currentItemNum = 0
-    local selIdx = 0
-    foreach (unlock in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    local selIdx = null
+    foreach (unlock in getAllUnlocksWithBlkOrder()) {
       if (unlock?.id == null) {
         let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
         ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
@@ -1373,7 +1388,8 @@ let selMedalIdx = {}
       unlockObj.holderId = unlock.id
       this.fillUnlockInfo(unlock, unlockObj)
 
-      if (this.curUnlockId == unlock.id)
+      if (selIdx == null
+          && (this.initialUnlockId == unlock.id || (this.initialUnlockId == "" && canOpenUnlockManually(unlock))))
         selIdx = currentItemNum
 
       currentItemNum++
@@ -1382,9 +1398,9 @@ let selMedalIdx = {}
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (unlocksListObj.childrenCount() > 0)
-      unlocksListObj.setValue(selIdx)
+      unlocksListObj.setValue(selIdx ?? 0)
 
-    seenList.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
+    seenUnlockMarkers.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }
 
   function getUnlockBlockId(unlockId) {
@@ -1398,7 +1414,7 @@ let selMedalIdx = {}
     let idx = obj.getValue()
     let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
     let name = checkObj(itemObj) && itemObj?.id
-    let unlock = name && ::g_unlocks.getUnlockById(name)
+    let unlock = name && getUnlockById(name)
     if (!unlock)
       return
 
@@ -1411,7 +1427,7 @@ let selMedalIdx = {}
       selMedalIdx[this.curFilter] <- idx
 
     let config = ::build_unlock_desc(::build_conditions_config(unlock))
-    let rewardText = ::get_unlock_reward(name)
+    let rewardText = getUnlockRewardText(name)
     let progressData = config.getProgressBarData()
 
     let view = {
@@ -1434,7 +1450,7 @@ let selMedalIdx = {}
 
   function onUnlockSelect(obj) {
     if (obj?.isValid())
-      this.curUnlockId = getSelectedChild(obj)?.holderId ?? ""
+      this.initialUnlockId = ""
   }
 
   function onUnlockGroupSelect(_obj) {

@@ -25,14 +25,14 @@
               "size": "0.333sh, sh",
               "pos": "-w/2, 0",
               "position": "absolute",
-              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
               "background-color": "@black"
             },
             {
               "size": "0.333sh, sh",
               "pos": "pw -w/2, 0",
               "position": "absolute",
-              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
               "background-color": "@black"
             }
           ]
@@ -44,7 +44,7 @@
         "pos": "pw/2-w/2, 1@minYposWindow",
         "position": "absolute",
         "padding": "80@sf/@pf, 2@dp, 80@sf/@pf, 13@sf/@pf",
-        "background-image": "#ui/gameuiskin#expandable_item_ww_transp_sym.png",
+        "background-image": "#ui/gameuiskin#expandable_item_ww_transp_sym",
         "background-color": "@white",
         "background-position": "5,2",
         "background-repeat": "expand",
@@ -225,7 +225,7 @@
                   "pos": "0, ph-h",
                   "position": "absolute",
                   "background-repeat": "expand",
-                  "background-image": "#ui/gameuiskin#optionlist_background_top.png",
+                  "background-image": "#ui/gameuiskin#optionlist_background_top",
                   "background-color": "#90909090",
                   "background-position": "0, 0.25h, 0, 0"
                 }
@@ -474,6 +474,34 @@
                               "position": "relative",
                               "text-align": "left",
                               "isDarkWhenDisabled": "no"
+                            },
+                            "div": {
+                              "id": "gc_manual_unlocks_unseen",
+                              "position": "absolute",
+                              "size": "pw,ph",
+                              "popup_menu": {
+                                "behaviour": "bhvUnseen",
+                                "pos": "(pw-w)/2, ph+2@dp",
+                                "position": "absolute",
+                                "menu_align": "bottom",
+                                "noPadding": "yes",
+                                "value": "manual_unlocks",
+                                "display": "hide",
+                                "tdiv": {
+                                  "margin-right": "@dp",
+                                  "img": {
+                                    "size": "@cIco, @cIco",
+                                    "pos": "0, ph/2-h/2",
+                                    "position": "relative",
+                                    "background-image": "#ui/gameuiskin#new_icon.svg",
+                                    "background-svg-size": "@cIco, @cIco"
+                                  },
+                                  "textareaNoTab": {
+                                    "text": "#mainmenu/rewardsNotCollected"
+                                  }
+                                },
+                                "popup_menu_arrow": {}
+                              }
                             }
                           }
                         ]
@@ -680,7 +708,7 @@
                 "pos": "0, ph",
                 "position": "absolute",
                 "background-repeat": "expand",
-                "background-image": "#ui/gameuiskin#optionlist_background_top.png",
+                "background-image": "#ui/gameuiskin#optionlist_background_top",
                 "background-color": "#90909090",
                 "background-position": "0, 0.25h, 0, 0"
               },
@@ -776,7 +804,7 @@
                         },
                         {
                           "id": "iconGlow",
-                          "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                          "background-image": "#ui/gameuiskin#mail_new_glow",
                           "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                           "_transp-timer": "0",
                           "display": "hide"
@@ -818,7 +846,7 @@
                         },
                         {
                           "id": "iconGlow",
-                          "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                          "background-image": "#ui/gameuiskin#mail_new_glow",
                           "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                           "_transp-timer": "0",
                           "display": "hide"
@@ -850,7 +878,7 @@
                         },
                         {
                           "id": "iconGlow",
-                          "background-image": "#ui/gameuiskin#mail_new_glow.png",
+                          "background-image": "#ui/gameuiskin#mail_new_glow",
                           "style": "background-color:@textureGlowColor; size:110%ph, 110%ph",
                           "_transp-timer": "0",
                           "display": "hide"

@@ -94,6 +94,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     ::g_lb_category.EVENT_FOOTBALL_MATCHES
     ::g_lb_category.EVENT_FOOTBALL_GOALS
     ::g_lb_category.EVENT_FOOTBALL_ASSISTS
+    ::g_lb_category.EVENT_FOOTBALL_SAVES
+    ::g_lb_category.EVENT_FOOTBALL_TOTAL_ACTIONS
     ::g_lb_category.EVENT_SCORE
   ]
 
@@ -2051,8 +2053,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getEventTimeText(event) {
+    let endTime = ::events.getEventEndTime(event)
     if (::events.isEventEnabled(event)) {
-      let endTime = ::events.getEventEndTime(event)
       if (endTime > 0)
         return format(loc("events/event_ends_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(endTime))))
       else
@@ -2061,6 +2063,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let startTime = ::events.getEventStartTime(event)
     if (startTime > 0)
       return format(loc("events/event_starts_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
+    if (endTime > 0)
+      return loc("events/event_not_started_yet")
     return loc("events/event_disabled")
   }
 
@@ -2389,7 +2393,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return difficulty.icon
 
     if (diffName.len() > 6 && diffName.slice(0, 6) == "custom")
-      return $"#ui/gameuiskin#mission_{diffName}.png"
+      return $"#ui/gameuiskin#mission_{diffName}"
 
     return ""
   }
