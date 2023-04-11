@@ -91,7 +91,7 @@ local Unit = class {
    spare = null //{} or null
    needBuyToOpenNextInTier = null //[]
 
-   commonWeaponImage = "#ui/gameuiskin#weapon.png"
+   commonWeaponImage = "#ui/gameuiskin#weapon"
    primaryBullets = null //{}
    secondaryBullets = null //{}
    bulletsIconParam = 0
@@ -265,8 +265,8 @@ local Unit = class {
   isShipOrBoat          = @() this.esUnitType == ES_UNIT_TYPE_SHIP || this.esUnitType == ES_UNIT_TYPE_BOAT
   isSubmarine           = @() this.esUnitType == ES_UNIT_TYPE_SHIP && this.tags.indexof("submarine") != null
   isHelicopter          = @() this.esUnitType == ES_UNIT_TYPE_HELICOPTER
+  isHuman               = @() this.esUnitType == ES_UNIT_TYPE_TANK && this.tags.indexof("type_exoskeleton") != null
   //
-
 
 
 
@@ -488,13 +488,13 @@ local Unit = class {
 
   function getUnlockImage() {
     if (this.isAir())
-      return "#ui/gameuiskin#blueprint_items_aircraft.png"
+      return "#ui/gameuiskin#blueprint_items_aircraft"
     if (this.isTank())
-      return "#ui/gameuiskin#blueprint_items_tank.png"
+      return "#ui/gameuiskin#blueprint_items_tank"
     if (this.isShipOrBoat())
-      return "#ui/gameuiskin#blueprint_items_ship.png"
+      return "#ui/gameuiskin#blueprint_items_ship"
 
-    return "#ui/gameuiskin#blueprint_items_aircraft.png"
+    return "#ui/gameuiskin#blueprint_items_aircraft"
   }
 
   isSquadronVehicle       = @() this.researchType == "clanVehicle"

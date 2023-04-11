@@ -20,6 +20,8 @@ let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
 let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
   getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 
 ::g_battle_tasks <- null
 
@@ -543,7 +545,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
         taskUnlocksListPrefix = getMainConditionListPrefix(config.conditions)
 
         if (this.isUnlocksList(config))
-          taskUnlocksList = this.getUnlocksListView(config)
+          taskUnlocksList = this.getUnlocksListView(config.__merge({isOnlyInfo = !!paramsCfg?.isOnlyInfo }))
         else
           taskStreaksList = this.getStreaksListView(config)
       }
@@ -595,11 +597,31 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   function isUnlocksList(config) {
     if (isNestedUnlockMode(config.type))
       foreach (id in config.names) {
-        let unlockBlk = ::g_unlocks.getUnlockById(id)
+        let unlockBlk = getUnlockById(id)
         if (!(unlockBlk?.isMultiUnlock ?? false) && ::get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
           return true
       }
     return false
+  }
+
+  function getUnlockAdditionalView(unlockId) {
+    let unlockBlk = getUnlockById(unlockId)
+    if (!unlockBlk || !isUnlockVisible(unlockBlk))
+      return {
+        isProgressBarVisible = false
+        isAddToFavVisible = false
+      }
+
+    let unlockConfig = ::build_conditions_config(unlockBlk)
+    let unlockDesc = getUnlockMainCondDescByCfg(unlockConfig)
+
+    return {
+      unlockId
+      unlockProgressDesc = $"({unlockDesc})"
+      isProgressBarVisible = true
+      progressBarValue=unlockConfig.getProgressBarData().value
+      toFavoritesCheckboxVal = isUnlockFav(unlockId) ? "yes" : "no"
+    }
   }
 
   function getUnlocksListView(config) {
@@ -609,27 +631,33 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let isBitMode = isBitModeType(config.type)
 
     foreach (idx, unlockId in config.names) {
+      let isEven = idx % 2 == 0
       if (config.type == "char_resources") {
         let decorator = ::g_decorator.getDecoratorById(unlockId)
         if (decorator && decorator.isVisible())
           res.append({
+            isEven
             text = decorator.getName()
             isUnlocked = decorator.isUnlocked()
             tooltipMarkup = DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
-          })
+            isAddToFavVisible = !config.isOnlyInfo // will be updated to false if no unlock in the decorator
+          }.__update(this.getUnlockAdditionalView(decorator.unlockId)))
       }
       else {
-        let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+        let unlockBlk = getUnlockById(unlockId)
         if (!unlockBlk || !isUnlockVisible(unlockBlk))
           continue
 
         let unlockConfig = ::build_conditions_config(unlockBlk)
         let isUnlocked = isBitMode ? stdMath.is_bit_set(config.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
+        let unlockName = namesLoc[idx]
         res.append({
-          tooltipMarkup = this.getTooltipMarkupByModeType(unlockConfig)
-          text = namesLoc[idx]
+          isEven
           isUnlocked
-        })
+          text = unlockName
+          tooltipMarkup = this.getTooltipMarkupByModeType(unlockConfig)
+          isAddToFavVisible = !config.isOnlyInfo
+        }.__update(this.getUnlockAdditionalView(unlockId)))
       }
     }
 
@@ -644,7 +672,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let res = []
     for (local i = 0; i < namesLoc.len(); i++) {
       let unlockId = config.names[i]
-      let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+      let unlockBlk = getUnlockById(unlockId)
       if (!unlockBlk || !isUnlockVisible(unlockBlk))
         continue
 

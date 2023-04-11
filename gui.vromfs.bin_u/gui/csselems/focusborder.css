@@ -36,7 +36,7 @@ itemDiv[hasButton=yes] > focus_border {
 [selected=yes] > focus_border[alwaysVisible=yes] {
   re-type:9rect;
   foreground-color: @inactiveFocusBorderColor;
-  foreground-image: #ui/gameuiskin#item_selection.png;
+  foreground-image: #ui/gameuiskin#item_selection;
   foreground-position:8;
   foreground-repeat: expand;
   display:show;
@@ -94,6 +94,7 @@ mapNest > focus_border {
 [show_console_buttons=yes] clanBattleSeasonFrame:hover,
 [show_console_buttons=yes] imgFrame:hover,
 [show_console_buttons=yes] titleItem:hover,
+[show_console_buttons=yes] popup:hover,
 [show_console_buttons=yes] SwitchBox:hover {
   needFocusBorder:yes;
 }
@@ -107,7 +108,7 @@ Button_text[iconPos=middleBottom] {
 [needFocusBorder=yes] {
   re-type:9rect;
   foreground-color: @gamepadFocusFrameColor;
-  foreground-image: #ui/gameuiskin#item_selection.png;
+  foreground-image: #ui/gameuiskin#item_selection;
   foreground-position: 8, 10, 8, 8;
   foreground-repeat: expand;
   behavior:focusFrameTarget;
@@ -119,7 +120,7 @@ Button_text[iconPos=middleBottom] {
 [needFocusBorder=back] {
   re-type:9rect;
   background-color: @gamepadFocusFrameColor;
-  background-image: #ui/gameuiskin#item_selection.png;
+  background-image: #ui/gameuiskin#item_selection;
   background-position: 8, 10, 8, 8;
   background-repeat: expand;
   behavior:focusFrameTarget;

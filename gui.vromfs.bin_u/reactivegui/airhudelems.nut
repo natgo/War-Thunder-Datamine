@@ -11,7 +11,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
   AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty,
   AamCount, AamSeconds, AamActualCount, AamName, AamSelected, IsAamEmpty,
-  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
+  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
   FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
   ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
   RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty,
@@ -28,7 +28,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
-  DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
+  DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 
@@ -270,6 +270,47 @@ let function getThrottleCaption(mode, isControled, idx) {
   return "".join(texts)
 }
 
+let function getModeCaption(mode) {
+  let texts = []
+  if (mode & (1 << WeaponMode.CCRP_MODE))
+    texts.append(loc("HUD/WEAPON_MODE_AUTO"))
+  else if (mode & (1 << WeaponMode.GYRO_MODE))
+    texts.append(loc("HUD/WEAPON_MODE_GYRO"))
+  if (mode & (1 << WeaponMode.CCIP_MODE)) {
+    if (texts.len() > 0)
+      texts.append("/")
+    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
+  }
+  return "".join(texts)
+}
+
+let function getBombModeCaption(mode) {
+  let texts = []
+  if (mode & (1 << WeaponMode.CCRP_MODE))
+    texts.append(loc("HUD/WEAPON_MODE_CCRP"))
+  if (mode & (1 << WeaponMode.CCIP_MODE)) {
+    if (texts.len() > 0)
+      texts.append("/")
+    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
+  }
+
+  //check both ccip/rp and bombBay
+  let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
+  if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
+    texts.append("  ")
+
+  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
+    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
+    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
+    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
+    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+
+  return "".join(texts)
+}
+
 let function getAGCaption(guidanceLockState, pointIsTarget) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
@@ -304,7 +345,7 @@ let function getAACaption(guidanceLockState) {
   return "".join(texts)
 }
 
-let function getGBCaption(guidanceLockState, pointIsTarget) {
+let function getGBCaption(guidanceLockState, pointIsTarget, mode) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
@@ -318,6 +359,8 @@ let function getGBCaption(guidanceLockState, pointIsTarget) {
     texts.append(loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
     texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
+  texts.append(" ")
+  texts.append(getBombModeCaption(mode))
   return "".join(texts)
 }
 
@@ -329,32 +372,6 @@ let function getCountermeasuresCaption(isFlare, mode) {
     texts.append(loc("HUD/INDICATION_MODE_SEPARATION"))
   if (mode & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
     texts.append(loc("HUD/COUNTERMEASURE_MLWS"))
-  return "".join(texts)
-}
-
-let function getModeCaption(mode) {
-  let texts = []
-  if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP_CCRP"))
-  else if (mode & (1 << WeaponMode.CCIP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
-  else if (mode & (1 << WeaponMode.CCRP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCRP"))
-
-  //check both ccip/rp and bombBay
-  let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
-  if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
-    texts.append("  ")
-
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
-
   return "".join(texts)
 }
 
@@ -378,7 +395,7 @@ let function getRocketCaption(mode) {
 
 let function getBombCaption(mode) {
   let texts = [loc("HUD/BOMBS_SHORT"), " "]
-  texts.append(getModeCaption(mode))
+  texts.append(getBombModeCaption(mode))
   return "".join(texts)
 }
 
@@ -440,7 +457,7 @@ let function getFuelAlertState(fuelState) {
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-let function createParam(param, width, height, style, needCaption = true, for_ils = false, isBomberView = false) {
+let function createParam(param, width, height, style, colorWatch, needCaption, for_ils, isBomberView) {
   let { blinkComputed = null, blinkTrigger = null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed } = param
 
@@ -465,19 +482,19 @@ let function createParam(param, width, height, style, needCaption = true, for_il
     : fontOutlineFxFactor * factor
   }
 
-  let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
+  let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, colorWatch.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value), 255))
 
-  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
+  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowOpacity.value))
 
-  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.value, HudParamColor.value, ParamTableShadowFactor.value))
+  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowFactor.value))
 
   let captionComponent = @() style.__merge({
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
-    margin = [0, 0.06 * width, 0, 0]
-    minWidth = 0.2 * width
+    margin = [0, 0.0, 0, 0]
+    minWidth = 0.26 * width
     text = titleComputed.value
     color = colorAlertCaptionW.value
     fontFxColor = colorFxCaption.value
@@ -496,12 +513,12 @@ let function createParam(param, width, height, style, needCaption = true, for_il
     opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
+  let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, colorWatch.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
 
-  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
+  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowOpacity.value))
 
-  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.value, HudParamColor.value, ParamTableShadowFactor.value))
+  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowFactor.value))
 
   let valueComponent = @() style.__merge({
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
@@ -516,15 +533,15 @@ let function createParam(param, width, height, style, needCaption = true, for_il
   })
 
   let additionalComponent = @() style.__merge({
-    watch = [additionalComputed, HudParamColor, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = fadeColor(HudParamColor.value, 255)
+    watch = [additionalComputed, colorWatch, ParamTableShadowFactor, ParamTableShadowOpacity]
+    color = fadeColor(colorWatch.value, 255)
     rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
     text = additionalComputed.value
-    fontFxFactor = isDarkColor(HudParamColor.value) ?
+    fontFxFactor = isDarkColor(colorWatch.value) ?
       fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.value
       : fontOutlineFxFactor * ParamTableShadowFactor.value
-    fontFxColor = isDarkColor(HudParamColor.value)
+    fontFxColor = isDarkColor(colorWatch.value)
       ? Color(255, 255, 255, 255 * ParamTableShadowOpacity.value)
       : Color(0, 0, 0, 255 * ParamTableShadowOpacity.value)
   })
@@ -657,7 +674,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
-      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value))
+      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value, GuidedBombsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value, 0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(GuidedBombsName.value))
@@ -834,12 +851,12 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 let fuelKeyId = AirParamsSecondary.FUEL
 
 let function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  let function getChildren(style, isBomberView = false) {
+  let function getChildren(colorWatch, style, isBomberView) {
     let children = []
 
     foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
@@ -851,7 +868,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, needCaption, forIls, isBomberView))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -866,20 +883,20 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
 
     foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView))
     }
 
     return children
   }
 
-  return function(isBomberView = false, style = styleText) {
+  return function(colorWatch, isBomberView = false, style = styleText) {
     let table = @() style.__merge({
       watch = [mainMask, secondaryMask, posWatched]
       pos = posWatched.value
       size = [width, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap
-      children = getChildren(style, isBomberView)
+      children = getChildren(colorWatch, style, isBomberView)
     })
 
     return {

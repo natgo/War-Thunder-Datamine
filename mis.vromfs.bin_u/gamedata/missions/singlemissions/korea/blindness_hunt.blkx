@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player_wing"
@@ -16,13 +12,17 @@
     "mission": {
       "level": "levels/korea.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "poor",
       "gt_cooperative": true,
       "gt_reload_explosives": true,
-      "isLimitedFuel": false
+      "isLimitedFuel": false,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "briefing": {
       "place_loc": "",
@@ -36,6 +36,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "player",
@@ -67,9 +68,13 @@
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
       "excludes": {}
     }
   },
@@ -99,13 +104,17 @@
           ]
         },
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": [
             "ussr_trucks_01",
             "ussr_airdef_for_trucks_01"
           ],
-          "attack_type": "hold_fire",
-          "stealthRadius": 1000.0,
           "targetableByAi": true,
+          "stealthRadius": 1000.0,
+          "attack_type": "hold_fire",
           "speed": 0.0,
           "lockSpeed": true
         },
@@ -115,10 +124,11 @@
         "addAirfield": {
           "runwayStart": "airfield01_start",
           "runwayEnd": "airfield01_end",
-          "runwayWidth": 80.0,
+          "runwayWidth": 120.0,
           "army": 1
         }
-      }
+      },
+      "else_actions": {}
     },
     "start_cut": {
       "is_enabled": false,
@@ -176,6 +186,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           },
@@ -185,6 +201,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -200,7 +222,8 @@
         "triggerDisable": {
           "target": "start_cut_skip"
         }
-      }
+      },
+      "else_actions": {}
     },
     "start_cut_skip": {
       "is_enabled": false,
@@ -230,7 +253,13 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "after_cut"
@@ -239,7 +268,8 @@
           "time": 0.95
         },
         "missionStopCutscene": {}
-      }
+      },
+      "else_actions": {}
     },
     "after_cut": {
       "is_enabled": false,
@@ -279,7 +309,8 @@
         "triggerEnable": {
           "target": "wp1"
         }
-      }
+      },
+      "else_actions": {}
     },
     "wp1": {
       "is_enabled": false,
@@ -304,6 +335,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_himself",
           "target": "wp01"
         }
@@ -330,7 +363,8 @@
         "triggerEnable": {
           "target": "wp2"
         }
-      }
+      },
+      "else_actions": {}
     },
     "wp2": {
       "is_enabled": false,
@@ -355,6 +389,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_himself",
           "target": "wp02"
         }
@@ -381,7 +417,8 @@
         "triggerEnable": {
           "target": "wp3"
         }
-      }
+      },
+      "else_actions": {}
     },
     "wp3": {
       "is_enabled": false,
@@ -407,6 +444,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "player_himself",
             "target": "wp03"
           },
@@ -419,6 +458,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "player_himself",
             "target": "ussr_trucks_01"
           }
@@ -444,6 +485,10 @@
           ]
         },
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": [
             "ussr_trucks_01",
             "ussr_airdef_for_trucks_01"
@@ -464,6 +509,10 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "ussr_trucks_01"
         },
         "triggerEnable": {
@@ -472,7 +521,8 @@
             "truks1_death"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "update_indicator": {
       "is_enabled": false,
@@ -496,6 +546,9 @@
           "icon": "truck",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": [
             "ussr_trucks_01",
             "ussr_trucks_02",
@@ -503,7 +556,8 @@
             "ussr_trucks_04"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "truks1_death": {
       "is_enabled": false,
@@ -524,6 +578,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "ussr_trucks_01"
         }
       },
@@ -533,6 +589,10 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": [
             "ussr_trucks_02",
             "ussr_trucks_03",
@@ -542,7 +602,8 @@
         "triggerEnable": {
           "target": "all_trucks_death"
         }
-      }
+      },
+      "else_actions": {}
     },
     "all_trucks_death": {
       "is_enabled": false,
@@ -563,6 +624,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": [
             "ussr_trucks_01",
             "ussr_trucks_02",
@@ -574,7 +637,10 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "blindness_hunt_second_convoy",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": [
           {
@@ -601,7 +667,8 @@
         "missionCompleted": {
           "timer": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "near_airfield": {
       "is_enabled": false,
@@ -626,6 +693,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_himself",
           "target": "airfield_point"
         }
@@ -646,7 +715,8 @@
         "triggerEnable": {
           "target": "complete_mission"
         }
-      }
+      },
+      "else_actions": {}
     },
     "complete_mission": {
       "is_enabled": false,
@@ -667,6 +737,9 @@
           "object_marking": 0,
           "check_objects": "any",
           "afterRepaired": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player_wing",
           "target": "airfield01_start"
         }
@@ -674,13 +747,17 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "blindness_hunt_land",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
         },
         "missionDebriefing": {}
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -728,8 +805,10 @@
         [0.976296,0.0,-0.216439],
         [1804.15,1500.0,18886.4]
       ],
-      "closed_waypoints": false,
       "unit_class": "f-80",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "f_80_5in_rockets",
       "bullets0": "",
       "bullets1": "",
@@ -739,6 +818,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 4,
@@ -772,8 +853,10 @@
           [-0.965926,0.0,0.258819],
           [-736.45,494.35,-3102.45]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_fuel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -783,6 +866,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -1196,8 +1281,10 @@
           [0.0,0.0,1.0],
           [-5119.75,309.8,-308.65]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_fuel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1207,6 +1294,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -1718,8 +1807,10 @@
           [0.34202,0.0,0.939693],
           [-5101.55,434.15,2901.75]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_fuel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1729,6 +1820,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -2240,8 +2333,10 @@
           [0.642788,0.0,0.766044],
           [797.75,383.65,-7422.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_fuel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2251,6 +2346,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -2610,17 +2707,6 @@
           [0.0,0.0,1.0],
           [-7024.8,651.55,-863.4]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
         "props": {
           "squad_members": [
             "ussr_trucks_01",
@@ -2632,8 +2718,7 @@
             "ussr_airdef_for_trucks_03",
             "ussr_airdef_for_trucks_04"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "player_himself",
@@ -2643,22 +2728,10 @@
           [0.0,0.0,1.0],
           [-2792.35,0.0,8588.4]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
         "props": {
           "squad_members": "player_wing",
           "object_type": "isPlayer"
-        },
-        "way": {}
+        }
       }
     ],
     "air_defence": [
@@ -2670,8 +2743,10 @@
           [0.34202,0.0,0.939693],
           [-5139.25,434.15,2922.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_37mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2681,6 +2756,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -3192,8 +3269,10 @@
           [0.0,0.0,1.0],
           [-5142.9,309.8,-308.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_37mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3203,6 +3282,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -3714,8 +3795,10 @@
           [-0.965926,0.0,0.258819],
           [-736.45,494.35,-3120.85]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_37mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3725,6 +3808,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4138,8 +4223,10 @@
           [0.642788,0.0,0.766044],
           [789.478,383.65,-7440.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "ussr_zis5_37mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4149,6 +4236,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4504,20 +4593,20 @@
     "airfield01_start": {
       "type": "Sphere",
       "tm": [
-        [44.3,0.0,0.0],
-        [0.0,44.3,0.0],
-        [0.0,0.0,44.3],
-        [-11666.8,48.25,-14615.5]
+        [101.623,0.0,-217.423],
+        [0.0,240.0,0.0],
+        [217.423,0.0,101.623],
+        [-11666.0,22.3004,-14514.0]
       ],
       "props": {}
     },
     "airfield01_end": {
       "type": "Sphere",
       "tm": [
-        [44.3,0.0,0.0],
-        [0.0,44.3,0.0],
-        [0.0,0.0,44.3],
-        [-11291.5,48.25,-15273.3]
+        [101.808,0.0,-217.337],
+        [0.0,240.0,0.0],
+        [217.337,0.0,101.808],
+        [-10851.7,23.0806,-16273.5]
       ],
       "props": {}
     },
@@ -4562,5 +4651,6 @@
       "props": {}
     }
   },
-  "objLayers": {}
+  "objLayers": {},
+  "wayPoints": {}
 }

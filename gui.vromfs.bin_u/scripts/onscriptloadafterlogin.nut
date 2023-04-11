@@ -29,7 +29,6 @@ foreach (fn in [
 
   "%scripts/gamercard.nut"
   "%scripts/popups/popups.nut"
-  "%scripts/popups/popup.nut"
 
   "%scripts/wheelmenu/wheelmenu.nut"
   "%scripts/guiLines.nut"
@@ -170,7 +169,6 @@ foreach (fn in [
   "%scripts/missions/urlMissionsList.nut"
   "%scripts/missions/misListType.nut"
   "%scripts/missions/missionDescription.nut"
-  "%scripts/tutorials.nut"
   "%scripts/tutorialsManager.nut"
   "%scripts/missions/campaignChapter.nut"
   "%scripts/missions/remoteMissionModalHandler.nut"

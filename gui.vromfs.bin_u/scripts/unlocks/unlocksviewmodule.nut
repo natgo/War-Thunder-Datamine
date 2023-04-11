@@ -18,6 +18,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
   getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockTypeById } = require("unlocks")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -91,7 +93,7 @@ let function getUnlockLocName(config, key = "locId") {
 }
 
 let function getSubUnlockLocName(config) {
-  let subUnlockBlk = ::g_unlocks.getUnlockById(config?.mode.unlock ?? config?.conditions[0].values[0] ?? "")
+  let subUnlockBlk = getUnlockById(config?.mode.unlock ?? config?.conditions[0].values[0] ?? "")
   if (subUnlockBlk)
     return subUnlockBlk.locId ? getUnlockLocName(subUnlockBlk) : loc($"{subUnlockBlk.id}/name")
   else
@@ -157,7 +159,7 @@ let function getUnlockNameText(unlockType, id) {
     case UNLOCKABLE_ACHIEVEMENT:
     case UNLOCKABLE_CHALLENGE:
     case UNLOCKABLE_INVENTORY:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
+      let unlockBlk = getUnlockById(id)
       if (unlockBlk?.useSubUnlockName)
         return getSubUnlockLocName(unlockBlk)
       if (unlockBlk?.locId)
@@ -186,7 +188,7 @@ let function getUnlockNameText(unlockType, id) {
       return loc($"{id}/name", "")
 
     case UNLOCKABLE_STREAK:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
+      let unlockBlk = getUnlockById(id)
       if (unlockBlk?.useSubUnlockName)
         return getSubUnlockLocName(unlockBlk)
       if (unlockBlk?.locId)
@@ -235,7 +237,7 @@ let function getUnlockNameText(unlockType, id) {
       return id.len() > 4 ? id.slice(id.len() - 4, id.len()) : ""
 
     case UNLOCKABLE_MEDAL:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
+      let unlockBlk = getUnlockById(id)
       if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
         let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
         return unlock.name()
@@ -266,7 +268,7 @@ let function getUnlockChapterAndGroupText(unlockBlk) {
     chapterAndGroupText.append(loc($"unlocks/chapter/{unlockBlk.chapter}"))
   if ((unlockBlk?.group ?? "") != "") {
     local locId = $"unlocks/group/{unlockBlk.group}"
-    let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
+    let parentUnlock = getUnlockById(unlockBlk.group)
     if (parentUnlock?.chapter == unlockBlk?.chapter)
       locId = $"{parentUnlock.id}/name"
     chapterAndGroupText.append(loc(locId))
@@ -307,7 +309,7 @@ let function getUnlockStagesDesc(cfg) {
     return ""
 
   let hasStages = (cfg.stages.len() ?? 0) > 1
-  let hideDesc = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let hideDesc = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   if (!hasStages || hideDesc)
     return ""
 
@@ -323,8 +325,26 @@ let function getUnlockStagesDesc(cfg) {
   })
 }
 
+let function getAdditionalStagesDesc(cfg) {
+  if (cfg == null)
+    return ""
+
+  let itemId = cfg.additionalStagesDescAsItemCountId
+  if (itemId <= 0)
+    return ""
+
+  let textId = cfg.additionalStagesDescAsItemCountLocId
+  let curCount = ::ItemsManager.getRawInventoryItemAmount(itemId)
+  let maxCount = cfg.additionalStagesDescAsItemCountMax
+
+  return "".concat(
+    loc(textId),
+    loc("ui/colon"),
+    colorize("unlockActiveColor", loc($"{curCount}/{maxCount}")))
+}
+
 let function getUnlockDesc(cfg) {
-  let desc = [getUnlockStagesDesc(cfg)]
+  let desc = [getUnlockStagesDesc(cfg), getAdditionalStagesDesc(cfg)]
 
   let hasDescInConds = cfg?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
   if (!hasDescInConds)
@@ -573,7 +593,7 @@ let function getUnlockCostText(cfg) {
   if (!cfg)
     return ""
 
-  let cost = ::get_unlock_cost(cfg.id)
+  let cost = getUnlockCost(cfg.id)
   if (cost > ::zero_money)
     return "".concat(
       loc("ugm/price"),
@@ -722,7 +742,7 @@ let function getUnlockMainCondDescByCfg(cfg, params = null) {
   if (!mainCond)
     return ""
 
-  let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let hideCurVal = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
   return getUnlockMainCondDesc(mainCond, curVal, cfg.maxVal, params)
 }
@@ -806,7 +826,7 @@ let function getFullUnlockDesc(cfg, params = {}) {
 }
 
 let function getFullUnlockDescByName(unlockName, forUnlockedStage = -1, params = {}) {
-  let unlock = ::g_unlocks.getUnlockById(unlockName)
+  let unlock = getUnlockById(unlockName)
   if (!unlock)
     return ""
 
@@ -846,7 +866,7 @@ let function getUnitRequireUnlockText(unit) {
 }
 
 let function getUnitRequireUnlockShortText(unit) {
-  let unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  let unlockBlk = getUnlockById(unit.reqUnlock)
   let cfg = ::build_conditions_config(unlockBlk)
   let mainCond = getMainProgressCondition(cfg.conditions)
   return getUnlockMainCondDesc(

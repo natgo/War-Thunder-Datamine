@@ -6762,9 +6762,10 @@
     "bias": 0.1,
     "tessellation": 10,
     "landVerticalBias": 0.1,
-    "maxPatchesLand": 100,
-    "maxPatchesUnit": 400,
-    "maxPatchesRendinst": 300,
+    "maxPatchesUnitSmall": 8000,
+    "maxPatchesUnitLarge": 1000,
+    "maxPatchesUnitVolume": 200,
+    "maxPatchesRendinst": 1000,
     "maxDropRadius": 0.002,
     "maxPatches": 200
   },
@@ -7068,7 +7069,7 @@
       "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthBias": 0.025,
       "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
@@ -7103,7 +7104,7 @@
       "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthBias": 0.025,
       "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
@@ -7138,7 +7139,7 @@
       "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthBias": 0.025,
       "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
@@ -7195,7 +7196,7 @@
       "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.01,
+      "staticCascadeDepthBias": 0.025,
       "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
@@ -7230,7 +7231,7 @@
       "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthBias": 0.022,
       "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
@@ -12380,6 +12381,33 @@
         {
           "name": "cannon_breech_",
           "useThicknessThrough": true
+        },
+        {
+          "name": "body_armor_"
+        },
+        {
+          "name": "helmet"
+        },
+        {
+          "name": "frame_"
+        },
+        {
+          "name": "arm_l"
+        },
+        {
+          "name": "arm_r"
+        },
+        {
+          "name": "leg_r"
+        },
+        {
+          "name": "leg_l"
+        },
+        {
+          "name": "head"
+        },
+        {
+          "name": "chest"
         }
       ]
     },
@@ -12452,6 +12480,33 @@
         {
           "name": "commander_panoramic_sight_",
           "xrayColor": "#9fc5e8ff"
+        },
+        {
+          "name": "body_armor_"
+        },
+        {
+          "name": "helmet"
+        },
+        {
+          "name": "frame_"
+        },
+        {
+          "name": "arm_l"
+        },
+        {
+          "name": "arm_r"
+        },
+        {
+          "name": "leg_r"
+        },
+        {
+          "name": "leg_l"
+        },
+        {
+          "name": "head"
+        },
+        {
+          "name": "chest"
         },
         {
           "name": "radiator_",
@@ -15420,6 +15475,34 @@
           "hideIfDead": true
         },
         {
+          "name": "body_armor_",
+          "hideIfDead": true
+        },
+        {
+          "name": "helmet"
+        },
+        {
+          "name": "frame_"
+        },
+        {
+          "name": "arm_l"
+        },
+        {
+          "name": "arm_r"
+        },
+        {
+          "name": "leg_r"
+        },
+        {
+          "name": "leg_l"
+        },
+        {
+          "name": "head"
+        },
+        {
+          "name": "chest"
+        },
+        {
           "name": "commander_panoramic_sight_dm"
         }
       ]
@@ -17305,10 +17388,10 @@
     "rocketYZVelocityMultiplier": 1.0
   },
   "shellBallisticsParams": {
-    "useCxiMach": false,
-    "applyWingAreaMultToCxAoA": true,
+    "useCxiMach": true,
+    "applyWingAreaMultToCxAoA": false,
     "props": {
-      "CxAoA": 0.3
+      "CxAoA": 9.0
     }
   },
   "dropSplashes": {
@@ -17520,7 +17603,10 @@
     "paramTableShadowFactor": 1.0
   },
   "trackSparksMaterials": {
-    "mat": "concrete"
+    "mat": [
+      "concrete",
+      "football_ramp"
+    ]
   },
   "shipFireDirecting": {
     "calcTime": 7.0,

@@ -31,6 +31,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { selectAvailableCrew } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 
 /*
 if need - put commented in array above
@@ -493,6 +494,9 @@ if need - put commented in array above
       tooltipId           = params?.tooltipId ?? ""
       isTooltipByHold     = ::show_console_buttons
       bottomLineText      = params?.bottomLineText
+      isElite             = params?.isElite
+      hasTalismanIcon     = params?.hasTalismanIcon
+      unitRarity          = params?.unitRarity
     })
     res = ::handyman.renderCached("%gui/slotbar/slotbarSlotFake.tpl", fakeSlotView)
   }
@@ -926,7 +930,7 @@ if need - put commented in array above
       ::selected_crews[cIdx] = crewIdx
     else {
       if (!selectAvailableCrew(cIdx)) {
-        let unitId = ::getReserveAircraftName({ country = country.country })
+        let unitId = getReserveAircraftName({ country = country.country })
         if (unitId != "")
           batchTrainCrew([{
             crewId = country.crews[0].id
@@ -1014,7 +1018,7 @@ if need - put commented in array above
   return params?.customUnitsList ? unit.name in params.customUnitsList : true
 }
 
-::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show) {
+::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show, boxesShow = true) {
   if (!checkObj(slotbarObj))
     return
 
@@ -1028,13 +1032,18 @@ if need - put commented in array above
   if (!show)
     return
 
-  local obj = mainObj.findObject("slots-autorepair")
-  if (checkObj(obj))
-    obj.setValue(::get_auto_refill(0))
+  let repObj = mainObj.findObject("slots-autorepair")
+  let weapObj = mainObj.findObject("slots-autoweapon")
+  repObj.show(boxesShow)
+  weapObj.show(boxesShow)
+  if (!boxesShow)
+    return
 
-  obj = mainObj.findObject("slots-autoweapon")
-  if (checkObj(obj))
-    obj.setValue(::get_auto_refill(1))
+  if (checkObj(repObj))
+    repObj.setValue(::get_auto_refill(0))
+
+  if (checkObj(weapObj))
+    weapObj.setValue(::get_auto_refill(1))
 }
 
 ::isCountryAvailable <- function isCountryAvailable(country) {
