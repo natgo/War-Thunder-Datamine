@@ -190,7 +190,6 @@ foreach (fn in [
 
   "%scripts/customization/types.nut"
   "%scripts/customization/decorator.nut"
-  "%scripts/customization/decoratorsManager.nut"
   "%scripts/customization/customizationWnd.nut"
 
   "%scripts/myStats.nut"
@@ -286,8 +285,6 @@ foreach (fn in [
 
   "%scripts/penitentiary/banhammer.nut"
   "%scripts/penitentiary/tribunal.nut"
-
-  "%scripts/social/friends.nut"
 
   "%scripts/gamercardDrawer.nut"
 
@@ -399,6 +396,7 @@ require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")
 require("%scripts/mainmenu/hideMainMenuUi.nut")
 require("%scripts/wheelmenu/chooseVehicleWheelMenu.nut")
+require("%scripts/login/loginContacts.nut")
 require("%scripts/mainmenu/onMainMenuReturn.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
