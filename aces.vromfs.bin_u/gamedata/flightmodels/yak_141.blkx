@@ -6,6 +6,7 @@
   "gearSinkRangeC": 0.306,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
@@ -18,7 +19,6 @@
   "helmetDesignatorZone2": [0.0,-15.0,50.0],
   "helmetDesignatorZone3": [20.0,-30.0,50.0],
   "helmetDesignatorZone4": [40.0,-50.0,50.0],
-  "gyroscopicSightOverSensors": true,
   "jetEnginePowerFullScale": true,
   "laserOpticSightColor": "#ffff00dc",
   "type": "typeFighter",
@@ -477,6 +477,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -488,6 +500,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -506,6 +530,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -517,6 +553,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -535,6 +583,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -546,6 +606,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -723,6 +795,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -760,6 +838,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -781,6 +865,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -822,6 +912,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1899,16 +1995,16 @@
     "headPosOnShooting": [6.12,0.572,0.0],
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
-    "lightPos": [5.927,0.158,0.107],
+    "lightPos": [6.65,0.19,0.0],
     "lightColor": [0.7,0.01,0.0],
-    "lightRadius": 0.25,
-    "lightPos1": [5.927,0.158,-0.107],
+    "lightRadius": 0.4,
+    "lightPos1": [6.83,0.158,-0.107],
     "lightColor1": [0.7,0.01,0.0],
     "lightRadius1": 0.2,
-    "lightPos2": [5.912,-0.000505,-0.38687],
+    "lightPos2": [6.48,-0.000505,-0.38687],
     "lightColor2": [0.7,0.01,0.0],
     "lightRadius2": 0.3,
-    "lightPos3": [5.912,-0.000505,0.38687],
+    "lightPos3": [6.48,-0.000505,0.38687],
     "lightColor3": [0.7,0.01,0.0],
     "lightRadius3": 0.3,
     "devices": {
@@ -2068,6 +2164,14 @@
       {
         "name": "yak_141_4x_fab_500",
         "blk": "gameData/FlightModels/weaponPresets/yak_141_4x_fab_500.blk"
+      },
+      {
+        "name": "yak_141_4x_fab_250sh",
+        "blk": "gameData/FlightModels/weaponPresets/yak_141_4x_ofab_250sh.blk"
+      },
+      {
+        "name": "yak_141_4x_fab_500sh",
+        "blk": "gameData/FlightModels/weaponPresets/yak_141_4x_fab_500sh.blk"
       },
       {
         "name": "yak_141_4x_zb_500",
@@ -2444,6 +2548,48 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon001",
+                "bdz_umk2a_001",
+                "bdz_umk2a_001_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon001",
+                "bdz_umk2a_001",
+                "bdz_umk2a_001_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "zb_500",
             "reqModification": "mi_24_fab_500",
@@ -2699,6 +2845,48 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon002",
+                "bdz_umk2a_002",
+                "bdz_umk2a_002_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon002",
+                "bdz_umk2a_002",
+                "bdz_umk2a_002_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
@@ -2976,6 +3164,48 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon003",
+                "bdz_umk2a_003",
+                "bdz_umk2a_003_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab_500m_62_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon003",
+                "bdz_umk2a_003",
+                "bdz_umk2a_003_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab_500m_62_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "zb_500",
             "reqModification": "mi_24_fab_500",
@@ -3214,6 +3444,48 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "fab_500m_62_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon004",
+                "bdz_umk2a_004",
+                "bdz_umk2a_004_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab_500m_62_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon004",
+                "bdz_umk2a_004",
+                "bdz_umk2a_004_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
               "emitter": "fab_500m_62_004",
               "bullets": 1,
               "external": true,

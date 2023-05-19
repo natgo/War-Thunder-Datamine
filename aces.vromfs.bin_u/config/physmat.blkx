@@ -199,6 +199,7 @@
       "damage_k": 0.0,
       "explMat": "glass",
       "explosionWreckage": "rocks_expl",
+      "proximityExplMat": "proximityShrapnelGlass",
       "shakeProps": {
         "period": [0.35,0.7],
         "power": [1.0,1.0],
@@ -337,7 +338,8 @@
       "explosionWreckage": "rocks_expl",
       "explMat": "wood",
       "breachMat": "wood",
-      "proximityExplMat": "proximityShrapnel",
+      "proximityExplMat": "proximityShrapnelWood",
+      "aircraftProximityExplMat": "aircraftProximityShrapnelWood",
       "aircraftExplMat": "aircraftWood",
       "aircraftShrapnelMat": "shrapnelAircraftWood",
       "shakeProps": {
@@ -357,7 +359,34 @@
       "frictionMultiplier": 1.0,
       "explMat": "steel",
       "breachMat": "steel",
-      "proximityExplMat": "proximityShrapnel",
+      "proximityExplMat": "proximityShrapnelSteelArmor",
+      "aircraftProximityExplMat": "aircraftProximityShrapnel",
+      "aircraftExplMat": "aircraftSteel",
+      "aircraftShrapnelMat": "shrapnelAircraftSteel"
+    },
+    "aluminum_armor": {
+      "color": "#0000ffc8",
+      "isUnit": true,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explMat": "steel",
+      "breachMat": "steel",
+      "proximityExplMat": "proximityShrapnelAluminumArmor",
+      "aircraftProximityExplMat": "aircraftProximityShrapnel",
+      "aircraftExplMat": "aircraftSteel",
+      "aircraftShrapnelMat": "shrapnelAircraftSteel"
+    },
+    "tank_structural_steel": {
+      "color": "#0000ffc8",
+      "isUnit": true,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explMat": "aircraftSteel",
+      "breachMat": "aircraftSteel",
+      "proximityExplMat": "proximityShrapnelSheetMetal",
+      "aircraftProximityExplMat": "aircraftProximityShrapnel",
       "aircraftExplMat": "aircraftSteel",
       "aircraftShrapnelMat": "shrapnelAircraftSteel"
     },
@@ -832,7 +861,7 @@
         "rollingFrictionK": 0.05
       },
       "concrete": {
-        "fk": 0.8,
+        "fk": 0.9,
         "rollingFrictionK": 0.05
       },
       "sand": {

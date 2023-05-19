@@ -53,9 +53,9 @@
     "shellAnimation": "video/shells_animations/ap.ivf",
     "bulletName": "155mm_m112b1",
     "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
     "fuseDelayDist": 1.2,
-    "explodeTreshold": 20.0,
+    "explodeTreshold": 19.0,
+    "relativeVelArmorShift": [200.0,1000.0],
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_dirt_ap",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -83,6 +83,9 @@
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
@@ -342,7 +345,7 @@
       "bulletName": "155mm_m107",
       "hitPowerMult": 40.0,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -392,7 +395,7 @@
           "countPortion": 0.16,
           "segment": [
             {
-              "radiusScale": 0.15,
+              "radiusScale": 0.3,
               "penetrationScale": 3.5,
               "damageScale": 1.0,
               "angles": [0.0,29.0],
@@ -401,14 +404,14 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [30.0,69.0],
               "countPortion": 0.26
             },
             {
               "radiusScale": 0.375,
-              "penetrationScale": 2.25,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [70.0,110.0],
               "countPortion": 0.05,
@@ -416,21 +419,21 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [111.0,180.0],
               "countPortion": 0.15
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [181.0,249.0],
               "countPortion": 0.15
             },
             {
               "radiusScale": 0.375,
-              "penetrationScale": 2.25,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [250.0,290.0],
               "countPortion": 0.05,
@@ -438,7 +441,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [291.0,329.0],
               "countPortion": 0.26
@@ -456,6 +459,11 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
+      },
+      "armorpower": {
+        "ArmorPower0m": [20.0,100.0],
+        "ArmorPower4000m": [16.0,4000.0],
+        "ArmorPower10000m": [0.0,10000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],

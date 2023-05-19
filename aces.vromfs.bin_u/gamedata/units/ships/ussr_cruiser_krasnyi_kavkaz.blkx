@@ -37,6 +37,7 @@
   "smokeScreenOffset": [-80.0,2.0,0.0],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
@@ -1725,7 +1726,7 @@
       "genericDamageMult": 0.25,
       "armorThrough": 25.0,
       "compartment_01_dm": {
-        "hp": 2894.0
+        "hp": 2844.0
       },
       "compartment_02_dm": {
         "hp": 2900.0
@@ -1754,7 +1755,7 @@
         "hp": 460.0
       },
       "radio_station_dm": {
-        "hp": 573.0
+        "hp": 580.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -2341,10 +2342,10 @@
       "armorThickness": 30.0,
       "stopChanceOnDeadPart": 0.0,
       "ignoreDeadWithSplash": true,
-      "explosionArmorQuality": 10.5,
-      "explosionDamageMult": 1.2,
+      "explosionArmorQuality": 8.15,
       "fireDamageMult": 0.001,
-      "hidableInViewer": true
+      "hidableInViewer": true,
+      "pressureDamageMult": 150.0
     },
     "turrets_main_caliber": {
       "fireParamsPreset": "ship_heavy_turrets",
@@ -2353,16 +2354,16 @@
       "oneSided": true,
       "pressureDamageMult": 8.0,
       "main_caliber_turret_01_dm": {
-        "hp": 357.0
+        "hp": 346.0
       },
       "main_caliber_turret_02_dm": {
-        "hp": 357.0
+        "hp": 346.0
       },
       "main_caliber_turret_03_dm": {
-        "hp": 357.0
+        "hp": 346.0
       },
       "main_caliber_turret_04_dm": {
-        "hp": 357.0
+        "hp": 346.0
       }
     },
     "turrets_aux_caliber": {
@@ -2603,10 +2604,10 @@
         "hp": 1800.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1800.0
+        "hp": 1731.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 1800.0
+        "hp": 1711.0
       }
     },
     "ammo_storages_charges": {
@@ -2616,10 +2617,10 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 100.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 2113.0
+        "hp": 1979.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 2082.0
+        "hp": 1950.0
       },
       "ammunition_storage_charges_03_dm": {
         "hp": 1800.0
@@ -2813,47 +2814,47 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 64
+      "crew": 75
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 64
+      "crew": 77
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 65
+      "crew": 78
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 51
+      "crew": 61
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 64
+      "crew": 77
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 5
     },
     "sailor8": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 5
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 5
     },
     "sailor10": {
       "dmPart": "main_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 5
     },
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -3632,7 +3633,7 @@
     "mass": {
       "Empty": 8600000.0,
       "momentOfInertia": [60.0,1480.0,920.0],
-      "CenterOfGravity": [-3.3,-0.65,0.0]
+      "CenterOfGravity": [-3.3,-0.9,0.0]
     },
     "engines": {
       "maxSpeed": 14.91,

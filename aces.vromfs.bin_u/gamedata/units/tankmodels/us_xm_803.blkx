@@ -1842,8 +1842,8 @@
         "breechDP": "cannon_breech_dm",
         "aimForOperatedShell": true,
         "autoLoader": true,
-        "speedYaw": 36.0,
-        "speedPitch": 20.0,
+        "speedYaw": 42.0,
+        "speedPitch": 42.0,
         "fireConeAngle": 1.0,
         "bullets": 53,
         "salvoAmount": 100.0,
@@ -1932,7 +1932,12 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-9.0,65.0]
+          "pitch": [-15.0,60.0]
+        },
+        "limitsTable": {
+          "lim1": [-180.0,-135.0,-15.0,60.0],
+          "lim2": [-135.0,-10.0,-10.0,60.0],
+          "lim3": [-10.0,180.0,-15.0,60.0]
         }
       },
       {
@@ -2134,8 +2139,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2878,8 +2883,8 @@
               "breechDP": "cannon_breech_dm",
               "aimForOperatedShell": true,
               "autoLoader": true,
-              "speedYaw": 36.0,
-              "speedPitch": 20.0,
+              "speedYaw": 42.0,
+              "speedPitch": 42.0,
               "fireConeAngle": 1.0,
               "bullets": 53,
               "salvoAmount": 100.0,
@@ -2968,7 +2973,12 @@
               },
               "limits": {
                 "yaw": [-180.0,180.0],
-                "pitch": [-9.0,65.0]
+                "pitch": [-15.0,60.0]
+              },
+              "limitsTable": {
+                "lim1": [-180.0,-135.0,-15.0,60.0],
+                "lim2": [-135.0,-10.0,-10.0,60.0],
+                "lim3": [-10.0,180.0,-15.0,60.0]
               }
             },
             {

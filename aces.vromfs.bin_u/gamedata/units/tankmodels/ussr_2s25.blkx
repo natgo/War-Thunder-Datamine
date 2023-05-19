@@ -155,6 +155,11 @@
       "turret_06_front_dm": {
         "armorThickness": 5.0,
         "armorClass": "RHA_tank"
+      },
+      "turret_07_side_dm": {
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 6.0,
+        "secondaryShatterArmorQuality": 0.8
       }
     },
     "steel_turret_armor": {
@@ -192,8 +197,7 @@
       "ex_decor_13_dm": {},
       "turret_07_bottom_dm": {
         "armorThickness": 5.0
-      },
-      "turret_07_side_dm": {}
+      }
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -1681,14 +1685,14 @@
         "blk": "gameData/Weapons/groundModels_weapons/125mm_2A75_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "semi_combustible_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 1.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [5.0,0.0,0.0],
-        "sleevesImpulseOffset": 0.05,
-        "sleeveExtractSound": "shell_eject_hatch",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [5.0,0.0,0.0],
+        "shellCasingImpulseOffset": 0.05,
+        "shellCasingExtractSound": "shell_eject_hatch",
         "recoilOffset": 1.0,
         "recoilMultiplier": 1.0,
         "defaultYaw": 0.0,
@@ -1975,8 +1979,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2990,14 +2994,14 @@
               "blk": "gameData/Weapons/groundModels_weapons/125mm_2A75_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "semi_combustible_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
               "openHatchTime": 1.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [5.0,0.0,0.0],
-              "sleevesImpulseOffset": 0.05,
-              "sleeveExtractSound": "shell_eject_hatch",
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [5.0,0.0,0.0],
+              "shellCasingImpulseOffset": 0.05,
+              "shellCasingExtractSound": "shell_eject_hatch",
               "recoilOffset": 1.0,
               "recoilMultiplier": 1.0,
               "defaultYaw": 0.0,
@@ -3329,6 +3333,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

@@ -37,6 +37,7 @@
   "smokeScreenOffset": [-80.0,2.0,0.0],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
@@ -1341,7 +1342,7 @@
         "hp": 2600.0
       },
       "compartment_05_dm": {
-        "hp": 3268.0
+        "hp": 3042.0
       }
     },
     "control_compartments": {
@@ -1353,14 +1354,14 @@
       "napalmDamageMult": 1.0,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
-        "hp": 591.0
+        "hp": 584.0
       },
       "radio_station_dm": {
         "hp": 530.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
-        "hp": 610.0
+        "hp": 599.0
       },
       "fire_control_room_02_dm": {
         "napalmDamageMult": 0.0,
@@ -1946,10 +1947,10 @@
       "armorThickness": 30.0,
       "stopChanceOnDeadPart": 0.0,
       "ignoreDeadWithSplash": true,
-      "explosionArmorQuality": 11.5,
-      "explosionDamageMult": 1.3,
+      "explosionArmorQuality": 8.53,
       "fireDamageMult": 0.001,
-      "hidableInViewer": true
+      "hidableInViewer": true,
+      "pressureDamageMult": 150.0
     },
     "turrets_main_caliber": {
       "fireParamsPreset": "ship_heavy_turrets",
@@ -1978,22 +1979,22 @@
       "pressureDamageMult": 5.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
-        "hp": 252.0
+        "hp": 249.0
       },
       "auxiliary_caliber_turret_02_dm": {
-        "hp": 252.0
+        "hp": 249.0
       },
       "auxiliary_caliber_turret_03_dm": {
-        "hp": 252.0
+        "hp": 249.0
       },
       "auxiliary_caliber_turret_04_dm": {
-        "hp": 252.0
+        "hp": 249.0
       },
       "auxiliary_caliber_turret_05_dm": {
-        "hp": 252.0
+        "hp": 249.0
       },
       "auxiliary_caliber_turret_06_dm": {
-        "hp": 252.0
+        "hp": 249.0
       }
     },
     "turrets_aa_caliber": {
@@ -2017,16 +2018,16 @@
         "hp": 100.0
       },
       "aa_turret_05_dm": {
-        "hp": 104.0
+        "hp": 102.0
       },
       "aa_turret_06_dm": {
-        "hp": 104.0
+        "hp": 102.0
       },
       "aa_turret_07_dm": {
-        "hp": 104.0
+        "hp": 102.0
       },
       "aa_turret_08_dm": {
-        "hp": 104.0
+        "hp": 102.0
       }
     },
     "gun_main_caliber": {
@@ -2131,10 +2132,10 @@
         "hp": 2300.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 2111.0
+        "hp": 2058.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 2300.0
+        "hp": 2299.0
       }
     },
     "ammo_storages_charges": {
@@ -2174,7 +2175,7 @@
         "hp": 1000.0
       },
       "ammunition_storage_aux_04_dm": {
-        "hp": 1233.0
+        "hp": 1161.0
       },
       "ammunition_storage_aux_05_dm": {
         "hp": 1300.0
@@ -2334,47 +2335,47 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 135
+      "crew": 149
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 107
+      "crew": 118
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 107
+      "crew": 118
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 107
+      "crew": 118
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 135
+      "crew": 136
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 8
     },
     "sailor8": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 8
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 8
     },
     "sailor10": {
       "dmPart": "main_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 8
     },
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -4698,7 +4699,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-2.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-177.0,8.0,80.0],
@@ -4762,7 +4763,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-2.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-177.0,8.0,80.0],
@@ -4826,7 +4827,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-2.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-175.0,10.0,80.0],
@@ -4890,7 +4891,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-2.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-175.0,10.0,80.0],
@@ -4954,7 +4955,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-178.0,6.0,80.0],
@@ -5020,7 +5021,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-178.0,6.0,80.0],
@@ -5086,7 +5087,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-156.0,5.0,80.0],
@@ -5152,7 +5153,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.0,80.0]
+          "pitch": [-10.0,80.0]
         },
         "limitsTable": {
           "lim1": [-180.0,-156.0,5.0,80.0],

@@ -1636,13 +1636,13 @@
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "recoilMultiplier": 0.5,
-      "sleeveEmitter": "emtr_shell",
-      "sleeveMesh": "cartridge_case",
+      "shellCasingEmitter": "emtr_shell",
+      "shellCasingMesh": "cartridge_case",
       "openHatchTime": 0.5,
-      "sleevesLifeTime": 10.0,
-      "sleeveImpulse": [7.0,0.0,0.0],
-      "sleeveExtractSound": "shell_eject_bkan",
-      "linkSleeveToGun": true,
+      "shellCasingLifeTime": 10.0,
+      "shellCasingImpulse": [7.0,0.0,0.0],
+      "shellCasingExtractSound": "shell_eject_bkan",
+      "linkShellCasingToGun": true,
       "reloadAnimVar": "bkan_1c_reload",
       "allowableDelta": 20.0,
       "defaultYaw": 0.0,
@@ -1783,8 +1783,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {

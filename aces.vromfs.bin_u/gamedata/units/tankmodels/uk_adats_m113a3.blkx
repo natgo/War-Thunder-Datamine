@@ -1523,6 +1523,8 @@
       "recoilMultiplier": 0.1,
       "stopForFire": true,
       "maxSpeedForFire": 5.0,
+      "staticElevation": 1.1,
+      "circleAim": false,
       "barrelDP": "gun_barrel_01_dm",
       "createGunEffects": true,
       "defaultYaw": 0.0,
@@ -1659,8 +1661,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2413,6 +2415,8 @@
               "recoilMultiplier": 0.1,
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
+              "staticElevation": 1.1,
+              "circleAim": false,
               "barrelDP": "gun_barrel_01_dm",
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -2618,6 +2622,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }
