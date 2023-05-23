@@ -2122,6 +2122,10 @@
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_1000lb_bombs.blk"
       },
       {
+        "name": "buccaneer_s1_1000lb_bombs_n117",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_1000lb_bombs_n117.blk"
+      },
+      {
         "name": "buccaneer_s1_matra7",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7.blk"
       },
@@ -2233,6 +2237,22 @@
               "emitter": "1000_lb_uk_ld_bomb5",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "early_short_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "1000_lb_uk_ld_bomb5",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -2305,6 +2325,22 @@
               "emitter": "1000_lb_uk_ld_bomb6",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "early_short_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "1000_lb_uk_ld_bomb6",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -2313,41 +2349,78 @@
         "tier": 6,
         "order": 5,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_large_group_x4",
-          "name": "1000lbs",
-          "reqModification": "uk_mk_10_1000lb",
-          "Weapon": [
-            {
-              "trigger": "bombs",
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "1000_lb_uk_gp_bomb1",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "1000_lb_uk_gp_bomb2",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "1000_lb_uk_gp_bomb3",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "1000_lb_uk_gp_bomb4",
-              "bullets": 1
-            }
-          ]
-        }
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "1000lbs",
+            "reqModification": "uk_mk_10_1000lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "1000_lb_uk_gp_bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "1000_lb_uk_gp_bomb2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "1000_lb_uk_gp_bomb3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "1000_lb_uk_gp_bomb4",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x4",
+            "name": "1000lbs_centr_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "1000_lb_uk_gp_bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "1000_lb_uk_gp_bomb2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "1000_lb_uk_gp_bomb3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "1000_lb_uk_gp_bomb4",
+                "bullets": 1
+              }
+            ]
+          }
+        ]
       },
       {
         "index": 4,
@@ -2415,6 +2488,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
+              "emitter": "1000_lb_uk_ld_bomb7",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "early_short_pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
               "emitter": "1000_lb_uk_ld_bomb7",
               "bullets": 1
             }
@@ -2487,6 +2576,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
+              "emitter": "1000_lb_uk_ld_bomb8",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "early_short_pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
               "emitter": "1000_lb_uk_ld_bomb8",
               "bullets": 1
             }
