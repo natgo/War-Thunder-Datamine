@@ -5,9 +5,11 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { get_game_type } = require("mission")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete
 } = require("guiMission")
+let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 
 local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
   sceneBlkName = "%gui/mpStatistics.blk"
@@ -60,10 +62,16 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
       ordersButton.setUserData(this)
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
+
+    let canUseUnlocks = (get_game_type() & GT_USE_UNLOCKS) != 0
+    this.showSceneBtn("btn_personal_tasks", !this.isResultMPStatScreen && canUseUnlocks)
+
     this.showMissionResult()
     this.selectLocalPlayer()
     this.scene.findObject("table_kills_team2").setValue(-1)
   }
+
+  onPersonalTasksOpen = @() openPersonalTasks()
 
   function reinitScreen(params) {
     this.setParams(params)

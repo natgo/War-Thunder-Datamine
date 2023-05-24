@@ -165,6 +165,8 @@ let { get_gui_option } = require("guiOptions")
 
     if (repairInfo.canFlyoutIfRepair)
       msgText = format(loc(format(msgText, "repared")), ::Cost(repairInfo.repairCost).tostring())
+    else if (::g_squad_manager.isSquadMember())
+      msgText = loc("squadMember/airs_not_available")
     else
       msgText = format(loc(format(msgText, "available")),
         time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))

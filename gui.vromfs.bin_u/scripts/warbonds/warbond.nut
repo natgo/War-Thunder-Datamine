@@ -186,10 +186,6 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     return getTblValue(level, this.levelsArray, this.levelsArray.len() ? this.levelsArray.top() : 0)
   }
 
-  function getNextShopLevelTasks() {
-    return this.getShopLevelTasks(this.getCurrentShopLevel() + 1)
-  }
-
   function isMaxLevelReached() {
     return this.levelsArray.top() <= this.getCurrentShopLevelTasks()
   }

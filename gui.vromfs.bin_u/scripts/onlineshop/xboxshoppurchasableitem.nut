@@ -70,10 +70,10 @@ local XboxShopPurchasableItem = class {
     this.releaseDate = blk?.ReleaseDate ?? 0
 
     this.price = blk?.Price ?? 0.0
-    this.priceText = this.price == 0.0 ? loc("shop/free") : (blk?.DisplayPrice ?? "")
-    this.listPrice = blk?.ListPrice ?? 0.0
-    this.listPriceText = blk?.DisplayListPrice ?? ""
     this.currencyCode = blk?.CurrencyCode ?? ""
+    this.priceText = this.price == 0.0 ? loc("shop/free") : $"{this.price} {this.currencyCode}"
+    this.listPrice = blk?.ListPrice ?? 0.0
+    this.listPriceText = $"{this.listPrice} {this.currencyCode}"
 
     this.isPurchasable = blk?.IsPurchasable ?? false
     this.isBundle = blk?.IsBundle ?? false

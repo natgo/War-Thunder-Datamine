@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -193,13 +192,11 @@ global enum BattleTasksWndTab {
     if (this.finishedTaskIdx < listBoxObj.childrenCount())
       listBoxObj.setValue(this.finishedTaskIdx)
 
-    let needShowWarbondProgress = !hasFeature("BattlePass")
-    let obj = this.scene.findObject("warbond_shop_progress_block")
-    let curWb = ::g_warbonds.getCurrentWarbond()
-    if (needShowWarbondProgress && this.currentTabType == BattleTasksWndTab.BATTLE_TASKS)
-      ::g_warbonds_view.createProgressBox(curWb, obj, this)
-    else if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
+    if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD) {
+      let obj = this.scene.findObject("warbond_shop_progress_block")
+      let curWb = ::g_warbonds.getCurrentWarbond()
       ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !::g_battle_tasks.hasInCompleteHardTask.value)
+    }
   }
 
   function updateNoTasksText(items = []) {
@@ -309,28 +306,6 @@ global enum BattleTasksWndTab {
     ::broadcastEvent("BattleTasksShowAll", { showAllTasksValue = obj.getValue() })
   }
 
-  function notifyUpdate() {
-    ::broadcastEvent("BattleTasksIncomeUpdate")
-  }
-
-  function onTasksListDblClick(obj) {
-    let value = obj.getValue()
-    let config = this.getConfigByValue(value)
-    let task = ::g_battle_tasks.getTaskById(config)
-    if (!task)
-      return
-
-    if (::g_battle_tasks.canGetReward(task))
-      return ::g_battle_tasks.requestRewardForTask(task.id)
-
-    let isActive = ::g_battle_tasks.isTaskActive(task)
-    if (isActive && ::g_battle_tasks.canCancelTask(task))
-      return this.onCancel(config)
-
-    if (!isActive)
-      return this.onActivate()
-  }
-
   function onSelectTask(obj) {
     let val = obj.getValue()
     this.finishedTaskIdx = val
@@ -366,24 +341,13 @@ global enum BattleTasksWndTab {
   }
 
   function updateButtons(config = null) {
+    this.showSceneBtn("btn_warbonds_shop",
+      ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(::gui_handlers.WarbondsShop))
+
     let task = ::g_battle_tasks.getTaskById(config)
     let isBattleTask = ::g_battle_tasks.isBattleTask(task)
-
-    let isActive = ::g_battle_tasks.isTaskActive(task)
     let isDone = ::g_battle_tasks.isTaskDone(task)
-    let canCancel = isBattleTask && ::g_battle_tasks.canCancelTask(task)
     let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
-    let isController = ::g_battle_tasks.isController(task)
-    let showActivateButton = !isActive && ::g_battle_tasks.canActivateTask(task)
-
-    let showCancelButton = isActive && canCancel && !canGetReward && !isController
-
-    ::showBtnTable(this.scene, {
-      btn_activate = showActivateButton
-      btn_cancel = showCancelButton
-      btn_warbonds_shop = ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(::gui_handlers.WarbondsShop)
-    })
-
     let showRerollButton = isBattleTask && !isDone && !canGetReward && !::u.isEmpty(::g_battle_tasks.rerollCost)
     let taskObj = this.getCurrentTaskObj()
     if (!checkObj(taskObj))
@@ -403,30 +367,12 @@ global enum BattleTasksWndTab {
     this.showSceneBtn("show_all_tasks", hasFeature("ShowAllBattleTasks") && this.currentTabType != BattleTasksWndTab.HISTORY)
     this.showSceneBtn("battle_tasks_modes_radiobuttons", this.currentTabType == BattleTasksWndTab.BATTLE_TASKS)
     this.showSceneBtn("warbond_shop_progress_block", this.isBattleTasksTab())
-    this.showSceneBtn("progress_box_place", this.currentTabType == BattleTasksWndTab.BATTLE_TASKS
-      && !hasFeature("BattlePass"))
     this.showSceneBtn("medal_icon", this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
-    this.updateProgressText()
   }
 
   function isBattleTasksTab() {
     return this.currentTabType == BattleTasksWndTab.BATTLE_TASKS
     || this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD
-  }
-
-  function updateProgressText() {
-    let textObj = this.scene.findObject("progress_text")
-    if (!checkObj(textObj))
-      return
-
-    let curWb = ::g_warbonds.getCurrentWarbond()
-    local text = ""
-    let tooltip = ""
-    if (curWb && this.currentTabType == BattleTasksWndTab.BATTLE_TASKS && !hasFeature("BattlePass"))
-      text = ::g_warbonds_view.getCurrentShopProgressBarText(curWb)
-
-    textObj.setValue(text)
-    textObj.tooltip = tooltip
   }
 
   function getCurrentTaskObj() {
@@ -481,13 +427,8 @@ global enum BattleTasksWndTab {
     return ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
   }
 
-  function onChangeShowMode(_obj) {
-    this.notifyUpdate()
-  }
-
-  function getCurrentSelectedTask() {
-    let config = this.getCurrentConfig()
-    return ::g_battle_tasks.getTaskById(config)
+  function onChangeShowMode() {
+    ::broadcastEvent("BattleTasksIncomeUpdate")
   }
 
   function getConfigByValue(value) {
@@ -497,19 +438,6 @@ global enum BattleTasksWndTab {
 
   function onGetRewardForTask(obj) {
     ::g_battle_tasks.requestRewardForTask(obj?.task_id)
-  }
-
-  function madeTaskAction(mode) {
-    let task = this.getCurrentSelectedTask()
-    if (!getTblValue("id", task))
-      return
-
-    let blk = DataBlock()
-    blk.setStr("mode", mode)
-    blk.setStr("unlockName", task.id)
-
-    let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, this.notifyUpdate)
   }
 
   function onTaskReroll(obj) {
@@ -533,23 +461,6 @@ global enum BattleTasksWndTab {
           : ::g_battle_tasks.rerollTask(task) ],
         ["no", @() null ]
       ], "yes", { cancel_fn = @() null })
-  }
-
-  function onActivate() {
-    let task = this.getCurrentSelectedTask()
-    if (!::g_battle_tasks.canActivateTask(task))
-      return
-
-    this.madeTaskAction("accept")
-  }
-
-  function onCancel(config) {
-    if (getTblValue("curVal", config, 0) <= 0)
-      return this.madeTaskAction("cancel")
-
-    this.msgBox("battletasks_confirm_cancel", loc("msgbox/battleTasks/clarifyCancel"),
-    [["ok", function() { this.madeTaskAction("cancel") }],
-     ["cancel", function() {}]], "cancel")
   }
 
   function getConfigPlaybackButtonId(btnId) {
@@ -662,7 +573,6 @@ global enum BattleTasksWndTab {
 
 let function openBattleTasksWndFromPromo(params = [], obj = null) {
   let taskId = obj?.task_id ?? params?[0]
-  ::g_warbonds_view.resetShowProgressBarFlag()
   ::gui_start_battle_tasks_wnd(taskId)
 }
 

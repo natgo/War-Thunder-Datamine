@@ -445,8 +445,15 @@ let { select_mission } = require("guiMission")
     }
 
     if (::g_squad_manager.isSquadMember()) {
-      if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT)
+      if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT) {
+        //No need to check broken units when set unready
+        if (!::g_squad_manager.isMeReady()) {
+          let leaderEvent = ::events.getEvent(::g_squad_manager.getLeaderGameModeId())
+          let repairInfo = ::events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
+          ::checkBrokenAirsAndDo(repairInfo, this, @() null, false)
+        }
         ::g_squad_manager.setReadyFlag()
+      }
       else if (::is_worldwar_enabled())
         this.guiScene.performDelayed(this, @() ::g_world_war.joinOperationById(
           ::g_squad_manager.getWwOperationId(), ::g_squad_manager.getWwOperationCountry()))
@@ -895,7 +902,7 @@ let { select_mission } = require("guiMission")
 
     let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     this.msgBox("unlock_crew", msg, [
-        ["yes", (@(crewId, isGold) function() {
+        ["yes", function() {
           this.taskId = ::unlockCrew(crewId, isGold, cost)
           ::sync_handler_simulate_signal("profile_reload")
           if (this.taskId >= 0) {
@@ -903,7 +910,7 @@ let { select_mission } = require("guiMission")
             this.showTaskProgressBox()
             this.afterSlotOp = null
           }
-        })(crewId, isGold)],
+        }],
         ["no", function() { return false }]
       ], "no")
   }

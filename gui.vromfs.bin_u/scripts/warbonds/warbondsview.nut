@@ -8,7 +8,6 @@ from "%scripts/dagui_library.nut" import *
 let stdMath = require("%sqstd/math.nut")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
 let { warbondsShopLevelByStages } = require("%scripts/battlePass/seasonState.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 enum WARBOND_SHOP_LEVEL_STATUS {
   LOCKED = "locked"
@@ -17,13 +16,10 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 }
 
 ::g_warbonds_view <- {
-  [PERSISTENT_DATA_PARAMS] = ["needShowProgressBarInPromo"]
   progressBarId = "warbond_shop_progress"
   progressBarAddId = "warbond_shop_progress_additional_bar"
   levelItemIdPrefix = "level_"
   maxProgressBarValue = 10000
-
-  needShowProgressBarInPromo = false
 
   function getSpecialMedalView(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false) {
     let medalsCount = this.getWarbondMedalsCount(wbClass)
@@ -188,39 +184,14 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   let level = wbClass.getCurrentShopLevel()
   let tasks = wbClass.getCurrentShopLevelTasks()
 
-  local totalTasks = tasks
-  let reqTask = ::g_battle_tasks.getTaskWithAvailableAward(::g_battle_tasks.getActiveTasksArray())
-  if (reqTask && ::g_battle_task_difficulty.getDifficultyTypeByTask(reqTask).canIncreaseShopLevel)
-    totalTasks++
-  let curProgress = this.calculateProgressBarValue(wbClass, level, steps, totalTasks)
-
+  let curProgress = this.calculateProgressBarValue(wbClass, level, steps, tasks)
   progressBoxObj.setValue(curProgress.tointeger())
-
-  if (!hasFeature("BattlePass"))
-    progressBoxObj.tooltip = this.getCurrentShopProgressBarText(wbClass)
 
   let addProgressBarObj = progressBoxObj.findObject(this.progressBarAddId)
   if (checkObj(addProgressBarObj)) {
     let addBarValue = this.calculateProgressBarValue(wbClass, level, steps, tasks)
     addProgressBarObj.setValue(addBarValue)
   }
-}
-
-::g_warbonds_view.getCurrentShopProgressBarText <- function getCurrentShopProgressBarText(wbClass) {
-  if (!this.showOrdinaryProgress(wbClass) || wbClass.levelsArray.len() == 0)
-    return ""
-
-  return this.getShopProgressBarText(
-    wbClass.getCurrentShopLevelTasks(),
-    wbClass.getNextShopLevelTasks()
-  )
-}
-
-::g_warbonds_view.getShopProgressBarText <- function getShopProgressBarText(curTasks, nextLevelTasks) {
-  return loc("mainmenu/battleTasks/progressBarTooltip", {
-    tasksNum = curTasks
-    nextLevelTasksNum = nextLevelTasks
-  })
 }
 
 ::g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler, addCanBuySpecialTasks = false) {
@@ -276,13 +247,4 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return wbClass && wbClass.haveAnySpecialRequirements()
 }
 
-::g_warbonds_view.resetShowProgressBarFlag <- function resetShowProgressBarFlag() {
-  if (!this.needShowProgressBarInPromo)
-    return
-
-  this.needShowProgressBarInPromo = false
-  ::broadcastEvent("WarbondViewShowProgressBarFlagUpdate")
-}
-
-::g_script_reloader.registerPersistentDataFromRoot("g_warbonds_view")
 ::subscribe_handler(::g_warbonds_view, ::g_listener_priority.DEFAULT_HANDLER)

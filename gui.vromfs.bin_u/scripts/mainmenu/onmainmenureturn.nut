@@ -37,7 +37,7 @@ let function showGblkErrorPopup(errCode, path) {
   let msg = loc(format("gblk/saveError/text/%d", errCode), { path = path })
   ::g_popups.add(title, msg, null, [{ id = "copy_button",
                               text = loc("gblk/saveError/copy"),
-                              func = (@(msg) function() { ::copy_to_clipboard(msg) })(msg) }])
+                              func = @() ::copy_to_clipboard(msg) }])
 }
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
@@ -64,7 +64,6 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     checkReconnect()
 
   if (!isAfterLogin) {
-    ::g_warbonds_view.resetShowProgressBarFlag()
     ::checkUnlockedCountriesByAirs()
     penalties.showBannedStatusMsgBox(true)
     if (isAllowPopups && !::disable_network()) {

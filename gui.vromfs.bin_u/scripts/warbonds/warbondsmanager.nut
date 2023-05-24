@@ -134,7 +134,6 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   if (!this.isShopAvailable())
     return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  ::g_warbonds_view.resetShowProgressBarFlag()
   ::handlersManager.loadHandler(::gui_handlers.WarbondsShop, params)
 }
 

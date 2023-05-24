@@ -1670,6 +1670,7 @@ enum ESwitchSpectatorTarget {
     if (show != null)
       this.showButtons = show
 
+    let canUseUnlocks = (get_game_type() & GT_USE_UNLOCKS) != 0
     let buttons = {
       btn_select =          this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && !this.isSpectate
       btn_select_no_enter = this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && this.isSpectate
@@ -1678,7 +1679,7 @@ enum ESwitchSpectatorTarget {
       btn_QuitMission =     this.showButtons && this.isRespawn && this.isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && ::g_orders.showActivateOrderButton() && (!this.isSpectate || !::show_console_buttons)
-      btn_personal_tasks =  this.showButtons && this.isRespawn
+      btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
     }
     foreach (id, value in buttons)
       this.showSceneBtn(id, value)
