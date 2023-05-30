@@ -449,8 +449,13 @@ let { select_mission } = require("guiMission")
         //No need to check broken units when set unready
         if (!::g_squad_manager.isMeReady()) {
           let leaderEvent = ::events.getEvent(::g_squad_manager.getLeaderGameModeId())
+          if (leaderEvent == null) { //not found game mode of leader, skip check broken units
+            ::g_squad_manager.setReadyFlag()
+            return
+          }
           let repairInfo = ::events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
-          ::checkBrokenAirsAndDo(repairInfo, this, @() null, false)
+          ::checkBrokenAirsAndDo(repairInfo, this, @() ::g_squad_manager.setReadyFlag(), false)
+          return
         }
         ::g_squad_manager.setReadyFlag()
       }

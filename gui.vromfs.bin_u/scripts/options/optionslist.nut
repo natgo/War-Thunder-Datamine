@@ -33,11 +33,12 @@ let privacyOptionsList = Computed(function() {
   let havePrem = havePremium.value
   let hasFeat = hasFeature("PrivacySettings")
   return [
-    ["options/header/privacy", null, hasFeat && havePrem],
+    ["options/header/privacy", null, hasFeat],
     [::USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeat && havePrem],
     [::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeat && havePrem],
     [::USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeat && havePrem],
-    [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat && havePrem]
+    [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat && havePrem],
+    [::USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasFeat && is_platform_pc]
   ]
 })
 

@@ -12,6 +12,7 @@ let { APP_ID } = require("app")
 let { encode_uri_component } = require("url")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
+let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01

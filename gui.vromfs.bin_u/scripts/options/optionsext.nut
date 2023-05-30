@@ -3936,7 +3936,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.defVal <- defaultValue
       descr.optionCb <- "onChangeDisplayRealNick"
       break
-
+    case ::USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS:
+      descr.id = "display_real_nicks_participants"
+      descr.items = ["#options/display_real_nicks_participants/nochange", "#options/display_real_nicks_participants/userid", "#options/display_real_nicks_participants/namebots"]
+      descr.values = [0, 1, 2]
+      descr.value = get_gui_option(optionId)
+      defaultValue = 0
+      break
     case ::USEROPT_SHOW_SOCIAL_NOTIFICATIONS:
       descr.id = "show_social_notifications"
       descr.controlType = optionControlType.CHECKBOX
@@ -5328,6 +5334,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_DISPLAY_MY_REAL_NICK:
       ::set_gui_option_in_mode(optionId, value, ::OPTIONS_MODE_GAMEPLAY)
       ::update_gamercards()
+      break
+    case ::USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS:
+      set_gui_option(optionId, value)
       break
     case ::USEROPT_SHOW_SOCIAL_NOTIFICATIONS:
       set_gui_option(optionId, value)
