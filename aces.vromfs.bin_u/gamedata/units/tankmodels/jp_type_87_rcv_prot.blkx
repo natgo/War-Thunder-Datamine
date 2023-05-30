@@ -219,6 +219,10 @@
       "optic_body_03_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
+      },
+      "optic_turret_02_dm": {
+        "armorThickness": 3.0,
+        "hp": 20.0
       }
     },
     "body_shields": {
@@ -1128,6 +1132,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1676,7 +1681,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Marder_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1723,6 +1728,23 @@
           "lim1": [-180.0,-135.0,-3.5,45.0],
           "lim2": [-135.0,129.0,-10.0,45.0],
           "lim3": [129.0,180.0,-3.5,45.0]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [5.0,0.0],
+              [45.0,0.015],
+              [80.0,0.02]
+            ]
+          }
         }
       },
       {
@@ -2644,6 +2666,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2729,8 +2758,12 @@
     "improved_optics": {},
     "20mm_rh202_HE": {},
     "20mm_rh202_AP": {},
+    "20mm_rh202_APDS": {},
     "20mm_rh202_AP_ammo_pack": {
       "tier": 1
+    },
+    "20mm_rh202_APDS_ammo_pack": {
+      "tier": 4
     },
     "tank_smoke_screen_system_mod": {
       "tier": 4,
@@ -2740,7 +2773,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Marder_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -2787,6 +2820,23 @@
                 "lim1": [-180.0,-135.0,-3.5,45.0],
                 "lim2": [-135.0,129.0,-10.0,45.0],
                 "lim3": [129.0,180.0,-3.5,45.0]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [5.0,0.0],
+                    [45.0,0.015],
+                    [80.0,0.02]
+                  ]
+                }
               }
             },
             {

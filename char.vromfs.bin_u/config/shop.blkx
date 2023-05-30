@@ -3379,6 +3379,12 @@
             "rank": 4,
             "reqAir": ""
           },
+          "germ_skr_pr50_karl_marx": {
+            "rank": 4,
+            "reqAir": "",
+            "isClanVehicle": true,
+            "reqFeature": "ClanVehicles"
+          },
           "germ_type143_bussard": {
             "rank": 5,
             "reqAir": "",
@@ -3395,12 +3401,6 @@
             "gift": "msi_notebook",
             "showOnlyWhenBought": true,
             "event": "battlepass_season11"
-          },
-          "germ_skr_pr50_karl_marx": {
-            "rank": 4,
-            "reqAir": "",
-            "isClanVehicle": true,
-            "reqFeature": "ClanVehicles"
           },
           "germ_frigate_koln_lubeck": {
             "rank": 4,
@@ -3607,19 +3607,19 @@
           "ussr_pt_76b": {
             "rank": 3
           },
-          "ussr_btr_80a": {
-            "rank": 4
-          },
           "ussr_asu_85": {
-            "rank": 4,
-            "reqAir": "ussr_pt_76b",
-            "futureReqAir": "ussr_btr_80a"
+            "rank": 4
           },
           "ussr_su_100p": {
             "rank": 4
           },
-          "ussr_bmp_1": {
+          "ussr_btr_80a": {
             "rank": 5
+          },
+          "ussr_bmp_1": {
+            "rank": 5,
+            "reqAir": "ussr_su_100p",
+            "futureReqAir": "ussr_btr_80a"
           },
           "ussr_object_906": {
             "rank": 5
@@ -5618,16 +5618,18 @@
             "rank": 4,
             "reqAir": ""
           },
+          "uk_vijayanta": {
+            "rank": 5,
+            "reqAir": ""
+          },
           "uk_centurion_mk_5_avre_era": {
             "rank": 5,
             "reqAir": "",
             "gift": "msi_notebook"
           },
-          "uk_centurion_shot_kal_d": {
+          "uk_khalid": {
             "rank": 6,
-            "reqAir": "",
-            "gift": "msi_notebook",
-            "showOnlyWhenBought": true
+            "reqAir": ""
           },
           "uk_challenger_1_mk_3_gulf": {
             "rank": 6,
@@ -5734,19 +5736,16 @@
             "hideFeature": "!Marketplace",
             "event": "battlepass_season2"
           },
-          "uk_vijayanta": {
-            "rank": 5,
-            "reqAir": "",
-            "showOnlyWhenBought": true
-          },
           "uk_rooikat_105_td": {
             "rank": 6,
             "reqAir": "",
             "gift": "msi_notebook"
           },
-          "uk_khalid": {
+          "uk_centurion_shot_kal_d": {
             "rank": 6,
-            "reqAir": ""
+            "reqAir": "",
+            "gift": "msi_notebook",
+            "showOnlyWhenBought": true
           }
         }
       ]
@@ -6703,13 +6702,8 @@
           "jp_m4a3e8_76w_sherman": {
             "rank": 3
           },
-          "jp_type_87_rcv_prot": {
-            "rank": 4
-          },
           "jp_m41_walker_bulldog": {
-            "rank": 4,
-            "reqAir": "jp_m4a3e8_76w_sherman",
-            "futureReqAir": "jp_type_87_rcv_prot"
+            "rank": 4
           },
           "jp_type_60_sprg": {
             "rank": 4
@@ -6717,8 +6711,13 @@
           "jp_type_60_atm": {
             "rank": 5
           },
-          "jp_type_87_rcv": {
+          "jp_type_87_rcv_prot": {
             "rank": 5
+          },
+          "jp_type_87_rcv": {
+            "rank": 5,
+            "reqAir": "jp_type_60_atm",
+            "futureReqAir": "jp_type_87_rcv_prot"
           },
           "jp_type_89": {
             "rank": 6
@@ -6895,11 +6894,10 @@
             "rank": 5,
             "reqAir": ""
           },
-          "jp_type_74_mod_g_kai": {
+          "jp_type_16_mod": {
             "rank": 6,
             "reqAir": "",
-            "gift": "msi_notebook",
-            "showOnlyWhenBought": true
+            "gift": "msi_notebook"
           }
         },
         {
@@ -6916,10 +6914,11 @@
             "showOnlyWhenBought": true,
             "event": "summer_2021"
           },
-          "jp_type_16_mod": {
+          "jp_type_74_mod_g_kai": {
             "rank": 6,
             "reqAir": "",
-            "gift": "msi_notebook"
+            "gift": "msi_notebook",
+            "showOnlyWhenBought": true
           }
         }
       ]
@@ -9089,22 +9088,22 @@
             "rank": 1,
             "reqAir": ""
           },
-          "it_p420_sparviero": {
+          "it_gabbiano_class_c16": {
             "rank": 4,
             "reqAir": ""
           },
+          "it_p420_sparviero": {
+            "rank": 4,
+            "reqAir": ""
+          }
+        },
+        {
           "it_p493_freccia": {
             "rank": 4,
             "reqAir": "",
             "gift": "msi_notebook",
             "showOnlyWhenBought": true,
             "event": "summer_2020"
-          }
-        },
-        {
-          "it_gabbiano_class_c16": {
-            "rank": 4,
-            "reqAir": ""
           }
         }
       ]
@@ -9354,8 +9353,7 @@
           },
           "fr_vbci2_mct30": {
             "rank": 6,
-            "reqAir": "",
-            "showOnlyWhenBought": true
+            "reqAir": ""
           }
         },
         {
@@ -9747,16 +9745,13 @@
             "gift": "msi_notebook",
             "showOnlyWhenBought": true
           },
-          "md_460_yt_cup_2019": {
-            "rank": 6,
-            "reqAir": "",
-            "showOnlyWhenBought": true
-          },
-          "mirage_milan": {
+          "jaguar_e": {
             "rank": 6,
             "reqAir": "",
             "gift": "msi_notebook",
-            "showByPlatform": "ps4; ps5; xboxOne; xboxScarlett"
+            "marketplaceItemdefId": 50196,
+            "hideFeature": "!Marketplace",
+            "event": "craft_2022_autumn"
           },
           "mirage_f1c_200": {
             "rank": 7,
@@ -9770,6 +9765,15 @@
             "reqAir": "",
             "gift": "msi_notebook",
             "event": "winter_2023",
+            "showOnlyWhenBought": true
+          },
+          "pby-5a_late_france": {
+            "rank": 1,
+            "reqAir": ""
+          },
+          "gl_832": {
+            "rank": 1,
+            "reqAir": "",
             "showOnlyWhenBought": true
           },
           "mb_152c1": {
@@ -9820,13 +9824,16 @@
             "gift": "msi_notebook",
             "showOnlyWhenBought": true
           },
-          "jaguar_e": {
+          "md_460_yt_cup_2019": {
+            "rank": 6,
+            "reqAir": "",
+            "showOnlyWhenBought": true
+          },
+          "mirage_milan": {
             "rank": 6,
             "reqAir": "",
             "gift": "msi_notebook",
-            "marketplaceItemdefId": 50196,
-            "hideFeature": "!Marketplace",
-            "event": "craft_2022_autumn"
+            "showByPlatform": "ps4; ps5; xboxOne; xboxScarlett"
           }
         }
       ]
@@ -9852,6 +9859,14 @@
           },
           "fr_cruiser_suffren_class_colbert": {
             "rank": 4,
+            "reqFeature": "FranceShipsUnlocked"
+          },
+          "fr_battleship_courbet_class_paris": {
+            "rank": 5,
+            "reqFeature": "FranceShipsUnlocked"
+          },
+          "fr_battleship_bretagne_class_lorraine": {
+            "rank": 5,
             "reqFeature": "FranceShipsUnlocked"
           }
         },
@@ -10120,6 +10135,10 @@
             "beginPurchaseDate": "2023-01-13 10:00:00",
             "endPurchaseDate": "2023-01-16 07:00:00"
           },
+          "sw_sherman_3_4": {
+            "rank": 3,
+            "reqAir": ""
+          },
           "sw_strv_81_rb52": {
             "rank": 4,
             "reqAir": ""
@@ -10165,10 +10184,6 @@
             "gift": "msi_notebook",
             "showOnlyWhenBought": true,
             "event": "summer_2020"
-          },
-          "sw_sherman_3_4": {
-            "rank": 3,
-            "reqAir": ""
           }
         }
       ]

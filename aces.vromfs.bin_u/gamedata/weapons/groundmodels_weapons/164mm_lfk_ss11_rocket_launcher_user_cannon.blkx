@@ -73,28 +73,27 @@
       "caliber": 0.164,
       "length": 1.21,
       "WdK": [0.1,0.1,0.1],
-      "CxK": 2.57,
+      "CxK": 2.15,
       "CyK": 6.0,
       "CyMaxAoA": 1.75,
       "wingAreaMult": 2.8,
       "distFromCmToStab": 0.01,
       "mass": 29.99,
       "massEnd": 28.35,
-      "massEnd1": 24.45,
+      "massEnd1": 24.2,
       "timeFire": 1.0,
-      "timeFire1": 20.0,
-      "force": 3280.0,
-      "force1": 390.0,
-      "timeLife": 21.0,
+      "timeFire1": 17.5,
+      "force": 3200.0,
+      "force1": 470.0,
+      "timeLife": 18.5,
       "thrustDeviation": 0.0,
       "useStartSpeed": true,
       "startSpeed": 0.0,
-      "endSpeed": 190.0,
+      "endSpeed": 220.0,
       "maxDistance": 3500.0,
-      "minDistance": 30.0,
+      "minDistance": 100.0,
       "operatedDist": 3500.0,
-      "rotationRocket": 8.5,
-      "rotationRocketX": 35.0,
+      "visRotationFreqX": 3.5,
       "operated": true,
       "maxLateralAcceleration": 3.0,
       "forceAutoAimingTimer": 1.5,
@@ -130,7 +129,7 @@
       "visualShattersGroundOffset": 1.2,
       "fireEffect": "fires_exhaust_jet_early_tiny",
       "smokeEffect": "smoke_rocket_tail_short",
-      "smokeEffect2": "rocket_wire",
+      "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
       "effectOffset": [-0.5,0.0,0.0],
@@ -434,14 +433,20 @@
         "damage": 600.0,
         "onHitChanceMultFire": 25.0
       },
-      "tracerTrail": {
-        "smokeEffect": "",
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "tracers_rocket_med_red_sparks",
-          "trail": "noTrail"
+      "tracerTrail": [
+        {
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "tracers_rocket_med_red_sparks",
+            "trail": "noTrail"
+          }
+        },
+        {
+          "hasTracerTrail": true,
+          "tracerTrailEmitter": [-0.3,0.0,0.0],
+          "smokeEffect2": "rocket_wire"
         }
-      }
+      ]
     }
   },
   "164mm_ss11_atgm": {
@@ -479,28 +484,27 @@
         "caliber": 0.164,
         "length": 1.21,
         "WdK": [0.1,0.1,0.1],
-        "CxK": 2.57,
+        "CxK": 2.15,
         "CyK": 6.0,
         "CyMaxAoA": 1.75,
         "wingAreaMult": 2.8,
         "distFromCmToStab": 0.01,
         "mass": 29.99,
         "massEnd": 28.35,
-        "massEnd1": 24.45,
+        "massEnd1": 24.2,
         "timeFire": 1.0,
-        "timeFire1": 20.0,
-        "force": 3280.0,
-        "force1": 390.0,
-        "timeLife": 21.0,
+        "timeFire1": 17.5,
+        "force": 3200.0,
+        "force1": 470.0,
+        "timeLife": 18.5,
         "thrustDeviation": 0.0,
         "useStartSpeed": true,
         "startSpeed": 0.0,
-        "endSpeed": 190.0,
+        "endSpeed": 220.0,
         "maxDistance": 3500.0,
-        "minDistance": 30.0,
+        "minDistance": 100.0,
         "operatedDist": 3500.0,
-        "rotationRocket": 8.5,
-        "rotationRocketX": 35.0,
+        "visRotationFreqX": 3.5,
         "operated": true,
         "maxLateralAcceleration": 3.0,
         "forceAutoAimingTimer": 1.5,
@@ -536,7 +540,7 @@
         "visualShattersGroundOffset": 1.2,
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_short",
-        "smokeEffect2": "rocket_wire",
+        "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [-0.5,0.0,0.0],
@@ -840,14 +844,20 @@
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
         },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
+        "tracerTrail": [
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [-0.3,0.0,0.0],
+            "smokeEffect2": "rocket_wire"
           }
-        }
+        ]
       }
     }
   },
@@ -886,28 +896,27 @@
         "caliber": 0.164,
         "length": 1.21,
         "WdK": [0.1,0.1,0.1],
-        "CxK": 2.57,
+        "CxK": 2.15,
         "CyK": 6.0,
         "CyMaxAoA": 1.75,
         "wingAreaMult": 2.8,
         "distFromCmToStab": 0.01,
         "mass": 29.99,
         "massEnd": 28.35,
-        "massEnd1": 24.45,
+        "massEnd1": 24.2,
         "timeFire": 1.0,
-        "timeFire1": 20.0,
-        "force": 3280.0,
-        "force1": 390.0,
-        "timeLife": 21.0,
+        "timeFire1": 17.5,
+        "force": 3200.0,
+        "force1": 470.0,
+        "timeLife": 18.5,
         "thrustDeviation": 0.0,
         "useStartSpeed": true,
         "startSpeed": 0.0,
-        "endSpeed": 190.0,
+        "endSpeed": 220.0,
         "maxDistance": 3500.0,
-        "minDistance": 30.0,
+        "minDistance": 100.0,
         "operatedDist": 3500.0,
-        "rotationRocket": 8.5,
-        "rotationRocketX": 35.0,
+        "visRotationFreqX": 3.5,
         "operated": true,
         "maxLateralAcceleration": 3.0,
         "autoLeveling": true,
@@ -942,7 +951,7 @@
         "visualShattersGroundOffset": 1.2,
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_short",
-        "smokeEffect2": "rocket_wire",
+        "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [-0.5,0.0,0.0],
@@ -1246,14 +1255,20 @@
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
         },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
+        "tracerTrail": [
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [-0.3,0.0,0.0],
+            "smokeEffect2": "rocket_wire"
           }
-        }
+        ]
       }
     }
   }

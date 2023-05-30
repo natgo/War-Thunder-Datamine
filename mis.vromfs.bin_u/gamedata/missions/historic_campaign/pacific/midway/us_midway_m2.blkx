@@ -295,6 +295,10 @@
       },
       "conditions": {},
       "actions": {
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": "vs6"
+        },
         "unitSetProperties": [
           {
             "object": [
@@ -315,18 +319,31 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "army": 2,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "effShootingRate": 0.5,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0,
             "plane": {}
           },
           {
             "object": [
+              "zero01",
               "zero02_01",
-              "zero02_02"
+              "zero02_02",
+              "zero03"
             ],
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "accuracy": 0.3,
+            "airAccuracy": 0.3,
+            "effShootingRate": 0.3,
+            "airEffShootingRate": 0.3,
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
@@ -968,6 +985,10 @@
             "dialog3",
             "near_fleet_disable"
           ]
+        },
+        "unitSetProperties": {
+          "object": "ijn_fleet_sq",
+          "attack_type": "fire_at_will"
         }
       },
       "else_actions": {}
@@ -1011,20 +1032,18 @@
             "sbd_fake"
           ]
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": false,
-            "object": "zero01",
-            "target": "sbd_fake",
-            "fireRandom": true
-          },
-          {
-            "playerAttracted": false,
-            "object": "sbd_fake",
-            "target": "ijn_fleet_sq",
-            "fireRandom": true
-          }
-        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "zero01",
+          "target": "sbd_fake",
+          "fireRandom": true
+        },
+        "__unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "sbd_fake",
+          "target": "ijn_fleet_sq",
+          "fireRandom": true
+        },
         "unitSetProperties": {
           "object": "sbd_fake",
           "object_marking": 0,
@@ -1096,15 +1115,19 @@
           }
         ],
         "unitAttackTarget": {
-          "playerAttracted": false,
+          "playerAttracted": true,
           "object": [
             "zero01",
             "zero02",
-            "zero03",
-            "ijn_fleet_sq"
+            "zero03"
           ],
-          "target": "armada_01",
-          "fireRandom": true
+          "target": [
+            "armada_01",
+            "vs6"
+          ],
+          "fireRandom": true,
+          "playerAttractedCount": 1,
+          "maxNumAttackersPerTarget": 2
         },
         "moSetObjectiveStatus": {
           "target": "midway_us2_mo2_fly",
@@ -1149,54 +1172,13 @@
         }
       },
       "actions": {
-        "unitAttackTarget": [
-          {
-            "playerAttracted": false,
-            "object": "ijn_fleet_sq",
-            "target": "sbd_fake",
-            "fireRandom": true
-          },
-          {
-            "playerAttracted": false,
-            "object": [
-              "ijn_ca01",
-              "ijn_dd05",
-              "ijn_dd06",
-              "ijn_soryu",
-              "ijn_dd02",
-              "ijn_dd03"
-            ],
-            "target": "player_sq"
-          },
-          {
-            "playerAttracted": false,
-            "object": [
-              "ijn_kaga",
-              "ijn_akagi",
-              "ijn_ca02",
-              "ijn_dd01",
-              "ijn_dd12",
-              "ijn_dd07",
-              "ijn_dd04"
-            ],
-            "target": "vs6",
-            "fireRandom": true
-          },
-          {
-            "playerAttracted": true,
-            "object": "zero02",
-            "target": "armada_01",
-            "playerAttractedCount": 8,
-            "playerAttractedEffRate": 1.0
-          },
-          {
-            "playerAttracted": false,
-            "object": "zero03",
-            "target": "vs6",
-            "fireRandom": true
-          }
-        ],
-        "unitDamage": [
+        "__unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "ijn_fleet_sq",
+          "target": "sbd_fake",
+          "fireRandom": true
+        },
+        "__unitDamage": [
           {
             "part": 25,
             "power": 1.0,
@@ -1222,14 +1204,9 @@
             "delayForObjects": [2.0,2.0]
           }
         ],
-        "wait": [
-          {
-            "time": 5.0
-          },
-          {
-            "time": 5.0
-          }
-        ],
+        "__wait": {
+          "time": 5.0
+        },
         "moSetObjectiveStatus": {
           "target": "midway_us2_mo2_fly",
           "status": 2,
@@ -1237,14 +1214,9 @@
           "object_var_name": "",
           "object_marking": 0
         },
-        "triggerEnable": [
-          {
-            "target": "bombing_start"
-          },
-          {
-            "target": "soryu_hit_once"
-          }
-        ]
+        "triggerEnable": {
+          "target": "bombing_start"
+        }
       },
       "else_actions": {}
     },
@@ -1302,10 +1274,14 @@
         },
         "unitAttackTarget": {
           "playerAttracted": false,
-          "object": "vs6",
+          "object": [
+            "vs6",
+            "sbd_fake"
+          ],
           "target": [
             "ijn_kaga",
-            "ijn_akagi"
+            "ijn_akagi",
+            "ijn_dd_sq"
           ],
           "fireRandom": true
         },
@@ -1353,6 +1329,14 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "ijn_soryu"
+          },
+          {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "ijn_soryu"
           }
         ],
         "wait": {
@@ -1382,7 +1366,8 @@
         "triggerEnable": {
           "target": [
             "bombing_done",
-            "bomb_miss_hint"
+            "bomb_miss_hint",
+            "soryu_hit_once"
           ]
         }
       },
@@ -1479,74 +1464,6 @@
         }
       },
       "actions": {
-        "unitRestore": {
-          "target_marking": 0,
-          "ressurectIfDead": false,
-          "fullRestore": true,
-          "target": "ijn_soryu"
-        },
-        "unitDamage": [
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "body_dm"
-          },
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "engine_dm"
-          },
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart1_dm"
-          },
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart2_dm"
-          },
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart3_dm"
-          },
-          {
-            "power": 0.3,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart4_dm"
-          }
-        ],
         "triggerEnable": {
           "target": "soryu_hit_twice"
         }
@@ -1567,92 +1484,62 @@
         }
       },
       "conditions": {
-        "unitWhenPartHp": {
-          "func": "less",
-          "check_objects": "any",
-          "check_parts": "any",
-          "value": 0.69,
-          "object": "ijn_soryu",
-          "planePart": [
-            "body_dm",
-            "engine_dm",
-            "bodypart1_dm",
-            "bodypart2_dm",
-            "bodypart3_dm",
-            "bodypart4_dm"
-          ],
-          "tankPart": ""
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "ijn_soryu",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "ijn_soryu",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
-        "unitRestore": {
-          "target_marking": 0,
-          "ressurectIfDead": false,
-          "fullRestore": true,
-          "target": "ijn_soryu"
+        "unitPlayEffect": {
+          "effect": "ship_model_fire",
+          "offset": [0.0,0.0,0.0],
+          "show": true,
+          "loop": true,
+          "scale": 1.0,
+          "effect_type": "specify",
+          "attach": true,
+          "loopSpawn": true,
+          "delay": [1.0,1.0],
+          "target": "ijn_soryu",
+          "radiusOffset": [0.0,0.0]
         },
-        "unitDamage": [
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "body_dm"
-          },
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "engine_dm"
-          },
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart1_dm"
-          },
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart2_dm"
-          },
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart3_dm"
-          },
-          {
-            "power": 0.6,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "ijn_soryu",
-            "partName": "bodypart4_dm"
-          }
-        ],
         "triggerEnable": {
           "target": "soryu_dmg_byplayer"
         }
@@ -1668,27 +1555,52 @@
         "enableAfterComplete": false
       },
       "events": {
-        "timeExpires": {
-          "time": 0.0
+        "periodicEvent": {
+          "time": 1.0
         }
       },
       "conditions": {
-        "unitWhenPartHp": {
-          "func": "less",
-          "check_objects": "any",
-          "check_parts": "any",
-          "value": 0.39,
-          "object": "ijn_soryu",
-          "planePart": [
-            "body_dm",
-            "engine_dm",
-            "bodypart1_dm",
-            "bodypart2_dm",
-            "bodypart3_dm",
-            "bodypart4_dm"
-          ],
-          "tankPart": ""
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.6,
+            "object": "ijn_soryu",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.6,
+            "object": "ijn_soryu",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
         "triggerDisable": {
@@ -1751,7 +1663,6 @@
           "offset": [0.0,0.0,0.0],
           "radiusOffset": [10.0,15.0],
           "target": "ijn_soryu",
-          "partName": "body_dm",
           "doExplosion": true
         },
         "triggerEnable": {
@@ -1840,7 +1751,7 @@
         "triggerEnable": {
           "target": "near_evac01"
         },
-        "unitAttackTarget": {
+        "__unitAttackTarget": {
           "playerAttracted": false,
           "object": [
             "ijn_dd06",
@@ -1928,7 +1839,7 @@
         "triggerEnable": {
           "target": "evac_done"
         },
-        "unitAttackTarget": {
+        "__unitAttackTarget": {
           "playerAttracted": false,
           "object": "ijn_fleet_sq",
           "target": "armada_01"
@@ -1961,7 +1872,7 @@
         }
       },
       "actions": {
-        "unitAttackTarget": {
+        "__unitAttackTarget": {
           "playerAttracted": false,
           "object": [
             "zero01",
@@ -2042,7 +1953,7 @@
             "sbd_end_cut02"
           ]
         },
-        "unitAttackTarget": {
+        "__unitAttackTarget": {
           "playerAttracted": false,
           "object": "ijn_fleet_sq",
           "target": [
@@ -2717,19 +2628,12 @@
             "isImmortal": true
           }
         ],
-        "unitAttackTarget": [
-          {
-            "playerAttracted": false,
-            "object": "zero_cut",
-            "target": "tbd_cut",
-            "fireRandom": true
-          },
-          {
-            "playerAttracted": false,
-            "object": "ijn_fleet_sq",
-            "target": "vs6"
-          }
-        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "zero_cut",
+          "target": "tbd_cut",
+          "fireRandom": true
+        },
         "missionKillEffects": {
           "area": "ijn_fleet_effKill"
         },
@@ -2965,6 +2869,11 @@
         "spawnOnAirfield": {
           "runwayName": "ijn_kaga",
           "objects": "zero_spawn_cut"
+        },
+        "__unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "ijn_fleet_sq",
+          "target": "vs6"
         },
         "missionDebriefing": {}
       },
@@ -5617,7 +5526,7 @@
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "sbd_3_default",
+        "weapons": "sbd_3_1x_500lbs_2x_100lbs",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -5626,6 +5535,18 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": [
+          "CdMin_Fuse",
+          "structure_str",
+          "cd_98",
+          "new_cover",
+          "new_radiator",
+          "new_compressor",
+          "hp_105",
+          "new_engine_injection",
+          "air_extinguisher",
+          "50cal_universal"
+        ],
         "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
@@ -5636,7 +5557,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
-          "count": 4,
+          "count": 6,
           "numInWing": 2,
           "plane": {
             "wing_formation": "Finger",

@@ -3629,6 +3629,7 @@
     "useRadarScanZoneForDetectionRange": false,
     "dontUsePredictionVolumesForSensors": true,
     "radarVisualDesignationForAI": true,
+    "hasPointOfInterestMemory": true,
     "activeSonarReflectionMult": 40000000000.0,
     "sensorsDetectDeadUnits": true,
     "sensorsSeparateServerSideDetection": true,
@@ -3699,8 +3700,11 @@
   "radarCommon": {
     "directionWithinMainLobe": true,
     "angleFinderZoneToMainBeamWidth": 2.0,
-    "chaffLineOfSight": true,
+    "chaffLineOfSight": false,
     "chaffAttenuationPower": 0.35
+  },
+  "accelControl": {
+    "useVelocityFrameRefMatrix": true
   },
   "planePhysSignature": {
     "useSnapshotEngineRpm": true

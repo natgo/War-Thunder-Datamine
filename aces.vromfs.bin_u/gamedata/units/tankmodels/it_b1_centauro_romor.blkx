@@ -563,6 +563,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -908,6 +909,15 @@
               "dmPart": "composite_armor_hull_03_dm"
             }
           }
+        },
+        {
+          "xrayDmPart": "composite_armor_hull_04_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_04_dm"
+            }
+          }
         }
       ]
     },
@@ -1159,6 +1169,15 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "composite_armor_hull_03_dm"
+            }
+          }
+        },
+        {
+          "xrayDmPart": "composite_armor_hull_05_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_05_dm"
             }
           }
         }
@@ -2152,6 +2171,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2454,6 +2480,10 @@
         "hidableInXrayViewer": true
       },
       "composite_armor_hull_03_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_05_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       }
