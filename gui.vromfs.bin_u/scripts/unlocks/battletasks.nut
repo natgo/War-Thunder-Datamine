@@ -861,10 +861,39 @@ let difficultyTypes = [
       if (arr.len() == 0)
         continue
 
-      if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, arr))
+      if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, this.currentTasksArray))
         result.extend(arr)
     }
     return result
+  }
+
+  // Returns only tasks that can be completed in the game mode specified,
+  // including tasks with unclaimed rewards or those that have been completed.
+  function getCurBattleTasksByGm(gameModeId) {
+    let hasTaskForGm = this.activeTasksArray.findindex(
+      @(t) ::g_battle_tasks.isTaskForGM(t, gameModeId)) != null
+    if (!hasTaskForGm)
+      return []
+
+    let tasks = this.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
+    let res = []
+    foreach (diff in difficultyTypes) {
+      let canInteract = ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, tasks)
+      if (!canInteract)
+        continue
+
+      let tasksByDiff = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(diff, tasks)
+      if (tasksByDiff.len() == 0)
+        continue
+
+      let taskWithReward = this.getTaskWithAvailableAward(tasksByDiff)
+      if (taskWithReward != null)
+        res.append(taskWithReward)
+      else
+        res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
+          || ::g_battle_tasks.isTaskForGM(t, gameModeId)))
+    }
+    return res
   }
 
   function isTaskForGM(task, gameModeId) {

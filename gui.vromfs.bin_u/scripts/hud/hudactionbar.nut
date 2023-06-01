@@ -250,9 +250,11 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
   function updateWaitGaugeDegree(obj, waitGaugeDegreeParams) {
     let { degree, incFactor } = waitGaugeDegreeParams
-    if (degree == (obj.getFinalProp(sectorAngle1PID) ?? -1).tointeger())
+    let incFactorStr = format("%.1f", incFactor)
+    if (degree == (obj.getFinalProp(sectorAngle1PID) ?? -1).tointeger()
+        && incFactorStr == obj?["inc-factor"])
       return
-    obj["inc-factor"] = format("%.1f", incFactor)
+    obj["inc-factor"] = incFactorStr
     obj.set_prop_latent(sectorAngle1PID, degree)
     obj.updateRendElem()
   }

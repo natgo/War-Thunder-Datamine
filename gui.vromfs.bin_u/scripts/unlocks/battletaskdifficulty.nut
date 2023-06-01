@@ -127,10 +127,10 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 
 ::g_battle_task_difficulty.getRequiredDifficultyTypeDone <- function getRequiredDifficultyTypeDone(diff) {
   local res = null
-  if (diff.executeOrder >= 0)
+  if (diff.executeOrder > 0)
     res = ::u.search(this.types, @(t) t.executeOrder == (diff.executeOrder - 1))
 
-  return res || ::g_battle_task_difficulty.UNKNOWN
+  return res ?? ::g_battle_task_difficulty.UNKNOWN
 }
 
 ::g_battle_task_difficulty.getRefreshTimeForAllTypes <- function getRefreshTimeForAllTypes(tasksArray, overrideStatus = false) {
