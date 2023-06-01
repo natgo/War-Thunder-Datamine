@@ -15,13 +15,37 @@
         "sideLobesSensitivity": -34.0
       }
     },
-    "pulseDoppler": {
+    "hprf": {
       "sideLobesAttenuation": -20.0,
       "power": 1000.0,
       "band": 8,
       "rcs": 5.0,
       "range": 120000.0,
       "rangeMax": 150000.0,
+      "antenna": {
+        "angleHalfSens": 3.0,
+        "sideLobesSensitivity": -34.0
+      }
+    },
+    "hprfVelocity": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 150000.0,
+      "rangeMax": 180000.0,
+      "antenna": {
+        "angleHalfSens": 3.0,
+        "sideLobesSensitivity": -34.0
+      }
+    },
+    "mprf": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 50000.0,
+      "rangeMax": 75000.0,
       "antenna": {
         "angleHalfSens": 3.0,
         "sideLobesSensitivity": -34.0
@@ -39,7 +63,7 @@
     "searchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 1.2,
@@ -51,7 +75,7 @@
     "searchMedium": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 4.8,
@@ -63,7 +87,7 @@
     "searchWide": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 4.8,
@@ -75,7 +99,7 @@
     "twsNarrow": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.6,
@@ -88,7 +112,7 @@
     "twsMedium": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 1.2,
@@ -101,7 +125,7 @@
     "twsWide": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 1.2,
@@ -114,7 +138,7 @@
     "verticalLock": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "period": 1.2,
       "width": 15.0,
       "barHeight": 2.5,
@@ -126,7 +150,7 @@
     "hudLock": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "period": 1.6,
       "width": 10.0,
       "barHeight": 2.5,
@@ -137,7 +161,7 @@
     "boresightLock": {
       "type": "cone",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "period": 0.2,
       "width": 0.1,
       "indicate": true
@@ -145,7 +169,7 @@
     "designationLockTws": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.25,
@@ -158,7 +182,7 @@
     "designationLockSearch": {
       "type": "pyramide",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0],
+      "elevationLimits": [-60.0,60.0],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.5,
@@ -171,7 +195,7 @@
     "track": {
       "type": "no",
       "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-55.0,55.0]
+      "elevationLimits": [-60.0,60.0]
     }
   },
   "signals": {
@@ -187,7 +211,27 @@
         "width": 300.0
       }
     },
-    "pulseDopplerSearch": {
+    "mprfSearch": {
+      "dynamicRange": [40.0,10.0],
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "mainBeamNotchWidth": 60.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 100000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.0,
+        "width": 30.0
+      }
+    },
+    "hprfSearch": {
       "dynamicRange": [40.0,15.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
@@ -200,6 +244,23 @@
         "maxValue": 370000.0,
         "width": 500.0
       },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -300.0,
+        "maxValue": 1850.0,
+        "signalWidthMin": 5.0,
+        "width": 100.0
+      }
+    },
+    "hprfVelocitySearch": {
+      "rangeFinder": false,
+      "dopplerSpeedFinder": true,
+      "dynamicRange": [40.0,15.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "friendFoeId": false,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
       "dopplerSpeed": {
         "presents": true,
         "minValue": -300.0,
@@ -222,7 +283,30 @@
         "width": 200.0
       }
     },
-    "pulseDopplerTrack": {
+    "mprfTrack": {
+      "dynamicRange": [40.0,10.0],
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 12.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 80000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 20.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 2.0,
+        "width": 0.0
+      }
+    },
+    "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
       "dynamicRange": [40.0,15.0],
@@ -292,7 +376,7 @@
           "setTargetDesignationRange": {
             "azimuthRange": [-60.0,60.0],
             "azmithWidth": 1.5,
-            "elevationRange": [-55.0,55.0],
+            "elevationRange": [-60.0,60.0],
             "distanceRange": [0.0,148000.0],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
@@ -369,28 +453,58 @@
             "name": "standby"
           }
         },
-        "setPulseDopplerStandbyMode": {
+        "setMprfStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerSearch"
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "PD standby"
+          }
+        },
+        "setHprfStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "PD HDN standby"
           }
         },
+        "setHprfVelocityStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setTransiver": {
+            "transiver": "hprfVelocity"
+          },
+          "setSignal": {
+            "signal": "hprfVelocitySearch"
+          },
+          "setModeName": {
+            "name": "PD HDN VS standby"
+          }
+        },
         "setTwsStandbyMode": {
           "setTwsStandbyModeCommon": {},
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerSearch"
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "TWS HDN standby"
@@ -445,25 +559,49 @@
             "name": "search"
           }
         },
-        "setPulseDopplerSearchMode": {
+        "setHprfSearchMode": {
           "setSearchModeCommon": {},
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerSearch"
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "PD HDN search"
           }
         },
+        "setMprfSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "PD search"
+          }
+        },
+        "setHprfVelocitySearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprfVelocity"
+          },
+          "setSignal": {
+            "signal": "hprfVelocitySearch"
+          },
+          "setModeName": {
+            "name": "PD HDN VS search"
+          }
+        },
         "setTwsSearchMode": {
           "setTwsSearchModeCommon": {},
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerSearch"
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "TWS HDN search"
@@ -524,7 +662,7 @@
             "name": "acquisition"
           }
         },
-        "setPulseDopplerDesignationLockMode": {
+        "setMprfDesignationLockMode": {
           "setDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -542,13 +680,62 @@
             "source": "targetDesignation"
           },
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerTrack"
+            "signal": "mprfTrack"
+          },
+          "setModeName": {
+            "name": "PD acquisition"
+          }
+        },
+        "setHprfDesignationLockMode": {
+          "setDesignationLockModeCommon": {},
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 820.0,
+            "width": 2460.0
+          },
+          "setScanPattern": {
+            "scanPattern": "designationLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfTrack"
           },
           "setModeName": {
             "name": "PD HDN acquisition"
+          }
+        },
+        "setHprfVelocityDesignationLockMode": {
+          "setDesignationLockModeCommon": {},
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 30.0
+          },
+          "setScanPattern": {
+            "scanPattern": "designationLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfVelocitySearch"
+          },
+          "setModeName": {
+            "name": "PD HDN VS acquisition"
           }
         },
         "setTwsDesignationLockMode": {
@@ -571,10 +758,10 @@
             "source": "targetDesignation"
           },
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerTrack"
+            "signal": "hprfTrack"
           },
           "setModeName": {
             "name": "TWS HDN acquisition"
@@ -604,7 +791,12 @@
             "name": "track"
           }
         },
-        "setPulseDopplerTrackModeNameTrack": {
+        "setMprfTrackModeNameTrack": {
+          "setModeName": {
+            "name": "PD track"
+          }
+        },
+        "setHprfTrackModeNameTrack": {
           "setModeName": {
             "name": "PD HDN track"
           }
@@ -614,7 +806,12 @@
             "name": "ACM"
           }
         },
-        "setPulseDopplerTrackModeNameLock": {
+        "setMprfTrackModeNameLock": {
+          "setModeName": {
+            "name": "PD ACM"
+          }
+        },
+        "setHprfTrackModeNameLock": {
           "setModeName": {
             "name": "PD HDN ACM"
           }
@@ -628,8 +825,13 @@
             },
             {
               "fsm": "main",
-              "name": "setPulseDopplerTrackModeName",
-              "actionTemplateName": "setPulseDopplerTrackModeNameTrack"
+              "name": "setHprfTrackModeName",
+              "actionTemplateName": "setHprfTrackModeNameTrack"
+            },
+            {
+              "fsm": "main",
+              "name": "setMprfTrackModeName",
+              "actionTemplateName": "setMprfTrackModeNameTrack"
             }
           ]
         },
@@ -642,8 +844,13 @@
             },
             {
               "fsm": "main",
-              "name": "setPulseDopplerTrackModeName",
-              "actionTemplateName": "setPulseDopplerTrackModeNameLock"
+              "name": "setHprfTrackModeName",
+              "actionTemplateName": "setHprfTrackModeNameLock"
+            },
+            {
+              "fsm": "main",
+              "name": "setMprfTrackModeName",
+              "actionTemplateName": "setMprfTrackModeNameLock"
             }
           ]
         },
@@ -746,16 +953,28 @@
             "name": "setPulseTrackModeName"
           }
         },
-        "setPulseDopplerTrackParams": {
+        "setMprfTrackParams": {
           "setTransiver": {
-            "transiver": "pulseDoppler"
+            "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "pulseDopplerTrack"
+            "signal": "mprfTrack"
           },
           "doCustomActionTemplate": {
             "fsm": "main",
-            "name": "setPulseDopplerTrackModeName"
+            "name": "setMprfTrackModeName"
+          }
+        },
+        "setHprfTrackParams": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfTrack"
+          },
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "setHprfTrackModeName"
           }
         }
       },
@@ -766,7 +985,7 @@
           "stateTo": "standby",
           "actions": {
             "init": {},
-            "setPulseDopplerStandbyMode": {}
+            "setHprfStandbyMode": {}
           }
         },
         "standbyToSearch": {
@@ -1023,16 +1242,16 @@
     "searchModes": {
       "stateInit": "init",
       "transitions": {
-        "initToPulseDoppler": {
+        "initToMprf": {
           "stateFrom": "init",
           "event": "fsmActivate",
-          "stateTo": "pulseDoppler",
+          "stateTo": "mprf",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setPulseDopplerStandbyMode"
+                "actionTemplateName": "setMprfStandbyMode"
               },
               {
                 "fsm": "main",
@@ -1042,12 +1261,12 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setPulseDopplerSearchMode"
+                "actionTemplateName": "setMprfSearchMode"
               },
               {
                 "fsm": "main",
                 "name": "setDesignationLockMode",
-                "actionTemplateName": "setPulseDopplerDesignationLockMode"
+                "actionTemplateName": "setMprfDesignationLockMode"
               },
               {
                 "fsm": "main",
@@ -1057,18 +1276,82 @@
               {
                 "fsm": "main",
                 "name": "setPrimaryTrackParams",
-                "actionTemplateName": "setPulseDopplerTrackParams"
+                "actionTemplateName": "setMprfTrackParams"
               },
               {
                 "fsm": "main",
                 "name": "setSecondaryTrackParams",
                 "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setTertiaryTrackParams",
+                "actionTemplateName": "setHprfTrackParams"
               }
             ]
           }
         },
-        "pulseDopplerToTws": {
-          "stateFrom": "pulseDoppler",
+        "mprfToHprf": {
+          "stateFrom": "mprf",
+          "command": "modeSwitch",
+          "stateTo": "hprf",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setHprfDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryTrackParams",
+                "actionTemplateName": "setHprfTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryTrackParams",
+                "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setTertiaryTrackParams",
+                "actionTemplateName": "setMprfTrackParams"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "hprfToTws": {
+          "stateFrom": "hprf",
           "command": "modeSwitch",
           "stateTo": "tws",
           "actions": {
@@ -1111,8 +1394,52 @@
             ]
           }
         },
-        "twsToPulse": {
+        "twsToHprfVelocity": {
           "stateFrom": "tws",
+          "command": "modeSwitch",
+          "stateTo": "hprfVelocity",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfVelocityStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfVelocitySearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setHprfVelocityDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "hprfVelocityToPulse": {
+          "stateFrom": "hprfVelocity",
           "command": "modeSwitch",
           "stateTo": "pulse",
           "actions": {
@@ -1139,6 +1466,21 @@
               },
               {
                 "fsm": "main",
+                "name": "setPrimaryTrackParams",
+                "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryTrackParams",
+                "actionTemplateName": "setMprfTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setTertiaryTrackParams",
+                "actionTemplateName": "setHprfTrackParams"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -1155,36 +1497,41 @@
             ]
           }
         },
-        "pulseToPulseDoppler": {
+        "pulseToMprf": {
           "stateFrom": "pulse",
           "command": "modeSwitch",
-          "stateTo": "pulseDoppler",
+          "stateTo": "mprf",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setPulseDopplerStandbyMode"
+                "actionTemplateName": "setMprfStandbyMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setPulseDopplerSearchMode"
+                "actionTemplateName": "setMprfSearchMode"
               },
               {
                 "fsm": "main",
                 "name": "setDesignationLockMode",
-                "actionTemplateName": "setPulseDopplerDesignationLockMode"
+                "actionTemplateName": "setMprfDesignationLockMode"
               },
               {
                 "fsm": "main",
                 "name": "setPrimaryTrackParams",
-                "actionTemplateName": "setPulseDopplerTrackParams"
+                "actionTemplateName": "setMprfTrackParams"
               },
               {
                 "fsm": "main",
                 "name": "setSecondaryTrackParams",
                 "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setTertiaryTrackParams",
+                "actionTemplateName": "setHprfTrackParams"
               },
               {
                 "fsm": "main",
@@ -1250,8 +1597,19 @@
             }
           }
         },
-        "pulseDopplerToPulse": {
+        "secondaryToTertiary": {
           "stateFrom": "secondary",
+          "command": "modeSwitch",
+          "stateTo": "tertiary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setTertiaryTrackParams"
+            }
+          }
+        },
+        "tertiaryToPrimary": {
+          "stateFrom": "tertiary",
           "command": "modeSwitch",
           "stateTo": "primary",
           "actions": {

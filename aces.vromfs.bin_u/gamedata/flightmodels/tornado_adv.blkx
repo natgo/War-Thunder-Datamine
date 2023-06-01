@@ -2543,7 +2543,8 @@
           "page": [
             {
               "type": "radar",
-              "hideRadarBackground": true
+              "hideRadarBackground": true,
+              "radarScale": 0.95
             },
             {
               "type": "map"
@@ -2778,7 +2779,7 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
-            "name": "aim9l_bol",
+            "name": "aim9l_bol_slot1",
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
@@ -2803,13 +2804,14 @@
                 "emitter": "aim_9_5",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 1
               }
             ]
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod_group",
-            "name": "aim_9l_x2_bol",
+            "name": "aim_9l_x2_bol_slot1",
             "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
@@ -2836,7 +2838,8 @@
                 "emitter": "aim_9_5",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 3
               },
               {
                 "trigger": "aam",
@@ -2844,7 +2847,8 @@
                 "emitter": "aim_9_1",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 5
               }
             ]
           },
@@ -3091,7 +3095,7 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
-            "name": "aim9l_bol",
+            "name": "aim9l_bol_slot5",
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
@@ -3116,13 +3120,14 @@
                 "emitter": "aim_9_6",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 2
               }
             ]
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod_group",
-            "name": "aim_9l_x2_bol",
+            "name": "aim_9l_x2_bol_slot5",
             "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
@@ -3149,7 +3154,8 @@
                 "emitter": "aim_9_6",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 4
               },
               {
                 "trigger": "aam",
@@ -3157,7 +3163,8 @@
                 "emitter": "aim_9_4",
                 "bullets": 1,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "order": 6
               }
             ]
           },
