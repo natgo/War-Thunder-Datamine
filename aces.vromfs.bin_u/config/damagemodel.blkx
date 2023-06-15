@@ -62,6 +62,7 @@
   "impulseMultForChildRendinst": 0.8,
   "drowningCheckHeightMultiplier": 0.6,
   "bombingZoneArmorClass": "bombing_zone",
+  "enableEventsConvert": false,
   "genericDamageType": "generic",
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
@@ -143,6 +144,8 @@
   "caliberForDamageAfterWaterRicochet": 0.0127,
   "defaultFuseOnWaterProbability": 0.5,
   "useSyncBulletTrace": true,
+  "enableGroundRicochet": true,
+  "enableWaterRicochet": true,
   "groundDamagePart": {
     "armorThickness": 1.0,
     "cumulativeArmorQuality": 0.25
@@ -1395,6 +1398,14 @@
       "disableCriticalIndicator": true,
       "disableDamageInfo": true,
       "ignoreForDeadPart": true
+    },
+    "overheat": {
+      "commonGroundModelFire": true,
+      "disableEffective": true,
+      "disableMissionStatistics": true,
+      "disableSpawnShotMarkers": true,
+      "disableCriticalIndicator": true,
+      "disableDamageInfo": true
     }
   },
   "visualShattersCount": {
@@ -1558,10 +1569,13 @@
       "hpForRepair": 0.6
     },
     "radiator_dm": {
-      "speed": 0.35,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.6
+      "completely": true
+    },
+    "radiator_l_dm": {
+      "completely": true
+    },
+    "radiator_r_dm": {
+      "completely": true
     },
     "track_l_dm": {
       "speed": 1.7,
@@ -2925,6 +2939,7 @@
     "fr_battleship_courbet_class_paris": 140,
     "fr_cruiser_dugauy_class_dugauy_trouin": 82,
     "fr_cruiser_dugauy_class_primaguet": 100,
+    "fr_cruiser_emile_bertin": 90,
     "fr_cruiser_jeanne_darc": 83,
     "fr_cruiser_suffren_class_colbert": 117,
     "fr_destroyer_aigle_class_aigle": 71,
@@ -2935,6 +2950,7 @@
     "fr_destroyer_jaguar_class_leopard": 71,
     "fr_destroyer_jaguar_class_panthere": 71,
     "fr_destroyer_le_fantasque_class_le_malin": 71,
+    "fr_destroyer_marceau_class_marceau": 71,
     "germ_artilleriefahrprahm_typ_d1": 44,
     "germ_artilleriefahrprahm_typ_d3": 44,
     "germ_battlecruiser_von_der_tann": 140,
@@ -6277,7 +6293,7 @@
         "stretchAircraft": true
       },
       "kinetic_ricochet": {
-        "stretch": true,
+        "stretch": false,
         "breach": false,
         "stretchAircraft": true
       },
@@ -6373,14 +6389,14 @@
       "bullets": "ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank , apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, ahead_tank, napalm_tank, ap_i_ball, ap_i_t_ball, ap_i_t, apc_t, ap_t_ball, ap_ball, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_tank, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank, apcr_i_ball_bs41",
       "pierce": "kinetic_penetration",
       "stop": "kinetic_non_penetration",
-      "ricochet": "kinetic_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "splash": false
     },
     "apdsfs": {
       "bullets": "apds_fs_tank, apds_fs_long_tank, apds_fs_long_l30_tank, apds_fs_full_body_steel_tank, apds_fs_tungsten_small_core_tank, apds_fs_tungsten_l10_l15_tank, apds_fs_tungsten_caliber_fins_tank",
       "pierce": "kinetic_discard_sabot_penetration",
       "stop": "kinetic_discard_sabot_non_penetration",
-      "ricochet": "kinetic_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "pierceAngled": "kinetic_discard_sabot_penetration_angled",
       "stopAngled": "kinetic_discard_sabot_non_penetration_angled",
       "splash": false
@@ -6389,21 +6405,21 @@
       "bullets": "apcr_tank, apcr, apcr_t",
       "pierce": "kinetic_sabot_penetration",
       "stop": "kinetic_sabot_non_penetration",
-      "ricochet": "kinetic_sabot_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "splash": false
     },
     "he": {
       "bullets": "he_frag_tank, he_frag_fs_tank, rocket_tank, atgm_he_tank, atgm_vt_fuze_tank, sam_tank, he_frag_i_t, he_frag_i,  he_frag_radio_fuse, he_frag_dist_fuse, he_frag_vog, he_frag_i_tank, he_vt, he_tf, he_ball, he_i_ball, he_frag_t",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
-      "ricochet": "kinetic_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "splash": false
     },
     "he_bomb": {
       "bullets": "he_bomb",
       "pierce": "explosive_penetration_bombs",
-      "stop": "explosive_penetration_bombs",
-      "ricochet": "explosive_penetration_bombs",
+      "stop": "explosive_non_penetration_bombs",
+      "ricochet": "kinetic_ricochet",
       "breach": "explosive_penetration_bombs",
       "splash": false
     },
@@ -6411,20 +6427,20 @@
       "bullets": "hesh_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
-      "ricochet": "kinetic_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "splash": false
     },
     "smoke": {
       "bullets": "smoke_tank, smoke_grenade_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
-      "ricochet": "kinetic_non_penetration"
+      "ricochet": "kinetic_ricochet"
     },
     "heat": {
       "bullets": "atgm_tank, atgm_tandem_tank, heat_fs_tank, heat_fs_rocket, heat_grenade_tank, heat_tank, he_dp",
       "pierce": "heat_penetration",
       "stop": "heat_non_penetration",
-      "ricochet": "kinetic_non_penetration",
+      "ricochet": "kinetic_ricochet",
       "splash": false
     }
   },
@@ -6980,7 +6996,8 @@
     "football_kick": {
       "modelName": "tank_bullet_apdc",
       "gbufferModelName": "tank_shell_apds"
-    }
+    },
+    "he_bomb": {}
   },
   "riExplosionSplashDamageMod": {
     "pt": [

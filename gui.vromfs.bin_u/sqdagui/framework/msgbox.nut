@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { format } = require("string")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

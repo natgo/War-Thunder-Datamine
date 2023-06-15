@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 
 let { get_time_msec } = require("dagor.time")
@@ -32,7 +29,7 @@ enum userInfoEventName {
 }
 
 let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
-let MAX_REQUESTED_UID_NUM = 4
+let MAX_REQUESTED_UID_NUM = 100
 let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false

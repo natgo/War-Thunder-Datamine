@@ -12,6 +12,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ils31": true,
+  "mfdCamShkval": true,
   "haveOpticTurret": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
@@ -2472,10 +2473,16 @@
         {
           "monoDisplayColor": [0.42,0.35,0.29],
           "textureArea": [0.0,0.0,1.0,1.0],
-          "page": {
-            "type": "target_tracking",
-            "turretIdx": 0
-          }
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [0.0,0.0,1.0,1.0],
@@ -3669,6 +3676,7 @@
             "iconType": "atgm_type1_x8",
             "name": "9k127_x8_left",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": "pylon_a_3_holder"
             },
@@ -4709,6 +4717,7 @@
             "iconType": "atgm_type1_x8",
             "name": "9k127_x8_right",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": "pylon_a_6_holder"
             },

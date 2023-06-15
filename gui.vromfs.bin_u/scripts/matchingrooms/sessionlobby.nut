@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let ecs = require("%sqstd/ecs.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -48,6 +45,7 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
   requestJoinRoom, requestDestroyRoom, requestCreateRoom, isMyUserId
 } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 
 /*
 SessionLobby API
@@ -755,11 +753,11 @@ let allowed_mission_settings = { //only this settings are allowed in room
   return u.isInteger(res) ? res : 0
 }
 
-::SessionLobby.getMGameModeId <- function getMGameModeId(room = null) { //gameModeId by g_matching_game_modes
+::SessionLobby.getMGameModeId <- function getMGameModeId(room = null) { //gameModeId by matchingGameModes
   return getTblValue("game_mode_id", this.getPublicData(room))
 }
 
-::SessionLobby.getClusterName <- function getClusterName(room = null) { //gameModeId by g_matching_game_modes
+::SessionLobby.getClusterName <- function getClusterName(room = null) {
   local cluster = getTblValue("cluster", room)
   if (cluster == null)
     cluster = getTblValue("cluster", this.getPublicData(room))
@@ -2161,7 +2159,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::SessionLobby.getMemberPlayerInfo <- function getMemberPlayerInfo(uid) {
-  return getTblValue(uid.tointeger(), this.playersInfo)
+  return this.playersInfo?[uid.tointeger()]
 }
 
 ::SessionLobby.getPlayersInfo <- function getPlayersInfo() {
@@ -2179,6 +2177,24 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let memberInfo = this.playersInfoByNames?[name] ?? this.playersInfoByNames?[getRealName(name)]
 
   if (memberInfo == null || myInfo == null)
+    return false
+
+  return memberInfo.team == myInfo.team && memberInfo.squad == myInfo.squad
+}
+
+::SessionLobby.isMemberInMySquadById <- function isMemberInMySquadById(userId) {
+  if (userId == null || userId == ::my_user_id_int64)
+    return false
+  if (!::SessionLobby.isInRoom())
+    return false
+
+  let myInfo = this.getMemberPlayerInfo(::my_user_id_int64)
+  if (myInfo == null || myInfo.squad == INVALID_SQUAD_ID)
+    return false
+
+  let memberInfo = this.getMemberPlayerInfo(userId)
+
+  if (memberInfo == null)
     return false
 
   return memberInfo.team == myInfo.team && memberInfo.squad == myInfo.squad
@@ -2385,7 +2401,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   if (isCustomGameModeAllowed && (CUSTOM_GAMEMODE_KEY in room))
     return room._customGameMode
 
-  let mGameMode = ::g_matching_game_modes.getModeById(mGameModeId)
+  let mGameMode = getModeById(mGameModeId)
   if (isCustomGameModeAllowed && room && mGameMode && ::events.isCustomGameMode(mGameMode)) {
     let customGameMode = clone mGameMode
     foreach (team in ::g_team.getTeams())

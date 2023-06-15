@@ -55,9 +55,9 @@
     "shellAnimation": "video/shells_animations/apds.ivf",
     "bulletName": "120mm_l1g",
     "breakingArmorThicknessEffective": true,
-    "breakingArmorThickness": [30.0,350.0],
-    "breakingCriticalSpeed": 1463.0,
-    "breakingDistance": 0.1,
+    "breakingArmorThickness": [10.0,300.0],
+    "breakingCriticalSpeed": 1000.0,
+    "breakingDistance": 0.05,
     "relativeVelHitShift": [300.0,1000.0],
     "relativeVelArmorShift": [200.0,1000.0],
     "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -89,6 +89,16 @@
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.739,
         "demarreCaliberPow": 1.07
+      },
+      "breakingScaleByArmor": {
+        "mod0": [10.0,1.0],
+        "mod1": [20.0,0.8],
+        "mod2": [90.0,0.5]
+      },
+      "breakingScaleByAir": {
+        "mod0": [0.1,1.0],
+        "mod1": [0.3,0.7],
+        "mod2": [1.0,0.5]
       }
     },
     "visual": {

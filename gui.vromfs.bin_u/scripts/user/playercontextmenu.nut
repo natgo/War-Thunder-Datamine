@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -195,7 +192,7 @@ let getActions = function(contact, params) {
 //---- <Squad> --------------------
   if (hasFeature("Squad")) {
     let meLeader = ::g_squad_manager.isSquadLeader()
-    let inMySquad = ::g_squad_manager.isInMySquad(name, false)
+    let inMySquad = ::g_squad_manager.isInMySquadById(uidInt64, false)
     let squadMemberData = params?.squadMemberData
     let hasApplicationInMySquad = ::g_squad_manager.hasApplicationInMySquad(uidInt64, name)
     let canInviteDiffConsole = ::g_squad_manager.canInviteMemberByPlatform(name)

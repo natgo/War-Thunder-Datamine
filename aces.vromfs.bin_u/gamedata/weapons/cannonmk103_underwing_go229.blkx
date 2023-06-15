@@ -453,6 +453,10 @@
         "slopeEffectPreset": "apcr",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
+        "breakingArmorThicknessEffective": true,
+        "breakingArmorThickness": [2.0,40.0],
+        "breakingCriticalSpeed": 700.0,
+        "breakingDistance": 0.02,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -470,9 +474,11 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [1.0,0.0],
-          "HitPower1000m": [0.9,0.0],
-          "HitPower10000m": [0.8,10000.0]
+          "HitPower0m": [1.0,300.0],
+          "HitPower1000m": [0.7,1000.0],
+          "HitPower1500m": [0.6,1500.0],
+          "HitPower2500m": [0.6,2500.0],
+          "HitPower10000m": [0.5,10000.0]
         },
         "damage": {
           "kinetic": {
@@ -481,6 +487,16 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          },
+          "breakingScaleByArmor": {
+            "mod0": [5.0,1.0],
+            "mod1": [10.0,0.8],
+            "mod2": [40.0,0.5]
+          },
+          "breakingScaleByAir": {
+            "mod0": [0.05,1.0],
+            "mod1": [0.2,0.7],
+            "mod2": [0.5,0.5]
           }
         },
         "visual": {
@@ -720,6 +736,10 @@
         "slopeEffectPreset": "apcr",
         "fresnel": [0.23,0.1,2.0],
         "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
+        "breakingArmorThicknessEffective": true,
+        "breakingArmorThickness": [2.0,40.0],
+        "breakingCriticalSpeed": 700.0,
+        "breakingDistance": 0.02,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -737,9 +757,11 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [1.0,0.0],
-          "HitPower1000m": [0.9,0.0],
-          "HitPower10000m": [0.8,10000.0]
+          "HitPower0m": [1.0,300.0],
+          "HitPower1000m": [0.7,1000.0],
+          "HitPower1500m": [0.6,1500.0],
+          "HitPower2500m": [0.6,2500.0],
+          "HitPower10000m": [0.5,10000.0]
         },
         "damage": {
           "kinetic": {
@@ -748,6 +770,16 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          },
+          "breakingScaleByArmor": {
+            "mod0": [5.0,1.0],
+            "mod1": [10.0,0.8],
+            "mod2": [40.0,0.5]
+          },
+          "breakingScaleByAir": {
+            "mod0": [0.05,1.0],
+            "mod1": [0.2,0.7],
+            "mod2": [0.5,0.5]
           }
         },
         "visual": {

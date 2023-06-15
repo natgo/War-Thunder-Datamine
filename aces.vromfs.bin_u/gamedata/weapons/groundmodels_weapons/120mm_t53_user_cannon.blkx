@@ -191,6 +191,10 @@
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/apcr.ivf",
       "bulletName": "120mm_t17e1",
+      "breakingArmorThicknessEffective": true,
+      "breakingArmorThickness": [10.0,300.0],
+      "breakingCriticalSpeed": 1000.0,
+      "breakingDistance": 0.05,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -204,9 +208,11 @@
         "mod2": [20.0,0.45]
       },
       "hitpower": {
-        "HitPower0m": [1.0,0.0],
-        "HitPower1000m": [0.9,0.0],
-        "HitPower10000m": [0.8,10000.0]
+        "HitPower0m": [1.0,300.0],
+        "HitPower1000m": [0.7,1000.0],
+        "HitPower1500m": [0.6,1500.0],
+        "HitPower2500m": [0.6,2500.0],
+        "HitPower10000m": [0.5,10000.0]
       },
       "damage": {
         "kinetic": {
@@ -215,6 +221,16 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        },
+        "breakingScaleByArmor": {
+          "mod0": [5.0,1.0],
+          "mod1": [10.0,0.8],
+          "mod2": [40.0,0.5]
+        },
+        "breakingScaleByAir": {
+          "mod0": [0.05,1.0],
+          "mod1": [0.2,0.7],
+          "mod2": [0.5,0.5]
         }
       },
       "visual": {
@@ -372,6 +388,13 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "explosive": {
           "radius": 0.3,
           "offset": 0.2
@@ -445,11 +468,6 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
-      },
-      "armorpower": {
-        "ArmorPower0m": [20.0,100.0],
-        "ArmorPower4000m": [16.0,4000.0],
-        "ArmorPower10000m": [0.0,10000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],

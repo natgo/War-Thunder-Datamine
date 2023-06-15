@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -1086,7 +1083,7 @@ enum decalTwoSidedMode {
 
     local onOkFunc = function() {}
     if (::canBuyUnit(this.unit))
-      onOkFunc = (@(unit) function() { ::buyUnit(unit) })(this.unit)
+      onOkFunc = (@(unit) function() { ::buyUnit(unit) })(this.unit) //-ident-hides-ident
 
     this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
     return false
@@ -1107,7 +1104,7 @@ enum decalTwoSidedMode {
           { purchase = skinDecorator.getName(), cost = priceText }),
         skinDecorator.getCost())
       this.msgBox("skin_locked", msgText,
-        [["ok", (@(previewSkinId) function() { this.buySkin(previewSkinId, cost) })(this.previewSkinId) ],
+        [["ok", (@(previewSkinId) function() { this.buySkin(previewSkinId, cost) })(this.previewSkinId) ], //-ident-hides-ident
         ["cancel", function() {} ]], "ok")
     }
     else
@@ -1735,7 +1732,7 @@ enum decalTwoSidedMode {
       return
 
     // TestFlight wnd can have a Slotbar, where unit can be changed.
-    let afterCloseFunc = (@(owner, unit) function() {
+    let afterCloseFunc = (@(owner, unit) function() { //-ident-hides-ident
       let newUnitName = getShowedUnitName()
       if (newUnitName == "")
         return setShowUnit(unit)

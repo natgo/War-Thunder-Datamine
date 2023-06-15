@@ -42,9 +42,6 @@
   "depthTraceCriticalDepth": 2.0,
   "haveAnchor": true,
   "anchorPos": [61.54,4.214,-0.955],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -956,15 +953,18 @@
       "prevModification": "new_aux_caliber_turrets"
     },
     "torpedoes_movement_mode": {
-      "prevModification": "new_aux_caliber_turrets",
       "effects": {
         "distToLive": 4000.0,
         "maxSpeedInWater": -2.05
       }
     },
-    "75mm_oea_mle1925_navy_he_nose_fuse": {},
-    "75mm_oea_mle1925_navy_he_time_fuse": {},
-    "75mm_oea_mle1925_navy_he_time_fuse_ammo_pack": {},
+    "75mm_oea_mle1917_navy_he_nose_fuse": {},
+    "75mm_opf_mle1917_navy_sap": {},
+    "75mm_opf_mle1917_navy_sap_ammo_pack": {},
+    "75mm_oea_mle1917_navy_he_time_fuse": {},
+    "75mm_oea_mle1917_navy_he_time_fuse_ammo_pack": {
+      "prevModification": "75mm_opf_mle1917_navy_sap_ammo_pack"
+    },
     "ship_bomb_mortar": {}
   },
   "sound": {
@@ -989,37 +989,37 @@
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_03",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_04",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_05",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_06",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_engine_07",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_smoke_medium",
@@ -1080,7 +1080,7 @@
         "fx": {
           "name": "ship_fire_big",
           "centerDmgPart": true,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1088,7 +1088,7 @@
         "fx": {
           "name": "ship_fire_big",
           "centerDmgPart": true,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1096,7 +1096,7 @@
         "fx": {
           "name": "ship_fire_medium",
           "centerDmgPart": true,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1125,7 +1125,7 @@
         "fx": {
           "name": "explosion_ship_small_ammo",
           "centerDmgPart": false,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1133,7 +1133,7 @@
         "fx": {
           "name": "ship_fire_big",
           "centerDmgPart": true,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1141,7 +1141,7 @@
         "fx": {
           "name": "explosion_ship_small_ammo",
           "centerDmgPart": false,
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1150,22 +1150,22 @@
           {
             "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_fire_ammo_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_fire_ammo_04",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           }
         ]
       },
@@ -1268,92 +1268,92 @@
           {
             "name": "ship_fire_big",
             "emitter": "emtr_fire_dmg_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_big",
             "emitter": "emtr_fire_dmg_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_03",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_04",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_05",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_06",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_07",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_08",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_09",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_10",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_11",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_12",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_13",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_14",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_15",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "ship_fire_small",
             "emitter": "emtr_fire_small_dmg_16",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           }
         ]
       },
@@ -1513,17 +1513,17 @@
           {
             "name": "explosion_ship_big",
             "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_second",
             "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_second",
             "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           }
         ],
         "wreckages": {
@@ -1539,17 +1539,17 @@
           {
             "name": "explosion_ship_big_ammo",
             "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           },
           {
             "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": true
+            "isFireBurnMark": false
           }
         ],
         "wreckages": {
@@ -1564,7 +1564,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_01",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1572,7 +1572,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_02",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1580,7 +1580,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_03",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1588,7 +1588,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1596,7 +1596,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_05",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1604,7 +1604,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_06",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1612,7 +1612,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_01",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1620,7 +1620,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_02",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1628,7 +1628,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_03",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1636,7 +1636,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_04",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1644,7 +1644,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_05",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1652,7 +1652,7 @@
         "fx": {
           "name": "explosion_ship_big_ammo",
           "emitter": "emtr_fire_ammo_06",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1715,14 +1715,14 @@
         "name": "procedural",
         "fx": {
           "name": "ship_fire_medium",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
         "name": "procedural_fire",
         "fx": {
           "name": "ship_fire_big",
-          "isFireBurnMark": true
+          "isFireBurnMark": false
         }
       },
       {
@@ -1985,6 +1985,35 @@
       }
     ]
   },
+  "skin": [
+    {
+      "name": "fr_camo_navy_ground",
+      "nameLocId": "skin/fr_camo_navy_ground",
+      "descLocId": "skin/fr_camo_navy_ground/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_navy_ground*"
+      }
+    },
+    {
+      "name": "fr_camo_bicolor_geometry",
+      "nameLocId": "skin/fr_camo_bicolor_geometry",
+      "descLocId": "skin/fr_camo_bicolor_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_bicolor_geometry*"
+      }
+    },
+    {
+      "name": "fr_camo_redblack_spots",
+      "nameLocId": "skin/fr_camo_redblack_spots",
+      "descLocId": "skin/fr_camo_redblack_spots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_redblack_spots*"
+      }
+    }
+  ],
   "ikGunner": [
     {
       "model": "french_sailor_char",
@@ -3990,10 +4019,10 @@
     "fireDirecting": {
       "dmPartMain": "fire_control_room_01_dm",
       "dmPart": "rangefinder_01_dm",
-      "measureAccuracy": 1.0,
-      "targetLockTime": 18.0,
-      "calcTime": 10.0,
-      "rotationSpeed": 6.0,
+      "measureAccuracy": 0.85,
+      "targetLockTime": 24.0,
+      "calcTime": 14.0,
+      "rotationSpeed": 20.0,
       "triggerGroupUse": {
         "primary": true,
         "secondary": true,
@@ -4606,7 +4635,7 @@
       {
         "trigger": "gunner9",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/75mm_50_model_1927_aa_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/75mm_35_model_1925_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",
         "useEmitter": true,
@@ -4616,7 +4645,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 19.0,
         "speedPitch": 18.0,
-        "bullets": 135,
+        "bullets": 100,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -4645,16 +4674,16 @@
         },
         "limits": {
           "yaw": [-155.0,155.0],
-          "pitch": [-10.0,50.0]
+          "pitch": [-10.0,70.0]
         },
         "limitsTable": {
-          "lim1": [-155.0,-128.0,-5.0,50.0],
-          "lim2": [-128.0,-23.0,-10.0,50.0],
-          "lim3": [-23.0,-17.0,-5.0,50.0],
-          "lim4": [-17.0,17.0,24.0,50.0],
-          "lim5": [17.0,23.0,-5.0,50.0],
-          "lim6": [23.0,128.0,-10.0,50.0],
-          "lim7": [128.0,155.0,-5.0,50.0]
+          "lim1": [-155.0,-128.0,-5.0,70.0],
+          "lim2": [-128.0,-23.0,-10.0,70.0],
+          "lim3": [-23.0,-17.0,-5.0,70.0],
+          "lim4": [-17.0,17.0,24.0,70.0],
+          "lim5": [17.0,23.0,-5.0,70.0],
+          "lim6": [23.0,128.0,-10.0,70.0],
+          "lim7": [128.0,155.0,-5.0,70.0]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
@@ -5551,7 +5580,7 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_02_dm": {
-          "count": 4135
+          "count": 4100
         }
       }
     },

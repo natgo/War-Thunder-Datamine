@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -367,6 +364,11 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   isInMySquad = @(name, checkAutosquad = true)
     (this.isInSquad() && this.isMySquadMember(name)) ? true
       : checkAutosquad && ::SessionLobby.isMemberInMySquadByName(name)
+
+  isInMySquadById = @(userId, checkAutosquad = true)
+    (this.isInSquad() && this.isMySquadMemberById(userId)) ? true
+      : checkAutosquad && ::SessionLobby.isMemberInMySquadById(userId)
+
   isMe = @(uid) uid == ::my_user_id_str
   isStateInTransition = @() (this.state == squadState.JOINING || this.state == squadState.LEAVING)
     && this.lastStateChangeTime + SQUAD_REQEST_TIMEOUT > get_time_msec()
@@ -920,6 +922,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   }
 
   isMySquadMember = @(name) (this.membersNames?[name] != null) || (this.membersNames?[getRealName(name)] != null)
+  isMySquadMemberById = @(id) this.squadData.members?[id] != null
+
 
   function canTransferLeadership(uid) {
     if (!hasFeature("SquadTransferLeadership"))
@@ -1194,7 +1198,6 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
         newMembersData[uid] <- SquadMember(uid)
 
       this.membersNames[newMembersData[uid].name] <- uid
-
       if (uid != ::my_user_id_str)
         this.requestMemberData(uid)
     }

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -654,10 +651,10 @@ local MP_CHAT_PARAMS = {
 
   function isSenderInMySquad(message) {
     if (is_replay_playing()) {
-      let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
+      let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.userId.tointeger() == message.uid)
       return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
-    return ::g_squad_manager.isInMySquad(message.sender)
+    return ::g_squad_manager.isInMySquadById(message.uid)
   }
 
   function updateAllLogs() {

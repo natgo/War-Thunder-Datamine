@@ -188,7 +188,7 @@
       "shellAnimation": "video/shells_animations/he_belt.ivf",
       "bulletName": "30mm_UOF8",
       "hitPowerMult": 2.0,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.1,
       "explodeTreshold": 0.1,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
@@ -210,23 +210,37 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "shatter": {
           "useRealShatters": true,
           "countPortion": 0.3,
           "segment": [
             {
               "radiusScale": 1.065,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,179.0],
-              "countPortion": 0.5
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [20.0,160.0],
+              "countPortion": 0.4
             },
             {
               "radiusScale": 1.065,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [180.0,359.0],
-              "countPortion": 0.5
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [200.0,340.0],
+              "countPortion": 0.4
+            },
+            {
+              "radiusScale": 1.065,
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [0.0,359.0],
+              "countPortion": 0.2
             }
           ]
         }
@@ -478,7 +492,7 @@
       "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "bulletName": "30mm_UOF8",
       "hitPowerMult": 2.0,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.1,
       "explodeTreshold": 0.1,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
@@ -500,23 +514,37 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "shatter": {
           "useRealShatters": true,
           "countPortion": 0.3,
           "segment": [
             {
               "radiusScale": 1.065,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,179.0],
-              "countPortion": 0.5
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [20.0,160.0],
+              "countPortion": 0.4
             },
             {
               "radiusScale": 1.065,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [180.0,359.0],
-              "countPortion": 0.5
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [200.0,340.0],
+              "countPortion": 0.4
+            },
+            {
+              "radiusScale": 1.065,
+              "penetrationScale": 1.2,
+              "damageScale": 1.2,
+              "angles": [0.0,359.0],
+              "countPortion": 0.2
             }
           ]
         }
@@ -637,7 +665,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -659,23 +687,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -792,7 +834,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -814,23 +856,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -947,7 +1003,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -969,23 +1025,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -1647,7 +1717,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOR6",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -1672,23 +1742,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -1812,9 +1896,9 @@
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
-        "breakingArmorThickness": [9.0,50.0],
-        "breakingCriticalSpeed": 1100.0,
-        "breakingDistance": 0.3,
+        "breakingArmorThickness": [5.0,50.0],
+        "breakingCriticalSpeed": 1000.0,
+        "breakingDistance": 0.05,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -1985,9 +2069,9 @@
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
-        "breakingArmorThickness": [9.0,50.0],
-        "breakingCriticalSpeed": 1100.0,
-        "breakingDistance": 0.3,
+        "breakingArmorThickness": [5.0,50.0],
+        "breakingCriticalSpeed": 1000.0,
+        "breakingDistance": 0.05,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -2158,9 +2242,9 @@
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
-        "breakingArmorThickness": [9.0,50.0],
-        "breakingCriticalSpeed": 1100.0,
-        "breakingDistance": 0.3,
+        "breakingArmorThickness": [5.0,50.0],
+        "breakingCriticalSpeed": 1000.0,
+        "breakingDistance": 0.05,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -2331,9 +2415,9 @@
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
-        "breakingArmorThickness": [9.0,50.0],
-        "breakingCriticalSpeed": 1100.0,
-        "breakingDistance": 0.3,
+        "breakingArmorThickness": [5.0,50.0],
+        "breakingCriticalSpeed": 1000.0,
+        "breakingDistance": 0.05,
         "relativeVelHitShift": [300.0,1000.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -2503,7 +2587,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOR6",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -2528,23 +2612,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -3164,7 +3262,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -3186,23 +3284,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -3319,7 +3431,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -3341,23 +3453,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -3474,7 +3600,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -3496,23 +3622,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }
@@ -4174,7 +4314,7 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "bulletName": "30mm_UOR6",
         "hitPowerMult": 2.0,
-        "fuseDelayDist": 0.0,
+        "fuseDelayDist": 0.1,
         "explodeTreshold": 0.1,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he",
@@ -4199,23 +4339,37 @@
           "HitPower7000m": [0.1,7000.0]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.3,
             "segment": [
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,179.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [20.0,160.0],
+                "countPortion": 0.4
               },
               {
                 "radiusScale": 1.065,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [180.0,359.0],
-                "countPortion": 0.5
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [200.0,340.0],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.065,
+                "penetrationScale": 1.2,
+                "damageScale": 1.2,
+                "angles": [0.0,359.0],
+                "countPortion": 0.2
               }
             ]
           }

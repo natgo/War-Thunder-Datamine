@@ -241,6 +241,13 @@
         "HitPower7000m": [0.1,7000.0]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "explosive": {
           "radius": 0.3,
           "offset": 0.2
@@ -314,11 +321,6 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
-      },
-      "armorpower": {
-        "ArmorPower0m": [20.0,100.0],
-        "ArmorPower4000m": [16.0,4000.0],
-        "ArmorPower10000m": [0.0,10000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -515,9 +517,9 @@
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "122mm_zbm_11",
       "breakingArmorThicknessEffective": true,
-      "breakingArmorThickness": [30.0,250.0],
-      "breakingCriticalSpeed": 1620.0,
-      "breakingDistance": 0.1,
+      "breakingArmorThickness": [20.0,300.0],
+      "breakingCriticalSpeed": 1200.0,
+      "breakingDistance": 0.05,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -547,6 +549,16 @@
           "demarreSpeedPow": 1.47,
           "demarreMassPow": 0.74,
           "demarreCaliberPow": 1.07
+        },
+        "breakingScaleByArmor": {
+          "mod0": [10.0,1.0],
+          "mod1": [20.0,0.8],
+          "mod2": [90.0,0.7]
+        },
+        "breakingScaleByAir": {
+          "mod0": [0.1,1.0],
+          "mod1": [0.3,0.9],
+          "mod2": [1.0,0.8]
         }
       },
       "visual": {

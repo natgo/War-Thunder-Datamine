@@ -4,7 +4,8 @@
   "mesh": "su_9m120_rocket",
   "mesh_deployed": "su_9m120_rocket_deployed",
   "helicopterGroup": 2,
-  "shotFreq": 20.0,
+  "shotFreq": 1.25,
+  "allowContinueShoting": false,
   "sound": "weapon.rocketgun_132",
   "rocket": {
     "statType": "hydra",
@@ -65,6 +66,7 @@
       true,
       true
     ],
+    "hazeEffect": "haze_missile",
     "effectOffset": [-0.68,0.0,0.0],
     "rendinstDamageRadius": 1.0,
     "spawnExplosionWreckage": false,
@@ -293,6 +295,15 @@
       },
       "stone_snow": {
         "fx": "hit_12_18mm_snow_dust_ap"
+      },
+      "tank_structural_steel": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "aluminum_armor": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "tank_rubber_screens": {
+        "fx": "hit_12_18mm_stone_dust_ap"
       }
     },
     "tracerTrail": [
@@ -302,7 +313,6 @@
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_doubleside",
         "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05
       },
       {
@@ -311,7 +321,6 @@
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_doubleside",
         "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05
       },
       {
@@ -320,7 +329,6 @@
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_doubleside",
         "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05
       },
       {
@@ -329,7 +337,6 @@
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_doubleside",
         "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05
       },
       {

@@ -2230,8 +2230,8 @@
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "us_500lb_snakeye",
-            "reqModification": "us_500lb_m82",
+            "name": "us_500lb_snakeye_slot1",
+            "reqModification": "us_500lb_m82_2",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -2308,7 +2308,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_default.blk",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb1",
               "external": true,
               "separate": true,
@@ -2416,7 +2416,7 @@
           {
             "iconType": "missile_air_to_air_midrange",
             "name": "aa20",
-            "reqModification": "nord_as_20",
+            "reqModification": "nord_aa_20",
             "ShowNodes": {
               "node": "rocket_pylon1"
             },
@@ -2461,7 +2461,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_default.blk",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb2",
               "external": true,
               "separate": true,
@@ -2569,7 +2569,7 @@
           {
             "iconType": "missile_air_to_air_midrange",
             "name": "aa20",
-            "reqModification": "nord_as_20",
+            "reqModification": "nord_aa_20",
             "ShowNodes": {
               "node": "rocket_pylon2"
             },
@@ -2624,8 +2624,8 @@
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "us_500lb_snakeye",
-            "reqModification": "us_500lb_m82",
+            "name": "us_500lb_snakeye_slot4",
+            "reqModification": "us_500lb_m82_2",
             "ShowNodes": {
               "node": "pylon_bomb4"
             },
@@ -4380,12 +4380,17 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "nord_as_20": {
+    "nord_aa_20": {
       "tier": 2,
       "modClass": "weapon"
     },
+    "nord_as_20": {
+      "reqModification": "nord_aa_20",
+      "tier": 3,
+      "modClass": "weapon"
+    },
     "nord_as_30": {
-      "prevModification": "nord_as_20",
+      "reqModification": "nord_as_20",
       "tier": 4,
       "modClass": "weapon"
     }
