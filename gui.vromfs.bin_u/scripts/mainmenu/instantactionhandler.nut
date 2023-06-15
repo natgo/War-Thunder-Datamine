@@ -1,9 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { Cost } = require("%scripts/money.nut")
+
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -28,7 +28,7 @@ let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
+let { initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -40,7 +40,7 @@ let { LEADER_OPERATION_STATES,
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { select_mission } = require("guiMission")
+let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
 
 ::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -175,7 +175,7 @@ let { select_mission } = require("guiMission")
     let toBattleNest = ::showBtn("gamercard_tobattle", true, this.rootHandlerWeak.scene)
     if (toBattleNest) {
       this.rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
+      let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       this.guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -389,7 +389,7 @@ let { select_mission } = require("guiMission")
 
   function startManualMission(manualMission) {
     let missionBlk = DataBlock()
-    missionBlk.setFrom(::get_mission_meta_info(manualMission.name))
+    missionBlk.setFrom(get_meta_mission_info_by_name(manualMission.name))
     foreach (name, value in manualMission)
       if (name != "name")
         missionBlk[name] <- value
@@ -511,10 +511,10 @@ let { select_mission } = require("guiMission")
 
     if (!::is_online_available()) {
       let handler = this
-      this.goForwardIfOnline((@(handler) function() {
+      this.goForwardIfOnline(function() {
           if (handler && checkObj(handler.scene))
             handler.onStartAction.call(handler)
-        })(handler), false, true)
+        }, false, true)
       return
     }
 
@@ -853,7 +853,7 @@ let { select_mission } = require("guiMission")
       foreach (crew in countryCrews.crews) {
         if (!("aircraft" in crew))
           continue
-        let unit = ::getAircraftByName(crew.aircraft)
+        let unit = getAircraftByName(crew.aircraft)
         if (::game_mode_manager.isUnitAllowedForGameMode(unit))
           return true
       }
@@ -899,7 +899,7 @@ let { select_mission } = require("guiMission")
       return
 
     let crewId = ::getCrewByAir(unit).id
-    let cost = ::Cost()
+    let cost = Cost()
     if (isGold)
       cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
     else
@@ -1242,6 +1242,5 @@ let { select_mission } = require("guiMission")
         @() ::gui_handlers.GameModeSelect.open(), null))
   }
 
-  onEventBackgroundHangarVehicleHoverChanged = @(params) showBackgroundModelHint(params)
   onBackgroundModelHintTimer = @(obj, _dt) placeBackgroundModelHint(obj)
 }

@@ -1094,6 +1094,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1630,7 +1631,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_02_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 752,
@@ -1676,7 +1677,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_01_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 752,
@@ -1796,8 +1797,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2457,6 +2458,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2554,7 +2562,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_01_dm",
-              "breechDP": "cannon_breech_dm",
+              "breechDP": "cannon_breech_02_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
               "bullets": 752,
@@ -2600,7 +2608,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_02_dm",
-              "breechDP": "cannon_breech_dm",
+              "breechDP": "cannon_breech_01_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
               "bullets": 752,

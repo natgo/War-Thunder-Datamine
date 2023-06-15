@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
 } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
@@ -48,7 +46,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function onEventWWMapUpdateCursorByTimer(p) {
     let newSpecs = this.getUpdatedSpecs(p)
-    if (::u.isEqual(this.specs, newSpecs))
+    if (u.isEqual(this.specs, newSpecs))
       return
 
     this.updateScreen(newSpecs)

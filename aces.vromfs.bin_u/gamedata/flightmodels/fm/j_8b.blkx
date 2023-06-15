@@ -40,7 +40,7 @@
   "ArcadeRollCorrectionMultiplier": 20.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 0.45,
-  "ArcadeYawModificators": [1.0,1.0],
+  "ArcadeYawModificators": [1.5,1.0],
   "ArcadePitchModificators": [0.0,1.0],
   "AileronMaxDv": 20.0,
   "ElevatorMaxDv": 20.0,
@@ -101,9 +101,6 @@
       "VtolMode": "Manual",
       "allowOverrideByForcedStabilization": true
     }
-  },
-  "MouseAim": {
-    "PreciseRotStopDetection": false
   },
   "Aerodynamics": {
     "GearCd": 0.01,
@@ -226,7 +223,10 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [0.0,0.03],
+        "ClToCmByMach0": [
+          [0.2,0.0,0.03],
+          [0.4,0.0,0.03]
+        ],
         "Cl0": 0.07,
         "alphaCritHigh": 30.0,
         "alphaCritLow": -22.0,
@@ -281,7 +281,8 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [0.07,0.02],
+        "ClToCmByMach0": [0.2,0.1,-0.07],
+        "ClToCmByMach1": [0.4,0.07,0.02],
         "Cl0": 0.35,
         "alphaCritHigh": 28.0,
         "alphaCritLow": -25.0,
@@ -360,7 +361,7 @@
     "HorStabPlane": {
       "Span": 6.5,
       "Angle": 0.0,
-      "Arm": [-6.2,0.14,1.0],
+      "Arm": [-6.2,0.14,1.8],
       "FlowInertia": 0.1099,
       "ClockWiseAOA": false,
       "Areas": {
@@ -494,16 +495,17 @@
       "AnglesMultiplierPitch": [1.0,0.0,1.0],
       "AnglesYaw": [0.0,0.0],
       "AnglesMultiplierYaw": [1.0,0.0,1.0],
-      "Sensitivity": 0.1,
+      "Sensitivity": 0.07,
       "SensitivityMultiplier": 1.0,
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [0.0,0.0],
-      "SensitivityCd": [0.015,0.0027],
+      "SensitivityCd": [0.015,-0.015],
       "SensitivityWingAoa": 0.0
     },
     "Elevator": {
-      "AnglesRoll": [0.0,0.0],
-      "AnglesMultiplierRoll": [1.0,0.0,1.0],
+      "AnglesRoll": [4.0,5.0],
+      "AnglesMultiplierRoll0": [250.0,0.0,0.0,0.0],
+      "AnglesMultiplierRoll1": [450.0,1.0,0.0,1.0],
       "AnglesPitch": [16.5,7.5],
       "AnglesMultiplierPitch0": [0.0,1.0,0.0,1.0],
       "AnglesMultiplierPitch1": [800.0,0.99,0.0,1.0],
@@ -528,7 +530,7 @@
       "AnglesMultiplierYaw": [1.0,0.0,1.0],
       "Sensitivity": 0.25,
       "SensitivityMultiplier": 1.0,
-      "ArcadeSensitivityMultiplier": 1.2,
+      "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [0.0,0.0],
       "SensitivityCd": [0.0,0.0],
       "SensitivityWingAoa": 0.0
@@ -1307,36 +1309,59 @@
     "WaterWaveHeightForCheck": [0.0,100.0],
     "WaterRudderSpeedRange": [8.33333,13.8889],
     "StrutL": {
-      "SpringHeight": 0.7,
-      "SpringCoeff": 270000.0,
+      "SpringHeight": 0.158,
+      "SpringCoeff": 400000.0,
+      "SpringDampCoeff": 2.0,
+      "SpringDampForceMaxMult": 2.0,
       "WheelRadus": 0.39,
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [0.0,0.95,10.0,0.55],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 2.0,
       "SteerType": "Fixed"
     },
     "StrutR": {
-      "SpringHeight": 0.7,
-      "SpringCoeff": 270000.0,
+      "SpringHeight": 0.158,
+      "SpringCoeff": 400000.0,
+      "SpringDampCoeff": 2.0,
+      "SpringDampForceMaxMult": 2.0,
       "WheelRadus": 0.39,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [0.0,0.95,10.0,0.55],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 2.0,
       "SteerType": "Fixed"
     },
     "StrutC": {
-      "SpringHeight": 0.7,
-      "SpringCoeff": 75000.0,
+      "SpringHeight": 0.321,
+      "SpringCoeff": 85000.0,
+      "SpringDampCoeff": 2.0,
+      "SpringDampForceMaxMult": 2.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [0.0,0.95,10.0,0.55],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 2.0,
+      "SteerType": "ManualSteering"
+    },
+    "Strut2C": {
+      "SpringHeight": 0.1,
+      "SpringCoeff": 80000.0,
+      "SpringDampCoeff": 2.0,
+      "SpringDampForceMaxMult": 2.0,
+      "WheelRadus": 0.4,
+      "Retractable": false,
+      "LeftBrake": false,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": [0.0,0.4,0.0,0.4],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 2.0,
       "SteerType": "ManualSteering"
     }
   },
@@ -1417,9 +1442,36 @@
       ]
     }
   },
+  "Instructor": {
+    "critMult": [-1.0,-1.0],
+    "limitOverload": true,
+    "overloadMult": [0.85,0.92,0.85,0.92],
+    "overloadTimeRange": [0.9,1.0],
+    "overloadTimeRate": 0.2,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [-5.0,12.0],
+    "MouseAim": {
+      "forceAdvanced": true,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [0.17,0.3,0.4,1.5],
+      "rollTimeMult": 0.44,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [0.15,2.0,0.35,0.06],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [0.15,2.0,0.35,0.06],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [0.0,0.0],
+      "rollRateLimToDirXZFactorMin": [0.7,1000000.0],
+      "rollRateLimToDirXZFactorMax": [0.7,1000000.0]
+    }
+  },
   "Autopilot": {
     "Roll": {
-      "RateMax": [-120.0,120.0],
+      "RateMax": [-140.0,140.0],
       "AngleMax": [90.0,90.0],
       "VelMax": [0.0,0.0],
       "AngleLim": 190.0,

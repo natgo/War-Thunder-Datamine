@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -22,6 +20,7 @@ let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { stripTags } = require("%sqstd/string.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
@@ -182,11 +181,11 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     iconObj.effectType = imgConfig.effect
 
     if (unlockConfig?.iconData) {
-      ::LayersIcon.replaceIconByIconData(iconObj, unlockConfig.iconData)
+      LayersIcon.replaceIconByIconData(iconObj, unlockConfig.iconData)
       return
     }
 
-    ::LayersIcon.replaceIcon(
+    LayersIcon.replaceIcon(
       iconObj,
       imgConfig.style,
       imgConfig.image,
@@ -280,7 +279,7 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
       let isUnlocked = isBitMode ? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
       hiddenContent += "unlockCondition {"
       hiddenContent += format("textarea {text:t='%s' } \n %s \n",
-                                ::g_string.stripTags(names[i]),
+                                stripTags(names[i]),
                                 ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
       hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
       hiddenContent += getSubunlockTooltipMarkup(unlockConfig, unlockId)

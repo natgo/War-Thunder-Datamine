@@ -6,17 +6,20 @@
   "haveCCIPForRocket": true,
   "haveCCRPForRocket": false,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
   "gearSinkRangeLR": 0.22,
   "gearSinkRangeC": 0.25,
+  "mfdCamShkval": true,
+  "mfdCamLineScale": 0.5,
+  "mfdCamFontScale": 0.5,
   "tpsCameraTargetOffsetAtZoom": [50.0,20.0,0.0],
   "tpsCameraOffset": [-1.0,0.0,0.0],
   "enginesInfraRedBrightnessMult": 0.7,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "enableAutopilot": true,
@@ -33,6 +36,7 @@
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "paratrooper": "su_k_36_heli_para",
   "DamageParts": {
     "alum_alloy20": {
       "armor3_dm": {
@@ -240,6 +244,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -251,6 +267,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -269,6 +297,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -280,6 +320,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -825,6 +877,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -836,6 +900,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -1079,7 +1155,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_su_heli_early_char",
+    "model": "su_pilot_late_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1469,7 +1545,15 @@
         "su_vyihr_cap_009",
         "su_vyihr_cap_010",
         "su_vyihr_cap_011",
-        "su_vyihr_cap_012"
+        "su_vyihr_cap_012",
+        "rotor_blade_01",
+        "rotor_blade_02",
+        "rotor_blade_03",
+        "rotor_blade_04",
+        "rotor_blade_05",
+        "rotor_blade_06",
+        "blister2",
+        "rotor_head"
       ]
     },
     "HideDmParts": {
@@ -1669,6 +1753,7 @@
             "iconType": "atgm_type_vihr_x6",
             "name": "9k127_x8_left",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": [
                 "su_vyihr_apu6_tpk_lower_001",
@@ -3419,16 +3504,16 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [1024,768],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
+            "resolution": [1920,1080],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
           },
           "pilotIr": {
-            "resolution": [1024,768],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
+            "resolution": [1920,1080],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
           }
         }
       }
@@ -3444,6 +3529,51 @@
         "from": "ka_50_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 20.0,
+    "seatEjectDelay": 0.3,
+    "seatVel": [7.0,0.0,0.0],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "dmgPropeller": [
+      0,
+      1
+    ],
+    "wreck": [
+      "rotor_blade_01",
+      "rotor_blade_02",
+      "rotor_blade_03",
+      "rotor_blade_04",
+      "rotor_blade_05",
+      "rotor_blade_06"
+    ],
+    "hide": [
+      "prop03_1",
+      "prop03_2",
+      "prop01_1_dmg",
+      "prop01_2_dmg",
+      "prop01_1",
+      "prop02_1",
+      "prop02_2",
+      "prop01_2",
+      "blister2",
+      "seat_01",
+      "seat_01_after_ejection"
+    ],
+    "show": [
+      "rotor_head",
+      "blister2_open"
+    ],
+    "seat": "seat_01",
+    "seatFxEmitter": [
+      "seat_01_jet1",
+      "seat_01_jet2"
+    ],
+    "fxEmitter": "rotor_blade_separate",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [-0.110711,-0.0385299,1.65],

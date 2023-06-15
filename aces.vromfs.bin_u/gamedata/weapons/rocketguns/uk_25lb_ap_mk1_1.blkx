@@ -10,6 +10,7 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "effectOffset": [-1.0,-0.07,0.0],
     "caliber": 0.076,
     "mass": 27.2,
     "normalizationPreset": "ap",
@@ -39,22 +40,11 @@
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_81_105mm_water_ap",
     "explosionPatchRadius": 3.4,
-    "fireEffect": [
-      "rocket_fire_light",
-      "rocket_fire_light"
-    ],
-    "smokeEffect": [
-      "",
-      ""
-    ],
-    "hazeEffect": [
-      "haze_missile",
-      "haze_missile"
-    ],
-    "endSmokeViscosity": [
-      0.05,
-      0.05
-    ],
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_light_multiple",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "maxDistance": 7500.0,
@@ -66,7 +56,6 @@
     "startSpeed": 30.0,
     "endSpeed": 800.0,
     "maxSpeed": 480.0,
-    "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,

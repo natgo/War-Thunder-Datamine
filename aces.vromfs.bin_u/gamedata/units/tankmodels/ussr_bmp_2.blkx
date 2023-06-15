@@ -838,7 +838,10 @@
     "ex_armor_turret_06_dm": true,
     "ex_armor_turret_07_dm": true,
     "ex_armor_turret_08_dm": true,
-    "ex_armor_turret_09_dm": true
+    "ex_armor_turret_09_dm": true,
+    "ex_lantern_01_dm": true,
+    "ex_armor_turret_04_dm": true,
+    "ex_armor_l_09_dm": true
   },
   "sound": {
     "EngineName": "engine_bmp",
@@ -1311,6 +1314,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -1811,19 +1815,20 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [6.0,0.0,0.5],
-        "sleevesImpulseOffset": 0.04,
-        "linkSleeveToGun": true,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [6.0,0.0,0.5],
+        "shellCasingImpulseOffset": 0.04,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.045,
         "jammedReloadTime": 15.0,
         "defaultYaw": 0.0,
@@ -1943,6 +1948,7 @@
         "emitter": "bone_rocket_02",
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
+        "staticElevation": 2.5,
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2140,9 +2146,9 @@
     },
     "floats": {
       "volume": [
-        [2.7,1.0,1.0,0.77],
-        [2.7,1.0,-1.0,0.77],
-        [2.0,1.0,0.0,0.76],
+        [2.7,1.0,1.0,0.8],
+        [2.7,1.0,-1.0,0.8],
+        [2.0,1.0,0.0,0.8],
         [1.3,1.0,1.0,0.62],
         [1.3,1.0,-1.0,0.62],
         [0.0,1.0,1.0,0.6],
@@ -2176,8 +2182,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2837,6 +2843,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3021,19 +3034,20 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
               "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [6.0,0.0,0.5],
-              "sleevesImpulseOffset": 0.04,
-              "linkSleeveToGun": true,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [6.0,0.0,0.5],
+              "shellCasingImpulseOffset": 0.04,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.045,
               "jammedReloadTime": 15.0,
               "defaultYaw": 0.0,
@@ -3153,6 +3167,7 @@
               "emitter": "bone_rocket_02",
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
+              "staticElevation": 2.5,
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3410,6 +3425,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

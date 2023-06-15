@@ -1,9 +1,8 @@
 //-file:plus-string
 
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
-#explicit-this
-#no-root-fallback
 
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -21,6 +20,8 @@ let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
+let { validateEmail } = require("%sqstd/string.nut")
+let { subscribe } = require("eventbus")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -138,7 +139,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     if ("dgs_get_argv" in getroottable()) {
       let s = ::dgs_get_argv("stoken")
-      if (!::u.isEmpty(s))
+      if (!u.isEmpty(s))
         lp.stoken <- s
     }
     else if ("dgs_argc" in getroottable())
@@ -300,7 +301,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         actionName  = lang.id
         text        = lang.title
         icon        = lang.icon
-        action      = (@(lang) function () { this.onChangeLanguage(lang.id) })(lang)
+        action      = @() this.onChangeLanguage(lang.id)
         selected    = lang.id == curLangId
       })
     }
@@ -446,7 +447,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }
   }
 
-  function onEventProceedGetTwoStepCode(data) {
+  function proceedGetTwoStepCode(data) {
     if (!this.isValid() || this.isLoginRequestInprogress) {
       return
     }
@@ -495,10 +496,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
             if (!checkObj(scene))
               return
 
-            if ("get_two_step_code_async2" in getroottable())
-              ::get_two_step_code_async2("ProceedGetTwoStepCode")
-            else
-              ::get_two_step_code_async(this, this.onEventProceedGetTwoStepCode)
+            ::get_two_step_code_async2("ProceedGetTwoStepCode")
           })(this.scene))
         }
         break
@@ -591,7 +589,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
   function onChangeLogin(obj) {
     //Don't save value to local, so it doens't appear in logs.
-    let res = !::g_string.validateEmail(obj.getValue()) && (this.stoken == "")
+    let res = !validateEmail(obj.getValue()) && (this.stoken == "")
     obj.warning = res ? "yes" : "no"
     obj.warningText = res ? "yes" : "no"
     obj.tooltip = res ? loc("tooltip/invalidEmail/possibly") : ""
@@ -666,3 +664,10 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     })
   }
 }
+
+subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+  let loginWnd = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
+  if (loginWnd == null)
+    return
+  loginWnd.proceedGetTwoStepCode(p)
+})

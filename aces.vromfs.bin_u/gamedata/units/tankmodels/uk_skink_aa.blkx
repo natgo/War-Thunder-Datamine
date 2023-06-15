@@ -1116,6 +1116,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1687,7 +1688,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.5,77.0]
+          "pitch": [-5.0,80.0]
         }
       },
       {
@@ -1731,7 +1732,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.5,77.0]
+          "pitch": [-5.0,80.0]
         }
       },
       {
@@ -1775,7 +1776,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.5,77.0]
+          "pitch": [-5.0,80.0]
         }
       },
       {
@@ -1819,7 +1820,7 @@
         },
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-4.5,77.0]
+          "pitch": [-5.0,80.0]
         }
       },
       {
@@ -1870,9 +1871,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 28000.0,
-      "Fuel": 600.0,
-      "TakeOff": 28600.0,
+      "Empty": 27000.0,
+      "Fuel": 660.0,
+      "TakeOff": 27660.0,
       "momentOfInertia": [2.5,2.5,6.0],
       "CenterOfGravity": [0.2,0.8,0.0],
       "CenterOfGravityClampY": [0.0,0.7],
@@ -2695,6 +2696,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

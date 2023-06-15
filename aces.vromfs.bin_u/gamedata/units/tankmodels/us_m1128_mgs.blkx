@@ -1212,6 +1212,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1920,14 +1921,14 @@
         "blk": "gameData/Weapons/groundModels_weapons/105mm_M68A1_E8_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 1.0,
-        "sleevesLifeTime": 10.0,
-        "sleeveImpulse": [5.0,0.0,0.0],
-        "sleeveExtractSound": "shell_eject_hatch",
-        "linkSleeveToGun": true,
+        "shellCasingLifeTime": 10.0,
+        "shellCasingImpulse": [5.0,0.0,0.0],
+        "shellCasingExtractSound": "shell_eject_hatch",
+        "linkShellCasingToGun": true,
         "maxAdditionalPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
@@ -2898,6 +2899,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3098,14 +3106,14 @@
               "blk": "gameData/Weapons/groundModels_weapons/105mm_M68A1_E8_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "cartridge_case",
               "hatchAnimVar": "hatch_toggle",
               "openHatchTime": 1.0,
-              "sleevesLifeTime": 10.0,
-              "sleeveImpulse": [5.0,0.0,0.0],
-              "sleeveExtractSound": "shell_eject_hatch",
-              "linkSleeveToGun": true,
+              "shellCasingLifeTime": 10.0,
+              "shellCasingImpulse": [5.0,0.0,0.0],
+              "shellCasingExtractSound": "shell_eject_hatch",
+              "linkShellCasingToGun": true,
               "maxAdditionalPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
@@ -3289,7 +3297,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_smoke_grenade_launcher_m60a2.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "startFx": "",
               "useEmitter": true,

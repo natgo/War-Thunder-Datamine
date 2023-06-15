@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -98,7 +98,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     updateActionBar()
     this.scene.setValue(stashBhvValueConfig([{
       watch = actionBarItems
-      updateFunc = Callback(@(_obj, actionItems) this.updateActionBarItems(actionItems), this)
+      updateFunc = Callback(@(_obj, actionItems) this.updateActionBarItems(actionItems), this) //-ident-hides-ident
     }]))
   }
 
@@ -117,7 +117,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function getActionBarUnit() {
-    return ::getAircraftByName(getActionBarUnitName())
+    return getAircraftByName(getActionBarUnitName())
   }
 
   function fill() {
@@ -128,7 +128,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     this.curActionBarUnitName = getActionBarUnitName()
 
     let view = {
-      items = ::u.map(this.actionItems, (@(a) this.buildItemView(a, true)).bindenv(this))
+      items = u.map(this.actionItems, (@(a) this.buildItemView(a, true)).bindenv(this))
     }
 
     let partails = {
@@ -143,11 +143,11 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
     }
 
-    let blk = ::handyman.renderCached(("%gui/hud/actionBar.tpl"), view, partails)
+    let blk = handyman.renderCached(("%gui/hud/actionBar.tpl"), view, partails)
     this.guiScene.replaceContentFromText(this.scene.findObject("actions_nest"), blk, blk.len(), this)
     this.scene.findObject("action_bar").setUserData(this)
 
-    ::broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() })
+    broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() })
   }
 
   //creates view for handyman by one actionBar item
@@ -207,7 +207,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     let unit = this.getActionBarUnit()
     let modifName = getActionItemModificationName(item, unit)
     if (modifName) {
-      viewItem.bullets <- ::handyman.renderNested(loadTemplateText("%gui/weaponry/bullets.tpl"),
+      viewItem.bullets <- handyman.renderNested(loadTemplateText("%gui/weaponry/bullets.tpl"),
         function (_text) {
           // if fake bullets are not generated yet, generate them
           if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
@@ -270,7 +270,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
     if ((prevActionItems?.len() ?? 0) != this.actionItems.len() || this.actionItems.len() == 0) {
       this.fill()
-      ::broadcastEvent("HudActionbarResized", { size = this.actionItems.len() })
+      broadcastEvent("HudActionbarResized", { size = this.actionItems.len() })
       return
     }
 
@@ -331,7 +331,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
         mainActionButtonObj.show(isReady)
       if (actionType == EII_ARTILLERY_TARGET && item.active != this.artillery_target_mode) {
         this.artillery_target_mode = item.active
-        ::broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
+        broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
       }
 
       if (actionType != prevActionItems[id].type || actionType == EII_WEAPON_LEAD)
@@ -393,7 +393,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       let delta = currentItem.countEx - prewItem.countEx || currentItem.count - prewItem.count
       if (prewItem.ammoLost < currentItem.ammoLost)
         ::g_hud_event_manager.onHudEvent("hint:ammoDestroyed:show")
-      let blk = ::handyman.renderCached("%gui/hud/actionBarIncrement.tpl", { is_increment = delta > 0, delta_amount = delta })
+      let blk = handyman.renderCached("%gui/hud/actionBarIncrement.tpl", { is_increment = delta > 0, delta_amount = delta })
       this.guiScene.appendWithBlk(itemObj, blk, this)
     }
   }

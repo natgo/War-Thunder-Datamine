@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -124,7 +121,7 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
     }
 
     this.showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
-    let data = ::g_string.implode(messagesArray, "\n")
+    let data = "\n".join(messagesArray, true)
     let tblObj = this.scene.findObject("fast_voice_messages_table")
     if (checkObj(tblObj))
       this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)

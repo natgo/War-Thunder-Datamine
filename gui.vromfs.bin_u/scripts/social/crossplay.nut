@@ -1,17 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { check_crossnetwork_communications_permission } = require("%scripts/xbox/permissions.nut")
+let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
 
 let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
 let crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
-crossNetworkPlayStatus.subscribe(@(v) v == null ? null : ::broadcastEvent("CrossPlayOptionChanged"))
+crossNetworkPlayStatus.subscribe(@(v) v == null ? null : broadcastEvent("CrossPlayOptionChanged"))
 
 let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
 
@@ -23,7 +23,7 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
     return
 
   if (isPlatformXboxOne)
-    crossNetworkPlayStatus(::get_crossnetwork_play_privilege())
+    crossNetworkPlayStatus(crossnetworkPrivilege.value)
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkPlayStatus(::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true))
   else
@@ -49,7 +49,7 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
     return
 
   if (isPlatformXboxOne)
-    crossNetworkChatStatus(::check_crossnetwork_communications_permission())
+    crossNetworkChatStatus(check_crossnetwork_communications_permission())
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkChatStatus(::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED))
   else

@@ -6,29 +6,42 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
+    "statType": "hydra",
+    "caliber": 0.135,
+    "length": 1.163,
+    "WdK": [0.1,0.1,0.1],
+    "CxK": 3.5,
+    "distFromCmToStab": 0.01,
+    "mass": 28.5,
+    "massEnd": 20.0,
+    "timeFire": 3.0,
+    "force": 3500.0,
+    "useStartSpeed": true,
+    "startSpeed": 55.0,
+    "maxSpeed": 400.0,
+    "endSpeed": 0.0,
+    "maxDistance": 2500.0,
+    "minDistance": 30.0,
+    "operatedDist": 2500.0,
+    "operated": true,
+    "autoLeveling": true,
+    "autoaimEnabled": false,
+    "autoAiming": true,
+    "aimSensitivity": 20.0,
     "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
+    "ricochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "caliber": 0.135,
-    "length": 1.163,
+    "shellAnimation": "video/shells_animations/atgm.ivf",
     "explosiveType": "hta",
     "explosiveMass": 6.0,
-    "distFromCmToStab": 0.01,
-    "operated": true,
-    "operatedDist": 2500.0,
-    "autoAiming": true,
-    "autoLeveling": true,
-    "aimSensitivity": 20.0,
-    "WdK": [0.1,0.1,0.1],
     "explosionEffect": "explosion_midair_big",
     "groundCollisionEffect": "explosion_midair_small",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -37,12 +50,6 @@
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "maxDeltaAngle": 0.02,
-    "maxDistance": 2500.0,
-    "minDistance": 30.0,
-    "mass": 28.5,
-    "massEnd": 20.0,
-    "force": 3500.0,
-    "timeFire": 3.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -55,25 +62,17 @@
     "relativeVelArmorShift": [200.0,1000.0],
     "explodeTreshold": 0.0,
     "rendinstDamageRadius": 2.0,
-    "statType": "hydra",
-    "fireEffect": "rocket_fire_short_doubleside",
-    "smokeEffect": "rocket_fire_short_nofire",
+    "hasTracerTrail": [
+      true,
+      true
+    ],
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "dragCx": 0.0032,
-    "CxK": 3.5,
-    "useStartSpeed": true,
-    "startSpeed": 55.0,
-    "endSpeed": 0.0,
-    "maxSpeed": 400.0,
     "lifeTime": 20.0,
-    "advancedMissiles": false,
-    "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "hasTracerTrail": true,
     "tracerTrailEmitter": [0.1,-0.01,0.0],
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
@@ -277,18 +276,52 @@
         }
       }
     },
+    "tracerTrail": [
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_1",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_2",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_3",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_4",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "100mmBlue",
+          "trail": "black"
+        }
+      }
+    ],
     "cumulativeDamage": {
       "armorPower": 650.0,
       "distance": 5.0,
       "damage": 500.0,
       "onHitChanceMultFire": 15.0
-    },
-    "tracerTrail": {
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "100mmBlue",
-        "trail": "black"
-      }
     }
   }
 }

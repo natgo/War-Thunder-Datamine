@@ -331,6 +331,7 @@
       },
       "turret_02_top_dm": {},
       "turret_03_top_dm": {},
+      "turret_05_side_dm": {},
       "superstructure_front_dm": {},
       "superstructure_side_dm": {},
       "superstructure_bottom_dm": {},
@@ -345,7 +346,8 @@
       "gun_mask_02_dm": {
         "armorThickness": 10.0
       },
-      "turret_05_top_dm": {}
+      "turret_05_top_dm": {},
+      "turret_05_bottom_dm": {}
     },
     "sensor": {
       "armorClass": "tank_structural_steel",
@@ -356,6 +358,10 @@
     "optics": {
       "armorClass": "optics_tank",
       "optic_gun_dm": {
+        "armorThickness": 10.0,
+        "hp": 50.0
+      },
+      "optic_turret_dm": {
         "armorThickness": 10.0,
         "hp": 50.0
       }
@@ -1233,6 +1239,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1693,6 +1700,16 @@
         "ammo_body_58_dm",
         "ammo_body_59_dm",
         "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1824,6 +1841,7 @@
       "emittersHierarchy": true,
       "ammoDpGenFmt": "ammo_turret_%02d_dm",
       "recoilMultiplier": 0.0,
+      "staticElevation": 8.0,
       "createGunEffects": true,
       "barrelDP": "gun_barrel_dm",
       "defaultYaw": 0.0,
@@ -2002,8 +2020,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2715,6 +2733,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2773,6 +2798,7 @@
               "emittersHierarchy": true,
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.0,
+              "staticElevation": 8.0,
               "createGunEffects": true,
               "barrelDP": "gun_barrel_dm",
               "defaultYaw": 0.0,

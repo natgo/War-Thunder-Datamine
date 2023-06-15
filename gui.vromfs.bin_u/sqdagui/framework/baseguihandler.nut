@@ -1,12 +1,10 @@
-#explicit-this
-#no-root-fallback
 
 let { handlerType } = require("handlerType.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let broadcastEvent = require("%sqStdLibs/helpers/subscriptions.nut").broadcast
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
 
 ::BaseGuiHandler <- class {

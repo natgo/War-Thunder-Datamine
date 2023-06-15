@@ -28,6 +28,7 @@
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "radarAnimVar": "radar_drive",
+  "radarAnimPitchVar": "radar_drive2",
   "radarDeployTime": 3.0,
   "radarAntenaSpeed": 720.0,
   "mass": 47000.0,
@@ -1399,6 +1400,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1698,7 +1700,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "xray_viewer_data": {
@@ -1975,13 +1980,13 @@
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [1.0,-2.0,1.0],
-        "linkSleeveToGun": true,
-        "sleevesImpulseOffset": 0.05,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [1.0,-2.0,1.0],
+        "linkShellCasingToGun": true,
+        "shellCasingImpulseOffset": 0.05,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -2053,13 +2058,13 @@
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [1.0,-2.0,1.0],
-        "linkSleeveToGun": true,
-        "sleevesImpulseOffset": 0.05,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [1.0,-2.0,1.0],
+        "linkShellCasingToGun": true,
+        "shellCasingImpulseOffset": 0.05,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -2170,9 +2175,11 @@
     ],
     "animatedBones": {
       "node": [
-        "antenna_target_tagging",
-        "antenna_target_tagging_mount",
-        "antenna_target_location_mount"
+        "antenna_target_location",
+        "antenna_target_location_mount",
+        "ex_armor_05",
+        "bone_roll_01",
+        "bone_roll_02"
       ]
     }
   },
@@ -2263,8 +2270,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2924,6 +2931,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3020,13 +3034,13 @@
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_01",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [1.0,-2.0,1.0],
-              "linkSleeveToGun": true,
-              "sleevesImpulseOffset": 0.05,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [1.0,-2.0,1.0],
+              "linkShellCasingToGun": true,
+              "shellCasingImpulseOffset": 0.05,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3098,13 +3112,13 @@
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_02",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_02",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [1.0,-2.0,1.0],
-              "linkSleeveToGun": true,
-              "sleevesImpulseOffset": 0.05,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [1.0,-2.0,1.0],
+              "linkShellCasingToGun": true,
+              "shellCasingImpulseOffset": 0.05,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3260,9 +3274,11 @@
           ],
           "animatedBones": {
             "node": [
-              "antenna_target_tagging",
-              "antenna_target_tagging_mount",
-              "antenna_target_location_mount"
+              "antenna_target_location",
+              "antenna_target_location_mount",
+              "ex_armor_05",
+              "bone_roll_01",
+              "bone_roll_02"
             ]
           }
         }

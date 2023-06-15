@@ -1,15 +1,18 @@
 {
-  "model": "ah_1s",
+  "model": "ah_1e",
   "fmFile": "fm/ah_1s.blk",
   "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCIPForTurret": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForRocket": false,
+  "hasPointOfInterestMemory": false,
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "enginesInfraRedBrightnessMult": 0.8,
   "tpsCameraTargetOffsetAtZoom": [80.0,60.0,0.0],
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -252,6 +255,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -263,6 +278,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -650,6 +677,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -661,6 +700,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -1058,6 +1109,9 @@
       "pedals5": [-1.0,1.0],
       "pedals6": [-1.0,1.0],
       "throttle": [-1.0,1.0],
+      "throttle_1": [0.0,1.0],
+      "throttle_2": [0.0,1.0],
+      "throttle_3": [0.0,1.0],
       "prop_pitch": [-1.0,1.0],
       "clock_hour": [0.0,12.0],
       "clock_min": [0.0,60.0],
@@ -1076,6 +1130,8 @@
       "speed": [0.0,102.889],
       "vario": [-15.24,15.24],
       "rpm": [0.0,10000.0],
+      "rpm_hour": [0.0,11000.0],
+      "rpm_min": [0.0,1000.0],
       "fuel": [0.0,907.0],
       "water_temperature": [0.0,900.0],
       "oil_pressure": [25.0,150.0],
@@ -1245,8 +1301,8 @@
               "rotationAnimScale": "gun_rotate_01:CRS",
               "parkInDeadzone": false,
               "limits": {
-                "yaw": [-115.0,115.0],
-                "pitch": [-50.0,25.0]
+                "yaw": [-110.0,110.0],
+                "pitch": [-50.0,21.0]
               },
               "limitsTable": {
                 "lim1": [-115.0,-103.0,-50.0,15.0],
@@ -1276,10 +1332,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_6_b1",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1289,16 +1346,18 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_l_b001",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
             "reqModification": "ah_1_TOW",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -1311,6 +1370,7 @@
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
             "reqModification": "ah_1_TOW_2",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -1332,10 +1392,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_6_b2",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1345,10 +1406,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_l_b002",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1394,10 +1456,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_6_b3",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1407,10 +1470,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_l_b003",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1456,10 +1520,11 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_6_b4",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
@@ -1469,16 +1534,18 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_stone_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_l_b004",
               "mass": 0.01,
-              "dragCx": 0.01
+              "dragCx": 0.01,
+              "jettisonable": false
             }
           },
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
             "reqModification": "ah_1_TOW",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -1491,6 +1558,7 @@
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
             "reqModification": "ah_1_TOW_2",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -2644,6 +2712,29 @@
       }
     }
   },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ah_1e_israel_c*",
+      "to": "ah_1e_japan_c*"
+    }
+  },
+  "default_skin_tomoe": {
+    "replace_tex": {
+      "from": "ah_1e_israel_c*",
+      "to": "ah_1e_japan_c_tomoe*"
+    }
+  },
+  "user_skin": {
+    "name": "ah_1e",
+    "replace_tex": [
+      {
+        "from": "ah_1e_japan_c*"
+      },
+      {
+        "from": "ah_1e_n*"
+      }
+    ]
+  },
   "cutting": {
     "_emtr_break_wing0_l_from": [0.654589,-0.679247,0.738534],
     "_emtr_break_wing0_l_to": [0.654589,-0.679247,0.905443],
@@ -2653,22 +2744,5 @@
     "emtr_break_wing_upper": [0.03,1.0,0.0],
     "emtr_break_wing_tail": [-2.01118,0.0,0.0],
     "finCut": false
-  },
-  "default_skin_tomoe": {
-    "replace_tex": {
-      "from": "ah_1s_fuji_green_camo_c*",
-      "to": "ah_1s_fuji_green_camo_c_tomoe*"
-    }
-  },
-  "user_skin": {
-    "name": "ah_1s_early",
-    "replace_tex": [
-      {
-        "from": "ah_1s_fuji_green_camo_c*"
-      },
-      {
-        "from": "ah_1s_fuji_green_camo_n*"
-      }
-    ]
   }
 }

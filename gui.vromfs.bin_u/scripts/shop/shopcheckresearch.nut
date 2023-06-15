@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { Cost } = require("%scripts/money.nut")
+
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -41,7 +40,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function initScreen() {
     let unitName = getTblValue(::researchedUnitForCheck, this.researchBlock)
     this.curAirName = unitName
-    this.researchedUnit = ::getAircraftByName(unitName)
+    this.researchedUnit = getAircraftByName(unitName)
     this.unitCountry = this.researchBlock.country
     this.unitType = ::get_es_unit_type(this.researchedUnit)
     this.sendUnitResearchedStatistic(this.researchedUnit)
@@ -131,7 +130,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (curUnitName == getTblValue("name", this.curResearchingUnit, ""))
       return
 
-    this.curResearchingUnit = ::getAircraftByName(curUnitName)
+    this.curResearchingUnit = getAircraftByName(curUnitName)
   }
 
   function updateExcessExp() {
@@ -198,11 +197,11 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     this.destroyGroupChoose(::isGroupPart(unit) ? unit.group : "")
 
     if (::isGroupPart(unit))
-      this.guiScene.performDelayed(this, (@(unit) function() {
+      this.guiScene.performDelayed(this, function() {
         if (!this.isSceneActiveNoModals())
           return
         this.checkSelectAirGroup(this.getItemBlockFromShopTree(unit.group), unit.name)
-      })(unit))
+      })
 
     this.selectCellByUnitName(unit.name)
   }
@@ -275,8 +274,6 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       return
 
     this.updateRepairAllButton()
-    this.showSceneBtn("btn_back", this.curResearchingUnit == null || ::isUnitResearched(this.curResearchingUnit))
-
     let unit = this.getCurAircraft(true, true)
     if (!unit)
       return
@@ -290,7 +287,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     this.showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit) {
       let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
-      let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
+      let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : Cost()
       placePriceTextToButton(this.navBarObj,      "btn_buy_unit", locText, unitCost)
       placePriceTextToButton(this.navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
@@ -305,7 +302,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
       let textSample = loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
       let textValue = flushExp ? loc("ui/parentheses/space",
-        { text = ::Cost().setRp(flushExp).tostring() }) : ""
+        { text = Cost().setRp(flushExp).tostring() }) : ""
       coloredText = format(textSample, textValue)
     }
 
@@ -331,7 +328,6 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function onSpendExcessExp() {
     if (this.hasSpendExpProcess)
       return
-
     this.hasSpendExpProcess = true
     let unit = this.getCurAircraft(true, true)
     this.flushItemExp(unit, @() this.setUnitOnResearch(unit, function() {
@@ -386,20 +382,20 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 
   function flushItemExp(unitOnResearch, afterDoneFunc = null) {
-    let executeAfterDoneFunc = (@(_unitOnResearch, afterDoneFunc) function() {
-        if (!this.isValid())
-          return
+    let executeAfterDoneFunc = function() {
+      if (!this.isValid())
+        return
 
-        this.setResearchManually = true
-        this.updateResearchVariables()
-        this.fillAircraftsList()
-        this.updateButtons()
+      this.setResearchManually = true
+      this.updateResearchVariables()
+      this.fillAircraftsList()
+      this.updateButtons()
 
-        this.selectRequiredUnit()
+      this.selectRequiredUnit()
 
-        if (afterDoneFunc)
-          afterDoneFunc()
-      })(unitOnResearch, afterDoneFunc)
+      if (afterDoneFunc)
+        afterDoneFunc()
+    }
 
     if (this.availableFlushExp <= 0) {
       executeAfterDoneFunc()
@@ -410,20 +406,31 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = executeAfterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          executeAfterDoneFunc()
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = @(_res) executeAfterDoneFunc()
     }
+  }
+
+  function onTryCloseShop() {
+    let unit = this.getCurAircraft(true, true)
+    let unitName = ::getUnitName(unit.name)
+    let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+    let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
+    let expText = Cost().setRp(flushExp).tostring()
+
+    this.msgBox("close_research", loc("msgbox/close_research_wnd_message", {exp = expText, unitName}),
+      [["yes", function() {this.onSpendExcessExp()}], ["no", function() {} ]], "yes", { cancel_fn = function() {} })
   }
 
   function onCloseShop() {
     this.destroyGroupChoose()
     let curResName = ::shop_get_researchable_unit_name(this.unitCountry, this.unitType)
     if (getTblValue("name", this.lastResearchUnit, "") != curResName)
-      this.setUnitOnResearch(::getAircraftByName(curResName))
+      this.setUnitOnResearch(getAircraftByName(curResName))
 
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
+
+  goBack = @() this.onTryCloseShop()
 
   function onEventModalWndDestroy(params) {
     let closedHandler = getTblValue("handler", params, null)
@@ -476,7 +483,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
         for (local a = 0; a < rblk.blockCount(); a++) {
           let airBlk = rblk.getBlock(a)
           let airName = airBlk.getBlockName()
-          local air = ::getAircraftByName(airName)
+          local air = getAircraftByName(airName)
           if (!air) {
             let groupTotal = airBlk.blockCount()
             if (groupTotal == 0) {
@@ -486,13 +493,13 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
             groups.append(airName)
             for (local ga = 0; ga < groupTotal; ga++) {
               let gAirBlk = airBlk.getBlock(ga)
-              air = ::getAircraftByName(gAirBlk.getBlockName())
+              air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 resText += ((resText != "") ? "\n" : "") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
             }
           }
           else if ((airBlk?.reqAir ?? "") != "") {
-              let reqAir = ::getAircraftByName(airBlk.reqAir)
+              let reqAir = getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
                 resText += ((resText != "") ? "\n" : "") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
           }

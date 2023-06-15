@@ -153,6 +153,14 @@
         "armorThickness": 25.4
       }
     },
+    "hull_turret_spaced_armor": {
+      "armorClass": "RHA_tank",
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true
+      }
+    },
     "RHA_turret": {
       "armorClass": "RHA_tank",
       "turret_bottom_dm": {
@@ -1141,6 +1149,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1636,6 +1645,16 @@
     "defaultDistance": 800.0,
     "vertical": true,
     "horizontal": true
+  },
+  "xray_viewer_data": {
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    }
   },
   "sound": {
     "EngineName": "engine_mctav6",
@@ -2549,6 +2568,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

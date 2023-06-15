@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_game_version_str } = require("app")
 let { canUseIngameShop,
@@ -434,8 +431,13 @@ let list = {
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
-    onClickFunc = @(_obj, _handler) ::gui_start_eula(::TEXT_EULA, true)
+    onClickFunc = @(obj, _handler) (hasFeature("AllowExternalLink") && !::is_vendor_tencent())
+      ? openUrlByObj(obj)
+      : ::gui_start_eula(true)
     isDelayed = false
+    link = "#url/eula"
+    isLink = @() hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+    isFeatured = true
     isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
   }
   DEBUG_PS4_SHOP_DATA = {
@@ -447,7 +449,7 @@ let list = {
         itemInfo.append(item.imagePath)
         itemInfo.append(item.getDescription())
       }
-      let data = ::g_string.implode(itemInfo, "\n")
+      let data = "\n".join(itemInfo, true)
       log(data)
       ::script_net_assert("PS4 Internal debug shop data")
     }

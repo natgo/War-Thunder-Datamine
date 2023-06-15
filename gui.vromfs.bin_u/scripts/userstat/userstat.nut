@@ -1,11 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let userstat = require("userstat")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
 let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
@@ -189,7 +186,7 @@ addListenersWithoutEnv({
 
 let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data
 userstatCustomLeaderboardStats.subscribe(
-  @(_) ::broadcastEvent("UserstatCustomLeaderboardStats"))
+  @(_) broadcastEvent("UserstatCustomLeaderboardStats"))
 
 return {
   userstatUnlocks

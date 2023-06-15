@@ -83,8 +83,7 @@
     "cast_armor_parts": {
       "armorClass": "CHA_tank",
       "body_front_hatch_dm": {
-        "armorThickness": 70.0,
-        "armorEffectiveThicknessMax": 130.0
+        "armorThickness": 70.0
       },
       "gun_mask_dm": {
         "armorThickness": 75.0,
@@ -1021,6 +1020,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -1647,8 +1647,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2307,6 +2307,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

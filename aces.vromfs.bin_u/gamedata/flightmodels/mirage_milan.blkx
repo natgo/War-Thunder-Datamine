@@ -6,6 +6,7 @@
   "gearSinkRangeC": 0.217,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
@@ -13,7 +14,6 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -517,6 +517,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -528,6 +540,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -586,6 +610,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -623,6 +653,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -644,6 +680,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -685,6 +727,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1875,6 +1923,14 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_milan_sneb_fr_400.blk"
       },
       {
+        "name": "mirage_milan_fr_250_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_milan_sneb_fr_250_200.blk"
+      },
+      {
+        "name": "mirage_milan_fr_400_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_milan_sneb_fr_400_200.blk"
+      },
+      {
         "name": "mirage_milan_fr_mk83",
         "blk": "gameData/FlightModels/weaponPresets/mirage_milan_sneb_fr_mk83.blk"
       },
@@ -2018,7 +2074,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_250kg_samp_mk82_x4_left_wing.blk",
               "emitter": "rpk_milan_001",
-              "external": true
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2029,7 +2086,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_left_wing.blk",
               "emitter": "rpk_milan_001",
-              "external": true
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2040,7 +2098,32 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_left_wing.blk",
               "emitter": "rpk_milan_001",
-              "external": true
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x4",
+            "name": "rpk10_fr_250_left_wing_200",
+            "reqModification": "fr_250kg_type_25c",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_left_wing_200.blk",
+              "emitter": "rpk_milan_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "rpk10_fr_400_left_wing_200",
+            "reqModification": "fr_400kg_type_21b",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_left_wing_200.blk",
+              "emitter": "rpk_milan_001",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2051,7 +2134,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_500kg_samp_mk83_x2_left_wing.blk",
               "emitter": "rpk_milan_001",
-              "external": true
+              "external": true,
+              "separate": true
             }
           }
         ]
@@ -2100,6 +2184,34 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
+              "emitter": "pylon_pm3",
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "pm3_fr_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25_200.blk",
+              "emitter": "pylon_pm3",
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "pm3_fr_400_200",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21_200.blk",
               "emitter": "pylon_pm3",
               "external": true
             }
@@ -2177,7 +2289,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_250kg_samp_mk82_x4_right_wing.blk",
               "emitter": "rpk_milan_002",
-              "external": true
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2188,7 +2301,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_right_wing.blk",
               "emitter": "rpk_milan_002",
-              "external": true
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2199,7 +2313,32 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_right_wing.blk",
               "emitter": "rpk_milan_002",
-              "external": true
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x4",
+            "name": "rpk10_fr_250_right_wing_200",
+            "reqModification": "fr_250kg_type_25c",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_right_wing_200.blk",
+              "emitter": "rpk_milan_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "rpk10_fr_400_right_wing_200",
+            "reqModification": "fr_400kg_type_21b",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_right_wing_200.blk",
+              "emitter": "rpk_milan_002",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2210,7 +2349,8 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/rpk10_fr_500kg_samp_mk83_x2_right_wing.blk",
               "emitter": "rpk_milan_002",
-              "external": true
+              "external": true,
+              "separate": true
             }
           }
         ]

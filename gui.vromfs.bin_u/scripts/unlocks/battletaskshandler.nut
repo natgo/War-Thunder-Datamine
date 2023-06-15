@@ -1,16 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
+  EASY_TASK, MEDIUM_TASK, HARD_TASK
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null) {
   if (!::g_battle_tasks.isAvailableForUser())
@@ -43,8 +45,8 @@ global enum BattleTasksWndTab {
   }
 
   difficultiesByTabType = {
-    [BattleTasksWndTab.BATTLE_TASKS] = [::g_battle_task_difficulty.EASY, ::g_battle_task_difficulty.MEDIUM],
-    [BattleTasksWndTab.BATTLE_TASKS_HARD] = [::g_battle_task_difficulty.HARD]
+    [BattleTasksWndTab.BATTLE_TASKS] = [EASY_TASK, MEDIUM_TASK],
+    [BattleTasksWndTab.BATTLE_TASKS_HARD] = [HARD_TASK]
   }
 
   newIconWidgetByTaskId = null
@@ -95,11 +97,11 @@ global enum BattleTasksWndTab {
   function findTabSheetByTaskId() {
     if (this.currentTaskId)
       foreach (tabType, tasksArray in this.configsArrayByTabType) {
-        let task = tasksArray && ::u.search(tasksArray, function(task) { return this.currentTaskId == task.id }.bindenv(this))
+        let task = tasksArray && u.search(tasksArray, function(task) { return this.currentTaskId == task.id }.bindenv(this))
         if (!task)
           continue
 
-        let tab = ::u.search(this.tabsList, @(tabData) tabData.tabType == tabType)
+        let tab = u.search(this.tabsList, @(tabData) tabData.tabType == tabType)
         if (!("isVisible" in tab) || tab.isVisible())
           return tabType
         break
@@ -136,11 +138,11 @@ global enum BattleTasksWndTab {
     let res = []
     foreach (diff in this.difficultiesByTabType[tabType]) {
       let canInteract = ::g_battle_tasks.showAllTasksValue // debug
-        || ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, ::g_battle_tasks.currentTasksArray)
+        || canPlayerInteractWithDifficulty(diff, ::g_battle_tasks.currentTasksArray)
       if (!canInteract)
         continue
 
-      let tasksByDiff = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(diff, tasks)
+      let tasksByDiff = withdrawTasksArrayByDifficulty(diff, tasks)
       if (tasksByDiff.len() == 0)
         continue
 
@@ -170,7 +172,7 @@ global enum BattleTasksWndTab {
     }
 
     this.updateNoTasksText(view.items)
-    let data = ::handyman.renderCached(this.battleTaskItemTpl, view)
+    let data = handyman.renderCached(this.battleTaskItemTpl, view)
     this.guiScene.replaceContentFromText(listBoxObj, data, data.len(), this)
 
     foreach (config in this.configsArrayByTabType[this.currentTabType]) {
@@ -240,7 +242,7 @@ global enum BattleTasksWndTab {
       foreach (idx, uLog in finishedTasksUserlogsArray) {
         let config = ::build_log_unlock_data(uLog)
         local text = config.name
-        if (!::u.isEmpty(config.rewardText))
+        if (!u.isEmpty(config.rewardText))
           text += loc("ui/parentheses/space", { text = config.rewardText })
         text = colorize("activeTextColor", text)
 
@@ -252,7 +254,7 @@ global enum BattleTasksWndTab {
       }
     }
 
-    let data = ::handyman.renderCached(this.sceneTplDescriptionName, view)
+    let data = handyman.renderCached(this.sceneTplDescriptionName, view)
     this.guiScene.replaceContentFromText(this.scene.findObject("tasks_history_frame"), data, data.len(), this)
   }
 
@@ -295,7 +297,7 @@ global enum BattleTasksWndTab {
   }
 
   function onShowAllTasks(obj) {
-    ::broadcastEvent("BattleTasksShowAll", { showAllTasksValue = obj.getValue() })
+    broadcastEvent("BattleTasksShowAll", { showAllTasksValue = obj.getValue() })
   }
 
   function onSelectTask(obj) {
@@ -340,7 +342,7 @@ global enum BattleTasksWndTab {
     let isBattleTask = ::g_battle_tasks.isBattleTask(task)
     let isDone = ::g_battle_tasks.isTaskDone(task)
     let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
-    let showRerollButton = isBattleTask && !isDone && !canGetReward && !::u.isEmpty(::g_battle_tasks.rerollCost)
+    let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
     let taskObj = this.getCurrentTaskObj()
     if (!checkObj(taskObj))
       return
@@ -416,11 +418,11 @@ global enum BattleTasksWndTab {
       })
     }
 
-    return ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    return handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
   }
 
   function onChangeShowMode() {
-    ::broadcastEvent("BattleTasksIncomeUpdate")
+    broadcastEvent("BattleTasksIncomeUpdate")
   }
 
   function getConfigByValue(value) {

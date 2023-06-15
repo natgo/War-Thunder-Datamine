@@ -1240,6 +1240,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1594,6 +1595,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1602,13 +1604,13 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [0.0,0.1,-3.0],
-        "sleevesImpulseOffset": 0.01,
-        "linkSleeveToGun": true,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [0.0,0.1,-3.0],
+        "shellCasingImpulseOffset": 0.01,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.02,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
@@ -1718,6 +1720,7 @@
         "maxSpeedForFire": 5.0,
         "allowableDelta": 180.0,
         "createGunEffects": true,
+        "staticElevation": 1.25,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
@@ -1867,8 +1870,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2528,6 +2531,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2634,6 +2644,7 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2642,13 +2653,13 @@
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [0.0,0.1,-3.0],
-              "sleevesImpulseOffset": 0.01,
-              "linkSleeveToGun": true,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [0.0,0.1,-3.0],
+              "shellCasingImpulseOffset": 0.01,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.02,
               "maxAdditionalPitch": 0.0,
               "defaultYaw": 0.0,
@@ -2758,6 +2769,7 @@
               "maxSpeedForFire": 5.0,
               "allowableDelta": 180.0,
               "createGunEffects": true,
+              "staticElevation": 1.25,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_01_dm",

@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
 let { round } = require("math")
@@ -15,6 +13,7 @@ let { get_primary_screen_info } = require("dagor.system")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { applyRestartClient, isClientRestartable, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -55,6 +54,7 @@ let compModeGraphicsOptions = {
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
+    xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
   }
@@ -86,6 +86,7 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
+      "xess"
       "dlss"
       "dlssSharpness"
       "anisotropy"
@@ -126,7 +127,6 @@ local mUiStruct = [
       "staticShadowsOnEffects"
       "advancedShore"
       "haze"
-      "softFx"
       "lastClipSize"
       "lenseFlares"
       "enableSuspensionAnimation"
@@ -375,6 +375,21 @@ let function parseResolution(resolution) {
   }
 }
 
+let function getAvailableXessModes() {
+  let values = ["off"]
+  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  if (::is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
+  if (::is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (::is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+    values.append("quality")
+  if (::is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
+    values.append("ultra_quality")
+
+  return values;
+}
+
 let function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
@@ -519,7 +534,12 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+  }
+
+  xessClick = function() {
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -534,11 +554,6 @@ mShared = {
   cloudsQualityClick = function() {
     let cloudsQualityVal = getGuiValue("cloudsQuality", 1)
     setGuiValue("skyQuality", cloudsQualityVal == 0 ? 0 : 1)
-  }
-
-  grassClick = function() {
-    let grassRadiusMul = getGuiValue("grassRadiusMul", 100)
-    setGuiValue("grass", (grassRadiusMul > 10))
   }
 
   ssaoQualityClick = function() {
@@ -669,7 +684,7 @@ mShared = {
       }
       let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
       let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
-      ::u.appendOnce($"{maxW} x {maxH}", resolutions)
+      u.appendOnce($"{maxW} x {maxH}", resolutions)
       let bonus = resolutions.map(parseResolution).filter(@(r)
         (r.w <= maxW && r.h <= maxH) && !list.contains(r.resolution))
       data.extend(bonus)
@@ -777,6 +792,20 @@ mSettings = {
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
   }
+  xess = { widgetType = "list" def = "off" blk = "video/xessQuality" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getAvailableXessModes()
+    }
+    onChanged = "xessClick"
+    getFromBlk = function(blk, desc) {
+      let quality = get_blk_value_by_path(blk, desc.blk, -1)
+      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : (quality == 3) ? "ultra_quality" : "off"
+    }
+    setToBlk = function(blk, desc, val) {
+      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 3 : -1
+      set_blk_value_by_path(blk, desc.blk, quality)
+    }
+  }
   dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableDlssModes()
@@ -823,7 +852,7 @@ mSettings = {
   }
     onChanged = "antiAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
   }
   taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
@@ -833,7 +862,7 @@ mSettings = {
   }
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -954,12 +983,9 @@ mSettings = {
   }
   physicsQuality = { widgetType = "slider" def = 3 min = 0 max = 5 blk = "graphics/physicsQuality" restart = false
   }
-  grassRadiusMul = { widgetType = "slider" def = 80 min = 1 max = 180 blk = "graphics/grassRadiusMul" restart = false
-    onChanged = "grassClick"
+  grassRadiusMul = { widgetType = "slider" def = 80 min = 10 max = 180 blk = "graphics/grassRadiusMul" restart = false
     getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
     setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
-  }
-  grass = { widgetType = "checkbox" def = true blk = "render/grass" restart = false
   }
   enableSuspensionAnimation = { widgetType = "checkbox" def = false blk = "graphics/enableSuspensionAnimation" restart = true
   }
@@ -1008,8 +1034,6 @@ mSettings = {
   mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
   }
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
-  }
-  softFx = { widgetType = "checkbox" def = true blk = "render/softFx" restart = false
   }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, 4096) == 8192) }
@@ -1148,9 +1172,9 @@ let function validateInternalConfigs() {
 
   mScriptValid = !errorsList.len()
   if (::is_dev_version)
-    mValidationError = ::g_string.implode(errorsList, "\n")
+    mValidationError = "\n".join(errorsList, true)
   if (!mScriptValid) {
-    let errorString = ::g_string.implode(errorsList, "\n") // warning disable: -declared-never-used
+    let errorString = "\n".join(errorsList, true) // warning disable: -declared-never-used
     ::script_net_assert_once("system_options_not_valid", "not valid system option list")
   }
 }
@@ -1411,7 +1435,7 @@ let function fillGuiOptions(containerObj, handler) {
 
   if (!mScriptValid) {
     let msg = loc("msgbox/internal_error_header") + "\n" + mValidationError
-    let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
+    let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", stripTags(msg))
     guiScene.replaceContentFromText(containerObj.id, data, data.len(), handler)
     return
   }
@@ -1489,8 +1513,8 @@ let function fillGuiOptions(containerObj, handler) {
         let requiresRestart = getTblValue("restart", desc, false)
         let tooltipExtra = desc?.tooltipExtra ?? ""
         let optionName = loc($"options/{id}")
-        let label = ::g_string.stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
-        let tooltip = ::g_string.stripTags("\n".join(
+        let label = stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
+        let tooltip = stripTags("\n".join(
           [ loc($"guiHints/{id}", optionName),
             requiresRestart ? colorize("warningTextColor", loc("guiHints/restart_required")) : "",
             tooltipExtra

@@ -4,6 +4,7 @@
   "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "haveCCRPForTurret": true,
@@ -322,6 +323,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -333,6 +346,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -351,6 +376,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -362,6 +399,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -818,6 +867,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -829,6 +890,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -1564,6 +1637,10 @@
         "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_c_13.blk"
       },
       {
+        "name": "mi_35m_rocket_9M114_default",
+        "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M114_default.blk"
+      },
+      {
         "name": "mi_35m_rocket_9M114",
         "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M114.blk"
       },
@@ -1592,10 +1669,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 3017.0,
-    "maxloadMassLeftConsoles": 800.0,
-    "maxloadMassRightConsoles": 800.0,
-    "maxDisbalance": 480.0,
+    "maxloadMass": 2400.0,
+    "maxloadMassLeftConsoles": 1200.0,
+    "maxloadMassRightConsoles": 1200.0,
+    "maxDisbalance": 500.0,
     "HideNodes": {
       "node": [
         "9m120_tpk_001",
@@ -2127,9 +2204,22 @@
             }
           },
           {
+            "iconType": "atgm_type2_x2",
+            "name": "9m114_x2_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/9m114_x2_default_helicopter.blk",
+              "emitter": "9m120_tpk_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "atgm_type1_x4",
             "name": "9m114_x4_right",
             "reqModification": "mi_35_9M114_4",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m114_x4.blk",
@@ -2142,6 +2232,7 @@
             "iconType": "atgm_type1_x8",
             "name": "9m114_x8",
             "reqModification": "mi_35_9M114_8",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m114_x8.blk",
@@ -2154,6 +2245,7 @@
             "iconType": "atgm_type1_x4_late",
             "name": "9m120_x4_right",
             "reqModification": "mi_35_9M120_4",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120m_x4_right_ataka.blk",
@@ -2166,6 +2258,7 @@
             "iconType": "atgm_type1_x8_late",
             "name": "9m120_x8",
             "reqModification": "mi_35_9M120_8",
+            "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120m_x8_ataka.blk",
@@ -3384,7 +3477,7 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
-            "resolution": [1024,768],
+            "resolution": [1920,1080],
             "noiseFactor": 0.05
           }
         }

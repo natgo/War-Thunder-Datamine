@@ -1,6 +1,4 @@
 //checked for plus_string
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 //let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -154,4 +152,11 @@ return [
     id = "ID_SUPPORT_PLANE_ORBITING_HUMAN"
     checkAssign = false
   }
+  //
+
+
+
+
+
+
 ]

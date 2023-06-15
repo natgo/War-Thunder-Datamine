@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "ilsTCSF196": true,
   "isBwOpticSight": true,
@@ -13,7 +14,6 @@
   "jetEnginePowerFullScale": true,
   "viewDistKInSight": 6.0,
   "radarCScope": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "italy_late_para",
   "advancedInstructor": true,
@@ -403,6 +403,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -414,6 +426,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -432,6 +456,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -443,6 +479,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -665,6 +713,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -702,6 +756,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -723,6 +783,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -764,6 +830,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1962,11 +2034,12 @@
     }
   },
   "nightVision": {
-    "sightIr": {
-      "resolution": [1024,768],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
+    "sightTPodIr": {
+      "midColor": [1.05,1.0,1.0],
+      "brightColor": [1.0,1.0,1.0],
+      "resolution": [900,500],
+      "noiseFactor": 0.001,
+      "lightMult": 8.0
     }
   },
   "commonWeapons": {
@@ -1992,6 +2065,14 @@
       {
         "name": "jaguar_a_bomb_fr_400_samp_type_21",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_fr_400_samp_type_21.blk"
+      },
+      {
+        "name": "jaguar_a_bomb_fr_250_samp_type_25_200",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_fr_250_samp_type_25_200.blk"
+      },
+      {
+        "name": "jaguar_a_bomb_fr_400_samp_type_21_200",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_fr_400_samp_type_21_200.blk"
       },
       {
         "name": "jaguar_a_bomb_fr_bgl400",
@@ -2239,6 +2320,38 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "fr_250_samp_type_25_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "250kg_type_25_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fr_400_samp_type_21_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21_200.blk",
+              "emitter": "400kg_type_21_a_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_middle",
             "name": "matra_lr_f4",
             "reqModification": "fr_jl_100r",
@@ -2326,6 +2439,36 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/auf_1_tri_fr_400_samp_type_21_x2.blk",
+              "emitter": "au_f1_1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "fr_250_samp_type_25_x3_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_250_samp_type_25_x3_200.blk",
+              "emitter": "au_f1_1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "fr_400_samp_type_21_x2_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_400_samp_type_21_x2_200.blk",
               "emitter": "au_f1_1",
               "external": true,
               "machLimit": 1.01
@@ -2486,6 +2629,36 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "fr_250_samp_type_25_x3_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_250_samp_type_25_x3_200.blk",
+              "emitter": "au_f1_2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "fr_400_samp_type_21_x2_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_400_samp_type_21_x2_200.blk",
+              "emitter": "au_f1_2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "optic_container",
             "name": "atlis2",
             "reqModification": "fr_atlis2",
@@ -2500,7 +2673,8 @@
               "trigger": "targetingPod",
               "blk": "gameData/Weapons/equipment/uk_atlis2_targeting_pod.blk",
               "emitter": "au_f1_2",
-              "bullets": 1
+              "bullets": 1,
+              "dragCx": 0.025
             }
           }
         ]
@@ -2535,6 +2709,36 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/auf_1_tri_fr_400_samp_type_21_x2.blk",
+              "emitter": "au_f1_3",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "fr_250_samp_type_25_x3_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_250_samp_type_25_x3_200.blk",
+              "emitter": "au_f1_3",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "fr_400_samp_type_21_x2_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_fr_400_samp_type_21_x2_200.blk",
               "emitter": "au_f1_3",
               "external": true,
               "machLimit": 1.01
@@ -2710,6 +2914,38 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "emitter": "400kg_type_21_a_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "fr_250_samp_type_25_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "250kg_type_25_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fr_400_samp_type_21_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21_200.blk",
               "emitter": "400kg_type_21_a_005",
               "bullets": 1
             }

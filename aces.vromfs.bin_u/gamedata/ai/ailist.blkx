@@ -1800,7 +1800,15 @@
                 "isTargetType": {
                   "type": "bomber"
                 },
-                "fighterAttackBomber": {}
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": {
+                    "isFighterSpecialAttackBomber": {},
+                    "fighterAttackBomber": {}
+                  },
+                  "fighterAttackFighter": {}
+                }
               }
             ],
             "selector": {
@@ -2217,7 +2225,15 @@
                 "isTargetType": {
                   "type": "bomber"
                 },
-                "fighterAttackBomber": {}
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": {
+                    "isFighterSpecialAttackBomber": {},
+                    "fighterAttackBomber": {}
+                  },
+                  "fighterAttackFighter": {}
+                }
               },
               {
                 "isTargetType": {
@@ -2731,7 +2747,8 @@
                 "flyToPos": {
                   "speed": 350.0,
                   "dist": -1.0,
-                  "minAlt": 10.0
+                  "minAlt": 10.0,
+                  "terrainSensitivity": 0.0
                 }
               },
               "waypointFollow": {}
@@ -3277,7 +3294,8 @@
             "speed": 550.0,
             "dist": -1.0,
             "minAlt": 100.0,
-            "destType": "battleField"
+            "destType": "battleField",
+            "terrainSensitivity": 0.0
           }
         }
       ],
@@ -3422,11 +3440,6 @@
       }
     },
     {
-      "name": "railFlight",
-      "selectStrategy": "ordered",
-      "railFlight": {}
-    },
-    {
       "name": "cutsceneFighterVsFighter",
       "selectStrategy": "ordered",
       "reaction": [
@@ -3492,7 +3505,15 @@
           }
         }
       ],
-      "fighterAttackBomber": {}
+      "selector": {
+        "selectStrategy": "ordered",
+        "selectOnSuccess": true,
+        "sequencer": {
+          "isFighterSpecialAttackBomber": {},
+          "fighterAttackBomber": {}
+        },
+        "fighterAttackFighter": {}
+      }
     },
     {
       "name": "cutsceneDiveBombTarget",
@@ -5073,7 +5094,15 @@
                 "isTargetType": {
                   "type": "bomber"
                 },
-                "fighterAttackBomber": {}
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": {
+                    "isFighterSpecialAttackBomber": {},
+                    "fighterAttackBomber": {}
+                  },
+                  "fighterAttackFighter": {}
+                }
               }
             ]
           }
@@ -5247,7 +5276,8 @@
                     },
                     "bombTarget": {
                       "instantAttack": true,
-                      "fireMode": "salvo"
+                      "fireMode": "salvo",
+                      "carpetBombing": false
                     }
                   }
                 },
@@ -5259,7 +5289,8 @@
                     "selectStrategy": "ordered",
                     "bombTarget": {
                       "instantAttack": true,
-                      "fireMode": "salvo"
+                      "fireMode": "salvo",
+                      "carpetBombing": false
                     },
                     "fighterAttackGround": {
                       "instantAttack": true,

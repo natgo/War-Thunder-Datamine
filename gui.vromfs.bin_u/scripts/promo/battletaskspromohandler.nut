@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
@@ -13,6 +12,8 @@ let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { getDifficultyTypeByTask, getDefaultDifficultyGroup
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
@@ -46,8 +47,8 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = ::load_local_account_settings(this.savePathBattleTasksDiff,
-        ::g_battle_task_difficulty.getDefaultDifficultyGroup())
-      let activeTasks = ::u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
+        getDefaultDifficultyGroup())
+      let activeTasks = u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
         @(task) !::g_battle_tasks.isTaskDone(task)
           && ::g_battle_tasks.isTaskActive(task)
           && (::g_battle_tasks.canGetReward(task) || !::g_battle_tasks.isTaskTimeExpired(task)))
@@ -58,8 +59,8 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
         curDifficultyGroup)
       if (difficultyGroupArray.len() == 1)
         curDifficultyGroup = difficultyGroupArray[0].difficultyGroup
-      reqTask = ::u.search(activeTasks,
-        @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
+      reqTask = u.search(activeTasks,
+        @(task) (getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
     }
 
     let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
@@ -71,7 +72,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
       let itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
       itemView.canReroll = false
-      view = ::u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
+      view = u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
       view.collapsedText <- ::g_promo.getCollapsedText(view, id)
     }
     else {
@@ -116,7 +117,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
         view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
     }
 
-    let data = ::handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
+    let data = handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
@@ -152,8 +153,8 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     let result = []
     foreach (btDiffType in difficultyTypeArray) {
       let difficultyGroup = btDiffType.getDifficultyGroup()
-      let tasksByDiff = ::u.search(tasksArray,
-          @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task) == btDiffType))
+      let tasksByDiff = u.search(tasksArray,
+          @(task) (getDifficultyTypeByTask(task) == btDiffType))
 
       if (!tasksByDiff)
         continue

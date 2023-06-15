@@ -1,13 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
-#explicit-this
-#no-root-fallback
 
 let LoginProcess = require("loginProcess.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 global enum LOGIN_STATE { //bit mask
   AUTHORIZED               = 0x0001 //succesfully connected to auth
@@ -39,7 +38,7 @@ global enum LOGIN_STATE { //bit mask
   function onProfileReceived() {
     this.addState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED)
 
-    ::broadcastEvent("ProfileReceived")
+    broadcastEvent("ProfileReceived")
   }
 
   function bigQueryOnLogin() {
@@ -51,8 +50,8 @@ global enum LOGIN_STATE { //bit mask
 }
 
 ::g_login.init <- function init() {
-  ::g_script_reloader.registerPersistentDataFromRoot("g_login")
-  ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
+  registerPersistentDataFromRoot("g_login")
+  subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
 }
 
 ::g_login.isAuthorized <- function isAuthorized() {
@@ -103,7 +102,7 @@ global enum LOGIN_STATE { //bit mask
     "auth" : this.isAuthorized(),
     "login" : this.isLoggedIn()
   })
-  ::broadcastEvent("LoginStateChanged")
+  broadcastEvent("LoginStateChanged")
 }
 
 ::g_login.addState <- function addState(statePart) {

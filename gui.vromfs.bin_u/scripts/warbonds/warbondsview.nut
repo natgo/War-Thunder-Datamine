@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let stdMath = require("%sqstd/math.nut")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
 let { warbondsShopLevelByStages } = require("%scripts/battlePass/seasonState.nut")
@@ -54,7 +53,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
       tooltip = loc("warbonds/canBuySpecialTasks/tooltip")
     }
 
-    return ::handyman.renderCached("%gui/items/warbondSpecialMedal.tpl", view)
+    return handyman.renderCached("%gui/items/warbondSpecialMedal.tpl", view)
   }
 
   getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.value.findindex(
@@ -96,7 +95,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 }
 
 ::g_warbonds_view.getProgressBoxMarkUp <- function getProgressBoxMarkUp() {
-  return ::handyman.renderCached("%gui/commonParts/progressBarModern.tpl", {
+  return handyman.renderCached("%gui/commonParts/progressBarModern.tpl", {
     id = this.progressBarId
     addId = this.progressBarAddId
     additionalProgress = true
@@ -108,7 +107,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   foreach (level, _reqTasks in wbClass.levelsArray)
     view.level.append(this.getLevelItemData(wbClass, level))
 
-  return ::handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", view)
+  return handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", view)
 }
 
 ::g_warbonds_view.getCurrentLevelItemMarkUp <- function getCurrentLevelItemMarkUp(wbClass, forcePosX = "0") {
@@ -121,7 +120,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 
 ::g_warbonds_view.getLevelItemMarkUp <- function getLevelItemMarkUp(wbClass, level, forcePosX = null, params = {}) {
   let levelData = this.getLevelItemData(wbClass, level, forcePosX, params)
-  return ::handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", { level = [levelData] })
+  return handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", { level = [levelData] })
 }
 
 ::g_warbonds_view.getLevelItemData <- function getLevelItemData(wbClass, level, forcePosX = null, params = {}) {
@@ -232,7 +231,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   if (needShowInProgress && wbClass.needShowSpecialTasksProgress)
     view.medal.append(this.getSpecialMedalInProgressView(wbClass))
 
-  return ::handyman.renderCached("%gui/items/warbondSpecialMedal.tpl", view)
+  return handyman.renderCached("%gui/items/warbondSpecialMedal.tpl", view)
 }
 
 ::g_warbonds_view.getWarbondMedalsCount <- function getWarbondMedalsCount(wbClass) {
@@ -247,4 +246,4 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return wbClass && wbClass.haveAnySpecialRequirements()
 }
 
-::subscribe_handler(::g_warbonds_view, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_warbonds_view, ::g_listener_priority.DEFAULT_HANDLER)

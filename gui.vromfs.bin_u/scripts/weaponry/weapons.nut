@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -52,7 +54,7 @@ let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
 let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-
+let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -75,7 +77,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   let db = DataBlock()
   db[unitName] <- DataBlock()
 
-  let air = ::getAircraftByName(unitName)
+  let air = getAircraftByName(unitName)
   foreach (mod in air.modifications)
     db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
 
@@ -158,7 +160,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         ::getRpPriceText(loc("mainmenu/spendExcessExp") + " ", true))
 
     this.airName = ::aircraft_for_weapons
-    this.air = ::getAircraftByName(this.airName)
+    this.air = getAircraftByName(this.airName)
     this.initMainParams()
 
     this.initSlotbar()
@@ -270,12 +272,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       let modForResearch = findAnyNotResearchedMod(this.air)
       if (modForResearch) {
         this.setModificatonOnResearch(modForResearch,
-          (@(modForResearch) function() {
+          function() {
             this.updateAllItems()
             let guiPosIdx = getTblValue("guiPosIdx", modForResearch, -1)
             assert(guiPosIdx >= 0, "missing guiPosIdx, mod - " + getTblValue("name", modForResearch, "none") + "; unit - " + this.air.name)
             this.selectResearchModule(guiPosIdx >= 0 ? guiPosIdx : 0)
-          })(modForResearch))
+          })
       }
     }
   }
@@ -356,7 +358,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = (@(newIdx) function() { this.setModificatonOnResearch(this.items[newIdx], function() { this.updateAllItems() }) })(newIdx)
+        cb = @() this.setModificatonOnResearch(this.items[newIdx], @() this.updateAllItems())
       },
       {
         obj = ["available_free_exp_text"]
@@ -368,7 +370,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     ]
 
     let finItem = this.items[finIdx]
-    let balance = ::Cost()
+    let balance = Cost()
     balance.setFromTbl(::get_balance())
     if (getItemAmount(this.air, finItem) < 1 && getItemCost(this.air, finItem) <= balance) {
       let finModName = getModificationName(this.air, this.items[finIdx].name, true)
@@ -379,7 +381,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
           shortcut = ::GAMEPAD_ENTER_SHORTCUT
-          cb =  (@(finItem) function () { this.checkAndBuyWeaponry(finItem) })(finItem)
+          cb = @() this.checkAndBuyWeaponry(finItem)
         })
     }
 
@@ -726,7 +728,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       view.rows.append(row)
     }
 
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryBg.tpl", view)
+    let data = handyman.renderCached("%gui/weaponry/weaponryBg.tpl", view)
     if (data != "")
       this.guiScene.appendWithBlk(obj, data, this)
   }
@@ -871,7 +873,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (!("modifications" in unit))
       return []
 
-    return ::u.filter(unit.modifications, isModClassExpendable)
+    return u.filter(unit.modifications, isModClassExpendable)
   }
 
   function fillWeaponsAndBullets() {
@@ -1166,6 +1168,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         return
 
       this.guiScene.playSound("check")
+
+      if (needReqModInstall(this.air, item)) {
+        promptReqModInstall(this.air, item)
+        return
+      }
+
       setLastWeapon(this.airName, item.name)
       this.updateItemBundle(item)
       ::check_secondary_weapon_mods_recount(this.air)
@@ -1246,27 +1254,24 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          this.msgBox("unit_modul_research_fail", loc("weaponry/module_set_research_failed"),
-            [["ok", (@(executeAfterDoneFunc) function() { executeAfterDoneFunc() })(executeAfterDoneFunc)]], "ok")
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = @(_res) this.msgBox("unit_modul_research_fail",
+        loc("weaponry/module_set_research_failed"),
+        [["ok", @() executeAfterDoneFunc() ]], "ok")
     }
     else
       executeAfterDoneFunc()
   }
 
   function flushItemExp(modName, afterDoneFunc = null) {
-    this.checkSaveBulletsAndDo((@(modName, afterDoneFunc) function() {
-      this._flushItemExp(modName, afterDoneFunc)
-    })(modName, afterDoneFunc))
+    this.checkSaveBulletsAndDo(@() this._flushItemExp(modName, afterDoneFunc))
   }
 
   function _flushItemExp(modName, afterDoneFunc = null) {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc = function() {
         this.setResearchManually = true
         if (afterDoneFunc)
           afterDoneFunc()
-      })(afterDoneFunc)
+      }
 
     if (this.availableFlushExp <= 0) {
       executeAfterDoneFunc()
@@ -1278,9 +1283,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          executeAfterDoneFunc()
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = function(_res) {
+        executeAfterDoneFunc()
+      }
     }
     else
       executeAfterDoneFunc()
@@ -1340,9 +1345,8 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function onBuyAll(forceOpen = true, silent = false) {
-    this.checkSaveBulletsAndDo(Callback((@(air, forceOpen, silent) function() {
-      weaponsPurchase(air, { open = forceOpen, silent = silent })
-    })(this.air, forceOpen, silent), this))
+    let unit = this.air
+    this.checkSaveBulletsAndDo(@() weaponsPurchase(unit, { open = forceOpen, silent = silent }))
   }
 
   function setLastBullets(item, groupIdx) {
@@ -1387,14 +1391,15 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
     this.guiScene.playSound(!equipped ? "check" : "uncheck")
 
-    this.checkSaveBulletsAndDo((@(item, equipped) function() { this.doSwitchMod(item, equipped) })(item, equipped))
+    this.checkSaveBulletsAndDo(@() this.doSwitchMod(item, equipped))
   }
 
   function doSwitchMod(item, equipped) {
-    let taskSuccessCallback = (@(air, item) function() {
-      ::updateAirAfterSwitchMod(air, item.name)
-      ::broadcastEvent("ModificationChanged")
-    }) (this.air, item)
+    let unit = this.air
+    let taskSuccessCallback = function() {
+      ::updateAirAfterSwitchMod(unit, item.name)
+      broadcastEvent("ModificationChanged")
+    }
 
     let taskId = ::enable_modifications(this.airName, [item.name], !equipped)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
@@ -1430,7 +1435,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (needSave) {
       this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
-        let cb = ::u.isFunction(func) ? Callback(func, this) : func
+        let cb = u.isFunction(func) ? Callback(func, this) : func
         ::g_tasker.addTask(this.taskId, { showProgressBox = true }, cb)
       }
     }

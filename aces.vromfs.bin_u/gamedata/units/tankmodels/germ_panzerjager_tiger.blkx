@@ -921,6 +921,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1045,6 +1046,9 @@
         "gun_barrel_02",
         "mg_h_01"
       ]
+    },
+    "animatedBones": {
+      "node": "bone_optic_gun"
     }
   },
   "weapon_presets": {
@@ -1331,6 +1335,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -2491,6 +2496,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2543,6 +2555,7 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2710,6 +2723,9 @@
               "gun_barrel_02",
               "mg_h_01"
             ]
+          },
+          "animatedBones": {
+            "node": "bone_optic_gun"
           }
         }
       }

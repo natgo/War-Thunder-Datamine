@@ -6,6 +6,7 @@
   "gameId": "wt",
   "dasMain": "%appGame/main.das",
   "game_das_script_init": "%appGame/wt_init.das",
+  "game_das_loading_threads": 1,
   "__allowedConfigOverrides": {
     "graphicsQuality": "",
     "renderer": "",
@@ -45,7 +46,6 @@
       "waterReflection": false,
       "fxReflection": false,
       "softFx": false,
-      "grass": false,
       "grassInTankVision": false,
       "ssao": false,
       "ssaoQuality": 0,
@@ -100,7 +100,8 @@
       "riGpuObjects": true,
       "fxTarget": "auto",
       "enableBlastEffect": true,
-      "shatterFxQuality": 0
+      "shatterFxQuality": 0,
+      "proximityDamage": true
     },
     "sound": {
       "speakerMode": "",
@@ -352,8 +353,12 @@
       "GeForce GTX 64$",
       "GeForce GTX 65$",
       "GeForce GTX 745",
+      "GeForce GTX 760M",
       "GeForce GTX 765M",
+      "GeForce GTX 770M",
       "GeForce GTX 850M",
+      "GeForce GTX 860M",
+      "GeForce GTX 870M",
       "GeForce GTX 950",
       "GeForce MX1$",
       "GeForce MX2$",
@@ -892,11 +897,11 @@
     "stubServerOnlineName": "Server",
     "stubServerOnlineId": 1,
     "psnAuthRequestTimeout": 30,
-    "publicConfigsUrl": "http://public-configs.warthunder.com/",
+    "publicConfigsUrl": "https://public-configs.warthunder.com/",
     "publicConfigsUrls": {
       "url": [
-        "http://public-configs.warthunder.com/",
-        "http://public-configs-warthunder-gcore.cdn.gaijin.net/"
+        "https://public-configs.warthunder.com/",
+        "https://public-configs-warthunder-gcore.cdn.gaijin.net/"
       ]
     }
   },

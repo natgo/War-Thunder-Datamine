@@ -1509,7 +1509,7 @@
       },
       {
         "name": "pe-2-1",
-        "weap": "pe_2_2xfab500",
+        "weap": "pe_2_1_2xfab500",
         "rankRange": [7,10]
       },
       {
@@ -1871,12 +1871,12 @@
       },
       {
         "name": "il_2_1941",
-        "weap": "IL2I_rs132",
+        "weap": "il_2_1941_2xfab250",
         "rankRange": [7,10]
       },
       {
         "name": "il_2m_1943",
-        "weap": "IL2I_fab100",
+        "weap": "il_2m_1943_fab100",
         "rankRange": [7,10]
       },
       {
@@ -1971,7 +1971,7 @@
       },
       {
         "name": "su-6_am42",
-        "weap": "su_6_m71_rbs132",
+        "weap": "su_6_am42_rbs132",
         "rankRange": [11,14]
       },
       {
@@ -1991,7 +1991,7 @@
       },
       {
         "name": "hornet_mk3",
-        "weap": "hornet_2x1000lbs_mc_4x60lbs_mk1_rockets",
+        "weap": "hornet_2x1000lbs_mc_bombs",
         "rankRange": [15,18]
       },
       {
@@ -2071,7 +2071,7 @@
       },
       {
         "name": "md_450b_barougan",
-        "weap": "md_450_rockets_151",
+        "weap": "md_450b_barougan_t10_151",
         "rankRange": [19,22]
       },
       {
@@ -2877,7 +2877,7 @@
       },
       {
         "name": "a_109_eoa2",
-        "weap": "a_109_eoa2_fn_m3p_4xTOW",
+        "weap": "a_109_eoa2_4xTOW",
         "rankRange": [0,24]
       },
       {
@@ -3572,6 +3572,13 @@
       "PD HDN BST",
       "PD HDN VSL",
       "PD HDN track",
+      "GTM standby",
+      "GTM search",
+      "GTM acquisition",
+      "GTM ACM",
+      "GTM BST",
+      "GTM VSL",
+      "GTM track",
       "LD standby",
       "LD search",
       "LD acquisition",
@@ -3596,6 +3603,13 @@
       "TWS HDN BST",
       "TWS HDN VSL",
       "TWS HDN track",
+      "TWS GTM standby",
+      "TWS GTM search",
+      "TWS GTM acquisition",
+      "TWS GTM ACM",
+      "TWS GTM BST",
+      "TWS GTM VSL",
+      "TWS GTM track",
       "IRST standby",
       "IRST search",
       "IRST acquisition",
@@ -3629,6 +3643,7 @@
     "useRadarScanZoneForDetectionRange": false,
     "dontUsePredictionVolumesForSensors": true,
     "radarVisualDesignationForAI": true,
+    "hasPointOfInterestMemory": true,
     "activeSonarReflectionMult": 40000000000.0,
     "sensorsDetectDeadUnits": true,
     "sensorsSeparateServerSideDetection": true,
@@ -3695,6 +3710,24 @@
       "backScattering5": [90.0,-5.0],
       "treesNonTransparencyMult": 0.25
     }
+  },
+  "seeker": {
+    "aimFromCamera": true
+  },
+  "radarCommon": {
+    "directionWithinMainLobe": true,
+    "angleFinderZoneToMainBeamWidth": 2.0,
+    "chaffLineOfSight": false,
+    "chaffAttenuationPower": 0.35
+  },
+  "tws": {
+    "showReceierSector": true
+  },
+  "accelControl": {
+    "useVelocityFrameRefMatrix": true
+  },
+  "planePhysSignature": {
+    "useSnapshotEngineRpm": true
   },
   "fmConstants": {
     "oilLeakSpeed": 0.0024,

@@ -6,6 +6,8 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "gyroSight": true,
+  "hasPointOfInterestMemory": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -614,6 +616,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -625,6 +639,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -838,7 +864,7 @@
   "gunnerOpticFps": {
     "pos": [-0.2,0.5,-0.6],
     "head": "optic1_turret",
-    "angularLimits": [-115.0,90.0,-50.0,25.0],
+    "angularLimits": [-115.0,115.0,-50.0,25.0],
     "crosshairPreset": "test_crosshair"
   },
   "commonWeapons": {
@@ -940,7 +966,7 @@
                 "mainTurret": true
               },
               "limits": {
-                "yaw": [-115.0,90.0],
+                "yaw": [-115.0,115.0],
                 "pitch": [-50.0,25.0]
               }
             }
@@ -980,7 +1006,7 @@
                   "mainTurret": true
                 },
                 "limits": {
-                  "yaw": [-115.0,90.0],
+                  "yaw": [-115.0,115.0],
                   "pitch": [-50.0,25.0]
                 }
               },
@@ -1120,6 +1146,7 @@
             "iconType": "atgm_type1_x3_left",
             "name": "agm22_left",
             "reqModification": "ah_AGM_22",
+            "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": "us_xm22_1"
             },
@@ -1216,6 +1243,7 @@
             "iconType": "atgm_type1_x3_right",
             "name": "agm22_right",
             "reqModification": "ah_AGM_22",
+            "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": "us_xm22_2"
             },

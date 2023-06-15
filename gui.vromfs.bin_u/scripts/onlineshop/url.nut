@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let { split_by_chars } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shell_launch, get_authenticated_url_sso } = require("url")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 
 const URL_TAGS_DELIMITER = " "
@@ -104,7 +103,7 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
   if (!forceExternal && ::use_embedded_browser() && !::steam_is_running() && hasFeat) {
     // Embedded browser
     ::open_browser_modal(url, urlConfig.urlTags, baseUrl)
-    ::broadcastEvent("BrowserOpened", { url = url, external = false })
+    broadcastEvent("BrowserOpened", { url = url, external = false })
     return
   }
 
@@ -117,7 +116,7 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
       ::showInfoMsgBox(errorText, "errorMessageBox")
       log("shell_launch() have returned " + response + " for URL:" + url)
     }
-    ::broadcastEvent("BrowserOpened", { url = url, external = true })
+    broadcastEvent("BrowserOpened", { url = url, external = true })
   })
 }
 
@@ -133,14 +132,14 @@ let function validateLink(link) {
   if (link == null)
     return null
 
-  if (!::u.isString(link)) {
+  if (!u.isString(link)) {
     log("CHECK LINK result: " + toString(link))
     assert(false, "CHECK LINK: Link recieved not as text")
     return null
   }
 
   link = clearBorderSymbols(link, [URL_TAGS_DELIMITER])
-  local linkStartIdx = ::g_string.lastIndexOf(link, URL_TAGS_DELIMITER)
+  local linkStartIdx = lastIndexOf(link, URL_TAGS_DELIMITER)
   if (linkStartIdx < 0)
     linkStartIdx = 0
 
@@ -163,7 +162,7 @@ let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = fa
     return
 
   let bigQueryInfoObject = { url = baseUrl }
-  if (! ::u.isEmpty(biqQueryKey))
+  if (! u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey
 
   ::add_big_query_record(forceExternal ? "player_opens_external_browser" : "player_opens_browser"

@@ -6,6 +6,8 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "gyroSight": true,
+  "hasPointOfInterestMemory": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -625,6 +627,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -636,6 +650,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -980,7 +1006,7 @@
                 "mainTurret": true
               },
               "limits": {
-                "yaw": [-115.0,90.0],
+                "yaw": [-115.0,115.0],
                 "pitch": [-50.0,25.0]
               }
             }
@@ -1020,7 +1046,7 @@
                   "mainTurret": true
                 },
                 "limits": {
-                  "yaw": [-115.0,90.0],
+                  "yaw": [-115.0,115.0],
                   "pitch": [-50.0,25.0]
                 }
               },
@@ -1158,6 +1184,7 @@
             "iconType": "atgm_type_tow_x3",
             "name": "bgm71",
             "reqModification": "ah_1_TOW",
+            "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
                 "pylon3",
@@ -1291,6 +1318,7 @@
             "iconType": "atgm_type_tow_x3",
             "name": "bgm71",
             "reqModification": "ah_1_TOW",
+            "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
                 "pylon4",

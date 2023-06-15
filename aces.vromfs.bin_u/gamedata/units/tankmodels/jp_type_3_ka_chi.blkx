@@ -36,6 +36,7 @@
   "waterBreakerAnimVar": "screw_rotate:CRS",
   "waterBreakerToggleTime": 2.0,
   "type": "typeMediumTank",
+  "steeringAnimVar": "steering_param",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1067,6 +1068,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -2566,6 +2568,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2892,7 +2901,9 @@
             "ex_decor_01",
             "ex_decor_02",
             "ex_decor_04",
-            "hatch_10"
+            "hatch_10",
+            "rudder_01",
+            "rudder_02"
           ]
         }
       }

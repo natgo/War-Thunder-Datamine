@@ -4,11 +4,13 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 6.0,
   "haveCCIPForRocket": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hasPointOfInterestMemory": false,
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
   "tpsCameraTargetOffsetAtZoom": [5.0,0.0,0.0],
@@ -141,6 +143,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -152,6 +166,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -566,6 +592,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -577,6 +615,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -723,8 +773,8 @@
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.01,
-    "sightInFov": 0.5846,
-    "sightOutFov": 24.74,
+    "sightInFov": 3.87,
+    "sightOutFov": 7.37,
     "headPos": [0.79,0.55,-0.3],
     "headPosOnShooting": [0.79,0.55,-0.3],
     "lightPos": [1.35,0.2,0.0],
@@ -1114,7 +1164,7 @@
   "gunnerOpticFps": {
     "pos": [0.3,0.0,0.0],
     "head": "optic1_turret",
-    "angularLimits": [-115.0,115.0,-50.0,25.0],
+    "angularLimits": [-180.0,180.0,-90.0,90.0],
     "crosshairPreset": "test_crosshair"
   },
   "sensors": {
@@ -1236,8 +1286,8 @@
               "mainTurret": true
             },
             "limits": {
-              "yaw": [-115.0,115.0],
-              "pitch": [-50.0,25.0]
+              "yaw": [-180.0,180.0],
+              "pitch": [-90.0,90.0]
             }
           }
         }
@@ -1343,10 +1393,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            },
-            "BannedWeaponPreset": {
-              "slot": 2,
-              "preset": "ah_6m_m134d_left"
             }
           },
           {
@@ -1564,10 +1610,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            },
-            "BannedWeaponPreset": {
-              "slot": 3,
-              "preset": "ah_6m_m134d_right"
             }
           },
           {

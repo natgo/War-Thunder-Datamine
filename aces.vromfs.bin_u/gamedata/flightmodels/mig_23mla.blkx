@@ -6,10 +6,10 @@
   "gearSinkRangeC": 0.333,
   "jetEnginePowerFullScale": true,
   "haveCCIPForRocket": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "ilsASP23": true,
   "hasMissileCommandLine": false,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -219,6 +219,11 @@
       "tank5_dm": {
         "hp": 109.2
       }
+    },
+    "steel_tank_s": {
+      "tank6_dm": {
+        "hp": 80.5
+      }
     }
   },
   "DamageEffects": {
@@ -357,6 +362,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -368,6 +385,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -508,6 +537,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -545,6 +580,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -566,6 +607,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -607,6 +654,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1003,6 +1056,48 @@
             "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
           }
         ]
       },
@@ -1785,6 +1880,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_23mla_default.blk"
       },
       {
+        "name": "mig_23mla_ltc",
+        "blk": "gameData/FlightModels/weaponPresets/mig_23mla_ltc.blk"
+      },
+      {
         "name": "mig_23mla_default_r13m",
         "blk": "gameData/FlightModels/weaponPresets/mig_23mla_default_r13m.blk"
       },
@@ -1913,7 +2012,8 @@
         "pylon_fueltank",
         "su_infrared_flare_pkvp_23",
         "su_infrared_flare_bp_50_60",
-        "pylon_6"
+        "pylon_6",
+        "su_800l_mig_23_27_drop_tank_central_pylon"
       ]
     },
     "HideDmParts": {
@@ -1923,7 +2023,8 @@
         "cover5_dm",
         "cannon2_dm",
         "cover6_dm",
-        "cannon3_dm"
+        "cannon3_dm",
+        "tank6_dm"
       ]
     },
     "WeaponSlot": [
@@ -1983,15 +2084,6 @@
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 12,
                 "external": true,
                 "separate": true
               }
@@ -2355,7 +2447,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "ofab100_120",
+            "name": "ofab100_120_slot2",
             "reqModification": "su_17_ofab_100",
             "ShowNodes": {
               "node": "pylon_1"
@@ -2366,6 +2458,10 @@
               "emitter": "mbd2_67u_1",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb"
             }
           },
           {
@@ -2430,6 +2526,59 @@
       },
       {
         "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "su_800l_mig_23_27_drop_tank_central_pylon"
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_mig_23ml_silver_fuse.blk",
+              "emitter": "su_800l_mig_23_27_drop_tank_central",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "ofab100_120_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "ofab100_120_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": "su_infrared_flare_pkvp_23"
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 12,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
         "tier": 5,
         "order": 4,
         "notUseforDisbalanceCalculation": true,
@@ -2471,7 +2620,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "ofab100_120",
+            "name": "ofab100_120_slot4",
             "reqModification": "su_17_ofab_100",
             "ShowNodes": {
               "node": "pylon_2"
@@ -2482,6 +2631,10 @@
               "emitter": "mbd2_67u_2",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb"
             }
           },
           {
@@ -2562,7 +2715,7 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 4,
         "order": 2,
         "WeaponPreset": [

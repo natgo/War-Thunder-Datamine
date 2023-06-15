@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": {}
   },
@@ -35,7 +35,7 @@
   "units": {
     "structures": [
       {
-        "name": "armada_01",
+        "name": "bridge_01",
         "tm": [
           [0.777773,0.0,0.926914],
           [0.0,1.21,0.0],
@@ -45,6 +45,8 @@
         "unit_class": "bridge_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -54,6 +56,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -69,7 +73,7 @@
         "way": {}
       },
       {
-        "name": "armada_02",
+        "name": "bridge_02",
         "tm": [
           [0.0,0.0,1.21],
           [0.0,1.21,0.0],
@@ -79,6 +83,8 @@
         "unit_class": "bridge_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -88,6 +94,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -103,7 +111,7 @@
         "way": {}
       },
       {
-        "name": "armada_03",
+        "name": "bridge_03",
         "tm": [
           [-1.41738,0.0,0.992459],
           [0.0,1.7303,0.0],
@@ -113,6 +121,8 @@
         "unit_class": "beton_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -122,6 +132,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -137,7 +149,7 @@
         "way": {}
       },
       {
-        "name": "armada_04",
+        "name": "bridge_04",
         "tm": [
           [0.780159,0.0,1.2246],
           [0.0,1.452,0.0],
@@ -147,6 +159,8 @@
         "unit_class": "bridge_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -156,6 +170,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -171,7 +187,7 @@
         "way": {}
       },
       {
-        "name": "armada_05",
+        "name": "bridge_05",
         "tm": [
           [-0.23232,0.0,0.40239],
           [0.0,0.46464,0.0],
@@ -181,6 +197,8 @@
         "unit_class": "bridge_stone_bu",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -190,6 +208,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -205,7 +225,7 @@
         "way": {}
       },
       {
-        "name": "armada_06",
+        "name": "bridge_06",
         "tm": [
           [-0.650132,0.0,1.0205],
           [0.0,1.21,0.0],
@@ -215,6 +235,8 @@
         "unit_class": "bridge_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -224,15 +246,19 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
-          "army": 2,
+          "army": 0,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       },
@@ -247,6 +273,8 @@
         "unit_class": "wood_simple_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -256,6 +284,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -281,6 +311,8 @@
         "unit_class": "wood_simple_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -290,6 +322,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -315,6 +349,8 @@
         "unit_class": "wood_simple_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -324,6 +360,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -339,7 +377,7 @@
         "way": {}
       },
       {
-        "name": "armada_07",
+        "name": "bridge_07",
         "tm": [
           [-1.12933,0.0,1.34588],
           [0.0,1.75692,0.0],
@@ -349,6 +387,8 @@
         "unit_class": "beton_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -358,6 +398,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -373,7 +415,7 @@
         "way": {}
       },
       {
-        "name": "armada_08",
+        "name": "bridge_08",
         "tm": [
           [0.496613,0.0,1.36443],
           [0.0,1.452,0.0],
@@ -383,6 +425,8 @@
         "unit_class": "bridge_rail_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -392,6 +436,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -407,7 +453,7 @@
         "way": {}
       },
       {
-        "name": "armada_09",
+        "name": "bridge_09",
         "tm": [
           [0.436625,0.0,1.3848],
           [0.0,1.452,0.0],
@@ -417,6 +463,8 @@
         "unit_class": "bridge_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -426,6 +474,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -441,7 +491,7 @@
         "way": {}
       },
       {
-        "name": "armada_10",
+        "name": "bridge_10",
         "tm": [
           [-4.47035e-08,0.0,2.1083],
           [0.0,2.1083,0.0],
@@ -451,6 +501,8 @@
         "unit_class": "beton_road_br",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -460,15 +512,19 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
-          "army": 2,
+          "army": 0,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       }

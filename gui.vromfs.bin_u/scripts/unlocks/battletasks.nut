@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
+
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -23,11 +25,15 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { updateTimeParamsFromBlk, getDifficultyTypeByName, getDifficultyTypeByTask,
+  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
+  EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 let difficultyTypes = [
-  ::g_battle_task_difficulty.EASY,
-  ::g_battle_task_difficulty.MEDIUM,
-  ::g_battle_task_difficulty.HARD
+  EASY_TASK,
+  MEDIUM_TASK,
+  HARD_TASK
 ]
 
 ::g_battle_tasks <- null
@@ -74,7 +80,7 @@ let difficultyTypes = [
     this.lastGenerationId = 0
     this.specTasksLastGenerationId = 0
 
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   function reset() {
@@ -91,7 +97,7 @@ let difficultyTypes = [
   }
 
   isAvailableForUser = @() hasFeature("BattleTasks")
-    && !::u.isEmpty(this.getTasksArray())
+    && !u.isEmpty(this.getTasksArray())
     && isMultiplayerPrivilegeAvailable.value
 
   function updateTasksData() {
@@ -115,7 +121,7 @@ let difficultyTypes = [
     if (::isInMenu())
       this.checkNewSpecialTasks()
     this.updateCompleteTaskWatched()
-    ::broadcastEvent("BattleTasksFinishedUpdate")
+    broadcastEvent("BattleTasksFinishedUpdate")
   }
 
   function onEventBattleTasksShowAll(params) {
@@ -128,7 +134,7 @@ let difficultyTypes = [
 
   function updatedProposedTasks() {
     let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
-    ::g_battle_task_difficulty.updateTimeParamsFromBlk(tasksDataBlock)
+    updateTimeParamsFromBlk(tasksDataBlock)
     this.lastGenerationId = tasksDataBlock?[this.dailyTasksId + "_lastGenerationId"] ?? 0
     this.specTasksLastGenerationId = tasksDataBlock?[this.specialTasksId + "_lastGenerationId"] ?? 0
 
@@ -174,7 +180,7 @@ let difficultyTypes = [
   }
 
   function updateRerollCost(tasksDataBlock) {
-    this.rerollCost = ::Cost(getTblValue("_rerollCost", tasksDataBlock, 0),
+    this.rerollCost = Cost(getTblValue("_rerollCost", tasksDataBlock, 0),
                         getTblValue("_rerollGoldCost", tasksDataBlock, 0))
   }
 
@@ -183,11 +189,11 @@ let difficultyTypes = [
   }
 
   function isTaskTimeExpired(task) {
-    return ::g_battle_task_difficulty.getDifficultyTypeByTask(task).isTimeExpired(task)
+    return getDifficultyTypeByTask(task).isTimeExpired(task)
   }
 
   function isTaskDone(config) {
-    if (::u.isEmpty(config))
+    if (u.isEmpty(config))
       return false
 
     if (this.isBattleTask(config)) {
@@ -267,7 +273,7 @@ let difficultyTypes = [
       delete this.seenTasks[generation_id]
 
     if (sendEvent)
-      ::broadcastEvent("NewBattleTasksChanged")
+      broadcastEvent("NewBattleTasksChanged")
     return true
   }
 
@@ -280,7 +286,7 @@ let difficultyTypes = [
     }
 
     if (changeNew)
-      ::broadcastEvent("NewBattleTasksChanged")
+      broadcastEvent("NewBattleTasksChanged")
   }
 
   function getUnseenTasksCount() {
@@ -299,11 +305,11 @@ let difficultyTypes = [
   function getLocalizedTaskNameById(param) {
     local task = null
     local id = null
-    if (::u.isDataBlock(param)) {
+    if (u.isDataBlock(param)) {
       task = param
       id = getTblValue("id", param)
     }
-    else if (::u.isString(param)) {
+    else if (u.isString(param)) {
       task = this.getTaskById(param)
       id = param
     }
@@ -314,7 +320,7 @@ let difficultyTypes = [
   }
 
   function getTaskById(id) {
-    if (::u.isTable(id) || ::u.isDataBlock(id))
+    if (u.isTable(id) || u.isDataBlock(id))
       id = getTblValue("id", id)
 
     if (!id)
@@ -347,11 +353,11 @@ let difficultyTypes = [
   }
 
   function isBattleTask(task) {
-    if (::u.isString(task))
+    if (u.isString(task))
       task = this.getTaskById(task)
 
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    return diff != ::g_battle_task_difficulty.UNKNOWN
+    let diff = getDifficultyTypeByTask(task)
+    return diff != UNKNOWN_TASK
   }
 
   function isUserlogForBattleTasksGroup(body) {
@@ -375,9 +381,9 @@ let difficultyTypes = [
         if (isInArray(diffTypeName, blackList))
           continue
 
-        let diff = ::g_battle_task_difficulty.getDifficultyTypeByName(diffTypeName)
+        let diff = getDifficultyTypeByName(diffTypeName)
         if (!isInArray(diffTypeName, whiteList)
-            && !::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff,
+            && !canPlayerInteractWithDifficulty(diff,
               this.proposedTasksArray, this.showAllTasksValue)) {
           blackList.append(diffTypeName)
           continue
@@ -403,7 +409,7 @@ let difficultyTypes = [
         data += loc("userlog/battletask/type/" + userlogHeader) + loc("ui/colon")
         lastUserLogHeader = userlogHeader
       }
-      data += ::g_string.implode(arr, "\n")
+      data +=  "\n".join(arr, true)
     }
 
     return data
@@ -412,17 +418,17 @@ let difficultyTypes = [
   function getDifficultyByProposals(proposals) {
     if (proposals.findindex(function(_v, id) {
       let battleTask = ::g_battle_tasks.getTaskById(id)
-      return ::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask)
+      return HARD_TASK == getDifficultyTypeByTask(battleTask)
     }))
-      return ::g_battle_task_difficulty.HARD
+      return HARD_TASK
 
-    return ::g_battle_task_difficulty.EASY
+    return EASY_TASK
   }
 
   function generateStringForUserlog(table, taskId) {
     local text = this.getBattleTaskLocIdFromUserlog(table, taskId)
-    let cost = ::Cost(getTblValue("cost", table, 0), getTblValue("costGold", table, 0))
-    if (!::u.isEmpty(cost))
+    let cost = Cost(getTblValue("cost", table, 0), getTblValue("costGold", table, 0))
+    if (!u.isEmpty(cost))
       text += loc("ui/parentheses/space", { text = cost.tostring() })
 
     return text
@@ -453,7 +459,7 @@ let difficultyTypes = [
     if (!taskGenId)
       return 0
 
-    return ::u.isString(taskGenId) ? taskGenId.tointeger() : taskGenId
+    return u.isString(taskGenId) ? taskGenId.tointeger() : taskGenId
   }
 
   function isTaskActual(task) {
@@ -471,7 +477,7 @@ let difficultyTypes = [
     if (!typesToCheck)
       return true
 
-    return isInArray(::g_battle_task_difficulty.getDifficultyTypeByTask(checkTask).name, typesToCheck)
+    return isInArray(getDifficultyTypeByTask(checkTask).name, typesToCheck)
   }
 
   function getTasksListByControllerTask(taskController, conditions) {
@@ -479,7 +485,7 @@ let difficultyTypes = [
     if (!this.isController(taskController))
       return tasksArray
 
-    let unlocksCond = ::u.search(conditions, function(cond) { return cond.type == "char_personal_unlock" })
+    let unlocksCond = u.search(conditions, function(cond) { return cond.type == "char_personal_unlock" })
     let personalUnlocksTypes = unlocksCond && unlocksCond.values
 
     foreach (task in this.currentTasksArray)
@@ -490,7 +496,7 @@ let difficultyTypes = [
   }
 
   function getTaskWithAvailableAward(tasksArray) {
-    return ::u.search(tasksArray, function(task) {
+    return u.search(tasksArray, function(task) {
         return this.canGetReward(task)
       }.bindenv(this))
   }
@@ -547,7 +553,7 @@ let difficultyTypes = [
 
     let view = {
       id = config.id
-      taskDescription = ::g_string.implode(taskDescription, "\n")
+      taskDescription =  "\n".join(taskDescription, true)
       taskSpecialDescription = this.getRefreshTimeTextForTask(task)
       taskUnlocksListPrefix = taskUnlocksListPrefix
       taskUnlocks = taskUnlocksList
@@ -560,7 +566,7 @@ let difficultyTypes = [
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
     }
 
-    return ::handyman.renderCached("%gui/unlocks/battleTasksDescription.tpl", view)
+    return handyman.renderCached("%gui/unlocks/battleTasksDescription.tpl", view)
   }
 
   function getUnlockConditionBlock(text, _id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true) {
@@ -689,7 +695,7 @@ let difficultyTypes = [
   }
 
   function getRefreshTimeTextForTask(task) {
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let diff = getDifficultyTypeByTask(task)
     let timeLeft = diff.getTimeLeft(task)
     if (timeLeft < 0)
       return ""
@@ -704,7 +710,7 @@ let difficultyTypes = [
     if (!checkObj(taskBlockObj))
       return
 
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let diff = getDifficultyTypeByTask(task)
     if (!diff.hasTimer)
       return
 
@@ -724,7 +730,7 @@ let difficultyTypes = [
     holderObj = taskBlockObj.findObject("tasks_refresh_timer")
     if (checkObj(holderObj))
       SecondsUpdater(holderObj, function(obj, _params) {
-        let timeText = ::g_battle_task_difficulty.EASY.getTimeLeftText(task)
+        let timeText = EASY_TASK.getTimeLeftText(task)
         obj.setValue(loc("ui/parentheses/space", { text = timeText + loc("icon/timer") }))
 
         return timeText == ""
@@ -736,7 +742,7 @@ let difficultyTypes = [
   }
 
   function getPlaybackPath(playbackName, shouldUseDefaultLang = false) {
-    if (::u.isEmpty(playbackName))
+    if (u.isEmpty(playbackName))
       return ""
 
     let guiBlk = GUI.get()
@@ -759,7 +765,7 @@ let difficultyTypes = [
     }
 
     local reward = getUnlockRewardsText(config)
-    let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let difficulty = getDifficultyTypeByTask(task)
     if (hasFeature("BattlePass")) {
       let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
 
@@ -767,7 +773,7 @@ let difficultyTypes = [
       rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
     }
 
-    if (difficulty == ::g_battle_task_difficulty.MEDIUM) {
+    if (difficulty == MEDIUM_TASK) {
       let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
       if (specialTaskAward?.awardType.hasIncreasingLimit()) {
         let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
@@ -805,9 +811,9 @@ let difficultyTypes = [
     let taskStatus = this.getTaskStatus(task)
 
     return {
-      id = id
-      title = title
-      taskStatus = taskStatus
+      id
+      title
+      taskStatus
       taskImage = (paramsCfg?.showUnlockImage ?? true) && (getTblValue("image", task) || getTblValue("image", config))
       taskPlayback = getTblValue("playback", task) || getTblValue("playback", config)
       isPlaybackDownloading = !::g_sound.canPlay(id)
@@ -822,7 +828,7 @@ let difficultyTypes = [
       canReroll = isInteractive && isTaskBattleTask && !isCanGetReward
       otherTasksNum = task && isPromo ? this.getTotalActiveTasksNum() : null
       isLowWidthScreen = isPromo ? ::is_low_width_screen() : null
-      isPromo = isPromo
+      isPromo
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
       needShowProgressValue = taskStatus == null && config?.curVal != null && config.curVal >= 0 && config?.maxVal != null && config.maxVal >= 0
       progressValue = config?.curVal
@@ -830,7 +836,7 @@ let difficultyTypes = [
       needShowProgressBar = progressData?.show
       progressBarValue = progressBarValue.tointeger()
       getTooltipId = (isPromo || isShortDescription) && isTaskBattleTask ? @() BATTLE_TASK.getTooltipId(id) : null
-      isShortDescription = isShortDescription
+      isShortDescription
       shouldRefreshTimer = config?.shouldRefreshTimer ?? false
     }
   }
@@ -844,7 +850,7 @@ let difficultyTypes = [
   }
 
   function getDifficultyImage(task) {
-    let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let difficulty = getDifficultyTypeByTask(task)
     if (difficulty.showSeasonIcon) {
       let curWarbond = ::g_warbonds.getCurrentWarbond()
       if (curWarbond)
@@ -857,11 +863,11 @@ let difficultyTypes = [
   function getTasksArrayByIncreasingDifficulty() {
     let result = []
     foreach (t in difficultyTypes) {
-      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
+      let arr = withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
       if (arr.len() == 0)
         continue
 
-      if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, this.currentTasksArray))
+      if (canPlayerInteractWithDifficulty(t, this.currentTasksArray))
         result.extend(arr)
     }
     return result
@@ -878,11 +884,11 @@ let difficultyTypes = [
     let tasks = this.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
     let res = []
     foreach (diff in difficultyTypes) {
-      let canInteract = ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, tasks)
-      if (!canInteract)
+      let taskCanInteract = canPlayerInteractWithDifficulty(diff, tasks)
+      if (!taskCanInteract)
         continue
 
-      let tasksByDiff = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(diff, tasks)
+      let tasksByDiff = withdrawTasksArrayByDifficulty(diff, tasks)
       if (tasksByDiff.len() == 0)
         continue
 
@@ -903,7 +909,7 @@ let difficultyTypes = [
     let cfg = ::build_conditions_config(task)
     foreach (condition in cfg.conditions) {
       let values = getTblValue("values", condition)
-      if (::u.isEmpty(values))
+      if (u.isEmpty(values))
         continue
       if (isInArray(gameModeId, values))
         return true
@@ -912,7 +918,7 @@ let difficultyTypes = [
   }
 
   function filterTasksByGameModeId(tasksArray, gameModeId) {
-    if (::u.isEmpty(gameModeId))
+    if (u.isEmpty(gameModeId))
       return tasksArray
 
     let res = []
@@ -923,10 +929,10 @@ let difficultyTypes = [
   }
 
   function getTasksArrayByDifficulty(searchArray, difficulty = null) {
-    if (::u.isEmpty(searchArray))
+    if (u.isEmpty(searchArray))
       searchArray = this.currentTasksArray
 
-    if (::u.isEmpty(difficulty))
+    if (u.isEmpty(difficulty))
       return searchArray
 
     return searchArray.filter(@(task) ::g_battle_tasks.isTaskSameDifficulty(task, difficulty))
@@ -946,7 +952,7 @@ let difficultyTypes = [
     let blk = ::build_conditions_config(task)
     foreach (condition in blk.conditions) {
       let values = getTblValue("values", condition)
-      if (::u.isEmpty(values))
+      if (u.isEmpty(values))
         continue
 
       foreach (value in values) {
@@ -966,7 +972,7 @@ let difficultyTypes = [
   }
 
   function requestRewardForTask(battleTaskId) {
-    if (::u.isEmpty(battleTaskId))
+    if (u.isEmpty(battleTaskId))
       return
 
     let battleTask = this.getTaskById(battleTaskId)
@@ -984,13 +990,13 @@ let difficultyTypes = [
     let taskId = ::char_send_blk("cln_reward_specific_battle_task", blk)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, function() {
       ::update_gamercards()
-      ::broadcastEvent("BattleTasksIncomeUpdate")
-      ::broadcastEvent("BattleTasksRewardReceived")
+      broadcastEvent("BattleTasksIncomeUpdate")
+      broadcastEvent("BattleTasksRewardReceived")
     })
   }
 
   function rerollTask(task) {
-    if (::u.isEmpty(task))
+    if (u.isEmpty(task))
       return
 
     let blk = DataBlock()
@@ -1000,13 +1006,13 @@ let difficultyTypes = [
     ::g_tasker.addTask(taskId, { showProgressBox = true },
       function() {
         statsd.send_counter("sq.battle_tasks.reroll_v2", 1, { task_id = (task?._base_id ?? "null") })
-        ::broadcastEvent("BattleTasksIncomeUpdate")
+        broadcastEvent("BattleTasksIncomeUpdate")
       }
     )
   }
 
   function rerollSpecialTask(task) {
-    if (::u.isEmpty(task))
+    if (u.isEmpty(task))
       return
 
     let blk = DataBlock()
@@ -1017,14 +1023,14 @@ let difficultyTypes = [
     ::g_tasker.addTask(taskId, { showProgressBox = true },
       function() {
         statsd.send_counter("sq.battle_tasks.special_reroll", 1, { task_id = (task?._base_id ?? "null") })
-        ::broadcastEvent("BattleTasksIncomeUpdate")
+        broadcastEvent("BattleTasksIncomeUpdate")
       })
   }
 
   function canActivateHardTasks() {
     return ::isInMenu()
-      && ::u.search(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this)) != null
-      && ::u.search(this.activeTasksArray, Callback(this.isSpecialBattleTask, this)) == null
+      && u.search(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this)) != null
+      && u.search(this.activeTasksArray, Callback(this.isSpecialBattleTask, this)) == null
   }
 
   function isSpecialBattleTask(task) {
@@ -1044,13 +1050,13 @@ let difficultyTypes = [
     if (!this.canActivateHardTasks())
       return
 
-    let arr = ::u.filter(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this))
+    let arr = u.filter(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this))
     ::gui_start_battle_tasks_select_new_task_wnd(arr)
   }
 
   function getDifficultyTypeGroup() {
     let result = []
-    foreach (t in ::g_battle_task_difficulty.types) {
+    foreach (t in difficultyTypes) {
       let difficultyGroup = t.getDifficultyGroup()
       if (difficultyGroup == "")
         continue
@@ -1061,8 +1067,8 @@ let difficultyTypes = [
   }
 
   function canInteract(task) {
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
+    let diff = getDifficultyTypeByTask(task)
+    return canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
   }
 
   function updateCompleteTaskWatched() {
@@ -1077,17 +1083,17 @@ let difficultyTypes = [
         continue
 
       if (!this.isTaskDone(task)) {
-        if (::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
+        if (HARD_TASK == getDifficultyTypeByTask(task))
           hasInCompleteHard = true
         continue
       }
 
-      if (::g_battle_task_difficulty.EASY == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+      if (EASY_TASK == getDifficultyTypeByTask(task)) {
         isCompleteEasy = true
         continue
       }
 
-      if (::g_battle_task_difficulty.MEDIUM == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+      if (MEDIUM_TASK == getDifficultyTypeByTask(task)) {
         isCompleteMedium = true
         continue
       }

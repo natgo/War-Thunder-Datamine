@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let { split_by_chars } = require("string")
 let regexp2 = require("regexp2")
@@ -11,6 +9,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
+let { getGameModesByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
 
 let mapsListByEvent = {}
 
@@ -77,8 +77,8 @@ let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locN
       getMissionLocName(config, locNameKey)
 
   return isLevelBanMode
-    ? ::g_string.implode([missionLocName,
-      loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })], " ")
+    ? " ".join([missionLocName,
+      loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })], true)
     : missionLocName
 }
 
@@ -92,7 +92,7 @@ let function getInactiveMaps(curEvent, mapsList) {
   foreach (name, list in banData) {
     res[name] <- []
       foreach (map in list)
-        if (!::u.search(mapsList, @(inst) inst.map == map))
+        if (!u.search(mapsList, @(inst) inst.map == map))
           res[name].append(map)
   }
 
@@ -131,7 +131,7 @@ let function getMapsListImpl(curEvent) {
         }
 
   let missionList = {}
-  foreach (gm in ::g_matching_game_modes.getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
+  foreach (gm in getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
     missionList.__update(gm?.mission_decl.missions_list ?? {})
 
   let assertMisNames = []
@@ -139,7 +139,7 @@ let function getMapsListImpl(curEvent) {
     if (isLevelBanMode && missionToLevelTable?[name].origMisName)
       continue
 
-    let missionInfo = ::get_mission_meta_info(missionToLevelTable?[name].origMisName ?? name)
+    let missionInfo = get_meta_mission_info_by_name(missionToLevelTable?[name].origMisName ?? name)
     if ((missionInfo?.level ?? "") == "") {
       assertMisNames.append(name)
       continue
@@ -147,7 +147,7 @@ let function getMapsListImpl(curEvent) {
     let level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
     let map = isLevelBanMode ? level : name
     if (isLevelBanMode) {
-      let levelMap = ::u.search(list, @(inst) inst.map == map)
+      let levelMap = u.search(list, @(inst) inst.map == map)
       if (levelMap) {
         levelMap.missions.append(getMissionParams(name, missionInfo))
         continue

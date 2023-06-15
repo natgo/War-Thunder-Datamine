@@ -1106,6 +1106,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1466,6 +1467,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1485,6 +1487,7 @@
         "battlePositionSpeed": 20.0,
         "lagStopForFireTime": 1.0,
         "reloadAnimVar": "m901_reload_var",
+        "staticElevation": 1.725,
         "createGunEffects": true,
         "parkForReload": true,
         "waitShellForPark": true,
@@ -1645,8 +1648,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2306,6 +2309,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2351,6 +2361,7 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2370,6 +2381,7 @@
               "battlePositionSpeed": 20.0,
               "lagStopForFireTime": 1.0,
               "reloadAnimVar": "m901_reload_var",
+              "staticElevation": 1.725,
               "createGunEffects": true,
               "parkForReload": true,
               "waitShellForPark": true,

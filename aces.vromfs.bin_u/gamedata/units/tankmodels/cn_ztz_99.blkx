@@ -1527,6 +1527,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -2029,19 +2030,20 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/125mm_ZPT_98_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "semi_combustible_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 1.3,
-        "sleevesLifeTime": 10.0,
-        "sleeveImpulse": [5.0,0.0,0.0],
-        "sleeveExtractSound": "shell_eject_hatch",
+        "shellCasingLifeTime": 10.0,
+        "shellCasingImpulse": [5.0,0.0,0.0],
+        "shellCasingExtractSound": "shell_eject_hatch",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2317,8 +2319,8 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1000.0,0.0,0.0],
-        "limitMax": [1000.0,0.0,0.0]
+        "limitMin": [-1.0,-1.0,0.0],
+        "limitMax": [1.0,1.0,0.0]
       }
     },
     "constraints": {
@@ -2978,6 +2980,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3314,19 +3323,20 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
               "blk": "gameData/Weapons/groundModels_weapons/125mm_ZPT_98_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "semi_combustible_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
               "openHatchTime": 1.3,
-              "sleevesLifeTime": 10.0,
-              "sleeveImpulse": [5.0,0.0,0.0],
-              "sleeveExtractSound": "shell_eject_hatch",
+              "shellCasingLifeTime": 10.0,
+              "shellCasingImpulse": [5.0,0.0,0.0],
+              "shellCasingExtractSound": "shell_eject_hatch",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
@@ -3646,6 +3656,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

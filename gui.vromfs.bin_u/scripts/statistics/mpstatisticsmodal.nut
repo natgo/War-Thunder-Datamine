@@ -1,10 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_game_type } = require("mission")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete
@@ -165,7 +162,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
     if (!needShowAnimation)
       return
 
-    let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", view)
+    let blk = handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", view)
     this.guiScene.replaceContentFromText(nest, blk, blk.len(), this)
     let objTarget = nest.findObject("mission_result_box")
     objTarget.show(true)

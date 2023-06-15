@@ -5,6 +5,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.193,
   "gearSinkRangeC": 0.027,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -1703,7 +1704,7 @@
         "type": "leftHand",
         "detachedNodeYpr": [0.0,-15.0,-90.0],
         "detachedNodeScale": [1.0,-1.0,1.0],
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.5,-1.0,0.0]
       },
       {
         "downNode": "Bip01 R Hand",
@@ -1713,21 +1714,21 @@
         "type": "rightHand",
         "detachedNodeYpr": [0.0,-15.0,90.0],
         "detachedNodeScale": [1.0,-1.0,1.0],
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [-0.5,-1.0,0.0]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.0,1.0,0.05]
+        "flexionDir": [0.1,1.0,0.0]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [0.0,1.0,-0.15]
+        "flexionDir": [-0.1,1.0,0.0]
       }
     ]
   },
@@ -1840,7 +1841,7 @@
       "pedals": [-0.8,0.8],
       "stick_ailerons": [-2.5,2.5],
       "stick_elevator": [-2.5,3.0],
-      "throttle": [-0.7,2.0],
+      "throttle": [0.0,1.0],
       "radiator": [0.0,1.0],
       "vario": [-16.667,16.667],
       "altitude_hour": [0.0,10000.0],

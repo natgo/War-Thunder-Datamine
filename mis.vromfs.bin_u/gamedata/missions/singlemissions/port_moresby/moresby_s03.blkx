@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,11 +12,15 @@
     "mission": {
       "level": "levels/port_moresby.bin",
       "type": "singleMission",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0]
+      "windDirection": [1.0,0.0,0.0],
+      "restoreType": "manual",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {},
     "briefing": {
@@ -80,17 +80,23 @@
       },
       "conditions": {},
       "actions": {
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ships_squad",
-          "stealthRadius": 0.0,
-          "accuracy": 0.3,
-          "effShootingRate": 0.01,
-          "speed": 30.0
-        },
+        "unitSetProperties": [
+          {
+            "object": "ships_squad",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "stealthRadius": 0.0,
+            "accuracy": 0.3,
+            "effShootingRate": 0.01,
+            "speed": 30.0
+          },
+          {
+            "object": "player",
+            "bombDelayExplosion": 1.0
+          }
+        ],
         "unitSetStealth": {
           "set": true,
           "radius": 10000.0,
@@ -157,8 +163,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player"
+          "object": "player",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -195,6 +201,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player"
         },
         "wait": [
@@ -220,6 +227,11 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "target",
@@ -252,8 +264,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player"
+          "object": "player",
+          "object_var_value": 0
         },
         "unitWhenStatus": {
           "object_type": "isAlive",
@@ -301,6 +313,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player"
         },
         "wait": [
@@ -326,6 +339,11 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "target",
@@ -369,8 +387,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player"
+          "object": "player",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -407,6 +425,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player"
         },
         "wait": [
@@ -432,6 +451,11 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "target",
@@ -475,8 +499,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player"
+          "object": "player",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -513,6 +537,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player"
         },
         "wait": [
@@ -538,6 +563,11 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "target",
@@ -600,7 +630,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_moresby_m03_att00",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionFailed": {}
       },
@@ -627,9 +660,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "target",
-          "target": "final_area"
+          "target": "final_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -653,7 +686,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_moresby_m03_att00",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionFailed": {}
       },
@@ -698,7 +734,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_moresby_m03_att00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -754,6 +793,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -799,6 +840,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -821,11 +864,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_wp_02": {
@@ -839,11 +882,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_wp_03": {
@@ -857,11 +900,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_wp_04": {
@@ -875,11 +918,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -905,6 +948,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -927,11 +972,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target01_wp_02": {
@@ -945,11 +990,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target01_wp_03": {
@@ -963,11 +1008,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target01_wp_04": {
@@ -981,11 +1026,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -1011,6 +1056,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1033,11 +1080,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort01_wp_02": {
@@ -1051,11 +1098,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort01_wp_03": {
@@ -1069,11 +1116,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort01_wp_04": {
@@ -1087,11 +1134,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -1117,6 +1164,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1139,11 +1188,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort02_wp_02": {
@@ -1157,11 +1206,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort02_wp_03": {
@@ -1175,11 +1224,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort02_wp_04": {
@@ -1193,11 +1242,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -1223,6 +1272,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1245,11 +1296,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort03_wp_02": {
@@ -1263,11 +1314,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort03_wp_03": {
@@ -1281,11 +1332,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort03_wp_04": {
@@ -1299,11 +1350,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -1329,6 +1380,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1351,11 +1404,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort04_wp_02": {
@@ -1369,11 +1422,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort04_wp_03": {
@@ -1387,11 +1440,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           },
           "target_escort04_wp_04": {
@@ -1405,11 +1458,11 @@
             "props": {
               "speed": 300.0,
               "moveType": "ZIGZAG",
-              "shouldKeepFormation": false,
               "tas": false,
-              "canUsePathFinder": false,
               "zzPeriod": 100.0,
-              "zzAmp": 50.0
+              "zzAmp": 50.0,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }

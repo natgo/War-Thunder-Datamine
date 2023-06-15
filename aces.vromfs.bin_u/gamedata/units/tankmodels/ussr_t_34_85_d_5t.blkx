@@ -973,6 +973,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -1152,7 +1159,9 @@
         "armorClass": "CHA_tank"
       },
       "turret_front_dm": {
-        "armorThickness": 54.0
+        "armorThickness": 54.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "turret_01_front_dm": {
         "armorThickness": 20.0
@@ -1218,20 +1227,24 @@
         "armorThickness": 75.0
       },
       "body_shield_dm": {
-        "armorThickness": 65.0
+        "armorThickness": 65.0,
+        "variableThickness": true
       },
       "turret_03_front_dm": {
         "armorThickness": 30.0,
-        "armorEffectiveThicknessMax": 30.0
+        "armorEffectiveThicknessMax": 30.0,
+        "variableThickness": true
       }
     },
     "mask": {
       "armorClass": "CHA_tank",
       "gun_mask_dm": {
-        "armorThickness": 90.0
+        "armorThickness": 90.0,
+        "variableThickness": true
       },
       "gun_mask_01_dm": {
-        "armorThickness": 90.0
+        "armorThickness": 90.0,
+        "variableThickness": true
       }
     },
     "body_shields": {
@@ -2160,6 +2173,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true

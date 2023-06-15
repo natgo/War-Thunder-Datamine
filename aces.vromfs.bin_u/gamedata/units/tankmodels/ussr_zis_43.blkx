@@ -969,6 +969,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1670,6 +1671,16 @@
         "ammo_body_58_dm",
         "ammo_body_59_dm",
         "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1770,11 +1781,11 @@
       "blk": "gameData/Weapons/groundModels_weapons/37mm_61_K_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
-      "sleeveEmitter": "emtr_shell",
-      "sleeveMesh": "auto_cannon_cartridge_case",
+      "shellCasingEmitter": "emtr_shell",
+      "shellCasingMesh": "auto_cannon_cartridge_case",
       "openHatchTime": 0.0,
-      "sleevesLifeTime": 5.0,
-      "sleeveImpulse": [2.0,0.0,0.0],
+      "shellCasingLifeTime": 5.0,
+      "shellCasingImpulse": [2.0,0.0,0.0],
       "recoilOffset": 0.25,
       "recoilTimes": [0.1,0.1],
       "recoilMultiplier": 0.3,
@@ -2665,6 +2676,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

@@ -2,10 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
-#no-root-fallback
 
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let itemNotifications = require("%scripts/items/itemNotifications.nut")
@@ -134,7 +134,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 
-  ::broadcastEvent("MainMenuReturn")
+  broadcastEvent("MainMenuReturn")
 }
 
 onMainMenuReturnActions.mutate(@(v) v.onMainMenuReturn <- onMainMenuReturn)

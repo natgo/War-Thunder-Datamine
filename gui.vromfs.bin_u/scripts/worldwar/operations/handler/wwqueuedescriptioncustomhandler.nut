@@ -1,9 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { Cost } = require("%scripts/money.nut")
+
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
@@ -50,7 +50,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
   function getCreationCost() {
     let fee = getGlobalStatusData()?.operationCreationFeeWp ?? 0
     return fee > 0
-      ? ::Cost(fee).toStringWithParams({ isColored = false isWpAlwaysShown = true })
+      ? Cost(fee).toStringWithParams({ isColored = false isWpAlwaysShown = true })
       : ""
   }
 
@@ -70,7 +70,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
     }
 
     let lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))
-    let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo.tpl", view)
+    let data = handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     let isVisible = this.descItem.isMapActive()
     obj.show(isVisible)

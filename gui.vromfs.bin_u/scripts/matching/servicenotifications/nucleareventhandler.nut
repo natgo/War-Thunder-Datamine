@@ -1,14 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_base_game_version } = require("app")
 let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
 } = require("hangarEventCommand")
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { Version } = require("%sqstd/version.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
@@ -23,7 +20,7 @@ let function isNewClientFunc() {
 let function onNewClientVersion(params) {
   newClientVersionEvent.hasMessage = true
   if (!::is_in_flight())
-    ::broadcastEvent("NewClientVersion", params)
+    broadcastEvent("NewClientVersion", params)
 
   return { result = "ok" }
 }

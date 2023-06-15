@@ -223,6 +223,14 @@
         "hp": 50.0
       }
     },
+    "hull_turret_spaced_armor": {
+      "armorClass": "RHA_tank",
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true
+      }
+    },
     "optics": {
       "armorClass": "optics_tank",
       "optic_gun_dm": {
@@ -1132,6 +1140,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1636,6 +1645,16 @@
     "vertical": true,
     "horizontal": true
   },
+  "xray_viewer_data": {
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    }
+  },
   "sound": {
     "EngineName": "engine_mctav6",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1648,6 +1667,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "maxMissileSalvoTimeInterval": 3.0,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1662,6 +1682,7 @@
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
         "changeBulletTypeForSet": true,
+        "staticElevation": 2.425,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 20.0,
@@ -2534,6 +2555,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2630,6 +2658,7 @@
       "modClass": "protection",
       "effects": {
         "commonWeapons": {
+          "maxMissileSalvoTimeInterval": 3.0,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2644,6 +2673,7 @@
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
               "changeBulletTypeForSet": true,
+              "staticElevation": 2.425,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 20.0,
