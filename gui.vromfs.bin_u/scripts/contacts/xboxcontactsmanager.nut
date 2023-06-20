@@ -231,7 +231,7 @@ request_unknown_ids = function(unknown_list, known_list, current_idx, callback) 
       request_unknown_ids(unknown_list, known_list, nextIdx, callback)
     else
       callback(known_list)
-  })
+  }, false)
 }
 
 
