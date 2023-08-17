@@ -11,7 +11,7 @@ let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSet
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
-let { applyRestartClient, isClientRestartable, canRestartClient
+let { applyRestartClient, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
@@ -54,7 +54,6 @@ let compModeGraphicsOptions = {
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
-    xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
   }
@@ -86,7 +85,6 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
-      "xess"
       "dlss"
       "dlssSharpness"
       "anisotropy"
@@ -293,10 +291,10 @@ let function updateGuiNavbar(show = true) {
   let showRestartButton = showText && canRestartClient()
   let applyText = loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
-  ::showBtn("btn_reset", show && isSavePending(), scene)
-  ::showBtn("restart_suggestion", showText, scene)
-  ::showBtn("btn_restart", showRestartButton, scene)
-  ::showBtn("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
+  showObjById("btn_reset", show && isSavePending(), scene)
+  showObjById("restart_suggestion", showText, scene)
+  showObjById("btn_restart", showRestartButton, scene)
+  showObjById("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
 
   let objNavbarApplyButton = scene.findObject("btn_apply")
   if (checkObj(objNavbarApplyButton))
@@ -373,21 +371,6 @@ let function parseResolution(resolution) {
     w = sides?[0] ?? 0
     h = sides?[1] ?? 0
   }
-}
-
-let function getAvailableXessModes() {
-  let values = ["off"]
-  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (::is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
-    values.append("performance")
-  if (::is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
-    values.append("balanced")
-  if (::is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
-    values.append("quality")
-  if (::is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
-    values.append("ultra_quality")
-
-  return values;
 }
 
 let function getAvailableDlssModes() {
@@ -534,12 +517,7 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
-      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
-  }
-
-  xessClick = function() {
-    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
+    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -760,11 +738,9 @@ mSettings = {
   }
   mode = { widgetType = "list" def = "fullscreenwindowed" blk = "video/mode" restart = true
     init = function(_blk, desc) {
-      desc.values <- ["windowed"]
-      if (is_platform_windows)
-        desc.values.append("fullscreenwindowed")
-      if (!::is_vendor_tencent())
-        desc.values.append("fullscreen")
+      desc.values <- is_platform_windows
+        ? ["windowed", "fullscreenwindowed", "fullscreen"]
+        : ["windowed", "fullscreen"]
       desc.def = desc.values.top()
       desc.restart <- !is_platform_windows
     }
@@ -791,20 +767,6 @@ mSettings = {
   graphicsQuality = { widgetType = "tabs" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
-  }
-  xess = { widgetType = "list" def = "off" blk = "video/xessQuality" restart = false
-    init = function(_blk, desc) {
-      desc.values <- getAvailableXessModes()
-    }
-    onChanged = "xessClick"
-    getFromBlk = function(blk, desc) {
-      let quality = get_blk_value_by_path(blk, desc.blk, -1)
-      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : (quality == 3) ? "ultra_quality" : "off"
-    }
-    setToBlk = function(blk, desc, val) {
-      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 3 : -1
-      set_blk_value_by_path(blk, desc.blk, quality)
-    }
   }
   dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
@@ -852,7 +814,7 @@ mSettings = {
   }
     onChanged = "antiAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
   taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
@@ -862,7 +824,7 @@ mSettings = {
   }
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -1321,7 +1283,7 @@ let function hotReloadOrRestart() {
 
   configFree()
 
-  if (restartPending && isClientRestartable()) {
+  if (restartPending) {
     let func_restart = function() {
       applyRestartClient()
     }

@@ -46,6 +46,7 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
 } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 /*
 SessionLobby API
@@ -212,12 +213,11 @@ let allowed_mission_settings = { //only this settings are allowed in room
     ::LAST_SESSION_DEBUG_INFO = "sid:" + sessionId
 
   log("notify_session_start")
-  ::add_big_query_record("joining_session",
-    ::save_to_json({
-      gm = get_game_mode()
-      sessionId = sessionId
-      missionsComplete = ::my_stats.getMissionsComplete()
-    }))
+  sendBqEvent("CLIENT_BATTLE_2", "joining_session", {
+    gm = get_game_mode()
+    sessionId = sessionId
+    missionsComplete = ::my_stats.getMissionsComplete()
+  })
   ::SessionLobby.switchStatus(lobbyStates.JOINING_SESSION)
 }
 
@@ -229,7 +229,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     "spectator", "isReady", "isInLobbySession", "team", "countryData", "myState",
     "isSpectatorSelectLocked", "crsSetTeamTo", "curEdiff",
     "needJoinSessionAfterMyInfoApply", "isLeavingLobbySession", "_syncedMyInfo",
-    "playersInfo", "lastEventName, isReadyInSetStateRoom"
+    "playersInfo", "isReadyInSetStateRoom"
   ]
 
   settings = {}
@@ -240,7 +240,6 @@ let allowed_mission_settings = { //only this settings are allowed in room
   isRoomByQueue = false
   isEventRoom = false
   roomId = INVALID_ROOM_ID
-  lastEventName = ""
   roomUpdated = false
   password = ""
 
@@ -926,10 +925,6 @@ let allowed_mission_settings = { //only this settings are allowed in room
   }
   if (this.status == lobbyStates.JOINING_SESSION)
     addRecentContacts(::g_squad_manager.getSquadMembersDataForContact())
-
-  if (this.status == lobbyStates.JOINING_SESSION ||
-    this.status == lobbyStates.IN_SESSION)
-    this.lastEventName = this.getRoomEvent()?.name ?? ""
 
   this.updateMyState()
 

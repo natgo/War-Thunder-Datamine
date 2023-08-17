@@ -36,6 +36,7 @@
   "rearmSmokeTimeOnField": 60.0,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.825,
   "controlDevices": {
     "device": [
       {
@@ -2839,7 +2840,7 @@
   "cockpit": {
     "zoomOutFov": 8.2,
     "zoomInFov": 3.68,
-    "sightFov": 4.5,
+    "sightFov": 3.0,
     "sightName": "freccia_sight",
     "openedCockpit": false,
     "headPos": [0.0,3.8,-8.8],
@@ -3266,7 +3267,8 @@
     }
   },
   "supportPlane": {
-    "supportPlaneClass": "ucav_recon_micro",
+    "supportPlaneClass": "ucav_recon_micro_flir",
+    "behTreeName": "recon_micro",
     "planeStartSpeed": 80.0,
     "count": 1
   },

@@ -16,7 +16,8 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let g_path = require("%sqstd/path.nut")
 let dagor_fs = require("dagor.fs")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
+let { getDebriefingResult, getDynamicResult, gatherDebriefingResult
+} = require("%scripts/debriefing/debriefingFull.nut")
 let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -57,7 +58,7 @@ let function debug_dump_debriefing_save(filename) {
     { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? ::get_mp_local_team() }
     { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? ::get_player_army_for_hud() }
     { id = "_fake_sessionlobby_settings", value = ::SessionLobby.settings }
-    { id = "_fake_sessionlobby_last_event_name", value = ::SessionLobby.lastEventName }
+    { id = "_fake_sessionlobby_last_event_name", value = ::SessionLobby.getRoomEvent()?.name ?? "" }
     "LAST_SESSION_DEBUG_INFO"
     "get_mission_mode"
     "get_mission_difficulty_int"
@@ -159,7 +160,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   ::SessionLobby.settings = get_fake_sessionlobby_settings()
   ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
   ::SessionLobby.getUnitTypesMask = @() getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
-  ::SessionLobby.lastEventName = getroottable()?._fake_sessionlobby_last_event_name ?? ""
+  ::SessionLobby.getRoomEvent = @(_room = null) ::events.getEvent(getroottable()?._fake_sessionlobby_last_event_name ?? "")
   ::HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()
 
@@ -169,6 +170,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   ::g_mis_custom_state.getCurMissionRules()
   ::is_in_flight = _is_in_flight
 
+  gatherDebriefingResult()
   ::gui_start_debriefingFull()
   ::checkNonApprovedResearches(true)
   ::go_debriefing_next_func = function() { dbg_dump.unload(); ::gui_start_mainmenu(); onUnloadFunc?() }

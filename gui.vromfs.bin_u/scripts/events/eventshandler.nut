@@ -29,6 +29,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -76,6 +77,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   ::gui_start_modal_wnd(::gui_handlers.EventsHandler, {
     curEventId = eventId
     curChapterId = chapterId
+    autoJoin = options?.autoJoin ?? false
   })
 }
 
@@ -85,6 +87,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   eventsListObj  = null
   curEventId     = ""
   curChapterId = ""
+  autoJoin = false
   slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
 
   queueToShow    = null
@@ -158,7 +161,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function updateWindow() {
     let event = ::events.getEvent(this.curEventId)
-    let showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(this.curEventId))
+    let showOverrideSlotbar = needShowOverrideSlotbar(event)
     if (showOverrideSlotbar)
       updateOverrideSlotbar(::events.getEventMission(this.curEventId))
     else
@@ -221,10 +224,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
 
     ::EventJoinProcess(event, null,
-      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(_event) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       })
   }
 
@@ -620,6 +623,8 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       this.curEventId = "" //curEvent not found
       this.curChapterId = ""
     }
+    else if(this.autoJoin)
+      this.joinEvent()
 
     this.eventsListObj.setValue(this.selectedIdx)
     this.onItemSelectAction(false)
@@ -741,13 +746,13 @@ addPromoButtonConfig({
     local buttonObj = null
     local show = this.isShowAllCheckBoxEnabled()
     if (show)
-      buttonObj = ::showBtn(id, show, this.scene)
+      buttonObj = showObjById(id, show, this.scene)
     else {
       show = hasFeature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value
         && ::g_promo.getVisibilityById(id)
-      buttonObj = ::showBtn(id, show, this.scene)
+      buttonObj = showObjById(id, show, this.scene)
     }
 
     if (!show || !checkObj(buttonObj))

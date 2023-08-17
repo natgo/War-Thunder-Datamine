@@ -108,7 +108,7 @@
     "minComplaintCount": 10,
     "maxComplaintCount": 10,
     "maxDaysToCheckComplains": 7,
-    "maxComplaintsFromMe": 5
+    "maxComplaintsFromMe": 10
   },
   "chat": {
     "threadsListAutoUpdatePeriodMsec": 60000,
@@ -2118,6 +2118,13 @@
       "condition": "",
       "platform_lock": "android"
     },
+    "Human": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "Tanks": {
       "condition": "",
       "platform_lock": "android"
@@ -3286,11 +3293,11 @@
     "BattlePassSeason11AllowSkipAllStages": {
       "condition": "BattlePass;battlepass_season11_purchased;battlepass_season11_allow_skip_all_stages"
     },
-    "BattlePassSeason10Purchased": {
-      "condition": "BattlePass;battlepass_season10_purchased"
+    "BattlePassSeason12Purchased": {
+      "condition": "BattlePass;battlepass_season12_purchased"
     },
-    "BattlePassSeason10AllowSkipAllStages": {
-      "condition": "BattlePass;battlepass_season10_purchased;battlepass_season10_allow_skip_all_stages"
+    "BattlePassSeason12AllowSkipAllStages": {
+      "condition": "BattlePass;battlepass_season12_purchased;battlepass_season12_allow_skip_all_stages"
     },
     "Collection": {
       "condition": ""
@@ -3401,6 +3408,9 @@
     "AutoFlushClanExp": {
       "condition": ""
     },
+    "BattleExpensesCompensationWithPremAcc": {
+      "condition": ""
+    },
     "advancedHitIndicator": {
       "condition": ""
     },
@@ -3420,6 +3430,9 @@
         "role_DEVELOPER",
         "role_TESTER"
       ]
+    },
+    "ResearchHelicopterOnGroundVehicle": {
+      "condition": ""
     }
   }
 }

@@ -17,6 +17,7 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -141,7 +142,6 @@ let { stripTags } = require("%sqstd/string.nut")
     let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
-      canChangeBulletsAmount = true
       isForcedAvailable = isUnitSpecial && !isUnitUsable
       forceShowDefaultTorpedoes = !isUnitSpecial && !isUnitUsable
     })
@@ -362,6 +362,8 @@ let { stripTags } = require("%sqstd/string.nut")
 
     select_training_mission(misBlk)
     this.guiScene.performDelayed(this, ::gui_start_flight)
+
+    sendStartTestFlightToBq(this.unit.name)
   }
 
   function getTestFlightMisName(misName) {

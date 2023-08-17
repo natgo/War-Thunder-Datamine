@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -192,7 +190,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
 
   function getCurAwardObj() {
     let itemListObj = this.getItemsListObj()
-    let value = ::get_obj_valid_index(itemListObj)
+    let value = getObjValidIndex(itemListObj)
     if (value < 0)
       return null
 
@@ -238,8 +236,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
   }
 
   function updateButtons() {
-    if (hasFeature("BattlePass"))
-      this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
+    this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
     if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return

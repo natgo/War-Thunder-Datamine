@@ -252,7 +252,7 @@ let getUnitStatusTbl = function(unit, params) {
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = ::isUnitBroken(unit)
     isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
-      && !::isUnitsEraUnlocked(unit)
+      && !::isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
     isMounted           = isUsable && ::isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
@@ -422,7 +422,7 @@ let function getGroupStatusTbl(group, params) {
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
   let unitImage = ::get_unit_preset_img(group.name)
-    ?? (::is_tencent_unit_image_reqired(primaryUnit)
+    ?? (::is_harmonized_unit_image_reqired(primaryUnit)
         ? ::get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
 

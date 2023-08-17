@@ -14,6 +14,7 @@ let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { weaponItemTplPath } = require("%scripts/weaponry/getWeaponItemTplPath.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 ::dagui_propid.add_name_id("_iconBulletName")
 
@@ -140,9 +141,12 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   let bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
   if (bIcoItem) {
     let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
-    assert(unit?.isTank() || bulletsSet != null,
-          $"No bullets in bullets set {visualItem.name} for {unit.name}")
-
+    if (!unit?.isTank() && bulletsSet == null) {
+      let unitName = unit.name // warning disable: -declared-never-used
+      let bulletsSetName = visualItem.name // warning disable: -declared-never-used
+      debug_dump_stack()
+      logerr("No bullets in bullets set")
+    }
     res.iconBulletName = bIcoItem.name
     res.bulletImg = getBulletsIconView(bulletsSet)
   }
@@ -324,7 +328,12 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     params.__merge({ showButtons = showButtons }))
   let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
 
-  itemObj.findObject("name").setValue(viewParams.nameText)
+  // For single-line textareas, enforce non-breaking text to prevent line wrapping,
+  // ensuring maximum visibility of the displayed text.
+  let isSingleLine = !viewParams.hideBulletsChoiceBlock
+  itemObj.findObject("name").setValue(isSingleLine
+    ? ::stringReplace(viewParams.nameText, " ", ::nbsp)
+    : viewParams.nameText)
 
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId
@@ -344,10 +353,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   let imgObj = itemObj.findObject("image")
   imgObj["background-image"] = viewParams.iconBulletName != "" ? "" : viewParams.itemImg
 
-  ::showBtn("status_image", viewParams.isShowStatusImg, itemObj)
-  ::showBtn("status_radio", !viewParams.hideStatusRadio, itemObj)
-  ::showBtn("modItem_statusBlock", !viewParams.hideStatus, itemObj)
-  ::showBtn("modItem_discount", viewParams.isShowDiscount, itemObj)
+  showObjById("status_image", viewParams.isShowStatusImg, itemObj)
+  showObjById("status_radio", !viewParams.hideStatusRadio, itemObj)
+  showObjById("modItem_statusBlock", !viewParams.hideStatus, itemObj)
+  showObjById("modItem_discount", viewParams.isShowDiscount, itemObj)
 
   if (viewParams.isShowDiscount) {
     let dObj = itemObj.findObject("discount")
@@ -393,10 +402,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     amountObject.overlayTextColor = viewParams.amountTextColor
   }
 
-  ::showBtn("warning_icon", !viewParams.hideWarningIcon, itemObj)
+  showObjById("warning_icon", !viewParams.hideWarningIcon, itemObj)
 
   if (!viewParams.hideBulletsChoiceBlock) {
-    let holderObj = ::showBtn("bullets_amount_choice_block", true, itemObj)
+    let holderObj = showObjById("bullets_amount_choice_block", true, itemObj)
     let textObj = holderObj.findObject("bulletsCountText")
     if (checkObj(textObj))
       textObj.setValue(viewParams.bulletsCountText)
@@ -424,7 +433,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     }
   }
 
-  ::showBtn("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
+  showObjById("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
 
   let upgradesObj = itemObj.findObject("upgrade_img")
   if (checkObj(upgradesObj))
@@ -525,7 +534,7 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
 let function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   let show = bulGroup != null && bulletsManager != null && bulletsManager.canChangeBulletsCount()
-  let holderObj = ::showBtn("bullets_amount_choice_block", show, itemObj)
+  let holderObj = showObjById("bullets_amount_choice_block", show, itemObj)
   if (!show || !holderObj)
     return
 

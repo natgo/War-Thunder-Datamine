@@ -1,19 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -134,8 +132,8 @@ let function getObjPosInSafeArea(obj) {
   function updateObjectsPositions(tdClone, legendObj, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()
     let sh = rootSize[1]
-    let bh = ::g_dagui_utils.toPixels(this.guiScene, "@bh")
-    let interval = ::g_dagui_utils.toPixels(this.guiScene, "@itemsIntervalBig")
+    let bh = toPixels(this.guiScene, "@bh")
+    let interval = toPixels(this.guiScene, "@itemsIntervalBig")
 
     //count position by visual card obj. real td is higher and wider than a card.
     let visTdObj = tdClone.childrenCount() ? tdClone.getChild(0) : tdClone
@@ -188,7 +186,7 @@ let function getObjPosInSafeArea(obj) {
 
       if (isNearTd) { //else centered.
         let sw = rootSize[0]
-        let bw = ::g_dagui_utils.toPixels(this.guiScene, "@bw")
+        let bw = toPixels(this.guiScene, "@bw")
         local legendPosX = tdPos[0] + tdSize[0] + interval
         if (legendPosX + legendSize[0] > sw - bw)
           legendPosX = tdPos[0] - interval - legendSize[0]
@@ -307,9 +305,10 @@ let function getObjPosInSafeArea(obj) {
       return
 
     if (this.isNewUnit) {
-      ::add_big_query_record("choosed_crew_for_new_unit",
-        ::save_to_json({ unit = this.unit.name
-          crew = this.getCurCrew()?.id }))
+      sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_crew_for_new_unit", {
+        unit = this.unit.name
+        crew = this.getCurCrew()?.id
+      })
     }
     if (this.afterSuccessFunc)
       this.afterSuccessFunc()
@@ -349,9 +348,6 @@ let function getObjPosInSafeArea(obj) {
   }
 
   function fillLegendData() {
-    if (!hasFeature("CrewInfo"))
-      return null
-
     let legendData = []
     foreach (_idx, crew in ::get_crews_list_by_country(this.country)) {
       let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, this.unit))

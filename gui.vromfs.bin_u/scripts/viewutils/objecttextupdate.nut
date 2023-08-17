@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { get_game_version_str } = require("app")
 
@@ -20,7 +20,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
     return null
 
   local hasTextBlock = textBlock != null
-  let textBlockObj = ::showBtn($"{firstBtnId}_text_block", hasTextBlock, fObj)
+  let textBlockObj = showObjById($"{firstBtnId}_text_block", hasTextBlock, fObj)
   hasTextBlock = hasTextBlock && checkObj(textBlockObj)
   if (hasTextBlock) {
     let guiScene = ::get_cur_gui_scene()
@@ -29,7 +29,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
   }
 
   fObj.setValue(hasTextBlock ? "" : firstText)
-  let sObj = ::showBtn($"{firstBtnId}_text", !hasTextBlock, fObj)
+  let sObj = showObjById($"{firstBtnId}_text", !hasTextBlock, fObj)
   if (!hasTextBlock && checkObj(sObj))
     sObj.setValue(secondText)
 
@@ -37,7 +37,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
 }
 
 let function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
-  return setDoubleTextToButton(nestObj, btnId, ::g_dagui_utils.removeTextareaTags(coloredText), coloredText)
+  return setDoubleTextToButton(nestObj, btnId, removeTextareaTags(coloredText), coloredText)
 }
 
 //instead of wpCost you can use direc Cost  (instance of money)

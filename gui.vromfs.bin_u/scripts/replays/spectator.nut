@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -192,13 +191,13 @@ let weaponIconsReloadBits = {
 
     this.loadGameChat()
     if (!this.isMultiplayer)
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
           btn_tab_chat  = false
           target_stats  = false
       })
 
     let objReplayControls = this.scene.findObject("controls_div")
-    ::showBtnTable(objReplayControls, {
+    showObjectsByTable(objReplayControls, {
         ID_FLIGHTMENU               = useTouchscreen
         ID_MPSTATSCREEN             = this.mode != SPECTATOR_MODE.REPLAY
         controls_mpstats_replays    = this.mode == SPECTATOR_MODE.REPLAY
@@ -253,7 +252,7 @@ let weaponIconsReloadBits = {
     }
 
     if (this.canControlCameras) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
           ID_CAMERA_DEFAULT           = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
           ID_TOGGLE_FOLLOWING_CAMERA  = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
           ID_REPLAY_CAMERA_OPERATOR   = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
@@ -339,7 +338,7 @@ let weaponIconsReloadBits = {
                                      { selfHideInput = true, hiddenInput = !this.canSendChatMessages })
 
       let objGameChat = this.scene.findObject("gamechat")
-      ::showBtnTable(objGameChat, {
+      showObjectsByTable(objGameChat, {
           chat_input_div         = this.canSendChatMessages
           chat_input_placeholder = this.canSendChatMessages
       })
@@ -704,7 +703,7 @@ let weaponIconsReloadBits = {
 
     let curPlayer = this.getTargetPlayer()
     if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player)) {
-      let selIndex = ::get_obj_valid_index(obj)
+      let selIndex = getObjValidIndex(obj)
       let selectedPlayerBlock = obj.getChild(selIndex >= 0 ? selIndex : 0)
       ::session_player_rmenu(
         this,

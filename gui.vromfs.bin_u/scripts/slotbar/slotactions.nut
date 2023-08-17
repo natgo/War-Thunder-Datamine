@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
+let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -30,7 +31,7 @@ local function getSlotActionFunctionName(unit, params) {
     return ""
   if (unit.isUsable() && !::isUnitInSlotbar(unit))
     return "mainmenu/btnTakeAircraft"
-  if (::canBuyUnit(unit) || ::canBuyUnitOnline(unit))
+  if (!unit.isCrossPromo && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
     return "mainmenu/btnOrder"
 
   let isSquadronVehicle = unit.isSquadronVehicle()
@@ -42,7 +43,9 @@ local function getSlotActionFunctionName(unit, params) {
       || (isSquadronVehicle && !::is_in_clan() && !canFlushSquadronExp))
     && (::canResearchUnit(unit) || isInResearch))
     return "mainmenu/btnResearch"
-  if (isInResearch && hasFeature("SpendGold") &&  hasFeature("SpendFreeRP") && !isSquadronVehicle)
+  if(unit.isCrossPromo && !unit.isUsable())
+    return "mainmenu/btnResearch"
+  if (isInResearch && hasFeature("SpendGold") && !isSquadronVehicle)
     return "mainmenu/btnConvert"
 
   if (canFlushSquadronExp && (isInResearch || params.isSquadronResearchMode))
@@ -80,15 +83,17 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
       || (params.isSquadronResearchMode && (canFlushSquadronExp || params.needChosenResearchOfSquadron)))
     && (::canResearchUnit(unit) || isInResearch))
     return params.onSpendExcessExp()
-  if (isInResearch && hasFeature("SpendGold") && hasFeature("SpendFreeRP")
-    && !isSquadronVehicle && ::can_spend_gold_on_unit_with_popup(unit))
-      return ::gui_modal_convertExp(unit)
+  if (isInResearch && hasFeature("SpendGold")
+      && !isSquadronVehicle && ::can_spend_gold_on_unit_with_popup(unit))
+    return ::gui_modal_convertExp(unit)
 
   if (canFlushSquadronExp && isInResearch)
     return unitActions.flushSquadronExp(unit)
   if (isInResearch && unitStatus.canBuyNotResearched(unit)
     && isSquadronVehicle && ::is_in_clan())
     return unitActions.buy(unit, "slot_action_squad")
+  if (unit.isCrossPromo)
+    return openCrossPromoWnd(unit.crossPromoBanner)
   if (::checkForResearch(unit)) // Also shows msgbox about requirements for Research or Purchase
     return unitActions.research(unit)
 }

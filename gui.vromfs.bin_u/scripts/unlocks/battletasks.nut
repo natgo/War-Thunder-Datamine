@@ -36,6 +36,13 @@ let difficultyTypes = [
   HARD_TASK
 ]
 
+let function compareBattleTasks(a, b) {
+  if (a?._sort_order == null || b?._sort_order == null)
+    return 0
+
+  return b._sort_order <=> a._sort_order
+}
+
 ::g_battle_tasks <- null
 
 ::BattleTasks <- class {
@@ -108,15 +115,8 @@ let difficultyTypes = [
     this.updatedProposedTasks()
     this.updatedActiveTasks()
 
-    this.currentTasksArray.sort(function(a, b) {
-      if (a?._sort_order == null || b?._sort_order == null)
-        return 0
-
-      if (a._sort_order == b._sort_order)
-        return 0
-
-      return a._sort_order > b._sort_order ? 1 : -1
-    })
+    this.currentTasksArray.sort(compareBattleTasks)
+    this.activeTasksArray.sort(compareBattleTasks)
 
     if (::isInMenu())
       this.checkNewSpecialTasks()
@@ -766,16 +766,13 @@ let difficultyTypes = [
 
     local reward = getUnlockRewardsText(config)
     let difficulty = getDifficultyTypeByTask(task)
-    if (hasFeature("BattlePass")) {
-      let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
-
-      reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
-      rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
-    }
+    let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
+    reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
+    rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
 
     if (difficulty == MEDIUM_TASK) {
       let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
-      if (specialTaskAward?.awardType.hasIncreasingLimit()) {
+      if (specialTaskAward?.awardType.hasIncreasingLimit) {
         let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
         reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
       }

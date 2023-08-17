@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -90,8 +88,7 @@ local leaderboardFilterArray = [
   function initSearchBox() {
     let searchObj = this.scene.findObject("filter_edit_box")
     searchObj["max-len"] = "32"
-    searchObj["char-mask"] = ::g_clans.isNonLatinCharsAllowedInClanName()
-      ? null : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-"
+    searchObj["char-mask"] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-"
   }
 
   function initTabs() {
@@ -156,7 +153,7 @@ local leaderboardFilterArray = [
     let reserveY = "0.05sh"
       + ((::my_clan_info != null && this.curPage == "clans_leaderboards") ? " + 1.7@leaderboardTrHeight" : "")
     let clanLboard = this.scene.findObject("clan_lboard_table")
-    this.clansPerPage = ::g_dagui_utils.countSizeInItems(clanLboard, 1, "@leaderboardTrHeight", 0, 0, 0, reserveY).itemsCountY
+    this.clansPerPage = countSizeInItems(clanLboard, 1, "@leaderboardTrHeight", 0, 0, 0, reserveY).itemsCountY
     this.requestingClansCount = this.clansPerPage + 1
   }
 
@@ -168,7 +165,7 @@ local leaderboardFilterArray = [
       clan_container = false
     }
     foreach (pageId, status in myClanPages)
-      ::showBtn(pageId, status, this.scene)
+      showObjById(pageId, status, this.scene)
 
 
     if (::my_clan_info != null) {
@@ -187,7 +184,7 @@ local leaderboardFilterArray = [
     this.curPageObj.enable(true)
 
     let isLeaderboardPage = this.curPage == "clans_leaderboards"
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       clans_battle_season         = isLeaderboardPage
       modes_list                  = isLeaderboardPage
       leaderboard_filter_place    = !isLeaderboardPage
@@ -369,7 +366,7 @@ local leaderboardFilterArray = [
     if (!checkObj(lbPageObj))
       return
 
-    ::showBtn("btn_back_to_clanlist", this.isSearchMode, lbPageObj)
+    showObjById("btn_back_to_clanlist", this.isSearchMode, lbPageObj)
 
     if (this.isSearchMode && !("clan" in lbBlk)) {
       this.showEmptySearchResult(true)
@@ -621,7 +618,7 @@ local leaderboardFilterArray = [
   }
 
   function updateButtons() {
-    ::showBtnTable(this.curPageObj, {
+    showObjectsByTable(this.curPageObj, {
       btn_clan_info       = this.curClanId != null
       btn_clan_actions    = this.curClanId != null && ::show_console_buttons
       btn_membership_req  = this.curClanId != null && !::is_in_clan() && ::clan_get_requested_clan_id() != this.curClanId

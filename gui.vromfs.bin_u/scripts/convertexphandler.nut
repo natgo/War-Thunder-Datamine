@@ -16,6 +16,7 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 enum windowState {
   research,
@@ -24,7 +25,7 @@ enum windowState {
 }
 
 ::gui_modal_convertExp <- function gui_modal_convertExp(unit = null) {
-  if (!hasFeature("SpendGold") || !hasFeature("SpendFreeRP"))
+  if (!hasFeature("SpendGold"))
     return
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
@@ -178,9 +179,10 @@ enum windowState {
       this.currentState = windowState.research
 
     if (this.isRefreshingAfterConvert && oldState != this.currentState  && this.currentState == windowState.canBuy)
-      ::add_big_query_record("completed_new_research_unit",
-        ::save_to_json({ unit = this.unit.name
-          howResearched = "convert_exp" }))
+      sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_unit", {
+        unit = this.unit.name
+        howResearched = "convert_exp"
+      })
 
     this.updateData()
     this.fillContent()
@@ -236,7 +238,7 @@ enum windowState {
       if (selected)
         curIdx = idx
 
-      let btnObj = ::showBtn(unitType.armyId, isShow, listObj)
+      let btnObj = showObjById(unitType.armyId, isShow, listObj)
       if (btnObj) {
         btnObj.inactive = this.getCountryResearchUnit(this.country, unitType.esUnitType) ? "no" : "yes"
         btnObj.enable(unitType.canSpendGold())

@@ -4775,6 +4775,14 @@
         "additiveBulletMod": "20mm_rh202_AP"
       }
     },
+    "20mm_rh202_AP_spz": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "20mm_AP",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_AP_spz"
+      }
+    },
     "20mm_rh202_AP_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 3,
@@ -12998,6 +13006,14 @@
         "extinguisherCrewBusyTime": 5.0,
         "extinguisherCooldown": 15.0
       },
+      "disableModEffects": {
+        "extinguisherAutomatic": false,
+        "extinguisherActivationCount": 1,
+        "extinguisherMinTime": 4.0,
+        "extinguisherMaxTime": 6.0,
+        "extinguisherCrewBusyTime": 10.0,
+        "extinguisherCooldown": 15.0
+      },
       "overdriveEffect": {
         "extinguisherReductionTime": 0.5
       },
@@ -18771,6 +18787,20 @@
         "additiveBulletMod": "37mm_sw_m39_APHE"
       }
     },
+    "105mm_nato_ATGM": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "105mm_nato_ATGM_ammo_pack",
+      "group": "105mm_AP",
+      "effects": {
+        "additiveBulletMod": "105mm_nato_ATGM"
+      }
+    },
+    "105mm_nato_ATGM_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "37mm_sw_m39_APHE_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 4,
@@ -20442,22 +20472,33 @@
       }
     },
     "ship_tool_kit": {
-      "image": "#ui/gameuiskin#ship_tool_kit",
+      "image": "#ui/gameuiskin#ship_damage_control_crew",
       "tier": 1,
       "modClass": "unsinkability",
       "invertEnableLogic": false,
       "effects": {
         "repairAvailable": true
+      },
+      "disableModEffects": {
+        "repairAvailable": true,
+        "speedMultiplier": 0.75
       }
     },
     "manual_ship_extinguisher": {
-      "image": "#ui/gameuiskin#manual_ship_extinguisher",
+      "image": "#ui/gameuiskin#ship_fire_control_crew",
       "tier": 2,
       "modClass": "unsinkability",
+      "invertEnableLogic": false,
       "effects": {
         "extinguisherActivationCount": -1,
         "extinguisherMinTime": 10.0,
         "extinguisherMaxTime": 10.0,
+        "extinguisherCrewBusyTime": -1.0
+      },
+      "disableModEffects": {
+        "extinguisherActivationCount": -1,
+        "extinguisherMinTime": 13.0,
+        "extinguisherMaxTime": 15.0,
         "extinguisherCrewBusyTime": -1.0
       }
     },

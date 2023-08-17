@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout, updateItemBulletsSlider
 } = require("%scripts/weaponry/weaponryVisual.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,7 +18,6 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
   unit = null
   canShowPrice = false
   canChangeWeaponry = true
-  canChangeBulletsAmount = true
 
   weaponItemId = "secondary_weapon"
   bulletsIdPrefix = "bullets_"
@@ -45,7 +43,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
     if (!this.needRecountWidth || !this.scene.isVisible() || this.scene.getSize()[0] <= 0)
       return
 
-    let sizes = ::g_dagui_utils.countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
+    let sizes = countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
     this.modsInRow = sizes.itemsCountX
     this.scene.width = this.modsInRow + "@modCellWidth"
     this.needRecountWidth = false
@@ -55,8 +53,8 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
     this.showItemParams = {
       canShowPrice = this.canShowPrice
       canShowStatusImage = false
-      selectBulletsByManager = (this.canChangeWeaponry && this.canChangeBulletsAmount) ? this.bulletsManager : null
-      needSliderButtons = this.canChangeBulletsAmount
+      selectBulletsByManager = this.canChangeWeaponry ? this.bulletsManager : null
+      needSliderButtons = true
       hasMenu = false
       isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
     }
@@ -280,8 +278,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
       return null
 
     let res = this.getEmptyColumnsConfig()
-    if (this.canChangeBulletsAmount)
-      res.itemWidth = 1.5
+    res.itemWidth = 1.5
     if (gunsCount == 1) {
       let totalMods = this.bulletsManager.getActiveBulGroupsAmount()
       local totalColumns = 0

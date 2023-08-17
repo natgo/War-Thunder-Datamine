@@ -249,6 +249,12 @@ debriefingRows = [
     icon = ""
     isCountedInUnits = false
   }
+  { id = "ExpensesCompensation"
+    icon = ""
+    getName = @() loc("userlog/expenses_compensation")
+    tooltipComment = function() { return loc("userlog/expenses_compensation_tooltip") }
+    isCountedInUnits = false
+  }
   { id = "FriendlyKills"
     showByModes = isGameModeVersus
   }
@@ -890,7 +896,7 @@ let function gatherDebriefingResult() {
 
   let isInRoom = ::SessionLobby.isInRoom()
   debriefingResult.isInRoom <- isInRoom
-  debriefingResult.mGameMode <- isInRoom ? ::SessionLobby.getMGameMode() : null
+  debriefingResult.roomEvent <- isInRoom ? ::SessionLobby.getRoomEvent() : null
   debriefingResult.isSpectator <- isInRoom && ::SessionLobby.spectator
 
   debriefingResult.isMp <- ::is_multiplayer()
