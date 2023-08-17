@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -1633,7 +1633,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_COMPLAINT_CATEGORY:
       descr.id = "complaint_category"
-      descr.values = ["FOUL", "ABUSE", "TEAMKILL", "BOT", "SPAM", "OTHER"]
+      descr.values = ["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"]
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
         descr.items.append("#charServer/ban/reason/" + descr.values[i])
@@ -1918,12 +1918,28 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = true
       break
 
+      case ::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
+      descr.id = "hud_show_names_in_killlog"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
     case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
       descr.id = "hud_vis_part_chat_place"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.optionCb <- "onChangedPartHudVisible"
       defaultValue = true
+      break
+
+    case ::USEROPT_SHOW_ACTION_BAR:
+      descr.id = "hud_show_action_bar"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedShowActionBar"
+      defaultValue = true
+      descr.value = get_gui_option(optionId)
       break
 
     case ::USEROPT_HUD_SCREENSHOT_LOGO:
@@ -3243,7 +3259,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           text = loc("options/auto")
           name = "auto"
           image = null
-          tooltip = null
+          tooltip = loc("options/auto/tooltip", {
+            clusters = ", ".join(::g_clusters.clusters_info.map(@(c) ::g_clusters.getClusterLocName(c.name)))
+          })
           isUnstable = false
           isDefault = false
           isAuto = true
@@ -3360,7 +3378,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let config = ::crosshair_colors[nc]
         let item = { text = "#crosshairColor/" + config.name }
         if (config.color)
-          item.hueColor <- ::g_dagui_utils.color4ToDaguiString(config.color)
+          item.hueColor <- color4ToDaguiString(config.color)
         descr.items.append(item)
         if (c == nc)
           descr.value = descr.values.len() - 1
@@ -5253,6 +5271,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_HUD_VISIBLE_REWARDS_MSG:
     case ::USEROPT_HUD_VISIBLE_STREAKS:
     case ::USEROPT_HUD_VISIBLE_KILLLOG:
+    case ::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
     case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
       if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")
@@ -5273,6 +5292,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
 
+
+    case ::USEROPT_SHOW_ACTION_BAR:
+      set_gui_option(optionId, value)
+      break
 
     case ::USEROPT_AUTOLOGIN:
       ::set_autologin_enabled(value)
@@ -5679,7 +5702,7 @@ local unitsImgPreset = null
   return unitsImgPreset?[unitName]
 }
 
-::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit) {
+::is_harmonized_unit_image_reqired <- function is_harmonized_unit_image_reqired(unit) {
   return unit.shopCountry == "country_japan" && unit.unitType == unitTypes.AIRCRAFT
-    && ::is_vendor_tencent()
+    && ::is_chinese_harmonized()
 }

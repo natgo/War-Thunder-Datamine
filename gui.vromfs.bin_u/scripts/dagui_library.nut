@@ -11,6 +11,7 @@ let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { platformId }  = require("%sqstd/platform.nut")
+let { toPixels, showObjById, showObjectsByTable } = require("%sqDagui/daguiUtil.nut")
 
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -26,7 +27,7 @@ let function colorize(color, text) {
 }
 
 let function to_pixels(value) {
-  return ::g_dagui_utils.toPixels(::get_cur_gui_scene(), value)
+  return toPixels(::get_cur_gui_scene(), value)
 }
 
 let is_platform_pc = ["win32", "win64", "macosx", "linux64"].contains(platformId)
@@ -45,6 +46,8 @@ return log.__merge({
   isInArray
   getTblValue
   checkObj
+  showObjById
+  showObjectsByTable
   Callback
   colorize
   to_pixels

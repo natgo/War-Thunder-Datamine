@@ -22,14 +22,13 @@ let function launchGuestEmailRegistration(stoken) {
   openUrl(url, false, false, "profile_page")
 }
 
-let function onGetStokenForGuestEmail(msg) {
+subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg
   if (status != YU2_OK)
     ::error_message_box("yn1/connect_error", status, [["ok"]], "ok")
   else
     launchGuestEmailRegistration(stoken)
-}
-subscribe("onGetStokenForGuestEmail", onGetStokenForGuestEmail)
+})
 
 let function showGuestEmailRegistration() {
   ::showUnlockWnd({
@@ -193,7 +192,7 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let isVisible = this.isShowAllCheckBoxEnabled()
       || (canEmailRegistration() && ::g_promo.getVisibilityById(promoButtonId))
-    ::showBtn(promoButtonId, isVisible, this.scene)
+    showObjById(promoButtonId, isVisible, this.scene)
   }
 })
 
@@ -212,5 +211,4 @@ return {
   needShowGuestEmailRegistration
   showGuestEmailRegistration
   checkShowGuestEmailRegistrationAfterLogin
-  launchGuestEmailRegistration
 }

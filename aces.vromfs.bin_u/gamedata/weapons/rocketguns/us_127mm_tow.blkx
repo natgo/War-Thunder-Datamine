@@ -31,6 +31,7 @@
     "minDistance": 65.0,
     "operatedDist": 3750.0,
     "guidanceType": "saclos",
+    "launchZoneDistance": 100.0,
     "maxDeltaAngle": 0.02,
     "explosiveType": "lx14",
     "explosiveMass": 2.04,
@@ -74,7 +75,6 @@
     "aiGroundOnly": false,
     "aiAirOnly": false,
     "tracerTrailEmitter": [0.28,-0.035,0.035],
-    "hasWireGuidanceEffect": true,
     "amountPerTier": 4.0,
     "iconType": "atgm_type1_x4",
     "guidance": {
@@ -432,6 +432,20 @@
       "distance": 7.5,
       "damage": 600.0,
       "onHitChanceMultFire": 25.0
+    },
+    "wireGuidanceEffects": {
+      "wire1": {
+        "gravityAcceleration": 5.0,
+        "dynTensionCoefficient": 2.0,
+        "baseTensionCoefficient": 0.5,
+        "wireThickness": 0.004,
+        "wireAmplitude": 0.1,
+        "lifetimeAfterExplosion": 10.0,
+        "wireColor": [0.1,0.1,0.1],
+        "detachThreshold": 8.0,
+        "rocketOffset": [0.0,0.0,0.0],
+        "launcherOffset": [0.0,0.0,0.0]
+      }
     }
   }
 }

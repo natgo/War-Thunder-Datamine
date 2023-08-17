@@ -574,17 +574,15 @@
       "speed": 830.0,
       "maxDistance": 50000.0,
       "Cx": 0.5918,
-      "normalizationPreset": "apbc",
-      "ricochetPreset": "apbc",
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.0,
-      "stucking": 0.7,
-      "stuckingAngle": 45.0,
-      "bulletType": "sapbc_tank",
-      "slopeEffectPreset": "apbc",
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "common_tank",
+      "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "138mm_opfa1910_sap",
@@ -606,11 +604,11 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.4],
+        "mod1": [0.0,0.05],
+        "mod2": [20.0,0.1],
         "mod3": [
-          [30.0,0.6],
-          [45.0,0.9]
+          [30.0,0.2],
+          [45.0,0.3]
         ]
       },
       "damage": {
@@ -832,15 +830,17 @@
       "speed": 790.0,
       "maxDistance": 50000.0,
       "Cx": 0.3357,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "common_tank",
-      "slopeEffectPreset": "ap",
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
+      "bulletType": "sapbc_tank",
+      "slopeEffectPreset": "apbc",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "138mm_opfa1921_sap",
@@ -862,11 +862,11 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.05],
-        "mod2": [20.0,0.1],
+        "mod1": [0.0,0.2],
+        "mod2": [20.0,0.4],
         "mod3": [
-          [30.0,0.2],
-          [45.0,0.3]
+          [30.0,0.6],
+          [45.0,0.9]
         ]
       },
       "damage": {

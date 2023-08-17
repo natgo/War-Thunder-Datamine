@@ -25,6 +25,7 @@ let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("%scripts/unit
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -95,7 +96,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
       haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
-      showAction = inMenu && hasFeature("CrewInfo")
+      showAction = inMenu
       let params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
@@ -206,7 +207,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
                         : isSpecial || canBuyNotResearchedUnit ? "#ui/gameuiskin#shop_warpoints_premium.svg"
                             : "#ui/gameuiskin#shop_warpoints.svg"
 
-      showAction = inMenu && (canBuyIngame || canBuyOnline || forceShowBuyButton)
+      showAction = inMenu && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
         actionFunc = @() ::OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
@@ -243,7 +244,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
             : isInResearch && setResearchManually && !isSquadronVehicle
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
-      showAction = inMenu && (!isInResearch || (hasFeature("SpendGold") && hasFeature("SpendFreeRP")))
+      showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
         && (::isUnitFeatureLocked(unit) || ::canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
       disabled = !showAction
@@ -273,6 +274,11 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         ::queues.checkAndStart(@() ::gui_start_testflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
+    }
+    else if (action == "researchCrossPromo") {
+      actionText = loc("mainmenu/btnResearch")
+      actionFunc = @() openCrossPromoWnd(unit.crossPromoBanner)
+      showAction = inMenu && unit.isCrossPromo && !unit.isUsable()
     }
     else if (action == "info") {
       actionText = loc("mainmenu/btnAircraftInfo")

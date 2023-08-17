@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
 let { ceil, floor } = require("math")
@@ -23,9 +21,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isModResearched,
-        getModificationByName,
-        findAnyNotResearchedMod } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, getModificationByName, findAnyNotResearchedMod
+} = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
@@ -62,6 +59,8 @@ let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { stripTags, toUpper } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -160,6 +159,7 @@ let statTooltipColumnParamByType = {
      return
   }
   if (gm == GM_TEST_FLIGHT) {
+    sendFinishTestFlightToBq()
     if (::last_called_gui_testflight)
       ::last_called_gui_testflight()
     else
@@ -234,7 +234,7 @@ let statTooltipColumnParamByType = {
   isSpectator = false
   gameType = null
   gm = null
-  mGameMode = null
+  roomEvent = null
   playersInfo = null //it is SessionLobby.playersInfo for debriefing statistics info
 
   pveRewardInfo = null
@@ -245,7 +245,6 @@ let statTooltipColumnParamByType = {
   isAllGiftItemsKnown = false
 
   isFirstWinInMajorUpdate = false
-  isForceShowMyStatsRightBlock = false
 
   debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
   debriefingResult = null
@@ -258,19 +257,16 @@ let statTooltipColumnParamByType = {
       this.debriefingResult = getDebriefingResult()
     }
     this.gm = this.debriefingResult.gm
-    this.mGameMode = this.debriefingResult.mGameMode
+    this.roomEvent = this.debriefingResult.roomEvent
     this.gameType = this.debriefingResult.gameType
     this.isTeamplay = this.debriefingResult.isTeamplay
     this.isSpectator = this.debriefingResult.isSpectator
     this.playersInfo = this.debriefingResult.playersInfo
     this.isMp = this.debriefingResult.isMp
     this.isReplay = this.debriefingResult.isReplay
-    this.isForceShowMyStatsRightBlock = hasFeature("Profile")
 
     if (::disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
-
-    this.scene.findObject("content_frame").width = this.isForceShowMyStatsRightBlock ? "1.4@sf" : "1.0@sf"
 
     this.showTab("") //hide all tabs
 
@@ -403,17 +399,16 @@ let statTooltipColumnParamByType = {
     this.handleNoAwardsCaption()
 
     if (!this.isSpectator && !this.isReplay)
-      ::add_big_query_record("show_debriefing_screen",
-        ::save_to_json({
-          gm = this.gm
-          economicName = ::events.getEventEconomicName(this.mGameMode)
-          difficulty = this.mGameMode?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
-          sessionId = this.debriefingResult?.sessionId ?? ""
-          sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
-          originalMissionName = ::SessionLobby.getMissionName(true)
-          missionsComplete = ::my_stats.getMissionsComplete()
-          result = resTheme
-        }))
+      sendBqEvent("CLIENT_BATTLE_2", "show_debriefing_screen", {
+        gm = this.gm
+        economicName = ::events.getEventEconomicName(this.roomEvent)
+        difficulty = this.roomEvent?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
+        sessionId = this.debriefingResult?.sessionId ?? ""
+        sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
+        originalMissionName = ::SessionLobby.getMissionName(true)
+        missionsComplete = ::my_stats.getMissionsComplete()
+        result = resTheme
+      })
     let sessionIdObj = this.scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
       sessionIdObj.setValue(this.debriefingResult?.sessionId ?? "")
@@ -433,7 +428,7 @@ let statTooltipColumnParamByType = {
     this.challengesAwardsList = this.getAwardsList(this.awardsListsConfig.challenges.filter)
     this.unlocksAwardsList = this.getAwardsList(this.awardsListsConfig.unlocks.filter)
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       [this.awardsListsConfig.streaks.listObjId] = this.streakAwardsList.len() > 0,
       [this.awardsListsConfig.challenges.listObjId] = this.challengesAwardsList.len() > 0,
       [this.awardsListsConfig.unlocks.listObjId] = this.unlocksAwardsList.len() > 0,
@@ -536,8 +531,8 @@ let statTooltipColumnParamByType = {
         loc("multiplayer/reason"), loc("ui/colon"),
         colorize("activeTextColor", this.debriefingResult.exp.eacKickMessage))
 
-      if (hasFeature("AllowExternalLink") && !::is_vendor_tencent())
-        ::showBtn("btn_no_awards_info", true, this.scene)
+      if (hasFeature("AllowExternalLink"))
+        showObjById("btn_no_awards_info", true, this.scene)
       else
         text = "".concat(text, "\n",
           loc("msgbox/error_link_format_game"), loc("ui/colon"), loc("url/support/easyanticheat"))
@@ -552,7 +547,7 @@ let statTooltipColumnParamByType = {
     if (text == "")
       return
 
-    let blockObj = ::showBtn("no_awards_block", true, this.scene)
+    let blockObj = showObjById("no_awards_block", true, this.scene)
     let captionObj = blockObj && blockObj.findObject("no_awards_caption")
     if (!checkObj(captionObj))
       return
@@ -733,7 +728,7 @@ let statTooltipColumnParamByType = {
       return
     let obj = this.scene.findObject("inventory_gift_icon")
     let leftBlockHeight = this.scene.findObject("left_block").getSize()[1]
-    let itemHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@itemHeight")
+    let itemHeight = toPixels(this.guiScene, "1@itemHeight")
 
     obj.smallItems = this.challengesAwardsList.len() > 0 ? "yes"
       : (itemHeight * this.giftItems.len() > leftBlockHeight / 2) ? "yes"
@@ -1029,7 +1024,7 @@ let statTooltipColumnParamByType = {
 
       this.showTab("my_stats")
       this.skipAnim = this.skipAnim && debriefingSkipAllAtOnce
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         left_block              = this.is_show_left_block()
         inventory_gift_block    = this.is_show_inventory_gift()
         my_stats_awards_block   = this.is_show_awards_list()
@@ -1108,7 +1103,7 @@ let statTooltipColumnParamByType = {
       }
     }
     else if (this.state == debrState.done) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         btn_skip = false
         skip_button   = false
         start_bonus_place = false
@@ -2214,10 +2209,10 @@ let statTooltipColumnParamByType = {
   }
 
   function loadBattleTasksList() {
-    if (!this.is_show_battle_tasks_list(false) || !this.mGameMode)
+    if (!this.is_show_battle_tasks_list(false) || !this.roomEvent)
       return
 
-    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.mGameMode?.name)
+    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.roomEvent?.name)
       .filter(@(t) !::g_battle_tasks.isTaskDone(t))
 
     let currentBattleTasksConfigs = {}
@@ -2283,8 +2278,8 @@ let statTooltipColumnParamByType = {
     let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
 
     let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
-    ::showBtn("btn_reroll", showRerollButton, taskObj)
-    ::showBtn("btn_recieve_reward", canGetReward, taskObj)
+    showObjById("btn_reroll", showRerollButton, taskObj)
+    showObjById("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
   }
@@ -2498,7 +2493,7 @@ let statTooltipColumnParamByType = {
   }
 
   function is_show_right_block() {
-    return this.isForceShowMyStatsRightBlock || this.is_show_research_list() || this.is_show_battle_tasks_list()
+    return this.is_show_research_list() || this.is_show_battle_tasks_list()
   }
 
   function onChangeTab(obj) {
@@ -2524,7 +2519,7 @@ let statTooltipColumnParamByType = {
     let isReplayReady = hasFeature("ClientReplay") && is_replay_present() && is_replay_turned_on()
     let player = this.getSelectedPlayer()
     let buttonsList = {
-      btn_view_replay = isAnimDone && isReplayReady && !this.isMp
+      btn_view_replay = isAnimDone && isReplayReady
       btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
       btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
@@ -2677,9 +2672,8 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    let lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
-    if (lastEvent?.chapter == "competitive")
-      ::go_debriefing_next_func = @() openLastTournamentWnd(lastEvent)
+    if (this.roomEvent?.chapter == "competitive")
+      ::go_debriefing_next_func = @() openLastTournamentWnd(this.roomEvent)
     else
       ::go_debriefing_next_func = ::gui_start_mainmenu
   }
@@ -2780,7 +2774,7 @@ let statTooltipColumnParamByType = {
     this.goBack()
 
     if (needGoToBattle)
-      goToBattleAction()
+      goToBattleAction(this.roomEvent)
   }
 
   function isToBattleActionEnabled() {
@@ -2829,7 +2823,7 @@ let statTooltipColumnParamByType = {
     let showWorldWarOperationBtn = this.needShowWorldWarOperationBtn()
     let isToBattleBtnVisible = this.isToBattleActionEnabled() && !showWorldWarOperationBtn
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_next = true
       btn_back = isToBattleBtnVisible
     })

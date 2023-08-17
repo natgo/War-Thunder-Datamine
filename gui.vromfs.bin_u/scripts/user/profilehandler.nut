@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
@@ -39,7 +39,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
-  needShowGuestEmailRegistration, launchGuestEmailRegistration
+  needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -54,6 +54,8 @@ let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsListByType, getPlaneBySkinId
 } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { getPlayerSsoShortTokenAsync } = require("auth_wt")
+let { doPreviewUnlockPrize } = require("%scripts/unlocks/unlocksView.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -69,9 +71,6 @@ let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
-  if (!hasFeature("Profile"))
-    return
-
   ::gui_start_modal_wnd(::gui_handlers.Profile, params)
 }
 
@@ -131,6 +130,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   uncollapsedChapterName = null
   curAchievementGroupName = ""
   initialUnlockId = ""
+  previewUnlockId = ""
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
@@ -317,7 +317,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function updateDecalButtons(decor) {
     if (!decor) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         btn_buy_decorator              = false
         btn_fav                        = false
         btn_preview                    = false
@@ -351,7 +351,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     let canUse = decor.isUnlocked() && canStartPreviewScene(false)
     let canPreview = !canUse && decor.canPreview()
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_preview                    = ::isInMenu() && canPreview
       btn_use_decorator              = ::isInMenu() && canUse
       btn_store                      = ::isInMenu() && canFindInStore
@@ -364,20 +364,21 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
+    let needHideChangeAccountBtn = ::steam_is_running() && ::load_local_account_settings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
-      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
+      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
+      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
-        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()
+        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
       paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
-        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+        && hasFeature("AllowExternalLink")
       btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
     }
 
-    ::showBtnTable(this.scene, buttonsList)
+    showObjectsByTable(this.scene, buttonsList)
 
     if (buttonsList.btn_EmailRegistration)
       this.scene.findObject("btn_EmailRegistration").tooltip = needShowGuestEmailRegistration()
@@ -1320,6 +1321,12 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       this.fillUnlockInfo(unlock, unlockObj)
   }
 
+  function onPrizePreview(obj) {
+    this.previewUnlockId = obj.unlockId
+    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
+    deferOnce(@() doPreviewUnlockPrize(unlockCfg))
+  }
+
   function showUnlockPrizes(obj) {
     let trophy = ::ItemsManager.findItemById(obj.trophyId)
     let content = trophy.getContent()
@@ -1512,6 +1519,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
      openData = {
         initialSheet = this.getCurSheet()
         initSkinId = this.initSkinId
+        initialUnlockId = this.previewUnlockId
         initDecalId = this.getCurDecal()?.id ?? ""
         filterCountryName = this.curFilter
         filterUnitTag = this.filterUnitTag
@@ -1750,7 +1758,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function onBindEmail() {
     if (needShowGuestEmailRegistration())
-      launchGuestEmailRegistration()
+      getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
     else
       launchEmailRegistration()
     this.doWhenActiveOnce("updateButtons")

@@ -15,6 +15,7 @@ let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scr
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -82,7 +83,7 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
       return
     local imageSectionName = "image"
     let imageSectionNameAlt = "tencent_image"
-    if (::is_vendor_tencent() && u.isDataBlock(data[imageSectionNameAlt]))
+    if (::is_chinese_harmonized() && u.isDataBlock(data[imageSectionNameAlt]))
       imageSectionName = imageSectionNameAlt
 
     this.savePeriodAwardData(data)
@@ -631,16 +632,13 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
 
   function sendOpenTrophyStatistic(obj) {
     let objId = obj?.id
-    ::add_big_query_record("daily_trophy_screen",
-      objId == "btn_open" ? "main_get_reward"
+    sendBqEvent("CLIENT_GAMEPLAY_1", "daily_trophy_screen", {
+      result = objId == "btn_open" ? "main_get_reward"
         : objId == "btn_nav_open" ? "navbar_get_reward"
-        : "exit")
+        : "exit"})
   }
 
   function initExpTexts() {
-    if (!hasFeature("BattlePass"))
-      return
-
     this.scene.findObject("today_login_exp").setValue(stashBhvValueConfig([{
       watch = todayLoginExp
       updateFunc = Callback(@(obj, value) this.updateTodayLoginExp(obj, value), this)
@@ -652,9 +650,6 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateExpTexts() {
-    if (!hasFeature("BattlePass"))
-      return
-
     this.updateTodayLoginExp(this.scene.findObject("today_login_exp"), todayLoginExp.value)
     this.updateLoginStreakExp(this.scene.findObject("login_streak_exp"), loginStreak.value)
   }

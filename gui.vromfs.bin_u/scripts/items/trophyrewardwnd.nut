@@ -150,10 +150,15 @@ let function afterCloseTrophyWnd(configsTable) {
   rewardImageRatio = 1
   reUseRecipeUid = null
   reUseRecipe = null
+  isCrossPromo = false
 
   function initScreen() {
+    let rewardId = this.configsArray?[0]?.id
+    this.isCrossPromo = !!::ItemsManager.findItemById(rewardId)?.isCrossPromo
     this.configsArray = this.configsArray ?? []
-    this.rewardTitle = this.rewardTitle ?? this.configsArray?[0].rewardTitle
+    this.rewardTitle = this.isCrossPromo
+      ? loc("mainmenu/trophyReward/crossPromoTitle")
+      : this.rewardTitle ?? this.configsArray?[0].rewardTitle
     this.rewardListLocId = this.configsArray?[0].rewardListLocId ?? this.rewardListLocId
 
     if (this.rewardImage != null)
@@ -213,7 +218,7 @@ let function afterCloseTrophyWnd(configsTable) {
     if (this.isRouletteStarted())
       this.useSingleAnimation = false
 
-    ::showBtn(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
+    showObjById(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
     let animId = this.useSingleAnimation ? "open_chest_animation" : "reward_roullete"
     let animObj = this.scene.findObject(animId)
     if (checkObj(animObj)) {
@@ -327,6 +332,7 @@ let function afterCloseTrophyWnd(configsTable) {
     let data = ::trophyReward.getRewardsListViewData(this.shrinkedConfigsArray,
                    { multiAwardHeader = true
                      widthByParentParent = true
+                     isCrossPromo = this.isCrossPromo
                      header = loc("mainmenu/you_received")
                    })
 

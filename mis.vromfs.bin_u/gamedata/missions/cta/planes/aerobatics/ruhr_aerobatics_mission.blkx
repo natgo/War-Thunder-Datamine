@@ -183,19 +183,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "all_players_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_players_squad",
             "cannotShoot": true
           },
           {
+            "object": "all_aerobatic_squads",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_aerobatic_squads",
             "stealthRadius": 0.0,
             "calmDetection": true
           }
@@ -325,9 +325,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_airfield_start",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -349,9 +350,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_airfield_start",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -373,9 +375,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_airfield_concrete",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -397,9 +400,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_airfield_concrete",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -421,9 +425,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_respawn02_01",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -445,9 +450,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_respawn02_01",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -469,9 +475,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_spawn02",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -493,9 +500,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_spawn02",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -517,9 +525,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_spawn03",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           },
           {
@@ -541,9 +550,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_spawn03",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
-              "tank": false
+              "tank": false,
+              "ship": false,
+              "boat": false
             }
           }
         ]
@@ -18826,7 +18836,7 @@
           [-0.573576,0.0,-0.819152],
           [0.0,1.0,0.0],
           [0.819152,0.0,-0.573576],
-          [-9945.05,21.4106,-13521.5]
+          [-10154.8,19.2021,-13307.0]
         ],
         "unit_class": "dynAF_ruhr_base_1line_2k",
         "objLayer": 2,
@@ -18841,12 +18851,42 @@
           [-0.471651,0.0,0.881785],
           [0.0,1.0,0.0],
           [-0.881785,0.0,-0.471651],
-          [-9094.68,18.167,-9519.14]
+          [-9094.7,21.539,-9519.15]
         ],
         "unit_class": "dynAF_ruhr_base_1line_2k",
         "objLayer": 2,
         "props": {
           "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "historical_af_01",
+        "tm": [
+          [-0.993495,0.0,-0.113873],
+          [0.0,1.0,0.0],
+          [0.113873,0.0,-0.993495],
+          [-11285.2,12.95,2142.4]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "historical_af_02",
+        "tm": [
+          [0.886848,0.0,0.462061],
+          [0.0,1.0,0.0],
+          [-0.462061,0.0,0.886848],
+          [29270.2,83.35,2463.65]
+        ],
+        "unit_class": "dynAF_korea_2k",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
           "active": true
         }
       }
@@ -18858,7 +18898,7 @@
           [-0.173649,0.0,0.984809],
           [0.0,1.0,0.0],
           [-0.984809,0.0,-0.173649],
-          [-10285.0,207.15,-12921.6]
+          [-11958.2,207.15,2227.55]
         ],
         "unit_class": "i-153_m62",
         "objLayer": 1,

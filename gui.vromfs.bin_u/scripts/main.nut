@@ -286,6 +286,8 @@ global enum SEEN {
   BATTLE_PASS_SHOP = "battle_pass_shop"
   UNLOCK_MARKERS = "unlock_markers"
   MANUAL_UNLOCKS = "manual_unlocks"
+  DECORATORS = "decorators"
+  DECALS = "decals"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"
@@ -344,9 +346,6 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
-::add_big_query_record <- require("chard")?.addBigQueryRecord
-  ?? ::add_big_query_record // Compatibility with 2.15.0.X
-
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"
@@ -366,7 +365,6 @@ foreach (fn in [
   "%scripts/onlineShop/urlType.nut"
   "%scripts/onlineShop/url.nut"
 
-  "%sqDagui/daguiUtil.nut"
   "%scripts/viewUtils/layeredIcon.nut"
   "%scripts/viewUtils/projectAwards.nut"
 
@@ -506,6 +504,7 @@ local isFullScriptsLoaded = false
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
+  require("%scripts/hangar/hangarEvent.nut")
 
   if (platform.isPlatformXboxOne)
     require("%scripts/global/xboxCallbacks.nut")

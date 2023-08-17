@@ -325,6 +325,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   missionCount = -1
   maskId = -1
   mask = 0
+  disabledByUnitTags = null
 
   isShowedInVR = false
 
@@ -651,6 +652,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     delayTime = 10.0
     maskId = 0
+    disabledByUnitTags = ["type_robot"]
   }
 
   F1_CONTROLS_HINT_SCRIPTED = {
@@ -661,6 +663,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:f1_controls_scripted:show"
     hideEvent = "helpOpened"
     lifeTime = 30.0
+    disabledByUnitTags = ["type_robot"]
   }
 
   FULL_THROTTLE_HINT = {
@@ -1336,21 +1339,19 @@ enums.addTypesByGlobalName("g_hud_hints", {
       else if (getTblValue("cancelRequest", data, false)) {
         return "hints/repair_cancel_request_assist_hold"
       }
-      //
-
-
-
+      if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
+        return "hints/repair_human_hold"
       return (hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
         ? "hints/repair_ship" : "hints/repair_tank_hold"
     }
 
-    noKeyLocId = "hints/ready_to_bailout_nokey"
+    noKeyLocId = "hints/repair_request_assist_hold_no_key"
     getShortcuts =  function(_data) {
       let hudUnitType = getHudUnitType()
       return hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
         ? ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
+        : hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_REPAIR_HUMAN"
         //
-
 
 
         : "ID_REPAIR_TANK"
@@ -1592,7 +1593,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       }
       return ""
     }
-    noKeyLocId = "hints/ready_to_bailout_nokey"
+    noKeyLocId = "hints/request_extinguish_help_no_key"
     showEvent = "hint:request_extinguish_help"
     hideEvent = "hint:request_extinguish_help_hide"
     isHideOnDeath = true
@@ -1738,44 +1739,109 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 3.0
     isHideOnDeath = true
   }
-  //
 
+  NOT_IN_BURAV_CTRL_RADIUS = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/not_in_burav_ctrl_radius"
+    showEvent = "hint:not_in_burav_ctrl_radius"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
 
+  BURAV_CTRL_BY_OTHER = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_ctrl_by_other_player"
+    showEvent = "hint:burav_ctrl_by_other_player"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
 
+  BURAV_TARGET_NOT_IN_BATTLE_AREA = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_target_not_in_battle_area"
+    showEvent = "hint:burav_target_not_in_battle_area"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  BURAV_TARGET_NOT_IN_CTRL_RADIUS = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_target_not_ctrl_radius"
+    showEvent = "hint:burav_target_not_ctrl_radius"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
 
   ROCKET_LAUNCHER_IN_WATER = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/rocket_launcher_in_water"
     showEvent = "hint:rocket_launcher_in_water"
     lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  BURAV_IN_DELAY = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_in_delay"
+    showEvent = "hint:burav_in_delay:show"
+    hideEvent = "hint:burav_in_delay:hide"
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  BURAV_ENEMY_CTRL = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_ctrl_by_enemy"
+    showEvent = "hint:burav_ctrl_by_enemy:show"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  BURAV_ALLY_CTRL = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_ctrl_by_ally"
+    showEvent = "hint:burav_ctrl_by_ally:show"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  BURAV_CONTROLING = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_controlling"
+    showEvent = "hint:burav_controlling:show"
+    hideEvent = "hint:burav_controlling:hide"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  BURAV_IN_DELAY_CLICK = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/burav_in_delay_click"
+    showEvent = "hint:burav_in_delay_click"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  PLANE_CAN_REPAIR_ASSIST = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/plane_can_repair_assist"
+    showEvent = "hint:plane_can_repair_assist"
+    lifeTime = 10.0
+    totalCount = 5
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  PLANE_HAVE_POTENTIAL_ASSISTEE = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/plane_have_potential_assistee"
+    showEvent = "hint:plane_have_potential_assistee"
+    lifeTime = 3.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }

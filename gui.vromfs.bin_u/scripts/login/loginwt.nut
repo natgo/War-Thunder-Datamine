@@ -26,7 +26,8 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
-
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -71,8 +72,8 @@ registerPersistentData("LoginWTGlobals", getroottable(),
 }
 
 let function go_to_account_web_page(bqKey = "") {
-  let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
-  openUrl(get_authenticated_url_sso(urlBase).url, false, false, bqKey)
+  let urlBase = format("https://store.gaijin.net/user.php?skin_lang=%s", ::g_language.getShortName())
+  openUrl(get_authenticated_url_sso(urlBase, "any").url, false, true, bqKey)
 }
 
 ::g_login.loadLoginHandler <- function loadLoginHandler() {
@@ -81,8 +82,6 @@ let function go_to_account_web_page(bqKey = "") {
     hClass = ::gui_handlers.LoginWndHandlerPs4
   else if (is_platform_xbox)
     hClass = ::gui_handlers.LoginWndHandlerXboxOne
-  else if (::use_tencent_login())
-    hClass = ::gui_handlers.LoginWndHandlerTencent
   else if (::use_dmm_login())
     hClass = ::gui_handlers.LoginWndHandlerDMM
   else if (::steam_is_running())
@@ -209,10 +208,14 @@ let function go_to_account_web_page(bqKey = "") {
     }
     function() {
       if (isNeedFirstCountryChoice()) {
+        disableMarkSeenAllResourcesForNewUser()
         forceUpdateGameModes()
         ::gui_start_countryChoice()
         ::gui_handlers.FontChoiceWnd.markSeen()
         tutorialModule.saveVersion()
+
+        if(havePlayerTag("steamlogin"))
+          ::save_local_account_settings("disabledReloginSteamAccount", true)
       }
       else
         tutorialModule.saveVersion(0)
@@ -302,10 +305,8 @@ let function needAutoStartBattle() {
       ::setControlTypeByID("ct_mouse")
     else if (::is_platform_shield_tv())
       ::setControlTypeByID("ct_xinput")
-    else if (!isPlatformSteamDeck) {
-      let onlyDevicesChoice = !hasFeature("Profile")
-      handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
-    }
+    else if (!isPlatformSteamDeck)
+      handler.doWhenActive(function() { ::gui_start_controls_type_choice(false) })
   }
   else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
@@ -360,9 +361,9 @@ let function needAutoStartBattle() {
 
   if (isPlatformSony) {
     if (!::ps4_is_chat_enabled())
-      ::add_big_query_record("ps4.restrictions.chat", "")
+      sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.chat", {})
     if (!::ps4_is_ugc_enabled())
-      ::add_big_query_record("ps4.restrictions.ugc", "")
+      sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.ugc", {})
   }
 
   if (is_platform_windows) {

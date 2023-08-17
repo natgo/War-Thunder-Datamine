@@ -25,6 +25,7 @@ let { getFullUnlockDescByName, getUnlockNameText,
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -968,7 +969,7 @@ let prizeViewConfig = {
     let color = ::getUnitClassColor(unitId)
     local name = colorize(color, ::getUnitName(unitId))
     if (isRent)
-      name += this._getUnitRentComment(p.timeHours, p.numSpares, true)
+      name = "".concat(name, this._getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))
     units.append(name)
   }
 
@@ -1052,10 +1053,11 @@ let prizeViewConfig = {
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
   let buttons = this.getPrizeActionButtonsView({ unit = unitName }, params)
   let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
-
   local infoText = ""
   if (rentTimeHours > 0)
-    infoText = this._getUnitRentComment(rentTimeHours, numSpares)
+    infoText = this._getUnitRentComment(unit, rentTimeHours, numSpares, false)
+  else if (rentTimeHours == 0 && numSpares > 0)
+    infoText = this._getUnitSparesComment(unit, numSpares)
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
@@ -1071,6 +1073,7 @@ let prizeViewConfig = {
       isReceivedPrizes = receivedPrizes
       showLocalState = isShowLocalState
       relatedItem = params?.relatedItem
+      numSpares
     }
   })
   return {
@@ -1091,15 +1094,21 @@ let prizeViewConfig = {
   return this.getViewDataUnit(unitName, params, timeHours, numSpares)
 }
 
-::PrizesView._getUnitRentComment <- function _getUnitRentComment(rentTimeHours = 0, numSpares = 0, short = false) {
-  if (!rentTimeHours)
+::PrizesView._getUnitRentComment <- function _getUnitRentComment(unit, rentTimeHours = 0, numSpares = 0, short = false) {
+  if (rentTimeHours == 0)
     return ""
   let timeStr = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
   local text = short ? timeStr :
     colorize("activeTextColor", loc("shop/rentFor", { time =  timeStr }))
-  if (numSpares)
-    text += colorize("grayOptionColor", " + " + loc("multiAward/name/count/singleType", { awardType = loc("multiAward/type/spare") awardCount = numSpares }))
+  if (numSpares > 0)
+    text = "".concat(text, this._getUnitSparesComment(unit, numSpares))
   return short ? loc("ui/parentheses/space", { text = text }) : text
+}
+
+::PrizesView._getUnitSparesComment <- function _getUnitSparesComment(unit, numSpares) {
+  let spareCost = getGiftSparesCost(unit)
+  let giftSparesLoc = unit.isUsable() ? "mainmenu/giftSparesAdded" : "mainmenu/giftSpares"
+  return colorize("grayOptionColor", loc(giftSparesLoc, { num = numSpares, cost = Cost().setGold(spareCost * numSpares) }))
 }
 
 ::PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params) {
@@ -1254,11 +1263,12 @@ let prizeViewConfig = {
     return this.getViewDataMultiAward(prize, params)
 
   let unitName = prize?.unit
+
   if (unitName)
     if (prize?.mod)
       return this.getViewDataMod(unitName, prize?.mod, params)
     else
-      return this.getViewDataUnit(unitName, params)
+      return this.getViewDataUnit(unitName, params, prize?.timeHours ?? 0, prize?.numSpares ?? 0)
   if (prize?.rentedUnit)
     return this.getViewDataRentedUnit(prize?.rentedUnit, params, prize?.timeHours, prize?.numSpares)
   if (prize?.spare)

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { addContact } = require("%scripts/contacts/contactsState.nut")
+let { addContact, rejectContact } = require("%scripts/contacts/contactsState.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::g_invites_classes.Friend <- class extends ::BaseInvite {
@@ -12,8 +12,8 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function updateCustomParams(params, initial = false) {
-    this.inviterName = getTblValue("inviterName", params, this.inviterName)
-    this.inviterUid = getTblValue("inviterUid", params, this.inviterUid)
+    this.inviterName = params?.inviterName ?? this.inviterName
+    this.inviterUid = params?.inviterUid ?? this.inviterUid
     this.isAutoAccepted = this.isAlreadyAccepted()
 
     if (initial)
@@ -53,6 +53,12 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   function accept() {
     if (this.isValid())
       addContact(::getContact(this.inviterUid, this.inviterName), EPL_FRIENDLIST)
+    this.remove()
+  }
+
+  function reject() {
+    if (this.isValid())
+      rejectContact({ uid = this.inviterUid, name = this.inviterName })
     this.remove()
   }
 }

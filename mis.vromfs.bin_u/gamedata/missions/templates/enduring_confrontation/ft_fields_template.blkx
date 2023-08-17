@@ -297,7 +297,7 @@
           }
         ],
         "wait": {
-          "time": 90.0
+          "time": 60.0
         }
       },
       "else_actions": {}
@@ -3598,9 +3598,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -3660,9 +3658,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -3727,9 +3723,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -3794,9 +3788,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -3861,9 +3853,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -3928,9 +3918,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": {}
         },
         "conditions": {
           "varCompareInt": [
@@ -5775,7 +5763,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -5836,7 +5824,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -5873,7 +5861,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -5934,7 +5922,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -5999,7 +5987,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6092,7 +6080,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6182,7 +6170,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6245,7 +6233,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6336,10 +6324,7 @@
             {
               "target": "ft_detect_t1_rotator"
             }
-          ],
-          "wait": {
-            "time": 5.0
-          }
+          ]
         },
         "else_actions": {
           "comment": {
@@ -6545,7 +6530,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6606,7 +6591,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6643,7 +6628,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6704,7 +6689,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6769,7 +6754,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6862,7 +6847,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -6952,7 +6937,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -7015,7 +7000,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -7080,6 +7065,11 @@
             "var_value": "ft_airfield_module_hp",
             "airfield": "@ft_detect_t2_airfield_name"
           },
+          "airfieldGetModuleHP": {
+            "object": "@ft_detect_t2_airfield_name",
+            "module": "parking",
+            "var": "ft_t2_parking_hp"
+          },
           "airfieldSetVisibility": {
             "target": "@ft_detect_t2_airfield_name",
             "team": "Both"
@@ -7106,10 +7096,7 @@
             {
               "target": "ft_detect_t2_rotator"
             }
-          ],
-          "wait": {
-            "time": 5.0
-          }
+          ]
         },
         "else_actions": {
           "comment": {
@@ -11569,7 +11556,8 @@
     "ft_generate_t2_aaa_next_trigger_name": "",
     "ft_helicopters_pad_exclusive": false,
     "ft_generate_t1_backup_spawn_name": "",
-    "ft_generate_t2_backup_spawn_name": ""
+    "ft_generate_t2_backup_spawn_name": "",
+    "ft_t2_parking_hp": 0.0
   },
   "dialogs": {},
   "airfields": {},

@@ -1,13 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
@@ -18,13 +14,10 @@ let { get_max_spawns_unit_count, get_unit_wp_to_respawn } = require("guiMission"
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
-let { getUnitRole,
-        getUnitRoleIcon,
-        getUnitItemStatusText,
-        getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
-let { getLastWeapon,
-        checkUnitWeapons,
-        getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
+} = require("%scripts/unit/unitInfoTexts.nut")
+let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
@@ -38,6 +31,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 
 /*
 if need - put commented in array above
@@ -150,7 +144,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     let rentInfo = ::get_unit_item_rent_info(air, params)
     let spareCount = isLocalState ? ::get_spare_aircrafts_count(air.name) : 0
 
-    let hasCrewInfo = hasFeature("CrewInfo") && crewId >= 0
+    let hasCrewInfo = crewId >= 0
     let crew = hasCrewInfo ? ::get_crew_by_id(crewId) : null
 
     let forceCrewInfoUnit = params?.forceCrewInfoUnit
@@ -435,7 +429,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     //
 
     let shopAirImage = ::get_unit_preset_img(air.name)
-      ?? (::is_tencent_unit_image_reqired(nextAir)
+      ?? (::is_harmonized_unit_image_reqired(nextAir)
           ? ::get_tomoe_unit_icon(air.name, !air.name.endswith("_group"))
           : "!{0}".subst(air?.image ?? "#ui/unitskin#planes_group.ddsx"))
 
@@ -529,7 +523,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
         let crewLevelInfoView = {
           hasExtraInfoBlock = true
-          hasCrewInfo       = hasFeature("CrewInfo")
+          hasCrewInfo       = true
           crewLevel         = crewLevelText
           crewSpecIcon      = crewSpecIcon
         }
@@ -680,7 +674,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   return res
 }
 
-::is_unit_price_text_long <- @(text) ::utf8_strlen(::g_dagui_utils.removeTextareaTags(text)) > 13
+::is_unit_price_text_long <- @(text) ::utf8_strlen(removeTextareaTags(text)) > 13
 
 ::get_unit_item_price_text <- function get_unit_item_price_text(unit, params) {
   let isLocalState        = getTblValue("isLocalState", params, true)
