@@ -204,10 +204,15 @@
     "viscosity": 0.01,
     "condition": {
       "and": {
-        "isFlightModel": {},
-        "not": {
-          "hasEjectionSeats": {}
-        }
+        "not": [
+          {
+            "isInVr": {}
+          },
+          {
+            "hasEjectionSeats": {}
+          }
+        ],
+        "isFlightModel": {}
       }
     }
   },
@@ -225,6 +230,9 @@
     "viscosity": 0.01,
     "condition": {
       "and": {
+        "not": {
+          "isInVr": {}
+        },
         "isFlightModel": {},
         "hasEjectionSeats": {}
       }
@@ -1375,8 +1383,15 @@
     "trackGunDirection": true,
     "requestDmEvents": true,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": [
+          {
+            "isInVr": {}
+          },
+          {
+            "isFlightModel": {}
+          }
+        ]
       }
     },
     "up": {
@@ -1466,7 +1481,12 @@
       "dist": 20.0
     },
     "condition": {
-      "isShip": {}
+      "and": {
+        "not": {
+          "isInVr": {}
+        },
+        "isShip": {}
+      }
     }
   },
   "camera_ground_killer": {
@@ -2586,7 +2606,12 @@
     "rotationPeriod": 60.0,
     "viscosity": 0.2,
     "condition": {
-      "wormEaten": {}
+      "and": {
+        "wormEaten": {},
+        "not": {
+          "isInVr": {}
+        }
+      }
     }
   },
   "cameraLists": {

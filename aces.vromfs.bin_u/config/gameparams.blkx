@@ -1,4 +1,9 @@
 {
+  "tankFuelLeakFxName": "fire_burning_fuel_smoke",
+  "tankFuelLeakStayFxName": "fire_burning_fuel",
+  "tankFuelLeakFxTimeout": [0.15,0.8],
+  "tankFuelLeakLifetime": [20.0,3.0,7.0],
+  "tankFuelLeakSpeed": [5.0,0.4,2.5],
   "grassAlphaSuffix": "_a",
   "enableRiExplosionDamage": true,
   "simpleSinking": false,
@@ -28,6 +33,7 @@
   "tankInvulnerabilityRadius": 20.0,
   "shipInvulnerabilityRadius": 200.0,
   "invulnerableIndicationTime": 4.0,
+  "sendInvulnerabilityEventToHitCam": true,
   "tankSpawnCamperMarkByVictimLifeTime": 20.0,
   "tankSpawnCamperMarkByVictimLifeDistance": 40.0,
   "shipSpawnCamperMarkByVictimLifeTime": 0.0,
@@ -312,6 +318,7 @@
   "preventBotsLeavingBattleArea": true,
   "wheelFireFxName": "tank_fire_track",
   "wheelFireTimers": [7.0,3.0],
+  "arrestorHookTouchAirfieldFx": "sparks_ground_track_friction",
   "enableFlightModelDamageTexture": false,
   "maxDistanceForUpdateWithShipPhys": 800.0,
   "maxDistanceForDetailedUpdateShipPhys": 400.0,
@@ -4912,6 +4919,7 @@
       "flutter": false,
       "limitedBombsMissiles": false,
       "radarAssist": true,
+      "rwr": 0,
       "noArcadeBoost": 0,
       "limitViews": 0,
       "hudAimPrediction": true,
@@ -4980,6 +4988,7 @@
       "flutter": true,
       "limitedBombsMissiles": true,
       "radarAssist": true,
+      "rwr": 1,
       "noArcadeBoost": 1,
       "limitViews": 0,
       "hudAimPrediction": false,
@@ -5048,6 +5057,7 @@
       "flutter": true,
       "limitedBombsMissiles": true,
       "radarAssist": false,
+      "rwr": 2,
       "noArcadeBoost": 1,
       "limitViews": 2,
       "hudAimPrediction": false,
@@ -5117,6 +5127,7 @@
       "flutter": true,
       "limitedBombsMissiles": true,
       "radarAssist": true,
+      "rwr": 1,
       "noArcadeBoost": 1,
       "limitViews": 0,
       "hudAimPrediction": false,
@@ -5186,6 +5197,7 @@
       "flutter": true,
       "limitedBombsMissiles": true,
       "radarAssist": false,
+      "rwr": 2,
       "noArcadeBoost": 1,
       "limitViews": 2,
       "hudAimPrediction": false,
@@ -5254,6 +5266,7 @@
       "flutter": false,
       "limitedBombsMissiles": false,
       "radarAssist": true,
+      "rwr": 0,
       "noArcadeBoost": 0,
       "limitViews": 0,
       "hudAimPrediction": true,
@@ -5323,6 +5336,7 @@
       "flutter": true,
       "limitedBombsMissiles": true,
       "radarAssist": true,
+      "rwr": 1,
       "noArcadeBoost": 1,
       "limitViews": 0,
       "hudAimPrediction": false,
@@ -5809,6 +5823,20 @@
         "radarAutoControl": true,
         "radarIndication": true,
         "radarHud": true
+      }
+    },
+    "rwr": {
+      "easy": {
+        "rwrAllBands": true,
+        "rwrAllTargets": true
+      },
+      "medium": {
+        "rwrAllBands": false,
+        "rwrAllTargets": true
+      },
+      "hard": {
+        "rwrAllBands": false,
+        "rwrAllTargets": false
       }
     },
     "flutter": {
@@ -12933,8 +12961,8 @@
           "name": "cover",
           "unit": "ship",
           "layer": "bottom",
-          "dmgThreshold": 0.3,
-          "immortal": true
+          "dmgThreshold": 1.0,
+          "immortal": false
         },
         {
           "name": "at_bulge",
@@ -15515,6 +15543,54 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "patria_amv_ctcv_105hp"
+        },
+        {
+          "name": "wheel_l_01_dm",
+          "modelNames": "39m_csaba"
+        },
+        {
+          "name": "wheel_l_02_dm",
+          "modelNames": "39m_csaba"
+        },
+        {
+          "name": "wheel_r_01_dm",
+          "modelNames": "39m_csaba"
+        },
+        {
+          "name": "wheel_r_02_dm",
+          "modelNames": "39m_csaba"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "btr_80a_hungary"
         }
       ]
     },
@@ -16613,6 +16689,14 @@
         "metal_netting_barbed_fence_a",
         "water_pipes_b_angle_top",
         "cargo_ramp_a",
+        "berlin_reichstag_back_center",
+        "berlin_reichstag_back_left",
+        "berlin_reichstag_back_right",
+        "berlin_reichstag_corner",
+        "berlin_reichstag_front_center",
+        "berlin_reichstag_front_left",
+        "berlin_reichstag_front_right",
+        "berlin_reichstag_side_right_center",
         "_dp_",
         "concrete_fence_",
         "american_town_building_1_floor_a_",
@@ -16897,6 +16981,7 @@
     "leaveLod0": {
       "ri": [
         "test_number_one",
+        "active_volcano_rocks_a",
         "viaduct_auto_metal_frame_700x16x145_a",
         "canyon_cliff_big_a",
         "canyon_cliff_big_b",
@@ -17130,7 +17215,24 @@
         "sandstone_cliffs_rock_medium_a",
         "sandstone_cliffs_rock_medium_b",
         "sandstone_cliffs_rock_medium_c",
-        "sandstone_cliffs_rock_medium_d"
+        "sandstone_cliffs_rock_medium_d",
+        "postsoviet_town_church_a",
+        "ussr_town_culture_house_a",
+        "ussr_town_panel_house_a",
+        "ussr_town_panel_house_b",
+        "ussr_town_panel_house_c",
+        "ussr_town_panel_house_d",
+        "ussr_town_public_building_a",
+        "ussr_town_public_building_b",
+        "ussr_town_public_building_c",
+        "ussr_town_public_building_d",
+        "ussr_town_public_building_e",
+        "ussr_village_house_a",
+        "ussr_village_house_b",
+        "ussr_village_public_building_a",
+        "ussr_village_public_building_b",
+        "ussr_village_public_building_c",
+        "ussr_village_public_building_d"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -18342,14 +18444,24 @@
     ]
   },
   "ambientWindParams": {
-    "maxWindNoiseSpeed": 30.0,
+    "maxWindNoiseSpeed": 19.0,
     "minWindNoiseSpeed": 1.0,
-    "maxWindNoiseScale": 100.0,
-    "minWindNoiseScale": 12.0,
-    "minWindNoiseStrength": 8.0,
-    "maxWindNoiseStrength": 40.0,
+    "maxWindNoiseScale": 35.0,
+    "minWindNoiseScale": 20.0,
+    "minWindNoiseStrength": 1.0,
+    "maxWindNoiseStrength": 1.5,
     "maxWindNoisePerpendicularStrength": 0.5,
     "minWindNoisePerpendicularStrength": 0.2,
-    "windNoiseTextureName": "perlin_noise_wind_ati1n"
+    "maxGrassWindNoiseSpeed": 30.0,
+    "minGrassWindNoiseSpeed": 1.0,
+    "maxGrassWindNoiseScale": 50.0,
+    "minGrassWindNoiseScale": 12.0,
+    "maxGrassWindNoiseStrength": 60.0,
+    "minGrassWindNoiseStrength": 8.0,
+    "maxGrassWindNoisePerpendicularStrength": 0.5,
+    "minGrassWindNoisePerpendicularStrength": 0.2,
+    "windNoiseTextureName": "perlin_noise_wind_ati1n",
+    "windMapBorders": [-2048.0,-2048.0,2048.0,2048.0],
+    "windFlowTextureName": ""
   }
 }

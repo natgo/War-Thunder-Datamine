@@ -38,6 +38,7 @@
     "effectOffset": [-1.6,0.0,0.0],
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -59,6 +60,8 @@
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "fireEffect": "fires_exhaust_jet_early_big",
@@ -134,7 +137,7 @@
     },
     "damage": {
       "explosive": {
-        "radius": 0.4,
+        "radius": 0.25,
         "offset": 0.2
       },
       "shatter": {
@@ -214,16 +217,20 @@
     },
     "collisions": {
       "steel": {
-        "fx": "explosion_midair_small"
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_81_105mm_metal_ap"
       },
       "armor": {
-        "fx": "explosion_midair_small"
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_81_105mm_metal_ap"
       },
       "buildings": {
-        "fx": "explosion_midair_small"
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_106_132mm_stone_ap"
       },
       "wood": {
-        "fx": "explosion_midair_small"
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_106_132mm_wood_ap"
       }
     },
     "shatterCollisions": {
@@ -286,6 +293,15 @@
       "metal": {
         "fx": "hit_12_18mm_metal_ap"
       },
+      "tank_structural_steel": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "aluminum_armor": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "tank_rubber_screens": {
+        "fx": "hit_12_18mm_stone_ap"
+      },
       "buildings": {
         "fx": "hit_12_18mm_stone_ap"
       },
@@ -306,11 +322,29 @@
       },
       "stone_snow": {
         "fx": "hit_12_18mm_snow_ap"
+      },
+      "armorPierceLowCal": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "armorPierceMedCal": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "armorPierceHiCal": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "armorNPLowCal": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "armorNPMedCal": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "armorNPHiCal": {
+        "fx": "hit_12_18mm_metal_ap"
       }
     },
     "DamageParts": {
       "body": {
-        "hp": 5.0,
+        "hp": 50.0,
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
@@ -318,11 +352,45 @@
     "DamageEffects": {
       "part": {
         "name": "body",
-        "onHit": {
-          "expl": 1.0
-        },
+        "onHit": [
+          {
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
         "onKill": {
-          "destruction": 1.0
+          "expl": 0.05,
+          "fire": 0.05,
+          "break": 0.9,
+          "fHitCritical": true
         }
       }
     },

@@ -387,6 +387,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -649,10 +663,6 @@
         },
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_tanks_squad",
               "t1_trucks_squad",
@@ -660,16 +670,20 @@
               "t2_bunkers_squad",
               "t2_light_bunkers_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetAir": false,
             "accuracy": 0.0,
             "effShootingRate": 0.0
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "t1_trucks_aaa_squad",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetGnd": false,
             "accuracy": 0.1,
             "effShootingRate": 0.1,
@@ -678,11 +692,11 @@
             "targetChangeProb": 0.25
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "t2_big_aaa_squad",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetGnd": false,
             "accuracy": 0.1,
             "effShootingRate": 0.1,
@@ -691,11 +705,11 @@
             "targetChangeProb": 0.25
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "t2_small_aaa_squad",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetGnd": false,
             "accuracy": 0.1,
             "effShootingRate": 0.1,
@@ -704,34 +718,34 @@
             "targetChangeProb": 0.25
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_movable_units_squad",
               "t2_movable_units_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "minDistBetween": 100.0
           }
         ],
         "unitSetIndication": [
           {
             "set": true,
+            "target": "t1_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t1_quest_units_squad",
             "team": "B"
           },
           {
             "set": true,
+            "target": "t2_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t2_quest_units_squad",
             "team": "A"
           }
         ],
@@ -740,14 +754,12 @@
           "name_for_respawn_base": "",
           "timeMultiplier": 8.0,
           "disableZone": false,
-          "showBorderOnMap": false,
-          "borderWidthCoef": 1.0,
-          "borderTransparencyCoef": 1.0,
           "target": "capture_area",
           "canCaptureOnGround": false,
           "canCaptureInAir": false,
           "canCaptureByGM": true,
           "captureNoPenalty": true,
+          "showBorderOnMap": false,
           "zoneDefenders": {}
         },
         "wait": [
@@ -815,6 +827,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           },
           {
@@ -822,6 +835,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ]
@@ -855,6 +869,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           },
           {
@@ -862,6 +877,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1510,8 +1526,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1548,8 +1564,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1586,8 +1602,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1624,8 +1640,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1662,8 +1678,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "targetableByAi": false
         },
         "way": {}
@@ -1698,8 +1714,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1736,8 +1752,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1774,8 +1790,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1812,8 +1828,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1850,8 +1866,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1888,8 +1904,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1926,8 +1942,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -1964,8 +1980,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2002,8 +2018,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2040,8 +2056,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2078,8 +2094,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2116,8 +2132,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2154,8 +2170,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2192,8 +2208,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2230,8 +2246,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2268,8 +2284,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2306,8 +2322,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "targetableByAi": false
         },
         "way": {}
@@ -2342,8 +2358,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2380,8 +2396,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2418,8 +2434,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2456,8 +2472,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2494,8 +2510,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2532,8 +2548,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2570,8 +2586,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2608,8 +2624,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2646,8 +2662,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2684,8 +2700,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2722,8 +2738,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2760,8 +2776,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2798,8 +2814,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2836,8 +2852,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2874,8 +2890,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2912,8 +2928,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2950,8 +2966,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -2988,8 +3004,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3026,8 +3042,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3064,8 +3080,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3102,8 +3118,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3140,8 +3156,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3178,8 +3194,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3216,8 +3232,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3254,8 +3270,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3292,8 +3308,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3330,8 +3346,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "targetableByAi": false
         },
         "way": {}
@@ -3366,8 +3382,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3404,8 +3420,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3442,8 +3458,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3480,8 +3496,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3518,8 +3534,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3556,8 +3572,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3594,8 +3610,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3632,8 +3648,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3670,8 +3686,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3708,8 +3724,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3746,8 +3762,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3784,8 +3800,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3822,8 +3838,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3860,8 +3876,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3898,8 +3914,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3936,8 +3952,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -3974,8 +3990,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -4012,8 +4028,8 @@
           "formation_div": 3,
           "formation_step": [2.5,2.0],
           "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "targetableByAi": false
         },
         "way": {}
@@ -4975,8 +4991,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -4991,8 +5007,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5007,8 +5023,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5023,8 +5039,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5039,8 +5055,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5055,8 +5071,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5071,8 +5087,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5087,8 +5103,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5103,8 +5119,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5119,8 +5135,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -5171,8 +5187,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5187,8 +5203,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5203,8 +5219,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5219,8 +5235,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5235,8 +5251,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5251,8 +5267,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5267,8 +5283,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5283,8 +5299,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5299,8 +5315,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5315,8 +5331,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5331,8 +5347,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -5383,8 +5399,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5399,8 +5415,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5415,8 +5431,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5431,8 +5447,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5447,8 +5463,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5463,8 +5479,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5479,8 +5495,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5495,8 +5511,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5511,8 +5527,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5527,8 +5543,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5543,8 +5559,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5559,8 +5575,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5575,8 +5591,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5591,8 +5607,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5607,8 +5623,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -5659,8 +5675,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5675,8 +5691,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5691,8 +5707,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5707,8 +5723,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5723,8 +5739,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5739,8 +5755,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5755,8 +5771,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5771,8 +5787,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5787,8 +5803,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5803,8 +5819,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5819,8 +5835,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5835,8 +5851,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5851,8 +5867,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -5903,8 +5919,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5919,8 +5935,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5935,8 +5951,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5951,8 +5967,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5967,8 +5983,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5983,8 +5999,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5999,8 +6015,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6015,8 +6031,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6031,8 +6047,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6047,8 +6063,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6063,8 +6079,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6079,8 +6095,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6095,8 +6111,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -7304,8 +7320,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7320,8 +7336,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7336,8 +7352,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7352,8 +7368,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7368,8 +7384,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7384,8 +7400,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7400,8 +7416,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7416,8 +7432,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7432,8 +7448,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7448,8 +7464,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -7500,8 +7516,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7516,8 +7532,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7532,8 +7548,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7548,8 +7564,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7564,8 +7580,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7580,8 +7596,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7596,8 +7612,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7612,8 +7628,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7628,8 +7644,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7644,8 +7660,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7660,8 +7676,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -7712,8 +7728,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7728,8 +7744,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7744,8 +7760,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7760,8 +7776,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7776,8 +7792,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7792,8 +7808,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7808,8 +7824,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7824,8 +7840,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7840,8 +7856,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7856,8 +7872,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7872,8 +7888,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7888,8 +7904,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7904,8 +7920,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7920,8 +7936,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7936,8 +7952,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -7988,8 +8004,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8004,8 +8020,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8020,8 +8036,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8036,8 +8052,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8052,8 +8068,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8068,8 +8084,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8084,8 +8100,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8100,8 +8116,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8116,8 +8132,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8132,8 +8148,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8148,8 +8164,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8164,8 +8180,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8180,8 +8196,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -8232,8 +8248,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8248,8 +8264,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8264,8 +8280,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8280,8 +8296,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8296,8 +8312,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8312,8 +8328,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8328,8 +8344,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8344,8 +8360,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8360,8 +8376,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8376,8 +8392,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8392,8 +8408,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8408,8 +8424,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8424,8 +8440,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -8687,7 +8703,6 @@
           [-1599.4,150.595,-1132.7]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_big_city_aaa_01",
             "t2_big_city_aaa_02",
@@ -8704,7 +8719,8 @@
             "t2_big_city_aaa_13",
             "t2_big_city_aaa_14",
             "t2_big_city_aaa_15"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8716,7 +8732,6 @@
           [-2375.34,119.676,-541.492]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_trench_aaa_01",
             "t2_trench_aaa_02",
@@ -8735,7 +8750,8 @@
             "t2_small_city_aaa_05",
             "t2_small_city_aaa_06",
             "t2_small_city_aaa_07"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8747,7 +8763,6 @@
           [-1898.07,94.7246,489.74]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_art_01",
             "t2_art_02",
@@ -8769,7 +8784,8 @@
             "t2_art_18",
             "t2_art_19",
             "t2_art_20"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8781,13 +8797,13 @@
           [-9919.31,283.052,7950.42]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "bridge_02",
             "bridge_49",
             "bridge_05",
             "bridge_22"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8799,7 +8815,6 @@
           [-3064.26,158.145,-96.6729]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_bunker_01",
             "t2_bunker_02",
@@ -8811,7 +8826,8 @@
             "t2_bunker_08",
             "t2_bunker_09",
             "t2_bunker_10"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8823,11 +8839,11 @@
           [-3057.32,71.0664,4336.48]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_big_aaa_squad",
             "t2_small_aaa_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8839,14 +8855,14 @@
           [-9613.58,177.88,9690.51]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_tank_01",
             "t1_tank_02",
             "t1_tank_03",
             "t1_tank_04",
             "t1_tank_05"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8858,14 +8874,14 @@
           [-10762.6,226.3,9354.81]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_truck_aaa_01",
             "t1_truck_aaa_02",
             "t1_truck_aaa_03",
             "t1_truck_aaa_04",
             "t1_truck_aaa_05"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8877,14 +8893,14 @@
           [-10114.1,198.831,8514.42]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_truck_01",
             "t1_truck_02",
             "t1_truck_03",
             "t1_truck_04",
             "t1_truck_05"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8896,11 +8912,11 @@
           [-5091.26,166.373,10891.2]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_trucks_aaa_squad",
             "t1_big_aaa_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8912,7 +8928,6 @@
           [-9194.34,158.603,9125.03]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_big_aaa_01",
             "t1_big_aaa_02",
@@ -8922,7 +8937,8 @@
             "t1_big_aaa_06",
             "t1_big_aaa_07",
             "t1_big_aaa_08"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8934,7 +8950,6 @@
           [-4314.07,196.899,-37.8168]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_light_bunker_01",
             "t2_light_bunker_02",
@@ -8942,7 +8957,8 @@
             "t2_light_bunker_04",
             "t2_light_bunker_05",
             "t2_light_bunker_06"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8954,8 +8970,8 @@
           [-6577.66,213.561,15677.9]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t1_tanks_squad"
+          "squad_members": "t1_tanks_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8967,11 +8983,11 @@
           [-7519.45,203.48,15535.2]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_trucks_aaa_squad",
             "t1_trucks_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8983,8 +8999,8 @@
           [-16666.3,209.85,6499.37]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t2_small_aaa_squad"
+          "squad_members": "t2_small_aaa_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8996,8 +9012,8 @@
           [-17600.7,209.85,5000.47]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t2_big_aaa_squad"
+          "squad_members": "t2_big_aaa_squad",
+          "object_marking": 0
         }
       },
       {
@@ -9009,11 +9025,11 @@
           [-2440.55,250.65,-2322.7]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_heavy_units_squad",
             "t2_light_bunker_01"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9025,11 +9041,11 @@
           [-1337.9,250.65,-2713.75]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_heavy_units_squad",
             "t1_light_units_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9041,12 +9057,12 @@
           [-5349.8,166.35,10818.5]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_trucks_squad",
             "t1_tanks_squad",
             "bridges_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9058,12 +9074,12 @@
           [-2928.6,71.05,4356.45]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_artillery_squad",
             "t2_light_bunkers_squad",
             "t2_bunkers_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9075,11 +9091,11 @@
           [-714.7,250.65,-2559.4]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_heavy_units_squad",
             "t1_light_units_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9091,12 +9107,12 @@
           [-5257.95,72.4,-32525.7]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_subquest_units_01",
             "t1_subquest_units_02",
             "t1_subquest_units_03"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -9108,11 +9124,44 @@
           [-703.7,72.4,-32525.7]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_subquest_units_01",
             "t2_subquest_units_02",
             "t2_subquest_units_03"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-40052.8,145.8,14522.5]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_aaa_squad",
+            "t1_big_aaa_squad",
+            "t1_trucks_squad",
+            "t1_trucks_aaa_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-38307.1,145.8,18685.3]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_aaa_squad",
+            "t2_big_aaa_squad",
+            "t2_small_aaa_squad"
           ]
         }
       }
@@ -9163,8 +9212,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9179,8 +9228,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9195,8 +9244,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9211,8 +9260,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9227,8 +9276,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9243,8 +9292,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9259,8 +9308,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9275,8 +9324,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9291,8 +9340,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9307,8 +9356,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -9359,8 +9408,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9375,8 +9424,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9391,8 +9440,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9407,8 +9456,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9423,8 +9472,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9439,8 +9488,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9455,8 +9504,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9471,8 +9520,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9487,8 +9536,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9503,8 +9552,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9519,8 +9568,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -9571,8 +9620,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9587,8 +9636,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9603,8 +9652,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9619,8 +9668,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9635,8 +9684,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9651,8 +9700,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9667,8 +9716,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9683,8 +9732,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9699,8 +9748,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9715,8 +9764,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9731,8 +9780,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9747,8 +9796,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9763,8 +9812,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9779,8 +9828,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9795,8 +9844,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -9847,8 +9896,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9863,8 +9912,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9879,8 +9928,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9895,8 +9944,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9911,8 +9960,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9927,8 +9976,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9943,8 +9992,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9959,8 +10008,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9975,8 +10024,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9991,8 +10040,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10007,8 +10056,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10023,8 +10072,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10039,8 +10088,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -10091,8 +10140,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10107,8 +10156,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10123,8 +10172,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10139,8 +10188,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10155,8 +10204,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10171,8 +10220,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10187,8 +10236,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10203,8 +10252,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10219,8 +10268,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10235,8 +10284,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10251,8 +10300,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10267,8 +10316,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10283,8 +10332,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }

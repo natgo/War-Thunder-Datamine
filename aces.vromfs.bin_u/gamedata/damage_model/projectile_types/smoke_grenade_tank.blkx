@@ -1,6 +1,7 @@
 {
   "normalizationPreset": "heat",
   "ricochetPreset": "he",
+  "groundRicochetPreset": "he",
   "secondaryShattersPreset": "ap",
   "stabilityThreshold": 0.5,
   "stabilityCaliberToArmorThreshold": 5.0,
@@ -11,9 +12,42 @@
   "modelName": "tank_bullet_he",
   "fresnel": [0.23,0.1,2.0],
   "explodeOnRendinst": true,
+  "fuseOnWater": true,
+  "fuseOnWaterProbability": 1.0,
   "stabilityRicochetModifier": {
     "mod1": [0.0,0.5],
     "mod2": [15.0,0.7],
     "mod3": [30.0,0.99]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 20.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": [
+        {
+          "expl": 0.1,
+          "fire": 0.9,
+          "damage": 5.0,
+          "fHitCritical": true
+        },
+        {
+          "expl": 0.5,
+          "fire": 0.5,
+          "damage": 15.0,
+          "fHitCritical": true
+        }
+      ],
+      "onKill": {
+        "expl": 0.5,
+        "fire": 0.5,
+        "fHitCritical": true
+      }
+    }
   }
 }

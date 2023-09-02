@@ -7,6 +7,7 @@
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
+  "ilsASP17": true,
   "gearSinkRangeLR": 0.32,
   "gearSinkRangeC": 0.25,
   "type": "typeFighter",
@@ -387,6 +388,14 @@
             "smoke": 0.2
           },
           {
+            "damage": 20.0,
+            "tail_dm": 0.2
+          },
+          {
+            "damage": 30.0,
+            "tail_dm": 0.4
+          },
+          {
             "damage": 50.0,
             "tail_dm": 0.6
           },
@@ -396,7 +405,16 @@
           },
           {
             "damage": 100.0,
+            "tail_dm": 0.9
+          },
+          {
+            "damage": 200.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 300.0,
+            "tail_dm": 1.0,
+            "expl": 1.0
           }
         ],
         "onKill": [
@@ -427,21 +445,32 @@
           {
             "damage": 30.0,
             "tail_dm": 1.0,
-            "nothing": 5.0
+            "expl": 0.3
           },
           {
             "damage": 50.0,
             "tail_dm": 1.0,
-            "nothing": 4.0
+            "expl": 0.4
           },
           {
             "damage": 70.0,
             "tail_dm": 1.0,
-            "nothing": 3.0
+            "expl": 0.5
           },
           {
             "damage": 100.0,
-            "tail_dm": 1.0
+            "tail_dm": 1.0,
+            "expl": 0.5
+          },
+          {
+            "damage": 200.0,
+            "tail_dm": 1.0,
+            "expl": 0.5
+          },
+          {
+            "damage": 300.0,
+            "tail_dm": 1.0,
+            "expl": 1.0
           }
         ]
       },
@@ -1403,8 +1432,12 @@
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [2.6,-0.14,0.557],
-    "headPosOnShooting": [2.6,-0.14,0.557],
+    "headPos": [2.6,-0.1,0.557],
+    "headPosOnShooting": [2.6,-0.1,0.557],
+    "mirror": true,
+    "mirrorPos": [3.407,-0.024,0.0],
+    "mirrorNorm": [-1.0,0.0,1.0],
+    "mirrorNode": "mirror",
     "lightPos": [
       [3.218644,-0.594647,0.578619],
       [3.214933,-0.616382,0.214875]
@@ -1459,6 +1492,18 @@
       "oil_pressure1": [0.0,150.0],
       "oil_pressure2": [0.0,150.0],
       "oil_pressure3": [0.0,150.0]
+    },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [0.0,0.0,1.0,1.0],
+        "page": {
+          "type": "plane_ils",
+          "ilsSize": [0.2,0.2],
+          "ilsOffsetForce": 0.2,
+          "brightnessMult": 3.5,
+          "ilsColor": "#ca650ab4"
+        }
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -1618,6 +1663,10 @@
                 "limits": {
                   "yaw": [-15.0,15.0],
                   "pitch": [-31.0,0.0]
+                },
+                "limitsTable": {
+                  "yaw": [-15.0,15.0],
+                  "pitch": [-17.0,0.0]
                 }
               },
               {
@@ -1697,6 +1746,10 @@
                 "limits": {
                   "yaw": [-15.0,15.0],
                   "pitch": [-31.0,0.0]
+                },
+                "limitsTable": {
+                  "yaw": [-15.0,15.0],
+                  "pitch": [-17.0,0.0]
                 }
               },
               {
@@ -1725,6 +1778,7 @@
               "node": [
                 "exhaust_shield",
                 "fuse2",
+                "fuse4",
                 "lipa"
               ]
             },
@@ -1776,6 +1830,10 @@
                 "limits": {
                   "yaw": [-15.0,15.0],
                   "pitch": [-31.0,0.0]
+                },
+                "limitsTable": {
+                  "yaw": [-15.0,15.0],
+                  "pitch": [-17.0,0.0]
                 }
               },
               {
@@ -2161,7 +2219,13 @@
       "group": "countermeasures",
       "tier": 2,
       "effects": {
-        "enginesInfraRedBrightnessMult": 0.7
+        "enginesInfraRedBrightnessMult": 0.7,
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "ghsg_exhaust_device_common"
+          }
+        }
       }
     },
     "heli_counterMeasures": {

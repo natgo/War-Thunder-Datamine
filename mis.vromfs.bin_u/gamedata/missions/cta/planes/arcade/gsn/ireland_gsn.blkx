@@ -51,19 +51,20 @@
       "environment": "Evening",
       "weather": "hazy",
       "attempts": true,
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "locName": "missions/_GS/medium_tank_ship;location/arcade_ireland",
+      "locDesc": "missions/_GS/desc",
       "scoreLimit": 4500,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "locName": "missions/_GS/medium_tank_ship;location/arcade_ireland",
-      "locDesc": "missions/_GS/desc",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
     },
     "atmosphere": {
@@ -222,6 +223,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -279,7 +294,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -288,8 +302,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t1_fighters_spawn",
             "team": "A",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": false,
               "tank": false
@@ -300,7 +319,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -309,8 +327,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t2_fighters_spawn",
             "team": "B",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": false,
               "tank": false
@@ -321,7 +344,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -330,8 +352,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t1_bombers_spawn",
             "team": "A",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -342,7 +369,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -351,8 +377,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t2_bombers_spawn",
             "team": "B",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -363,7 +394,6 @@
             "spawnEffect": false,
             "isAirfield": true,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -373,8 +403,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t1_airfield",
             "team": "A",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -385,7 +420,6 @@
             "spawnEffect": false,
             "isAirfield": true,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -395,8 +429,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "replaceAreas": false,
             "target": "t2_airfield",
             "team": "B",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -438,6 +477,11 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": [
             "t1_boats_squad",
             "t2_boats_squad"
@@ -447,16 +491,16 @@
         },
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_boats_squad",
               "t2_boats_squad",
               "t1_trucks_squad",
               "t2_trucks_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.1,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1,
@@ -464,48 +508,44 @@
             "minDistBetween": 50.0
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "boat_swim_point",
               "ships_swim_point"
             ],
-            "isImmortal": true,
-            "speed": 300.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "isImmortal": true,
+            "speed": 300.0
+          },
+          {
             "object": [
               "t1_aaa_squad",
               "t2_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.1,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_def_aaa_squad",
               "t2_def_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.6,
             "effShootingRate": 0.6,
             "airEffShootingRate": 0.6
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_tanks_squad",
               "t1_artillery_squad",
@@ -514,18 +554,22 @@
               "t2_artillery_squad",
               "t2_bunkers_light_squad"
             ],
-            "accuracy": 0.0,
-            "effShootingRate": 0.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "accuracy": 0.0,
+            "effShootingRate": 0.0
+          },
+          {
             "object": [
               "boat_swim_point",
               "ships_swim_point"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true
           }
         ]
@@ -553,9 +597,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_movable_units_squad",
-          "target": "tanks_battle_area"
+          "target": "tanks_battle_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -591,9 +635,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t2_movable_units_squad",
-          "target": "tanks_battle_area"
+          "target": "tanks_battle_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -677,9 +721,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_boats_squad",
-          "target": "t2_boats_squad"
+          "target": "t2_boats_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -698,6 +742,11 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": [
             "t1_boats_squad",
             "t2_boats_squad"
@@ -739,6 +788,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -1172,6 +1223,7 @@
         ],
         "props": {
           "squad_members": [
+            "t1_land_squad",
             "t1_boats_squad",
             "t1_trucks_squad",
             "t1_tanks_squad"
@@ -1188,9 +1240,40 @@
         ],
         "props": {
           "squad_members": [
+            "t2_land_squad",
             "t2_boats_squad",
             "t2_trucks_squad",
             "t2_tanks_squad"
+          ]
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7361.15,1001.65,18176.4]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_aaa_squad",
+            "t1_trucks_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13573.2,1001.65,14071.9]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_aaa_squad",
+            "t2_trucks_squad"
           ]
         }
       }
@@ -1217,6 +1300,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -1239,9 +1324,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_02": {
@@ -1255,9 +1340,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_03": {
@@ -1271,9 +1356,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_04": {
@@ -1287,9 +1372,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_05": {
@@ -1303,9 +1388,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_06": {
@@ -1319,9 +1404,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_07": {
@@ -1335,9 +1420,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_08": {
@@ -1351,9 +1436,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_09": {
@@ -1367,9 +1452,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_10": {
@@ -1383,9 +1468,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_11": {
@@ -1399,9 +1484,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_12": {
@@ -1415,9 +1500,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_13": {
@@ -1431,9 +1516,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_14": {
@@ -1447,9 +1532,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_01_wp_15": {
@@ -1463,9 +1548,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -1491,6 +1576,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -1513,9 +1600,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_02": {
@@ -1529,9 +1616,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_03": {
@@ -1545,9 +1632,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_04": {
@@ -1561,9 +1648,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_05": {
@@ -1577,9 +1664,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_06": {
@@ -1593,9 +1680,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_07": {
@@ -1609,9 +1696,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_08": {
@@ -1625,9 +1712,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_09": {
@@ -1641,9 +1728,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_10": {
@@ -1657,9 +1744,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_11": {
@@ -1673,9 +1760,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_12": {
@@ -1689,9 +1776,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_13": {
@@ -1705,9 +1792,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_02_wp_14": {
@@ -1721,9 +1808,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -1749,6 +1836,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -1771,9 +1860,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_02": {
@@ -1787,9 +1876,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_03": {
@@ -1803,9 +1892,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_04": {
@@ -1819,9 +1908,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_05": {
@@ -1835,9 +1924,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_06": {
@@ -1851,9 +1940,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_07": {
@@ -1867,9 +1956,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_08": {
@@ -1883,9 +1972,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_09": {
@@ -1899,9 +1988,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_10": {
@@ -1915,9 +2004,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_11": {
@@ -1931,9 +2020,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_12": {
@@ -1947,9 +2036,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_03_wp_13": {
@@ -1963,9 +2052,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -1991,6 +2080,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -2013,9 +2104,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_02": {
@@ -2029,9 +2120,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_03": {
@@ -2045,9 +2136,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_04": {
@@ -2061,9 +2152,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_05": {
@@ -2077,9 +2168,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_06": {
@@ -2093,9 +2184,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_07": {
@@ -2109,9 +2200,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_08": {
@@ -2125,9 +2216,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_09": {
@@ -2141,9 +2232,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_10": {
@@ -2157,9 +2248,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_11": {
@@ -2173,9 +2264,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_12": {
@@ -2189,9 +2280,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_13": {
@@ -2205,9 +2296,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_14": {
@@ -2221,9 +2312,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_15": {
@@ -2237,9 +2328,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_04_wp_16": {
@@ -2253,9 +2344,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -2281,6 +2372,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -2303,9 +2396,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_02": {
@@ -2319,9 +2412,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_03": {
@@ -2335,9 +2428,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_04": {
@@ -2351,9 +2444,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_05": {
@@ -2367,9 +2460,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_06": {
@@ -2383,9 +2476,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_07": {
@@ -2399,9 +2492,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_08": {
@@ -2415,9 +2508,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_09": {
@@ -2431,9 +2524,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_10": {
@@ -2447,9 +2540,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "HALT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_11": {
@@ -2463,9 +2556,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_12": {
@@ -2479,9 +2572,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_13": {
@@ -2495,9 +2588,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_14": {
@@ -2511,9 +2604,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_01_wp_15": {
@@ -2527,9 +2620,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -2555,6 +2648,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -2577,9 +2672,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_02": {
@@ -2593,9 +2688,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_03": {
@@ -2609,9 +2704,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_04": {
@@ -2625,9 +2720,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_05": {
@@ -2641,9 +2736,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_16": {
@@ -2657,9 +2752,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_06": {
@@ -2673,9 +2768,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_07": {
@@ -2689,9 +2784,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_08": {
@@ -2705,9 +2800,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_09": {
@@ -2721,9 +2816,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_10": {
@@ -2737,9 +2832,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_11": {
@@ -2753,9 +2848,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_12": {
@@ -2769,9 +2864,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_13": {
@@ -2785,9 +2880,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_14": {
@@ -2801,9 +2896,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_02_wp_15": {
@@ -2817,9 +2912,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -2845,6 +2940,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -2867,9 +2964,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_13": {
@@ -2883,9 +2980,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_02": {
@@ -2899,9 +2996,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_03": {
@@ -2915,9 +3012,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_04": {
@@ -2931,9 +3028,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_05": {
@@ -2947,9 +3044,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_06": {
@@ -2963,9 +3060,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_07": {
@@ -2979,9 +3076,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_08": {
@@ -2995,9 +3092,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_09": {
@@ -3011,9 +3108,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_10": {
@@ -3027,9 +3124,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_11": {
@@ -3043,9 +3140,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_03_wp_12": {
@@ -3059,9 +3156,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3087,6 +3184,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -3109,9 +3208,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_13": {
@@ -3125,9 +3224,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_02": {
@@ -3141,9 +3240,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_03": {
@@ -3157,9 +3256,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_04": {
@@ -3173,9 +3272,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_05": {
@@ -3189,9 +3288,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_06": {
@@ -3205,9 +3304,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_07": {
@@ -3221,9 +3320,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_08": {
@@ -3237,9 +3336,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_09": {
@@ -3253,9 +3352,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_10": {
@@ -3269,9 +3368,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_11": {
@@ -3285,9 +3384,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_04_wp_12": {
@@ -3301,9 +3400,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3329,6 +3428,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -3354,9 +3455,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "swim_point_wp_02": {
@@ -3370,9 +3471,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "swim_point_wp_03": {
@@ -3386,9 +3487,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "swim_point_wp_04": {
@@ -3402,9 +3503,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "swim_point_wp_05": {
@@ -3418,9 +3519,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3446,6 +3547,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -3471,9 +3574,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "boat_swim_point01_wp_02": {
@@ -3487,9 +3590,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "boat_swim_point01_wp_03": {
@@ -3503,9 +3606,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "boat_swim_point01_wp_04": {
@@ -3519,9 +3622,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "boat_swim_point01_wp_05": {
@@ -3535,9 +3638,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3563,6 +3666,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3585,9 +3690,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_02": {
@@ -3601,9 +3706,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_03": {
@@ -3617,9 +3722,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_04": {
@@ -3633,9 +3738,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_05": {
@@ -3649,9 +3754,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_06": {
@@ -3665,9 +3770,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_07": {
@@ -3681,9 +3786,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_08": {
@@ -3697,9 +3802,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_09": {
@@ -3713,9 +3818,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_10": {
@@ -3729,9 +3834,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_11": {
@@ -3745,9 +3850,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_12": {
@@ -3761,9 +3866,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_13": {
@@ -3777,9 +3882,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_14": {
@@ -3793,9 +3898,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_15": {
@@ -3809,9 +3914,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3837,6 +3942,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3859,9 +3966,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_17": {
@@ -3875,9 +3982,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_18": {
@@ -3891,9 +3998,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_19": {
@@ -3907,9 +4014,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_20": {
@@ -3923,9 +4030,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_21": {
@@ -3939,9 +4046,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_22": {
@@ -3955,9 +4062,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_23": {
@@ -3971,9 +4078,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_24": {
@@ -3987,9 +4094,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_25": {
@@ -4003,9 +4110,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_26": {
@@ -4019,9 +4126,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_27": {
@@ -4035,9 +4142,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_28": {
@@ -4051,9 +4158,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_29": {
@@ -4067,9 +4174,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4095,6 +4202,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -4117,9 +4226,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_31": {
@@ -4133,9 +4242,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_32": {
@@ -4149,9 +4258,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_33": {
@@ -4165,9 +4274,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_34": {
@@ -4181,9 +4290,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_35": {
@@ -4197,9 +4306,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_36": {
@@ -4213,9 +4322,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_37": {
@@ -4229,9 +4338,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_38": {
@@ -4245,9 +4354,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_39": {
@@ -4261,9 +4370,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_40": {
@@ -4277,9 +4386,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_41": {
@@ -4293,9 +4402,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_42": {
@@ -4309,9 +4418,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4337,6 +4446,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -4359,9 +4470,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_44": {
@@ -4375,9 +4486,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_45": {
@@ -4391,9 +4502,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_46": {
@@ -4407,9 +4518,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_47": {
@@ -4423,9 +4534,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_48": {
@@ -4439,9 +4550,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_49": {
@@ -4455,9 +4566,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_50": {
@@ -4471,9 +4582,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_51": {
@@ -4487,9 +4598,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_52": {
@@ -4503,9 +4614,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_53": {
@@ -4519,9 +4630,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_54": {
@@ -4535,9 +4646,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_55": {
@@ -4551,9 +4662,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_56": {
@@ -4567,9 +4678,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_57": {
@@ -4583,9 +4694,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_tank_05_wp_58": {
@@ -4599,9 +4710,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4627,6 +4738,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -4649,9 +4762,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_02": {
@@ -4665,9 +4778,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_03": {
@@ -4681,9 +4794,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_04": {
@@ -4697,9 +4810,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_05": {
@@ -4713,9 +4826,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_06": {
@@ -4729,9 +4842,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_07": {
@@ -4745,9 +4858,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_08": {
@@ -4761,9 +4874,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_09": {
@@ -4777,9 +4890,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_10": {
@@ -4793,9 +4906,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "HALT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_11": {
@@ -4809,9 +4922,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_12": {
@@ -4825,9 +4938,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_13": {
@@ -4841,9 +4954,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_14": {
@@ -4857,9 +4970,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_15": {
@@ -4873,9 +4986,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4901,6 +5014,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -4923,9 +5038,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_17": {
@@ -4939,9 +5054,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_18": {
@@ -4955,9 +5070,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_19": {
@@ -4971,9 +5086,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_20": {
@@ -4987,9 +5102,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_21": {
@@ -5003,9 +5118,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_22": {
@@ -5019,9 +5134,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_23": {
@@ -5035,9 +5150,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_24": {
@@ -5051,9 +5166,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_25": {
@@ -5067,9 +5182,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_26": {
@@ -5083,9 +5198,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_27": {
@@ -5099,9 +5214,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_28": {
@@ -5115,9 +5230,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_29": {
@@ -5131,9 +5246,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_30": {
@@ -5147,9 +5262,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_31": {
@@ -5163,9 +5278,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -5191,6 +5306,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -5213,9 +5330,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_33": {
@@ -5229,9 +5346,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_34": {
@@ -5245,9 +5362,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_35": {
@@ -5261,9 +5378,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_36": {
@@ -5277,9 +5394,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_37": {
@@ -5293,9 +5410,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_38": {
@@ -5309,9 +5426,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_39": {
@@ -5325,9 +5442,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_40": {
@@ -5341,9 +5458,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_41": {
@@ -5357,9 +5474,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_42": {
@@ -5373,9 +5490,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_43": {
@@ -5389,9 +5506,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_44": {
@@ -5405,9 +5522,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -5433,6 +5550,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -5455,9 +5574,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_46": {
@@ -5471,9 +5590,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_47": {
@@ -5487,9 +5606,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_48": {
@@ -5503,9 +5622,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_49": {
@@ -5519,9 +5638,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_50": {
@@ -5535,9 +5654,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_51": {
@@ -5551,9 +5670,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_52": {
@@ -5567,9 +5686,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_53": {
@@ -5583,9 +5702,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_54": {
@@ -5599,9 +5718,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_55": {
@@ -5615,9 +5734,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_56": {
@@ -5631,9 +5750,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_tank_05_wp_57": {
@@ -5647,9 +5766,9 @@
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -5677,6 +5796,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5710,6 +5831,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5743,6 +5866,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5776,6 +5901,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5809,6 +5936,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5842,6 +5971,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5875,6 +6006,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5908,6 +6041,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5941,6 +6076,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5974,6 +6111,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6007,6 +6146,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6040,6 +6181,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6073,6 +6216,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6106,6 +6251,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6139,6 +6286,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6172,6 +6321,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6205,6 +6356,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6238,6 +6391,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6271,6 +6426,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6304,6 +6461,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6337,6 +6496,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6370,6 +6531,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6403,6 +6566,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6436,6 +6601,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6469,6 +6636,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6502,6 +6671,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6537,6 +6708,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6570,6 +6743,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6603,6 +6778,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6636,6 +6813,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6669,6 +6848,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6702,6 +6883,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6735,6 +6918,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6768,6 +6953,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6801,6 +6988,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6834,6 +7023,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6867,6 +7058,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6900,6 +7093,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6933,6 +7128,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6966,6 +7163,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6999,6 +7198,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7032,6 +7233,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7065,6 +7268,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7098,6 +7303,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7131,6 +7338,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7164,6 +7373,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7197,6 +7408,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7230,6 +7443,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7263,6 +7478,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7296,6 +7513,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7329,6 +7548,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7362,6 +7583,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7395,6 +7618,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7428,6 +7653,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7461,6 +7688,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7494,6 +7723,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7529,6 +7760,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -7562,6 +7795,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -7595,6 +7830,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -7628,6 +7865,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -7661,6 +7900,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -7694,6 +7935,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,

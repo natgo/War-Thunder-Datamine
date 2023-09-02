@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 14.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,20 +48,27 @@
     "mission": {
       "level": "levels/britain.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "locName": "missions/_AfD;location/britain;missions/air_newbie",
+      "locDesc": "missions/_AfD/main/desc;missions/_AfD/1zone",
       "scoreLimit": 10000,
       "timeLimit": 15,
       "deathPenaltyMul": 0.1,
       "country_axis": "germany",
       "country_allies": "britain",
-      "locName": "missions/_AfD;location/britain;missions/air_newbie",
-      "locDesc": "missions/_AfD/main/desc;missions/_AfD/1zone",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
-        "isAirplanesAllowed": true
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 14.0
     },
     "spectator_points": {
       "spectatorPoint": [
@@ -88,12 +91,14 @@
             {
               "map": false,
               "minTime": 6,
-              "picture": "versus/airfield_domination_01"
+              "picture": "versus/airfield_domination_01",
+              "showAirMap": false
             },
             {
               "map": false,
               "minTime": 6,
-              "picture": "versus/airfield_domination_02"
+              "picture": "versus/airfield_domination_02",
+              "showAirMap": false
             }
           ]
         },
@@ -104,6 +109,7 @@
             "map": true,
             "minTime": 4,
             "picture": "",
+            "showAirMap": false,
             "icon": [
               {
                 "icontype": "fighter",
@@ -185,6 +191,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -245,11 +265,19 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "t1_quest_units_squad",
             "team": "B"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "t2_quest_units_squad",
             "team": "A"
           }
@@ -270,7 +298,8 @@
           "canCaptureInAir": false,
           "canCaptureByGM": true,
           "airfield": "airfield_start",
-          "createRespawnBaseFromAirfield": false
+          "createRespawnBaseFromAirfield": false,
+          "zoneDefenders": {}
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -278,7 +307,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -286,8 +314,14 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
             "target": "t1_fighters_spawn",
             "team": "A",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": false,
               "artillery": false,
@@ -299,7 +333,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -307,8 +340,14 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
             "target": "t2_fighters_spawn",
             "team": "B",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": false,
               "artillery": false,
@@ -320,7 +359,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -328,8 +366,14 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
             "target": "t1_bombers_spawn",
             "team": "A",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": true,
               "artillery": false,
@@ -341,7 +385,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -349,8 +392,14 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
             "target": "t2_bombers_spawn",
             "team": "B",
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": true,
               "artillery": false,
@@ -401,6 +450,9 @@
             "icon": "tank",
             "icon army": 1,
             "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "t1_quest_units_squad"
           },
           {
@@ -410,6 +462,9 @@
             "icon": "tank",
             "icon army": 2,
             "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "t2_quest_units_squad"
           }
         ]
@@ -462,6 +517,8 @@
       ],
       "unit_class": "a5m4",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -471,6 +528,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "free_distance": 70.0,
@@ -506,6 +565,8 @@
         "unit_class": "germ_sdKfz_251",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -515,6 +576,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 12,
@@ -537,8 +600,8 @@
             "props": {
               "speed": 31.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -553,8 +616,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -571,6 +634,8 @@
         "unit_class": "germ_sdKfz_251",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -580,6 +645,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 12,
@@ -602,8 +669,8 @@
             "props": {
               "speed": 31.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -618,8 +685,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -638,6 +705,8 @@
         "unit_class": "germ_sdkfz71_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -647,6 +716,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,
@@ -669,8 +740,8 @@
             "props": {
               "speed": 31.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -685,8 +756,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -703,6 +774,8 @@
         "unit_class": "germ_sdkfz71_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -712,6 +785,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -734,8 +809,8 @@
             "props": {
               "speed": 31.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -750,8 +825,8 @@
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -938,6 +1013,36 @@
         "props": {
           "squad_members": "dummy_unit"
         }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [25362.0,51.7,31411.3]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tanks_squad",
+            "t1_trucks_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20714.1,51.7,30446.5]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tanks_squad",
+            "t2_trucks_squad"
+          ]
+        }
       }
     ],
     "structures": {
@@ -951,6 +1056,8 @@
       "unit_class": "dummy",
       "objLayer": 1,
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -960,6 +1067,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 0,
         "count": 1,

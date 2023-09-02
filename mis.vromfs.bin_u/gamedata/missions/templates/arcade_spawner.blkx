@@ -39,14 +39,22 @@
         "missionGetBalanceLevel": {
           "input_var": "arcade_spawn_matcher"
         },
-        "triggerEnable": {
-          "target": [
-            "arcade_spawn_near",
-            "arcade_spawn_middle",
-            "arcade_spawn_far",
-            "arcade_spawn_huge",
-            "arcade_airfield_spawn"
-          ]
+        "triggerEnable": [
+          {
+            "target": [
+              "arcade_spawn_near",
+              "arcade_spawn_middle",
+              "arcade_spawn_far",
+              "arcade_spawn_huge",
+              "arcade_airfield_spawn"
+            ]
+          },
+          {
+            "target": "arcade_airfield_aaa_enable"
+          }
+        ],
+        "comment": {
+          "value": ""
         }
       },
       "else_actions": {}
@@ -90,6 +98,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_assaults_spawn_near",
             "team": "A",
             "tags": {
@@ -115,6 +124,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_near",
             "team": "B",
             "separate_fuel_time": false,
@@ -143,6 +153,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_fighters_spawn_near",
             "team": "A",
             "tags": {
@@ -172,6 +183,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_fighters_spawn_near",
             "team": "B",
             "tags": {
@@ -195,7 +207,25 @@
         },
         "triggerEnable": {
           "target": "common_bombers_spawn"
-        }
+        },
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_near",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_near",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_near",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_near",
+            "var": "t2_assaults_spawn_name"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -245,11 +275,9 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_assaults_spawn_middle",
             "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_assault": true,
               "tank": false,
@@ -273,6 +301,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_middle",
             "team": "B",
             "separate_fuel_time": false,
@@ -301,6 +330,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_fighters_spawn_middle",
             "team": "A",
             "tags": {
@@ -330,6 +360,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_fighters_spawn_middle",
             "team": "B",
             "tags": {
@@ -351,9 +382,32 @@
             "arcade_spawn_huge"
           ]
         },
-        "triggerEnable": {
-          "target": "common_bombers_spawn"
-        }
+        "triggerEnable": [
+          {
+            "target": "common_bombers_spawn"
+          },
+          {
+            "target": "common_bombers_spawn"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_middle",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_middle",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_middle",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_middle",
+            "var": "t2_assaults_spawn_name"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -403,6 +457,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_assaults_spawn_far",
             "team": "A",
             "separate_fuel_time": false,
@@ -431,6 +486,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_far",
             "team": "B",
             "separate_fuel_time": false,
@@ -459,6 +515,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_fighters_spawn_far",
             "team": "A",
             "tags": {
@@ -488,6 +545,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_fighters_spawn_far",
             "team": "B",
             "tags": {
@@ -509,9 +567,32 @@
             "arcade_spawn_huge"
           ]
         },
-        "triggerEnable": {
-          "target": "far_bombers_spawn"
-        }
+        "triggerEnable": [
+          {
+            "target": "far_bombers_spawn"
+          },
+          {
+            "target": "common_bombers_spawn"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_far",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_far",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_far",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_far",
+            "var": "t2_assaults_spawn_name"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -554,6 +635,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_assaults_spawn_huge",
             "team": "A",
             "separate_fuel_time": false,
@@ -582,6 +664,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_huge",
             "team": "B",
             "separate_fuel_time": false,
@@ -610,6 +693,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_fighters_spawn_huge",
             "team": "A",
             "tags": {
@@ -639,6 +723,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_fighters_spawn_huge",
             "team": "B",
             "tags": {
@@ -660,9 +745,32 @@
             "arcade_spawn_far"
           ]
         },
-        "triggerEnable": {
-          "target": "far_bombers_spawn"
-        }
+        "triggerEnable": [
+          {
+            "target": "far_bombers_spawn"
+          },
+          {
+            "target": "common_bombers_spawn"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_huge",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_huge",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_huge",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_huge",
+            "var": "t2_assaults_spawn_name"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -699,6 +807,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "tags": {
@@ -722,6 +831,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "separate_fuel_time": false,
@@ -731,6 +841,16 @@
               "type_bomber": true,
               "tank": false
             }
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn",
+            "var": "t2_bombers_spawn_name"
           }
         ]
       },
@@ -780,6 +900,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn_far",
             "team": "A",
             "tags": {
@@ -803,12 +924,23 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn_far",
             "team": "B",
             "tags": {
               "type_bomber": true,
               "tank": false
             }
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn_far",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn_far",
+            "var": "t2_bombers_spawn_name"
           }
         ]
       },
@@ -833,6 +965,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "separate_fuel_time": false,
@@ -859,6 +992,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "separate_fuel_time": false,
@@ -868,6 +1002,16 @@
               "type_bomber": true,
               "tank": false
             }
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn",
+            "var": "t2_bombers_spawn_name"
           }
         ]
       }
@@ -920,6 +1064,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@arcade_t1_airfield_name",
             "team": "A",
             "object": "@arcade_t1_airfield_name",
@@ -949,6 +1094,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@arcade_t2_airfield_name",
             "team": "B",
             "object": "@arcade_t2_airfield_name",
@@ -974,6 +1120,47 @@
           {
             "object": "@arcade_t2_airfield_name",
             "enemySurrenderOnLanding": true
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "arcade_airfield_aaa_enable": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@t1_airfield_aaa_name",
+            "type": "squad"
+          },
+          {
+            "target": "@t2_airfield_aaa_name",
+            "type": "squad"
+          }
+        ]
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false,
+            "object": "@t1_airfield_aaa_name",
+            "target": "t2_players_squad"
+          },
+          {
+            "playerAttracted": false,
+            "object": "@t2_airfield_aaa_name",
+            "target": "t1_players_squad"
           }
         ]
       },
@@ -1020,6 +1207,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "@t1_helicopter_spawn_01",
               "@t1_helicopter_spawn_02"
@@ -1049,6 +1237,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_helicopter_spawn_01",
             "team": "A",
             "tags": {
@@ -1075,6 +1264,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_helicopter_spawn_02",
             "team": "A",
             "tags": {
@@ -1133,6 +1323,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "@t2_helicopter_spawn_01",
               "@t2_helicopter_spawn_02"
@@ -1162,6 +1353,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_helicopter_spawn_01",
             "team": "B",
             "tags": {
@@ -1188,6 +1380,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_helicopter_spawn_02",
             "team": "B",
             "tags": {
@@ -1246,6 +1439,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "@t1_helicopter_pad_01",
               "@t1_helicopter_pad_02"
@@ -1275,6 +1469,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_helicopter_pad_01",
             "team": "A",
             "tags": {
@@ -1301,6 +1496,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_helicopter_pad_02",
             "team": "A",
             "tags": {
@@ -1369,6 +1565,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "@t2_helicopter_pad_01",
               "@t2_helicopter_pad_02"
@@ -1398,6 +1595,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_helicopter_pad_01",
             "team": "B",
             "tags": {
@@ -1424,6 +1622,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_helicopter_pad_02",
             "team": "B",
             "tags": {
@@ -1554,7 +1753,15 @@
     "t1_helicopter_spawn_icon_01": "helicopter_t1_spawn_icon_01",
     "t1_helicopter_spawn_icon_02": "helicopter_t1_spawn_icon_02",
     "t2_helicopter_spawn_icon_01": "helicopter_t2_spawn_icon_01",
-    "t2_helicopter_spawn_icon_02": "helicopter_t2_spawn_icon_02"
+    "t2_helicopter_spawn_icon_02": "helicopter_t2_spawn_icon_02",
+    "t1_airfield_aaa_name": "t1_def_aaa_squad",
+    "t2_airfield_aaa_name": "t2_def_aaa_squad",
+    "t1_fighters_spawn_name": "",
+    "t2_fighters_spawn_name": "",
+    "t1_bombers_spawn_name": "",
+    "t2_bombers_spawn_name": "",
+    "t1_assaults_spawn_name": "",
+    "t2_assaults_spawn_name": ""
   },
   "dialogs": {},
   "airfields": {},

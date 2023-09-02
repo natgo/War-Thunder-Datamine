@@ -2165,6 +2165,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_aj37_120kg_m71.blk"
       },
       {
+        "name": "saab_aj37_120kg_m71_retarded",
+        "blk": "gameData/FlightModels/weaponPresets/saab_aj37_120kg_m71_retarded.blk"
+      },
+      {
         "name": "saab_aj37_ltc",
         "blk": "gameData/FlightModels/weaponPresets/saab_aj37_ltc.blk"
       }
@@ -2208,6 +2212,8 @@
       "node": [
         "cannon1_dm",
         "cannon2_dm",
+        "cover2_dm",
+        "cover3_dm",
         "tank9_dm"
       ]
     },
@@ -2292,13 +2298,29 @@
             }
           },
           {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded",
+            "reqModification": "swd_aj37_120kg_m71",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "bomblavett_m71_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "machine_gun",
             "name": "akankapsel_30",
             "ShowNodes": {
               "node": "akankapsel_l"
             },
             "ShowDmParts": {
-              "node": "cannon1_dm"
+              "node": [
+                "cannon1_dm",
+                "cover2_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -2402,6 +2424,19 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/swd_bomblayett_m71.blk",
+              "emitter": "bomblavett_m71_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded",
+            "reqModification": "swd_aj37_120kg_m71",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
               "emitter": "bomblavett_m71_002",
               "external": true,
               "separate": true,
@@ -2523,6 +2558,19 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded",
+            "reqModification": "swd_aj37_120kg_m71",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "bomblavett_m71_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2577,13 +2625,29 @@
             }
           },
           {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded",
+            "reqModification": "swd_aj37_120kg_m71",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "bomblavett_m71_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "machine_gun",
             "name": "akankapsel_30",
             "ShowNodes": {
               "node": "akankapsel_r"
             },
             "ShowDmParts": {
-              "node": "cannon2_dm"
+              "node": [
+                "cannon2_dm",
+                "cover3_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
