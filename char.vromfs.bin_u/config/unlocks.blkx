@@ -106,6 +106,92 @@
       "hidden": true
     },
     {
+      "id": "promo_quest_end_battle_1",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 5
+      }
+    },
+    {
+      "id": "promo_quest_end_battle_2",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 10
+      }
+    },
+    {
+      "id": "promo_quest_win",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 3
+      }
+    },
+    {
+      "id": "promo_quest_first_place_score",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 3
+      }
+    },
+    {
+      "id": "gift_cardicon_tanker_us_p_trophy",
+      "userLogId": "cardicon_tanker_us_p_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "locId": "item/gift_wtm_crosspromo_avatar_trophy",
+      "locDescId": "gift_wtm_crosspromo_avatar_trophy/desc",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_end_battle_1"
+      }
+    },
+    {
+      "id": "gift_promo_decal_trophy",
+      "userLogId": "promo_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_end_battle_2"
+      }
+    },
+    {
+      "id": "gift_us_m4_sherman_promo_trophy",
+      "userLogId": "us_m4_sherman_promo_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_first_place_score"
+      }
+    },
+    {
+      "id": "gift_jp_destroyer_hatsuzuki_trophy",
+      "userLogId": "jp_destroyer_hatsuzuki_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_win"
+      }
+    },
+    {
       "id": "title_high_roller",
       "type": "title",
       "chapter": "title",
@@ -3634,6 +3720,16 @@
     },
     {
       "id": "cardicon_tanker_us_p",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_dobrinya",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_rosa_shanina",
       "type": "pilot",
       "hideUntilUnlocked": true
     },
@@ -10133,6 +10229,248 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "jp_destroyer_hatsuzuki/jp_camo_green_spots",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_japan",
+      "mode": {
+        "type": "awardDamage",
+        "mulArcade": 1,
+        "mulRealistic": 1,
+        "mulHardcore": 1,
+        "num": 85050,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "jp_destroyer_hatsuzuki"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_destroyer_hatsuzuki/jp_camo_navy_green",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_japan",
+      "mode": {
+        "type": "awardDamage",
+        "mulArcade": 1,
+        "mulRealistic": 1,
+        "mulHardcore": 1,
+        "num": 121000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "jp_destroyer_hatsuzuki"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_dark_green_dark_earth",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 90,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_desert_pink_dark_khaki",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 100,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_desert_pink_lines",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 120,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_desert_pink_olive",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 130,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_desert_pink_olive_drab",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 150,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_desert_pink_olive_drab_dark_earth",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 160,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_winter_olive",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 180,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_olive_drab",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 190,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_m4_sherman_promo/us_camo_olive_drab_olive",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_usa",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 210,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "us_m4_sherman_promo"
+          }
+        ]
       }
     },
     {
@@ -140515,7 +140853,7 @@
     {
       "id": "os2u_1",
       "type": "aircraft",
-      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1?P1",
+      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1.jpg?P1",
       "popupInDebriefing": true,
       "aspect_ratio": 0.5,
       "mode": {
@@ -140544,7 +140882,7 @@
     {
       "id": "jp_type_95_ha_go",
       "type": "aircraft",
-      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1?P1",
+      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1.jpg?P1",
       "popupInDebriefing": true,
       "aspect_ratio": 0.5,
       "mode": {
@@ -140567,7 +140905,7 @@
     {
       "id": "fr_hotchkiss_h35",
       "type": "aircraft",
-      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1?P1",
+      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1.jpg?P1",
       "popupInDebriefing": true,
       "aspect_ratio": 0.5,
       "mode": {
@@ -140579,7 +140917,7 @@
     {
       "id": "fr_fcm_36",
       "type": "aircraft",
-      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1?P1",
+      "popupImage": "https://static.warthunder.ru/upload/image/Promo/image_91545fcb7c0322a60a68e6cad5bbaea1.jpg?P1",
       "popupInDebriefing": true,
       "aspect_ratio": 0.5,
       "mode": {
@@ -151367,7 +151705,7 @@
           },
           {
             "type": "char_time_range",
-            "beginDate": "2023-08-24 12:00:00",
+            "beginDate": "2023-08-23 12:00:00",
             "endDate": "2023-10-25 12:00:00"
           }
         ]
