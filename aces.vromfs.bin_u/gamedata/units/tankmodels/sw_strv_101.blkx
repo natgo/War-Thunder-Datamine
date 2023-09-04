@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1578,15 +1588,30 @@
       "Empty": 51265.0,
       "Fuel": 545.0,
       "TakeOff": 51810.0,
-      "momentOfInertia": [4.0,5.0,6.0],
-      "CenterOfGravity": [0.1,0.5,0.0],
+      "momentOfInertia": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.5,
+        0.0
+      ],
       "AdvancedMass": true,
       "trackMass": 2500.0,
-      "CenterOfGravityClampY": [0.0,0.7]
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ]
     },
     "tracks": {
       "animationMultiplier": 0.68,
-      "tracksTensionK": [6.5,8.0,3.0],
+      "tracksTensionK": [
+        6.5,
+        8.0,
+        3.0
+      ],
       "trackMesh": "uk_centurion_24_phys_track_line",
       "trackLen": 0.1397,
       "trackCount": 108,
@@ -1598,8 +1623,16 @@
       "height": 0.08,
       "width": 0.68,
       "trackStartOffset": 0.08,
-      "fricSideRot": [5.0,0.0,0.7,0.3],
-      "fricFrontal": [1.0,0.8]
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.7,
+        0.3
+      ],
+      "fricFrontal": [
+        1.0,
+        0.8
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1632,11 +1665,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.15,-0.13,0.07],
+      "suspensionOffsets": [
+        -0.15,
+        -0.13,
+        0.07
+      ],
       "defaultGearRadius": 0.41,
       "frontBackGearRadius": 0.32,
       "topGearRadius": 0.1,
-      "defaultDampeningForce": [173840.0,173840.0],
+      "defaultDampeningForce": [
+        173840.0,
+        173840.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.38,
@@ -1665,8 +1705,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1679,21 +1727,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.5,0.9],
+    "detonatePortion": [
+      0.5,
+      0.9
+    ],
     "explodeHitPower": 1700.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2346,15 +2427,26 @@
     "optics": "commander_optics_square",
     "zoomOutFov": 7.47,
     "zoomInFov": 7.37,
-    "sightSize": [0.146,0.103]
+    "sightSize": [
+      0.146,
+      0.103
+    ]
   },
   "cockpit": {
     "zoomOutFov": 13.3,
     "zoomInFov": 12.3,
     "sightFov": 6.1,
     "sightName": "no1_mk3",
-    "headPos": [0.0,4.2,-8.0],
-    "headPosOnShooting": [-0.3,3.6,0.4],
+    "headPos": [
+      0.0,
+      4.2,
+      -8.0
+    ],
+    "headPosOnShooting": [
+      -0.3,
+      3.6,
+      0.4
+    ],
     "detectionHeight": 2.94
   },
   "ammoStowages": {
@@ -2621,18 +2713,45 @@
           "barrel": "bone_gun_barrel",
           "linkedAnimPart": {
             "verNode": "bone_camera_gunner",
-            "verLimits": [-10.0,20.0],
-            "verOriginLimits": [-10.0,20.0]
+            "verLimits": [
+              -10.0,
+              20.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              20.0
+            ]
           }
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-10.0,20.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            20.0
+          ]
         },
         "limitsTable": {
-          "lim1": [-180.0,-135.0,-2.0,20.0],
-          "lim2": [-135.0,135.0,-9.0,20.0],
-          "lim3": [135.0,180.0,-2.0,20.0]
+          "lim1": [
+            -180.0,
+            -135.0,
+            -2.0,
+            20.0
+          ],
+          "lim2": [
+            -135.0,
+            135.0,
+            -9.0,
+            20.0
+          ],
+          "lim3": [
+            135.0,
+            180.0,
+            -2.0,
+            20.0
+          ]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": false,
@@ -2645,11 +2764,26 @@
           "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
-              [5.0,0.0],
-              [25.0,0.015],
-              [35.0,0.02],
-              [45.0,0.1],
-              [50.0,0.3]
+              [
+                5.0,
+                0.0
+              ],
+              [
+                25.0,
+                0.015
+              ],
+              [
+                35.0,
+                0.02
+              ],
+              [
+                45.0,
+                0.1
+              ],
+              [
+                50.0,
+                0.3
+              ]
             ]
           }
         }
@@ -2687,8 +2821,14 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-0.0,0.0],
-          "pitch": [-0.0,0.0]
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
         }
       },
       {
@@ -2709,8 +2849,14 @@
           "horDriveDm": "commander_panoramic_sight_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-5.0,10.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            10.0
+          ]
         }
       }
     ]
@@ -2972,18 +3118,45 @@
                 "barrel": "bone_gun_barrel",
                 "linkedAnimPart": {
                   "verNode": "bone_camera_gunner",
-                  "verLimits": [-10.0,20.0],
-                  "verOriginLimits": [-10.0,20.0]
+                  "verLimits": [
+                    -10.0,
+                    20.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    20.0
+                  ]
                 }
               },
               "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-10.0,20.0]
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  20.0
+                ]
               },
               "limitsTable": {
-                "lim1": [-180.0,-135.0,-2.0,20.0],
-                "lim2": [-135.0,135.0,-9.0,20.0],
-                "lim3": [135.0,180.0,-2.0,20.0]
+                "lim1": [
+                  -180.0,
+                  -135.0,
+                  -2.0,
+                  20.0
+                ],
+                "lim2": [
+                  -135.0,
+                  135.0,
+                  -9.0,
+                  20.0
+                ],
+                "lim3": [
+                  135.0,
+                  180.0,
+                  -2.0,
+                  20.0
+                ]
               },
               "gunStabilizer": {
                 "hasVerticalGunFreeMode": false,
@@ -2996,11 +3169,26 @@
                 "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
-                    [5.0,0.0],
-                    [25.0,0.015],
-                    [35.0,0.02],
-                    [45.0,0.1],
-                    [50.0,0.3]
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      25.0,
+                      0.015
+                    ],
+                    [
+                      35.0,
+                      0.02
+                    ],
+                    [
+                      45.0,
+                      0.1
+                    ],
+                    [
+                      50.0,
+                      0.3
+                    ]
                   ]
                 }
               }
@@ -3038,8 +3226,14 @@
                 "gunnerDm": "gunner_dm"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [-0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
               }
             },
             {
@@ -3060,8 +3254,14 @@
                 "horDriveDm": "commander_panoramic_sight_dm"
               },
               "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-5.0,10.0]
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  10.0
+                ]
               }
             },
             {
@@ -3072,7 +3272,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,12],
+              "emitterGenRange": [
+                1,
+                12
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "ignoreLoaderPenalty": true,
               "createGunEffects": true,
@@ -3105,8 +3308,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ]
@@ -3117,19 +3326,28 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "commanderViewIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.7,
             "noiseFactor": 0.2

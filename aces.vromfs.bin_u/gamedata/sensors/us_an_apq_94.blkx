@@ -33,8 +33,14 @@
   "scanPatterns": {
     "searchCenteredRadar": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 0.7,
@@ -45,8 +51,14 @@
     },
     "searchNormalRadar": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 3.0,
@@ -57,8 +69,14 @@
     },
     "searchSideRadar": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 1.8,
@@ -69,8 +87,14 @@
     },
     "designationLockRadar": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 0.3,
@@ -82,14 +106,26 @@
     },
     "trackRadar": {
       "type": "no",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "track": true
     },
     "searchCenteredIrst": {
       "type": "pyramide",
-      "azimuthLimits": [-38.0,38.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -38.0,
+        38.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 0.7,
@@ -101,8 +137,14 @@
     },
     "searchNormalIrst": {
       "type": "pyramide",
-      "azimuthLimits": [-38.0,38.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -38.0,
+        38.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 3.0,
@@ -114,8 +156,14 @@
     },
     "designationLockIrst": {
       "type": "pyramide",
-      "azimuthLimits": [-38.0,38.0],
-      "elevationLimits": [-30.0,45.0],
+      "azimuthLimits": [
+        -38.0,
+        38.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ],
       "rollStabLimit": 50.0,
       "pitchStabLimit": 45.0,
       "period": 0.3,
@@ -128,13 +176,22 @@
     },
     "trackIrst": {
       "type": "no",
-      "azimuthLimits": [-38.0,38.0],
-      "elevationLimits": [-30.0,45.0]
+      "azimuthLimits": [
+        -38.0,
+        38.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        45.0
+      ]
     }
   },
   "signals": {
     "searchRadar": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [
+        40.0,
+        10.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -146,7 +203,10 @@
       }
     },
     "trackRadar": {
-      "dynamicRange": [40.0,12.0],
+      "dynamicRange": [
+        40.0,
+        12.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -189,9 +249,18 @@
       "actionsTemplates": {
         "setRadarTargetDesignationRange": {
           "setTargetDesignationRange": {
-            "azimuthRange": [-45.0,45.0],
-            "elevationRange": [-30.0,45.0],
-            "distanceRange": [0.0,46000.0],
+            "azimuthRange": [
+              -45.0,
+              45.0
+            ],
+            "elevationRange": [
+              -30.0,
+              45.0
+            ],
+            "distanceRange": [
+              0.0,
+              46000.0
+            ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05
           }
@@ -209,9 +278,18 @@
         },
         "setIrstTargetDesignationRange": {
           "setTargetDesignationRange": {
-            "azimuthRange": [-38.0,38.0],
-            "elevationRange": [-30.0,45.0],
-            "distanceRange": [0.0,10000.0]
+            "azimuthRange": [
+              -38.0,
+              38.0
+            ],
+            "elevationRange": [
+              -30.0,
+              45.0
+            ],
+            "distanceRange": [
+              0.0,
+              10000.0
+            ]
           }
         },
         "setIrstModeCommon": {

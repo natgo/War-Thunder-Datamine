@@ -6,7 +6,7 @@
     "search": {
       "sideLobesAttenuation": -20.0,
       "pulsePower": 260000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 1.4e-6,
       "prf": 1000.0,
       "band": 8,
       "rcs": 3.0,
@@ -27,7 +27,7 @@
     "track": {
       "sideLobesAttenuation": -20.0,
       "pulsePower": 130000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 6e-7,
       "prf": 1000.0,
       "band": 8,
       "rcs": 3.0,
@@ -50,8 +50,14 @@
   "scanPatterns": {
     "search2Bars": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-38.0,20.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -38.0,
+        20.0
+      ],
       "rollStabLimit": 15.0,
       "pitchStabLimit": 38.0,
       "period": 2.0,
@@ -62,8 +68,14 @@
     },
     "boresightLock": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-38.0,20.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -38.0,
+        20.0
+      ],
       "period": 0.5,
       "width": 5.0,
       "barHeight": 2.0,
@@ -73,8 +85,14 @@
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-38.0,20.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -38.0,
+        20.0
+      ],
       "rollStabLimit": 15.0,
       "pitchStabLimit": 38.0,
       "period": 0.5,
@@ -86,13 +104,22 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-38.0,20.0]
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -38.0,
+        20.0
+      ]
     }
   },
   "signals": {
     "search": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [
+        40.0,
+        10.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -151,10 +178,19 @@
             "value": 0.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-45.0,45.0],
-            "elevationRange": [-38.0,20.0],
+            "azimuthRange": [
+              -45.0,
+              45.0
+            ],
+            "elevationRange": [
+              -38.0,
+              20.0
+            ],
             "azimuthWidth": 10.0,
-            "distanceRange": [500.0,37000.0],
+            "distanceRange": [
+              500.0,
+              37000.0
+            ],
             "distanceWidth": 4000.0,
             "distanceRelWidthMin": 0.05
           }

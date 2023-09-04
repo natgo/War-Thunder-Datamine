@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1748,13 +1758,34 @@
           "rotatedTurret": "bone_turret"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,13.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            13.0
+          ]
         },
         "limitsTable": {
-          "lim1": [-180.0,-150.0,-5.0,13.0],
-          "lim2": [-150.0,150.0,-8.0,13.0],
-          "lim3": [150.0,180.0,-5.0,13.0]
+          "lim1": [
+            -180.0,
+            -150.0,
+            -5.0,
+            13.0
+          ],
+          "lim2": [
+            -150.0,
+            150.0,
+            -8.0,
+            13.0
+          ],
+          "lim3": [
+            150.0,
+            180.0,
+            -5.0,
+            13.0
+          ]
         }
       },
       {
@@ -1791,8 +1822,14 @@
           "secondGunnerDm": "commander_dm"
         },
         "limits": {
-          "yaw": [-0.0,0.0],
-          "pitch": [-0.0,0.0]
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
         }
       },
       {
@@ -1828,8 +1865,14 @@
           "gunnerDm": "commander_dm"
         },
         "limits": {
-          "yaw": [-60.0,60.0],
-          "pitch": [-10.0,30.0]
+          "yaw": [
+            -60.0,
+            60.0
+          ],
+          "pitch": [
+            -10.0,
+            30.0
+          ]
         }
       },
       {
@@ -1851,8 +1894,14 @@
           "rotatedTurret": "bone_turret"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,13.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            13.0
+          ]
         }
       }
     ]
@@ -1868,15 +1917,30 @@
       "Empty": 53680.0,
       "Fuel": 750.0,
       "TakeOff": 54430.0,
-      "momentOfInertia": [2.5,2.5,5.0],
-      "CenterOfGravity": [0.1,0.5,0.0],
-      "CenterOfGravityClampY": [0.0,0.7],
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        5.0
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
       "AdvancedMass": false,
       "trackMass": 2500.0
     },
     "tracks": {
       "animationMultiplier": 0.754,
-      "tracksTensionK": [6.5,8.0,3.0],
+      "tracksTensionK": [
+        6.5,
+        8.0,
+        3.0
+      ],
       "trackMesh": "us_t97_phys_track_line",
       "trackLen": 0.176,
       "trackCount": 78,
@@ -1918,11 +1982,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.16,-0.12,0.1],
+      "suspensionOffsets": [
+        -0.16,
+        -0.12,
+        0.1
+      ],
       "defaultGearRadius": 0.37,
       "frontBackGearRadius": 0.24,
       "topGearRadius": 0.13,
-      "defaultDampeningForce": [150000.0,150000.0],
+      "defaultDampeningForce": [
+        150000.0,
+        150000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_01": 0.35,
@@ -1961,8 +2032,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1975,21 +2054,54 @@
   "ammo": {
     "combustionTime": 7.0,
     "detonateProb": 0.5,
-    "detonatePortion": [0.6,0.9],
+    "detonatePortion": [
+      0.6,
+      0.9
+    ],
     "explodeHitPower": 4000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2643,15 +2755,26 @@
     "optics": "commander_optics_square",
     "zoomOutFov": 7.47,
     "zoomInFov": 7.37,
-    "sightSize": [0.146,0.103]
+    "sightSize": [
+      0.146,
+      0.103
+    ]
   },
   "cockpit": {
     "zoomOutFov": 12.3,
     "zoomInFov": 9.8,
     "sightFov": 5.9,
     "sightName": "periscope_m20a1",
-    "headPos": [0.0,4.3,-10.0],
-    "headPosOnShooting": [-0.3,3.8,0.55],
+    "headPos": [
+      0.0,
+      4.3,
+      -10.0
+    ],
+    "headPosOnShooting": [
+      -0.3,
+      3.8,
+      0.55
+    ],
     "detectionHeight": 2.7
   },
   "ammoStowages": {
@@ -2813,7 +2936,10 @@
       "effects": {
         "nightVision": {
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.7,
             "noiseFactor": 0.2

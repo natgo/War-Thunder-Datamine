@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1545,7 +1555,10 @@
       "flash": "bone_rocket_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
-      "emitterGenRange": [1,4],
+      "emitterGenRange": [
+        1,
+        4
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "ammo_turret_%02d_dm",
       "recoilMultiplier": 0.1,
@@ -1554,7 +1567,10 @@
       "lagStopForFireTime": 2.0,
       "battlePositionSpeed": 16.0,
       "reloadAnimVar": "hj_9_action",
-      "readyToParkTime": [3.0,0.23],
+      "readyToParkTime": [
+        3.0,
+        0.23
+      ],
       "waitShellForPark": true,
       "staticElevation": 1.2,
       "canChangeBulletInReload": false,
@@ -1591,8 +1607,14 @@
         "horDriveDm": "drive_turret_h_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,10.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": false,
@@ -1605,9 +1627,18 @@
         "speedFromVehicleVerticalMult": -1.0,
         "errorKPHToDegrees": {
           "row": [
-            [5.0,0.0],
-            [45.0,0.015],
-            [80.0,0.02]
+            [
+              5.0,
+              0.0
+            ],
+            [
+              45.0,
+              0.015
+            ],
+            [
+              80.0,
+              0.02
+            ]
           ]
         }
       }
@@ -1631,9 +1662,20 @@
       "Empty": 13200.0,
       "Fuel": 550.0,
       "TakeOff": 13750.0,
-      "momentOfInertia": [2.0,2.0,4.0],
-      "CenterOfGravity": [0.1,0.4,0.0],
-      "CenterOfGravityClampY": [0.0,0.5],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        4.0
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.4,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.5
+      ],
       "AdvancedMass": false,
       "trackMass": 40.0,
       "engineInertialMass": 400.0
@@ -1676,9 +1718,16 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.16,-0.12,0.1],
+      "suspensionOffsets": [
+        -0.16,
+        -0.12,
+        0.1
+      ],
       "defaultGearRadius": 0.58,
-      "defaultDampeningForce": [60000.0,60000.0],
+      "defaultDampeningForce": [
+        60000.0,
+        60000.0
+      ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.2,
       "dampeningCompressionRatio": 0.1,
@@ -1726,8 +1775,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1792,21 +1849,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.6,0.9],
+    "detonatePortion": [
+      0.6,
+      0.9
+    ],
     "explodeHitPower": 1500.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "unitFx": {
     "event": [
@@ -2446,8 +2536,16 @@
     }
   },
   "cockpit": {
-    "headPos": [0.0,4.1,-6.8],
-    "headPosOnShooting": [-1.6,3.4,0.0],
+    "headPos": [
+      0.0,
+      4.1,
+      -6.8
+    ],
+    "headPosOnShooting": [
+      -1.6,
+      3.4,
+      0.0
+    ],
     "zoomOutFov": 24.7,
     "zoomInFov": 6.14,
     "sightFov": 12.0,
@@ -2480,11 +2578,17 @@
       "effects": {
         "nightVision": {
           "gunnerThermal": {
-            "resolution": [500,300],
+            "resolution": [
+              500,
+              300
+            ],
             "noiseFactor": 0.05
           },
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
@@ -2507,7 +2611,10 @@
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
-              "emitterGenRange": [1,4],
+              "emitterGenRange": [
+                1,
+                4
+              ],
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
@@ -2516,7 +2623,10 @@
               "lagStopForFireTime": 2.0,
               "battlePositionSpeed": 16.0,
               "reloadAnimVar": "hj_9_action",
-              "readyToParkTime": [3.0,0.23],
+              "readyToParkTime": [
+                3.0,
+                0.23
+              ],
               "waitShellForPark": true,
               "staticElevation": 1.2,
               "canChangeBulletInReload": false,
@@ -2553,8 +2663,14 @@
                 "horDriveDm": "drive_turret_h_dm"
               },
               "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-10.0,10.0]
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  10.0
+                ]
               },
               "gunStabilizer": {
                 "hasVerticalGunFreeMode": false,
@@ -2567,9 +2683,18 @@
                 "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
-                    [5.0,0.0],
-                    [45.0,0.015],
-                    [80.0,0.02]
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.015
+                    ],
+                    [
+                      80.0,
+                      0.02
+                    ]
                   ]
                 }
               }
@@ -2582,7 +2707,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,8],
+              "emitterGenRange": [
+                1,
+                8
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "ignoreLoaderPenalty": true,
               "createGunEffects": true,
@@ -2615,8 +2743,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ],

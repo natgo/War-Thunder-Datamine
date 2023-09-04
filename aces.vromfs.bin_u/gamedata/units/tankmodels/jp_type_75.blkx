@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1777,13 +1787,25 @@
           "gunnerDm": "gunner_dm",
           "linkedAnimPart": {
             "verNode": "bone_roll_03",
-            "verLimits": [0.0,47.5],
-            "verOriginLimits": [0.0,45.0]
+            "verLimits": [
+              0.0,
+              47.5
+            ],
+            "verOriginLimits": [
+              0.0,
+              45.0
+            ]
           }
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-5.0,65.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            65.0
+          ]
         }
       },
       {
@@ -1818,8 +1840,14 @@
           "gunnerDm": "loader_01_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,45.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            45.0
+          ]
         }
       }
     ]
@@ -1835,11 +1863,22 @@
       "Empty": 25000.0,
       "Fuel": 300.0,
       "TakeOff": 25300.0,
-      "momentOfInertia": [4.0,5.0,6.0],
-      "CenterOfGravity": [0.4,0.5,0.0],
+      "momentOfInertia": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.4,
+        0.5,
+        0.0
+      ],
       "AdvancedMass": false,
       "trackMass": 1500.0,
-      "CenterOfGravityClampY": [0.0,0.6],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.6
+      ],
       "cls_body": 0.7,
       "cls_turret": 0.3
     },
@@ -1882,12 +1921,22 @@
     },
     "suspension": {
       "trackHeightAboveWheel": 0.1,
-      "maxDisplacementOffsets": [-0.1,0.0],
-      "suspensionOffsets": [-0.25,-0.2,0.2],
+      "maxDisplacementOffsets": [
+        -0.1,
+        0.0
+      ],
+      "suspensionOffsets": [
+        -0.25,
+        -0.2,
+        0.2
+      ],
       "defaultGearRadius": 0.38,
       "topGearRadius": 0.11,
       "frontBackGearRadius": 0.315,
-      "defaultDampeningForce": [180000.0,180000.0],
+      "defaultDampeningForce": [
+        180000.0,
+        180000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }
@@ -1900,8 +1949,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1914,21 +1971,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.5,0.9],
+    "detonatePortion": [
+      0.5,
+      0.9
+    ],
     "explodeHitPower": 1700.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2582,8 +2672,16 @@
     "zoomInFov": 4.63,
     "sightFov": 4.5,
     "sightName": "tzf_1a",
-    "headPos": [0.0,4.2,-8.5],
-    "headPosOnShooting": [-1.35,3.5,0.57],
+    "headPos": [
+      0.0,
+      4.2,
+      -8.5
+    ],
+    "headPosOnShooting": [
+      -1.35,
+      3.5,
+      0.57
+    ],
     "detectionHeight": 2.63
   },
   "modifications": {
@@ -2615,7 +2713,10 @@
       "effects": {
         "nightVision": {
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.7,
             "noiseFactor": 0.2

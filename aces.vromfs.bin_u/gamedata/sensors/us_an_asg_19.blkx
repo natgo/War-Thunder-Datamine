@@ -5,7 +5,7 @@
     "search": {
       "sideLobesAttenuation": -20.0,
       "pulsePower": 140000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 1e-6,
       "prf": 1000.0,
       "band": 8,
       "rcs": 3.0,
@@ -20,7 +20,7 @@
     "track": {
       "sideLobesAttenuation": -20.0,
       "pulsePower": 70000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 5e-7,
       "prf": 1000.0,
       "band": 8,
       "rcs": 3.0,
@@ -36,8 +36,14 @@
   "scanPatterns": {
     "search": {
       "type": "pyramide",
-      "azimuthLimits": [-45.0,45.0],
-      "elevationLimits": [-45.0,45.0],
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        45.0
+      ],
       "rollStabLimit": 60.0,
       "period": 3.0,
       "width": 45.0,
@@ -47,8 +53,14 @@
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-10.0,10.0],
-      "elevationLimits": [-10.0,10.0],
+      "azimuthLimits": [
+        -10.0,
+        10.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        10.0
+      ],
       "rollStabLimit": 60.0,
       "period": 0.5,
       "width": 10.0,
@@ -59,8 +71,14 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-10.0,10.0],
-      "elevationLimits": [-10.0,10.0]
+      "azimuthLimits": [
+        -10.0,
+        10.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        10.0
+      ]
     }
   },
   "signals": {
@@ -113,8 +131,14 @@
             "value": 0.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-10.0,10.0],
-            "distanceRange": [300.0,18500.0]
+            "azimuthRange": [
+              -10.0,
+              10.0
+            ],
+            "distanceRange": [
+              300.0,
+              18500.0
+            ]
           }
         },
         "setStandbyMode": {

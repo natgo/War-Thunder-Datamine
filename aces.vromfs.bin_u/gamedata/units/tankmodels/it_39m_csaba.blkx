@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -47,6 +57,9 @@
         "armorThickness": 13.0
       },
       "body_front_hatch_dm": {
+        "armorThickness": 13.0
+      },
+      "turret_02_bottom_dm": {
         "armorThickness": 13.0
       },
       "superstructure_side_dm": {
@@ -160,9 +173,7 @@
       "wheel_l_01_dm": {},
       "wheel_l_02_dm": {},
       "wheel_r_02_dm": {},
-      "wheel_support_dm": {
-        "armorClass": "tank_steel_wheels"
-      }
+      "wheel_support_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -1534,6 +1545,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/20mm_Solothurn_QF_36M_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "recoilOffset": 0.1,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -1564,12 +1576,28 @@
           "gunnerDm": "commander_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-10.0,25.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            25.0
+          ]
         },
         "limitsTable": {
-          "lim1": [-180.0,155.0,-10.0,20.0],
-          "lim2": [155.0,180.0,-10.0,20.0]
+          "lim1": [
+            -180.0,
+            155.0,
+            -10.0,
+            20.0
+          ],
+          "lim2": [
+            155.0,
+            180.0,
+            -10.0,
+            20.0
+          ]
         }
       },
       {
@@ -1607,8 +1635,14 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-0.0,0.0],
-          "pitch": [-0.0,0.0]
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
         }
       }
     ]
@@ -1624,9 +1658,20 @@
       "Empty": 5800.0,
       "Fuel": 150.0,
       "TakeOff": 5950.0,
-      "momentOfInertia": [2.0,2.0,4.0],
-      "CenterOfGravity": [0.05,0.4,0.0],
-      "CenterOfGravityClampY": [0.0,0.5],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        4.0
+      ],
+      "CenterOfGravity": [
+        0.05,
+        0.4,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.5
+      ],
       "AdvancedMass": false,
       "trackMass": 40.0,
       "engineInertialMass": 400.0
@@ -1670,9 +1715,16 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.2,-0.12,0.1],
+      "suspensionOffsets": [
+        -0.2,
+        -0.12,
+        0.1
+      ],
       "defaultGearRadius": 0.5,
-      "defaultDampeningForce": [36138.0,36138.0],
+      "defaultDampeningForce": [
+        36138.0,
+        36138.0
+      ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.25,
       "dampeningCompressionRatio": 0.1,
@@ -2000,20 +2052,44 @@
     "find": "bone_suspension_(\\w)_(\\d+)$",
     "points": {
       "lever": {
-        "limitMin": [0.0,0.0,0.0],
-        "limitMax": [0.0,0.0,0.0],
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "name": "bone_suspension_$1_$2"
       },
       "suspension_01": {
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0],
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
         "name": "bone_suspension_$1_$2_01"
       },
       "whee": {
         "searchChildren": {
           "occurence": 1,
-          "limitMin": [-1.0,-1.0,0.0],
-          "limitMax": [1.0,1.0,0.0],
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
           "parent": "lever",
           "find": "bone_wheel_"
         }
@@ -2088,21 +2164,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.6,0.9],
+    "detonatePortion": [
+      0.6,
+      0.9
+    ],
     "explodeHitPower": 1500.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2752,8 +2861,16 @@
     }
   },
   "cockpit": {
-    "headPos": [0.0,3.3,-6.5],
-    "headPosOnShooting": [0.25,3.0,0.0],
+    "headPos": [
+      0.0,
+      3.3,
+      -6.5
+    ],
+    "headPosOnShooting": [
+      0.25,
+      3.0,
+      0.0
+    ],
     "zoomOutFov": 40.0,
     "zoomInFov": 21.0,
     "sightFov": 20.0,
@@ -2817,7 +2934,10 @@
     }
   ],
   "dmgAngles": {
-    "hatch_10": [45.0,90.0]
+    "hatch_10": [
+      45.0,
+      90.0
+    ]
   },
   "ammoStowages": {
     "ammo1": {
@@ -2854,6 +2974,9 @@
           "count": 5
         },
         "ammo_body_09_dm": {
+          "count": 5
+        },
+        "ammo_body_10_dm": {
           "count": 5
         },
         "ammo_body_11_dm": {

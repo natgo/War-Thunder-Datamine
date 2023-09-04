@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -39,7 +49,11 @@
   "rearmTimeOnField": 90.0,
   "canReloadNonGuns": true,
   "drowningCheckHeightMultiplier": 0.25,
-  "aimPointOffset": [0.0,-2.0,0.0],
+  "aimPointOffset": [
+    0.0,
+    -2.0,
+    0.0
+  ],
   "controlDevices": {
     "device": [
       {
@@ -1517,8 +1531,14 @@
           "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,80.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            80.0
+          ]
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": false,
@@ -1531,11 +1551,26 @@
           "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
-              [5.0,0.0],
-              [25.0,0.015],
-              [35.0,0.02],
-              [45.0,0.1],
-              [50.0,0.3]
+              [
+                5.0,
+                0.0
+              ],
+              [
+                25.0,
+                0.015
+              ],
+              [
+                35.0,
+                0.02
+              ],
+              [
+                45.0,
+                0.1
+              ],
+              [
+                50.0,
+                0.3
+              ]
             ]
           }
         }
@@ -1547,7 +1582,10 @@
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
-        "emitterGenRange": [1,8],
+        "emitterGenRange": [
+          1,
+          8
+        ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.0,
@@ -1587,8 +1625,14 @@
           "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,80.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            80.0
+          ]
         }
       }
     ],
@@ -1617,9 +1661,20 @@
       "Empty": 23000.0,
       "Fuel": 500.0,
       "TakeOff": 23500.0,
-      "momentOfInertia": [2.0,2.0,4.0],
-      "CenterOfGravity": [-0.1,1.4,0.0],
-      "CenterOfGravityClampY": [0.0,0.5],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        4.0
+      ],
+      "CenterOfGravity": [
+        -0.1,
+        1.4,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.5
+      ],
       "AdvancedMass": false,
       "trackMass": 40.0,
       "engineInertialMass": 400.0
@@ -1663,9 +1718,16 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.15,-0.12,0.1],
+      "suspensionOffsets": [
+        -0.15,
+        -0.12,
+        0.1
+      ],
       "defaultGearRadius": 0.6,
-      "defaultDampeningForce": [120000.0,120000.0],
+      "defaultDampeningForce": [
+        120000.0,
+        120000.0
+      ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.15,
       "dampeningCompressionRatio": 0.05,
@@ -2408,8 +2470,16 @@
     "sightFov": 6.0,
     "sightName": "roland_sight",
     "openedCockpit": true,
-    "headPos": [0.0,4.5,-8.8],
-    "headPosOnShooting": [-1.0,6.9,-0.1],
+    "headPos": [
+      0.0,
+      4.5,
+      -8.8
+    ],
+    "headPosOnShooting": [
+      -1.0,
+      6.9,
+      -0.1
+    ],
     "detectionHeight": 5.9
   },
   "optics": {
@@ -2452,21 +2522,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 1250.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2503,7 +2606,11 @@
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [0.0,0.0,0.0],
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "suffix": "4",
       "dmName": "gunner_dm",
       "deadHeadAttitudeMin": -55.0,
@@ -2514,28 +2621,44 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 R Hand",
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 L Foot",
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
           "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
         },
         {
           "downNode": "Bip01 R Foot",
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
         }
       ]
     },
@@ -2547,7 +2670,11 @@
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [0.0,0.0,0.0],
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "suffix": "1",
       "dmName": "loader_dm",
       "deadHeadAttitudeMin": -55.0,
@@ -2558,28 +2685,44 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 R Hand",
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 L Foot",
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
           "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
         },
         {
           "downNode": "Bip01 R Foot",
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
         }
       ]
     },
@@ -2591,7 +2734,11 @@
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [0.0,0.0,0.0],
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "suffix": "3",
       "dmName": "commander_dm",
       "deadHeadAttitudeMin": -55.0,
@@ -2602,28 +2749,44 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 R Hand",
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 L Foot",
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
           "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
         },
         {
           "downNode": "Bip01 R Foot",
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
         }
       ]
     },
@@ -2635,7 +2798,11 @@
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [0.0,0.0,0.0],
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "suffix": "2",
       "dmName": "driver_dm",
       "deadHeadAttitudeMin": -55.0,
@@ -2646,28 +2813,44 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 R Hand",
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
         },
         {
           "downNode": "Bip01 L Foot",
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
           "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
         },
         {
           "downNode": "Bip01 R Foot",
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
         }
       ]
     }
@@ -2701,11 +2884,17 @@
       "effects": {
         "nightVision": {
           "gunnerThermal": {
-            "resolution": [1200,800],
+            "resolution": [
+              1200,
+              800
+            ],
             "noiseFactor": 0.04
           },
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2

@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1614,8 +1624,14 @@
           "barrel": "bone_gun_barrel"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-6.0,22.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -6.0,
+            22.0
+          ]
         }
       },
       {
@@ -1653,8 +1669,14 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-0.0,0.0],
-          "pitch": [-0.0,0.0]
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
         }
       }
     ]
@@ -1670,9 +1692,20 @@
       "Empty": 11800.0,
       "Fuel": 200.0,
       "TakeOff": 12000.0,
-      "momentOfInertia": [2.0,2.0,4.0],
-      "CenterOfGravity": [0.0,0.4,0.0],
-      "CenterOfGravityClampY": [0.0,0.5],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        4.0
+      ],
+      "CenterOfGravity": [
+        0.0,
+        0.4,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.5
+      ],
       "AdvancedMass": true,
       "trackMass": 500.0,
       "cls_body_01": 0.75,
@@ -1682,7 +1715,11 @@
       "animationMultiplier": 0.68,
       "height": 0.05,
       "width": 0.26,
-      "tracksTensionK": [3.0,7.0,1.0],
+      "tracksTensionK": [
+        3.0,
+        7.0,
+        1.0
+      ],
       "trackMesh": "ussr_t_26_phys_track_line",
       "nonSymmetricMesh": true,
       "trackLen": 0.09,
@@ -1719,11 +1756,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.08,-0.06,0.05],
+      "suspensionOffsets": [
+        -0.08,
+        -0.06,
+        0.05
+      ],
       "defaultGearRadius": 0.16,
       "topGearRadius": 0.1252,
       "frontBackGearRadius": 0.31,
-      "defaultDampeningForce": [60000.0,60000.0],
+      "defaultDampeningForce": [
+        60000.0,
+        60000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.31,
@@ -1738,21 +1782,45 @@
       },
       "suspension_01_01": {
         "name": "bone_suspension_$1_$2_01",
-        "limitMin": [-0.5,-0.5,0.0],
-        "limitMax": [0.5,0.5,0.0]
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ]
       },
       "suspension_01_02": {
         "name": "bone_suspension_$1_$2_02",
-        "limitMin": [-0.5,-0.5,0.0],
-        "limitMax": [0.5,0.5,0.0]
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ]
       },
       "wheel_01": {
         "searchChildren": {
           "parent": "suspension_01_01",
           "find": "bone_wheel_",
           "occurence": 1,
-          "limitMin": [-1.0,-1.0,0.0],
-          "limitMax": [1.0,1.0,0.0]
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ]
         }
       },
       "wheel_02": {
@@ -1760,8 +1828,16 @@
           "parent": "suspension_01_01",
           "find": "bone_wheel_",
           "occurence": 2,
-          "limitMin": [-1.0,-1.0,0.0],
-          "limitMax": [1.0,1.0,0.0]
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ]
         }
       },
       "wheel_03": {
@@ -1769,8 +1845,16 @@
           "parent": "suspension_01_02",
           "find": "bone_wheel_",
           "occurence": 1,
-          "limitMin": [-1.0,-1.0,0.0],
-          "limitMax": [1.0,1.0,0.0]
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ]
         }
       },
       "wheel_04": {
@@ -1778,8 +1862,16 @@
           "parent": "suspension_01_02",
           "find": "bone_wheel_",
           "occurence": 2,
-          "limitMin": [-1.0,-1.0,0.0],
-          "limitMax": [1.0,1.0,0.0]
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ]
         }
       }
     },
@@ -1821,21 +1913,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 500.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2489,8 +2614,16 @@
     "zoomInFov": 21.0,
     "sightFov": 20.0,
     "sightName": "default_tank_spg",
-    "headPos": [0.0,3.2,-6.0],
-    "headPosOnShooting": [-0.4,2.9,0.06],
+    "headPos": [
+      0.0,
+      3.2,
+      -6.0
+    ],
+    "headPosOnShooting": [
+      -0.4,
+      2.9,
+      0.06
+    ],
     "detectionHeight": 2.19
   },
   "ammoStowages": {

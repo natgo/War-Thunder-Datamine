@@ -5,7 +5,7 @@
     "search": {
       "sideLobesAttenuation": -15.0,
       "power": 70000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 7.5e-7,
       "prf": 2400.0,
       "band": 5,
       "rcs": 3.0,
@@ -20,8 +20,14 @@
   "scanPatterns": {
     "searchMinBars": {
       "type": "pyramide",
-      "azimuthLimits": [-75.0,75.0],
-      "elevationLimits": [-30.0,50.0],
+      "azimuthLimits": [
+        -75.0,
+        75.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        50.0
+      ],
       "rollStabLimit": 45.0,
       "period": 1.0,
       "width": 75.0,
@@ -32,8 +38,14 @@
     },
     "searchMidBars": {
       "type": "pyramide",
-      "azimuthLimits": [-75.0,75.0],
-      "elevationLimits": [-30.0,50.0],
+      "azimuthLimits": [
+        -75.0,
+        75.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        50.0
+      ],
       "rollStabLimit": 45.0,
       "period": 2.0,
       "width": 75.0,
@@ -44,8 +56,14 @@
     },
     "searchMaxBars": {
       "type": "pyramide",
-      "azimuthLimits": [-75.0,75.0],
-      "elevationLimits": [-20.0,40.0],
+      "azimuthLimits": [
+        -75.0,
+        75.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        40.0
+      ],
       "rollStabLimit": 45.0,
       "period": 4.0,
       "width": 75.0,
@@ -105,10 +123,19 @@
             "value": 5.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-75.0,75.0],
+            "azimuthRange": [
+              -75.0,
+              75.0
+            ],
             "azimuthWidth": 75.0,
-            "elevationRange": [-20.0,40.0],
-            "distanceRange": [0.0,18600.0]
+            "elevationRange": [
+              -20.0,
+              40.0
+            ],
+            "distanceRange": [
+              0.0,
+              18600.0
+            ]
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"

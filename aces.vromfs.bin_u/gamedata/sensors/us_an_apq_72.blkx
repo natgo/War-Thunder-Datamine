@@ -27,8 +27,14 @@
   "scanPatterns": {
     "searchExp": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 0.8,
@@ -40,8 +46,14 @@
     },
     "searchNarrow": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 2.5,
@@ -53,8 +65,14 @@
     },
     "searchWide": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 5.0,
@@ -66,16 +84,28 @@
     },
     "boresightLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "period": 1.0,
       "width": 3.3,
       "indicate": true
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 0.5,
@@ -87,13 +117,22 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ]
     }
   },
   "signals": {
     "search": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [
+        40.0,
+        10.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -105,7 +144,10 @@
       }
     },
     "track": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [
+        40.0,
+        10.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -156,10 +198,19 @@
             "signal": "search"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-60.0,60.0],
+            "azimuthRange": [
+              -60.0,
+              60.0
+            ],
             "azimuthWidth": 8.0,
-            "elevationRange": [-60.0,60.0],
-            "distanceRange": [0.0,92500.0],
+            "elevationRange": [
+              -60.0,
+              60.0
+            ],
+            "distanceRange": [
+              0.0,
+              92500.0
+            ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05
           }

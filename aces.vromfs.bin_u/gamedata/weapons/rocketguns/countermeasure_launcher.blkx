@@ -1,7 +1,11 @@
 {
   "cannon": false,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -15,7 +19,7 @@
   "bulletsCluster": 0,
   "shootingCharge": 0.0,
   "preset_cost": 200,
-  "dragCx": 0.0,
+  "dragCx": 5e-6,
   "mass": 2.0,
   "recoilMultiplier": 0.0,
   "fxType": "muzzle_air_20mm",
@@ -42,14 +46,18 @@
     "rocket": {
       "caliber": 0.026,
       "length": 0.08,
-      "WdK": [0.1,0.1,0.1],
+      "WdK": [
+        0.1,
+        0.1,
+        0.1
+      ],
       "CxK": 2.58,
       "distFromCmToStab": 0.005,
       "mass": 0.09,
       "massEnd": 0.04,
-      "timeFire": 3.0,
+      "timeFire": 4.4,
       "force": 0.1,
-      "timeLife": 3.0,
+      "timeLife": 4.4,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
       "startSpeed": 55.0,
@@ -85,26 +93,65 @@
       "spawnExplosionFx": false,
       "explosionOffset": 0.05,
       "hitPowerMult": 1.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,400.0],
-      "farHitPower": [0.1,1000.0],
-      "endHitPower": [0.01,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "nearArmorPower": [3.0,50.0],
-      "midArmorPower": [2.0,400.0],
-      "farArmorPower": [0.2,700.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        400.0
+      ],
+      "farHitPower": [
+        0.1,
+        1000.0
+      ],
+      "endHitPower": [
+        0.01,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        50.0
+      ],
+      "midArmorPower": [
+        2.0,
+        400.0
+      ],
+      "farArmorPower": [
+        0.2,
+        700.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "distanceFuse": false,
       "rendinstDamageRadius": 0.1,
       "price": 300.0,
       "amountPerTier": 30.0,
       "iconType": "ltc",
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.05],
-        "mod2": [20.0,0.1],
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
         "mod3": [
-          [30.0,0.2],
-          [45.0,0.3]
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
         ]
       },
       "infraRedVisibility": {
@@ -133,7 +180,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -178,15 +229,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -194,11 +272,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -225,14 +315,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -268,26 +362,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -318,14 +451,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -361,26 +498,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -407,14 +583,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -450,26 +630,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -496,7 +715,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -541,15 +764,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -557,11 +807,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -592,14 +854,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -635,26 +901,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -681,14 +986,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -724,26 +1033,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -773,7 +1121,11 @@
       "rocket": {
         "caliber": 0.026,
         "length": 0.08,
-        "WdK": [0.0,0.0,0.0],
+        "WdK": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "CxK": 100.0,
         "CxAoA": 0.0,
         "CyK": 0.0,
@@ -818,15 +1170,42 @@
         "spawnExplosionFx": false,
         "explosionOffset": 0.05,
         "hitPowerMult": 1.0,
-        "nearHitPower": [1.0,50.0],
-        "midHitPower": [0.9,400.0],
-        "farHitPower": [0.1,1000.0],
-        "endHitPower": [0.01,1500.0],
-        "relativeVelHitShift": [300.0,1000.0],
-        "nearArmorPower": [3.0,50.0],
-        "midArmorPower": [2.0,400.0],
-        "farArmorPower": [0.2,700.0],
-        "relativeVelArmorShift": [200.0,1000.0],
+        "nearHitPower": [
+          1.0,
+          50.0
+        ],
+        "midHitPower": [
+          0.9,
+          400.0
+        ],
+        "farHitPower": [
+          0.1,
+          1000.0
+        ],
+        "endHitPower": [
+          0.01,
+          1500.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
+        "nearArmorPower": [
+          3.0,
+          50.0
+        ],
+        "midArmorPower": [
+          2.0,
+          400.0
+        ],
+        "farArmorPower": [
+          0.2,
+          700.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "distanceFuse": false,
         "rendinstDamageRadius": 0.1,
         "speedViscosity": 0.2,
@@ -834,11 +1213,23 @@
         "amountPerTier": 30.0,
         "iconType": "ltc",
         "stabilityRicochetModifier": {
-          "mod1": [0.0,0.05],
-          "mod2": [20.0,0.1],
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
           "mod3": [
-            [30.0,0.2],
-            [45.0,0.3]
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
           ]
         },
         "radarVisibility": {
@@ -868,7 +1259,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -913,15 +1308,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -929,11 +1351,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -960,14 +1394,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1003,26 +1441,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1053,14 +1530,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1096,26 +1577,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1142,14 +1662,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1185,26 +1709,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1231,7 +1794,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -1276,15 +1843,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -1292,11 +1886,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -1327,14 +1933,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1370,26 +1980,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1416,14 +2065,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1459,26 +2112,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1508,7 +2200,11 @@
       "rocket": {
         "caliber": 0.026,
         "length": 0.08,
-        "WdK": [0.0,0.0,0.0],
+        "WdK": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "CxK": 100.0,
         "CxAoA": 0.0,
         "CyK": 0.0,
@@ -1553,15 +2249,42 @@
         "spawnExplosionFx": false,
         "explosionOffset": 0.05,
         "hitPowerMult": 1.0,
-        "nearHitPower": [1.0,50.0],
-        "midHitPower": [0.9,400.0],
-        "farHitPower": [0.1,1000.0],
-        "endHitPower": [0.01,1500.0],
-        "relativeVelHitShift": [300.0,1000.0],
-        "nearArmorPower": [3.0,50.0],
-        "midArmorPower": [2.0,400.0],
-        "farArmorPower": [0.2,700.0],
-        "relativeVelArmorShift": [200.0,1000.0],
+        "nearHitPower": [
+          1.0,
+          50.0
+        ],
+        "midHitPower": [
+          0.9,
+          400.0
+        ],
+        "farHitPower": [
+          0.1,
+          1000.0
+        ],
+        "endHitPower": [
+          0.01,
+          1500.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
+        "nearArmorPower": [
+          3.0,
+          50.0
+        ],
+        "midArmorPower": [
+          2.0,
+          400.0
+        ],
+        "farArmorPower": [
+          0.2,
+          700.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "distanceFuse": false,
         "rendinstDamageRadius": 0.1,
         "speedViscosity": 0.2,
@@ -1569,11 +2292,23 @@
         "amountPerTier": 30.0,
         "iconType": "ltc",
         "stabilityRicochetModifier": {
-          "mod1": [0.0,0.05],
-          "mod2": [20.0,0.1],
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
           "mod3": [
-            [30.0,0.2],
-            [45.0,0.3]
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
           ]
         },
         "radarVisibility": {
@@ -1603,7 +2338,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -1648,15 +2387,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -1664,11 +2430,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -1695,14 +2473,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1738,26 +2520,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1788,14 +2609,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1831,26 +2656,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1877,14 +2741,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -1920,26 +2788,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -1966,7 +2873,11 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.0,0.0,0.0],
+          "WdK": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "CxK": 100.0,
           "CxAoA": 0.0,
           "CyK": 0.0,
@@ -2011,15 +2922,42 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "speedViscosity": 0.2,
@@ -2027,11 +2965,23 @@
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "radarVisibility": {
@@ -2062,14 +3012,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -2105,26 +3059,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -2151,14 +3144,18 @@
         "rocket": {
           "caliber": 0.026,
           "length": 0.08,
-          "WdK": [0.1,0.1,0.1],
+          "WdK": [
+            0.1,
+            0.1,
+            0.1
+          ],
           "CxK": 2.58,
           "distFromCmToStab": 0.005,
           "mass": 0.09,
           "massEnd": 0.04,
-          "timeFire": 3.0,
+          "timeFire": 4.4,
           "force": 0.1,
-          "timeLife": 3.0,
+          "timeLife": 4.4,
           "thrustDeviation": 0.01,
           "useStartSpeed": true,
           "startSpeed": 55.0,
@@ -2194,26 +3191,65 @@
           "spawnExplosionFx": false,
           "explosionOffset": 0.05,
           "hitPowerMult": 1.0,
-          "nearHitPower": [1.0,50.0],
-          "midHitPower": [0.9,400.0],
-          "farHitPower": [0.1,1000.0],
-          "endHitPower": [0.01,1500.0],
-          "relativeVelHitShift": [300.0,1000.0],
-          "nearArmorPower": [3.0,50.0],
-          "midArmorPower": [2.0,400.0],
-          "farArmorPower": [0.2,700.0],
-          "relativeVelArmorShift": [200.0,1000.0],
+          "nearHitPower": [
+            1.0,
+            50.0
+          ],
+          "midHitPower": [
+            0.9,
+            400.0
+          ],
+          "farHitPower": [
+            0.1,
+            1000.0
+          ],
+          "endHitPower": [
+            0.01,
+            1500.0
+          ],
+          "relativeVelHitShift": [
+            300.0,
+            1000.0
+          ],
+          "nearArmorPower": [
+            3.0,
+            50.0
+          ],
+          "midArmorPower": [
+            2.0,
+            400.0
+          ],
+          "farArmorPower": [
+            0.2,
+            700.0
+          ],
+          "relativeVelArmorShift": [
+            200.0,
+            1000.0
+          ],
           "distanceFuse": false,
           "rendinstDamageRadius": 0.1,
           "price": 300.0,
           "amountPerTier": 30.0,
           "iconType": "ltc",
           "stabilityRicochetModifier": {
-            "mod1": [0.0,0.05],
-            "mod2": [20.0,0.1],
+            "mod1": [
+              0.0,
+              0.05
+            ],
+            "mod2": [
+              20.0,
+              0.1
+            ],
             "mod3": [
-              [30.0,0.2],
-              [45.0,0.3]
+              [
+                30.0,
+                0.2
+              ],
+              [
+                45.0,
+                0.3
+              ]
             ]
           },
           "infraRedVisibility": {
@@ -2243,7 +3279,11 @@
       "rocket": {
         "caliber": 0.026,
         "length": 0.08,
-        "WdK": [0.0,0.0,0.0],
+        "WdK": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "CxK": 100.0,
         "CxAoA": 0.0,
         "CyK": 0.0,
@@ -2288,15 +3328,42 @@
         "spawnExplosionFx": false,
         "explosionOffset": 0.05,
         "hitPowerMult": 1.0,
-        "nearHitPower": [1.0,50.0],
-        "midHitPower": [0.9,400.0],
-        "farHitPower": [0.1,1000.0],
-        "endHitPower": [0.01,1500.0],
-        "relativeVelHitShift": [300.0,1000.0],
-        "nearArmorPower": [3.0,50.0],
-        "midArmorPower": [2.0,400.0],
-        "farArmorPower": [0.2,700.0],
-        "relativeVelArmorShift": [200.0,1000.0],
+        "nearHitPower": [
+          1.0,
+          50.0
+        ],
+        "midHitPower": [
+          0.9,
+          400.0
+        ],
+        "farHitPower": [
+          0.1,
+          1000.0
+        ],
+        "endHitPower": [
+          0.01,
+          1500.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
+        "nearArmorPower": [
+          3.0,
+          50.0
+        ],
+        "midArmorPower": [
+          2.0,
+          400.0
+        ],
+        "farArmorPower": [
+          0.2,
+          700.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "distanceFuse": false,
         "rendinstDamageRadius": 0.1,
         "speedViscosity": 0.2,
@@ -2304,11 +3371,23 @@
         "amountPerTier": 30.0,
         "iconType": "ltc",
         "stabilityRicochetModifier": {
-          "mod1": [0.0,0.05],
-          "mod2": [20.0,0.1],
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
           "mod3": [
-            [30.0,0.2],
-            [45.0,0.3]
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
           ]
         },
         "radarVisibility": {

@@ -4,7 +4,11 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/ucav_scout_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gForceTolerationMult": 0.0001,
-  "tpsCameraOffset": [12.0,-3.0,0.0],
+  "tpsCameraOffset": [
+    12.0,
+    -3.0,
+    0.0
+  ],
   "mustHaveCockpit": false,
   "gyroSight": false,
   "orbitAvaible": true,
@@ -12,9 +16,9 @@
   "haveOpticTurret": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
-  "radarCrossSectionAspectMultFront": 0.0,
-  "radarCrossSectionAspectMultSide": 0.0,
-  "radarCrossSectionAspectMultRear": 0.0,
+  "radarCrossSectionAspectMultFront": 1e-9,
+  "radarCrossSectionAspectMultSide": 1e-9,
+  "radarCrossSectionAspectMultRear": 1e-9,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -944,7 +948,7 @@
     "cutPartEffect": ""
   },
   "Params": {
-    "Range": 1086.3101
+    "Range": 1086.31
   },
   "Sound": {
     "Engine": "engine_uav",
@@ -959,10 +963,19 @@
   },
   "gunnerOpticFps": {
     "Target": {
-      "pos": [0.2,-0.1,0.0],
+      "pos": [
+        0.2,
+        -0.1,
+        0.0
+      ],
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
-      "angularLimits": [-180.0,180.0,-80.0,15.0],
+      "angularLimits": [
+        -180.0,
+        180.0,
+        -80.0,
+        15.0
+      ],
       "opticType": "",
       "turretNo": 0
     }
@@ -986,8 +999,14 @@
         "mainTurret": true
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-90.0,90.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -90.0,
+          90.0
+        ]
       }
     }
   },
@@ -1013,8 +1032,14 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [0.0,92.0],
-    "engineExtinguishFireSpeedChance": [0.01,0.1],
+    "engineExtinguishFireSpeed": [
+      0.0,
+      92.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.01,
+      0.1
+    ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
@@ -1023,30 +1048,85 @@
     "wepOverspeed": 1.05
   },
   "balanceData": {
-    "accSpd": 1.6654,
+    "accSpd": 1.66541,
     "climbSpeed": 10.6,
     "maxSpeed": 163.61,
     "turnTime": 22.8833
   },
   "cutting": {
-    "_emtr_break_wing0_l_from": [-0.0725679,0.0100818,0.0851684],
-    "_emtr_break_wing0_l_to": [-0.0725679,0.0100818,0.0951684],
-    "emtr_break_wing1_l_from": [-0.0725679,0.0100818,0.233173],
-    "emtr_break_wing1_l_to": [-0.0725679,0.0100818,0.310681],
-    "emtr_break_wing2_l_from": [-0.0725679,0.0100818,0.426941],
-    "emtr_break_wing2_l_to": [-0.0725679,0.0100818,0.618358],
-    "_emtr_break_wing0_r_from": [-0.0726432,0.0100818,-0.0852361],
-    "_emtr_break_wing0_r_to": [-0.0726432,0.0100818,-0.0952361],
-    "emtr_break_wing1_r_from": [-0.0726432,0.0100818,-0.233624],
-    "emtr_break_wing1_r_to": [-0.0726432,0.0100818,-0.310974],
-    "emtr_break_wing2_r_from": [-0.0726432,0.0100818,-0.426999],
-    "emtr_break_wing2_r_to": [-0.0726432,0.0100818,-0.618393],
-    "emtr_break_wing_tail": [-0.536209,0.0,0.0],
+    "_emtr_break_wing0_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.0851684
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.0951684
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.233173
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.310681
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.426941
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.618358
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.0852361
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.0952361
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.233624
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.310974
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.426999
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.618393
+    ],
+    "emtr_break_wing_tail": [
+      -0.536209,
+      0.0,
+      0.0
+    ],
     "finCut": false
   },
   "nightVision": {
     "sightTPodThermal": {
-      "resolution": [1024,768],
+      "resolution": [
+        1024,
+        768
+      ],
       "noiseFactor": 0.05
     }
   }

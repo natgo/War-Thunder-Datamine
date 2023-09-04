@@ -6,7 +6,11 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
-  "tpsCameraOffset": [4.0,0.0,0.0],
+  "tpsCameraOffset": [
+    4.0,
+    0.0,
+    0.0
+  ],
   "gyroSight": false,
   "hasPointOfInterestMemory": false,
   "type": "typeFighter",
@@ -788,34 +792,66 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.2
+        ],
         "type": "leftHand",
-        "detachedNodeYpr": [0.0,-15.0,-90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          -90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.5
+        ],
         "type": "rightHand",
-        "detachedNodeYpr": [0.0,-15.0,90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.0,1.0,0.3]
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.3
+        ]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [0.0,1.0,-0.3]
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.3
+        ]
       }
     ]
   },
@@ -834,28 +870,44 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_",
-        "flexionDir": [0.0,-1.0,0.1]
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.1
+        ]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_",
-        "flexionDir": [0.0,-1.0,-0.1]
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.1
+        ]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_",
-        "flexionDir": [0.0,1.0,-0.2]
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.2
+        ]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_",
-        "flexionDir": [0.0,1.0,0.2]
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.2
+        ]
       }
     ]
   },
@@ -896,7 +948,11 @@
     }
   },
   "helicopter": {
-    "rotorBladeAnglesCoeffs": [0.2,0.2,0.2],
+    "rotorBladeAnglesCoeffs": [
+      0.2,
+      0.2,
+      0.2
+    ],
     "propellerStrainCoeff": 0.01
   },
   "Params": {
@@ -907,56 +963,185 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "headPos": [1.25,0.48,-0.34],
-    "headPosOnShooting": [1.25,0.48,-0.34],
-    "lightPos": [1.908577,-0.014779,-0.063221],
-    "lightColor": [0.01,1.5,0.1],
+    "headPos": [
+      1.25,
+      0.48,
+      -0.34
+    ],
+    "headPosOnShooting": [
+      1.25,
+      0.48,
+      -0.34
+    ],
+    "lightPos": [
+      1.908577,
+      -0.014779,
+      -0.063221
+    ],
+    "lightColor": [
+      0.01,
+      1.5,
+      0.1
+    ],
     "lightRadius": 0.33,
     "sightInFov": 6.82,
     "sightOutFov": 23.17,
     "sightFov": 5.5,
     "devices": {
-      "stick_elevator": [-1.0,1.0],
-      "stick_ailerons": [-1.0,1.0],
-      "stick_ailerons1": [-1.0,1.0],
-      "throttle": [0.0,1.0],
-      "throttle_1": [0.0,1.0],
-      "pedals": [-1.0,1.0],
-      "pedals1": [-1.0,1.0],
-      "compass": [0.0,360.0],
-      "compass1": [0.0,360.0],
-      "aviahorizon_pitch": [-60.0,60.0],
-      "aviahorizon_roll": [-180.0,180.0],
-      "bank": [-8.0,8.0],
-      "fuel": [2.5,350.0],
-      "fuel1": [0.0,75.0],
-      "speed": [0.0,82.311],
-      "vario": [-30.48,30.48],
-      "clock_hour": [0.0,12.0],
-      "clock_min": [0.0,60.0],
-      "clock_sec": [0.0,60.0],
-      "water_temperature": [0.0,1100.0],
-      "water_temperature1": [0.0,1100.0],
-      "oil_temperature": [-70.0,150.0],
-      "oil_temperature1": [-70.0,150.0],
-      "oil_pressure": [0.0,120.0],
-      "oil_pressure1": [0.0,120.0],
-      "rpm": [0.0,8500.0],
-      "rpm1": [0.0,8500.0],
-      "rpm_hour": [0.0,6000.0],
-      "rpm_min": [0.0,1000.0],
-      "rpm1_hour": [0.0,6000.0],
-      "rpm1_min": [0.0,1000.0],
-      "prop_rpm": [0.0,50.0],
-      "altitude_10k": [0.0,100000.0],
-      "altitude_hour": [0.0,10000.0],
-      "altitude_min": [0.0,100.0],
-      "altitude_min1": [0.0,1000.0],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "fuel": [
+        2.5,
+        350.0
+      ],
+      "fuel1": [
+        0.0,
+        75.0
+      ],
+      "speed": [
+        0.0,
+        82.311
+      ],
+      "vario": [
+        -30.48,
+        30.48
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "water_temperature": [
+        0.0,
+        1100.0
+      ],
+      "water_temperature1": [
+        0.0,
+        1100.0
+      ],
+      "oil_temperature": [
+        -70.0,
+        150.0
+      ],
+      "oil_temperature1": [
+        -70.0,
+        150.0
+      ],
+      "oil_pressure": [
+        0.0,
+        120.0
+      ],
+      "oil_pressure1": [
+        0.0,
+        120.0
+      ],
+      "rpm": [
+        0.0,
+        8500.0
+      ],
+      "rpm1": [
+        0.0,
+        8500.0
+      ],
+      "rpm_hour": [
+        0.0,
+        6000.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        6000.0
+      ],
+      "rpm1_min": [
+        0.0,
+        1000.0
+      ],
+      "prop_rpm": [
+        0.0,
+        50.0
+      ],
+      "altitude_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        100.0
+      ],
+      "altitude_min1": [
+        0.0,
+        1000.0
+      ],
       "altitude_koef": 3.28
     },
     "multifunctionDisplays": {
       "display": {
-        "textureArea": [0.0,0.5,0.5,1.0],
+        "textureArea": [
+          0.0,
+          0.5,
+          0.5,
+          1.0
+        ],
         "page": {
           "type": "rwr"
         }
@@ -975,9 +1160,18 @@
     }
   },
   "gunnerOpticFps": {
-    "pos": [1.0,0.0,0.0],
+    "pos": [
+      1.0,
+      0.0,
+      0.0
+    ],
     "head": "optic1_turret",
-    "angularLimits": [-115.0,90.0,-25.0,25.0],
+    "angularLimits": [
+      -115.0,
+      90.0,
+      -25.0,
+      25.0
+    ],
     "crosshairPreset": "test_crosshair"
   },
   "sensors": {
@@ -1068,8 +1262,14 @@
               "mainTurret": true
             },
             "limits": {
-              "yaw": [-115.0,90.0],
-              "pitch": [-25.0,25.0]
+              "yaw": [
+                -115.0,
+                90.0
+              ],
+              "pitch": [
+                -25.0,
+                25.0
+              ]
             }
           }
         }
@@ -1301,7 +1501,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_1",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               },
               {
@@ -1312,7 +1516,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_2",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               },
               {
@@ -1323,7 +1531,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_3",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               }
             ],
@@ -1431,7 +1643,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_6",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               },
               {
@@ -1442,7 +1658,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_5",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               },
               {
@@ -1453,7 +1673,11 @@
                 "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
                 "emitter": "ffar_4",
                 "bullets": 1,
-                "minSize": [1.5,1.0,1.0],
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
                 "dragCx": 0.06
               }
             ],
@@ -1625,8 +1849,14 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [0.0,92.0],
-    "engineExtinguishFireSpeedChance": [0.01,0.1],
+    "engineExtinguishFireSpeed": [
+      0.0,
+      92.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.01,
+      0.1
+    ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
@@ -1675,13 +1905,19 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "pilotIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
@@ -1691,9 +1927,21 @@
     }
   },
   "cutting": {
-    "emtr_break_wing_lower": [0.0,-1.0,0.0],
-    "emtr_break_wing_upper": [0.11,1.0,0.0],
-    "emtr_break_wing_tail": [-2.01118,0.0,0.0],
+    "emtr_break_wing_lower": [
+      0.0,
+      -1.0,
+      0.0
+    ],
+    "emtr_break_wing_upper": [
+      0.11,
+      1.0,
+      0.0
+    ],
+    "emtr_break_wing_tail": [
+      -2.01118,
+      0.0,
+      0.0
+    ],
     "finCut": false
   },
   "default_skin_tomoe": {

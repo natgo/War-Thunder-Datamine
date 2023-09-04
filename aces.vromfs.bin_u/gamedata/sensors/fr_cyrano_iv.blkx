@@ -40,8 +40,14 @@
   "scanPatterns": {
     "searchWide4Bars": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-32.0,28.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -32.0,
+        28.0
+      ],
       "rollStabLimit": 80.0,
       "pitchStabLimit": 32.0,
       "period": 4.8,
@@ -54,8 +60,14 @@
     },
     "searchNarrow4Bars": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-32.0,28.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -32.0,
+        28.0
+      ],
       "rollStabLimit": 80.0,
       "pitchStabLimit": 32.0,
       "period": 2.4,
@@ -68,8 +80,14 @@
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-32.0,28.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -32.0,
+        28.0
+      ],
       "rollStabLimit": 80.0,
       "pitchStabLimit": 32.0,
       "period": 0.6,
@@ -82,21 +100,36 @@
     },
     "boresightLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-45.0,45.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        45.0
+      ],
       "period": 0.5,
       "width": 2.0,
       "indicate": true
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-45.0,45.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        45.0
+      ]
     }
   },
   "signals": {
     "pulse": {
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -108,7 +141,10 @@
       }
     },
     "pulseTrack": {
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -122,7 +158,10 @@
       }
     },
     "MTI": {
-      "dynamicRange": [40.0,12.0],
+      "dynamicRange": [
+        40.0,
+        12.0
+      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -143,7 +182,10 @@
       }
     },
     "MTITrack": {
-      "dynamicRange": [40.0,12.0],
+      "dynamicRange": [
+        40.0,
+        12.0
+      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -512,9 +554,18 @@
             "init": {},
             "setMediumAltStandbyMode": {},
             "setTargetDesignationRange": {
-              "azimuthRange": [-60.0,60.0],
-              "elevationRange": [-32.0,28.0],
-              "distanceRange": [500.0,65000.0],
+              "azimuthRange": [
+                -60.0,
+                60.0
+              ],
+              "elevationRange": [
+                -32.0,
+                28.0
+              ],
+              "distanceRange": [
+                500.0,
+                65000.0
+              ],
               "distanceWidth": 2000.0,
               "distanceRelWidthMin": 0.05
             }

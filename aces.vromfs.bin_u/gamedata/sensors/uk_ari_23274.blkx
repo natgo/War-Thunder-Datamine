@@ -25,21 +25,36 @@
   "scanPatterns": {
     "lock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-45.0,30.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        30.0
+      ],
       "period": 0.25,
       "width": 0.1,
       "indicate": true
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-45.0,30.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        30.0
+      ]
     }
   },
   "signals": {
     "track": {
-      "dynamicRange": [40.0,13.0],
+      "dynamicRange": [
+        40.0,
+        13.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "groundVehiclesAsTarget": false,
@@ -75,8 +90,14 @@
             "signal": "track"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-15.0,15.0],
-            "distanceRange": [0.0,74000.0]
+            "azimuthRange": [
+              -15.0,
+              15.0
+            ],
+            "distanceRange": [
+              0.0,
+              74000.0
+            ]
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
