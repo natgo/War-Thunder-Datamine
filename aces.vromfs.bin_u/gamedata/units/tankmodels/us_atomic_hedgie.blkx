@@ -14,13 +14,21 @@
   "acceleration": 10.0,
   "frictionGroundCoeff": 1.0,
   "frictionThresSpdMult": 8.0,
-  "rotateBodySpeed": [0.0,25.0,60.0,0.0],
+  "rotateBodySpeed": [
+    0.0,
+    25.0,
+    60.0,
+    0.0
+  ],
   "hasSniperView": false,
   "airAccelerate": 0.0,
   "jumpVertSpeed": 16.0,
   "sprintJumpVertSpeed": 16.0,
   "sprintJumpHorzSpeed": 0.0,
-  "jumpTopAdditionalImpulse": [-35.0,8.0],
+  "jumpTopAdditionalImpulse": [
+    -35.0,
+    8.0
+  ],
   "sprintActionBarIcon": "#ui/gameuiskin#atomic_hedgie_sprint",
   "jumpCooldownTime": 10.0,
   "jumpProgressAnimVar": "jump_progress",
@@ -72,12 +80,36 @@
       "shootNode": "rifle_Body",
       "selWeaponVar": 1,
       "increaseDevWithEachShot": 1.5,
-      "standingPosition": [0.0,1.6,-0.15],
-      "standingAimingPosition": [0.0,1.6,-0.05],
-      "crouchPosition": [0.0,1.2,-0.15],
-      "crouchAimingPosition": [0.0,1.2,-0.05],
-      "crawlPosition": [0.7,0.4,-0.15],
-      "crawlAimingPosition": [0.7,0.45,-0.05],
+      "standingPosition": [
+        0.0,
+        1.6,
+        -0.15
+      ],
+      "standingAimingPosition": [
+        0.0,
+        1.6,
+        -0.05
+      ],
+      "crouchPosition": [
+        0.0,
+        1.2,
+        -0.15
+      ],
+      "crouchAimingPosition": [
+        0.0,
+        1.2,
+        -0.05
+      ],
+      "crawlPosition": [
+        0.7,
+        0.4,
+        -0.15
+      ],
+      "crawlAimingPosition": [
+        0.7,
+        0.45,
+        -0.05
+      ],
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
       "targetSpdVisc": 0.4,
@@ -94,8 +126,16 @@
     "zoomInFov": 6.14,
     "sightFov": 13.5,
     "sightName": "1g_46",
-    "headPos": [0.0,5.5,-10.0],
-    "headPosOnShooting": [-2.5,5.5,0.0],
+    "headPos": [
+      0.0,
+      5.5,
+      -10.0
+    ],
+    "headPosOnShooting": [
+      -2.5,
+      5.5,
+      0.0
+    ],
     "detectionHeight": 5.6
   },
   "commonWeapons": {
@@ -107,7 +147,10 @@
       "useEmitter": true,
       "changeBulletTypeForSet": true,
       "emitter": "bone_rocket_01",
-      "emitterGenRange": [1,1],
+      "emitterGenRange": [
+        1,
+        1
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "stopForFire": true,
       "maxSpeedForFire": 40.0,
@@ -136,8 +179,14 @@
         "gun": "bone_gun"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-90.0,90.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -90.0,
+          90.0
+        ]
       }
     }
   },
@@ -318,23 +367,43 @@
       "props": {
         "dirt": {
           "sizeScale": 1.5,
-          "tc": [0.5,0.0,1.0,0.5],
+          "tc": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
           "fx": "foot_dust_dirt",
           "sprintFx": "hedgie_track_move"
         },
         "sand": {
           "sizeScale": 1.5,
-          "tc": [0.0,0.0,0.5,0.5],
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
           "fx": "foot_dust_sand"
         },
         "snow": {
           "sizeScale": 1.5,
-          "tc": [0.0,0.0,0.5,0.5],
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
           "fx": "foot_dust_snow"
         },
         "concrete": {
           "sizeScale": 1.5,
-          "tc": [0.0,0.5,0.5,1.0],
+          "tc": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
           "fx": "foot_dust_asphalt",
           "sprintFx": "hedgie_concrete_move"
         }
@@ -358,18 +427,48 @@
   "jumpAttackExplosion": {
     "fx": "hedgie_explosion",
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeHitPower": 60.0,
     "explodeArmorPower": 60.0,
-    "explodeRadius": [5.0,30.0]
+    "explodeRadius": [
+      5.0,
+      30.0
+    ]
   }
 }

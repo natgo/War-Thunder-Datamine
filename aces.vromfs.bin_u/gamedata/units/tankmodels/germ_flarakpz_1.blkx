@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -788,7 +798,10 @@
         "animatedRadarIdx": 0,
         "radarElevationScan": true,
         "pitchByTurret": true,
-        "pitchLimits": [-10.0,85.0],
+        "pitchLimits": [
+          -10.0,
+          85.0
+        ],
         "radarAntenaSpeed": 50.0,
         "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }
@@ -1664,7 +1677,10 @@
       "flash": "bone_rocket_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
-      "emitterGenRange": [1,2],
+      "emitterGenRange": [
+        1,
+        2
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "ammo_turret_%02d_dm",
       "recoilMultiplier": 0.1,
@@ -1674,10 +1690,17 @@
       "waitShellForPark": true,
       "shellCasingEmitter": "bone_rocket_%02d",
       "shellCasingMesh": "roland_rocket_container",
-      "shellCasingEmitterRange": [1,2],
+      "shellCasingEmitterRange": [
+        1,
+        2
+      ],
       "openHatchTime": 0.0,
       "shellCasingLifeTime": 15.0,
-      "shellCasingImpulse": [0.0,0.0,0.0],
+      "shellCasingImpulse": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "linkShellCasingToGun": true,
       "needScaleShellCasing": false,
       "canChangeBulletInReload": false,
@@ -1714,8 +1737,14 @@
         "rotatedTurret": "bone_turret"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          80.0
+        ]
       }
     },
     "animatedBones": {
@@ -1741,9 +1770,20 @@
       "Empty": 32000.0,
       "Fuel": 500.0,
       "TakeOff": 32500.0,
-      "momentOfInertia": [2.5,2.5,6.0],
-      "CenterOfGravity": [0.2,0.6,0.0],
-      "CenterOfGravityClampY": [0.0,0.6],
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.2,
+        0.6,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.6
+      ],
       "AdvancedMass": false,
       "trackMass": 1500.0
     },
@@ -1751,7 +1791,11 @@
       "animationMultiplier": 0.63,
       "height": 0.075,
       "width": 0.45,
-      "tracksTensionK": [7.5,9.0,4.0],
+      "tracksTensionK": [
+        7.5,
+        9.0,
+        4.0
+      ],
       "trackMesh": "ger_diehl_828a_phys_track_line",
       "trackLen": 0.147,
       "trackCount": 91,
@@ -1796,11 +1840,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.12,-0.05,0.1],
+      "suspensionOffsets": [
+        -0.12,
+        -0.05,
+        0.1
+      ],
       "defaultGearRadius": 0.34,
       "topGearRadius": 0.13,
       "frontBackGearRadius": 0.34,
-      "defaultDampeningForce": [120000.0,120000.0],
+      "defaultDampeningForce": [
+        120000.0,
+        120000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.31,
@@ -1815,8 +1866,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1829,21 +1888,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.5,
-    "detonatePortion": [0.5,0.9],
+    "detonatePortion": [
+      0.5,
+      0.9
+    ],
     "explodeHitPower": 4000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2497,8 +2589,16 @@
     "zoomInFov": 6.14,
     "sightFov": 6.0,
     "sightName": "roland_sight",
-    "headPos": [0.0,4.0,-8.0],
-    "headPosOnShooting": [-0.85,3.9,-0.13],
+    "headPos": [
+      0.0,
+      4.0,
+      -8.0
+    ],
+    "headPosOnShooting": [
+      -0.85,
+      3.9,
+      -0.13
+    ],
     "detectionHeight": 4.33
   },
   "ammoStowages": {
@@ -2584,7 +2684,10 @@
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
-              "emitterGenRange": [1,2],
+              "emitterGenRange": [
+                1,
+                2
+              ],
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
@@ -2594,10 +2697,17 @@
               "waitShellForPark": true,
               "shellCasingEmitter": "bone_rocket_%02d",
               "shellCasingMesh": "roland_rocket_container",
-              "shellCasingEmitterRange": [1,2],
+              "shellCasingEmitterRange": [
+                1,
+                2
+              ],
               "openHatchTime": 0.0,
               "shellCasingLifeTime": 15.0,
-              "shellCasingImpulse": [0.0,0.0,0.0],
+              "shellCasingImpulse": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "linkShellCasingToGun": true,
               "needScaleShellCasing": false,
               "canChangeBulletInReload": false,
@@ -2634,8 +2744,14 @@
                 "rotatedTurret": "bone_turret"
               },
               "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-10.0,80.0]
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  80.0
+                ]
               }
             },
             {
@@ -2646,7 +2762,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,8],
+              "emitterGenRange": [
+                1,
+                8
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "ignoreLoaderPenalty": true,
               "createGunEffects": true,
@@ -2679,8 +2798,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ],

@@ -20,8 +20,14 @@
   "scanPatterns": {
     "searchNarrow": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-50.0,50.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        50.0
+      ],
       "rollStabLimit": 70.0,
       "period": 1.5,
       "width": 22.5,
@@ -32,8 +38,14 @@
     },
     "searchWide": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-50.0,50.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        50.0
+      ],
       "rollStabLimit": 70.0,
       "period": 4.0,
       "width": 60.0,
@@ -44,16 +56,28 @@
     },
     "boresightLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-50.0,50.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        50.0
+      ],
       "period": 1.0,
       "width": 3.35,
       "indicate": true
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-50.0,50.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        50.0
+      ],
       "rollStabLimit": 70.0,
       "period": 0.5,
       "width": 7.8,
@@ -64,13 +88,22 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ]
     }
   },
   "signals": {
     "search": {
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -82,7 +115,10 @@
       }
     },
     "track": {
-      "dynamicRange": [40.0,13.0],
+      "dynamicRange": [
+        40.0,
+        13.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -133,8 +169,14 @@
             "signal": "search"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-60.0,60.0],
-            "distanceRange": [0.0,92500.0]
+            "azimuthRange": [
+              -60.0,
+              60.0
+            ],
+            "distanceRange": [
+              0.0,
+              92500.0
+            ]
           }
         },
         "setStandbyMode": {

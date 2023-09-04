@@ -42,7 +42,10 @@
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 6,
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
@@ -116,7 +119,11 @@
       "actions": {
         "missionSetFade": {
           "mode": "fadeOut",
-          "color": [0.0,0.0,0.0],
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "time": 0.0
         },
         "playerOptions": {
@@ -275,7 +282,11 @@
         },
         "unitRespawn": {
           "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "@player",
           "target": "player_spawn_01"
         },
@@ -300,7 +311,11 @@
         },
         "missionSetFade": {
           "mode": "fadeIn",
-          "color": [0.0,0.0,0.0],
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "time": 3.0
         },
         "__wait": {
@@ -719,7 +734,11 @@
         ],
         "unitRespawn": {
           "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "@def_unit",
           "target": "@def_route"
         },
@@ -844,9 +863,19 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "pl_column_03",
             "partName": "fuel_tank_l_01_dm",
             "setOnFire": true
@@ -855,9 +884,19 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "pl_column_03",
             "partName": "engine_dm",
             "doExplosion": true
@@ -1232,9 +1271,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "enemy_defence_1st",
           "doExplosion": true,
           "useForTriggerFiltered": true
@@ -1554,13 +1603,21 @@
         "unitRespawn": [
           {
             "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "enemy_defence_2nd",
             "target": "defence_2nd_heavy_spawn_01"
           },
           {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "pl_column_06",
             "target": "player_respawn_pt_04"
           }
@@ -1836,9 +1893,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "pl_column_04",
           "doExplosion": true
         },
@@ -2009,7 +2076,12 @@
         ],
         "unitBlinkPart": {
           "blink": true,
-          "color": "#ff0000ff",
+          "color": [
+            0,
+            0,
+            255,
+            255
+          ],
           "target": "ai_enemy_tank_heavy_01",
           "part": [
             "ammo_body_01",
@@ -2059,14 +2131,24 @@
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "waypoint_ground",
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "show": false,
           "attach": true,
           "scale": 0.5,
           "loopSpawn": true,
-          "delay": [1.0,1.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
           "target": "wp_flank_heavy",
-          "radiusOffset": [0.0,0.0]
+          "radiusOffset": [
+            0.0,
+            0.0
+          ]
         },
         "triggerEnable": {
           "target": "firing_position_off"
@@ -2103,14 +2185,24 @@
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "waypoint_ground",
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "show": true,
           "attach": true,
           "scale": 0.5,
           "loopSpawn": true,
-          "delay": [1.0,1.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
           "target": "wp_flank_heavy",
-          "radiusOffset": [0.0,0.0]
+          "radiusOffset": [
+            0.0,
+            0.0
+          ]
         },
         "triggerEnable": {
           "target": "firing_position_on"
@@ -2429,7 +2521,11 @@
         ],
         "unitRespawn": {
           "delay": 1.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "pl_column_01c",
           "target": "pl_column_01"
         },
@@ -2672,9 +2768,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "pl_column_06",
           "doExplosion": true
         },
@@ -2950,9 +3056,19 @@
           "power": 0.25,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "ai_enemy_bombers_01",
           "partName": "armor1_dm",
           "useForTriggerFiltered": true
@@ -3013,9 +3129,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "ai_enemy_bombers_01",
           "partName": "tank1_dm",
           "setOnFire": true,
@@ -3303,9 +3429,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "ai_enemy_bombers_01",
           "doExplosion": true,
           "useForTriggerFiltered": true
@@ -3562,12 +3698,20 @@
         "missionSetFade": [
           {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           },
           {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
         ],
@@ -3587,7 +3731,11 @@
         ],
         "unitRespawn": {
           "delay": 1.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "@player",
           "object_marking": 0,
           "target": "player_tp_for_swap_01_a"
@@ -3969,7 +4117,11 @@
         ],
         "unitRespawn": {
           "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "@def_unit",
           "target": "@def_route"
         },
@@ -4177,9 +4329,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "pl_column_05",
           "doExplosion": true
         }
@@ -4221,9 +4383,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "enemy_defence_3rd",
           "doExplosion": true,
           "useForTriggerFiltered": true
@@ -4269,9 +4441,19 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "@player",
             "partName": "gun_barrel_dm"
           },
@@ -4279,9 +4461,19 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "@player",
             "partName": "gunner_dm"
           }
@@ -4343,12 +4535,19 @@
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "waypoint_ground",
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "show": true,
           "attach": true,
           "scale": 1.0,
           "loopSpawn": true,
-          "delay": [1.0,1.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
           "target": [
             "wp_cover_01",
             "wp_cover_02",
@@ -4436,12 +4635,19 @@
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "waypoint_ground",
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "show": false,
           "attach": true,
           "scale": 1.0,
           "loopSpawn": true,
-          "delay": [1.0,1.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
           "target": [
             "wp_cover_01",
             "wp_cover_02",
@@ -6195,11 +6401,23 @@
             "duration": 13.0,
             "camera_type": "flat_linear",
             "direction_amp": 0.0,
-            "flat_offs": [0.0,0.0,0.0],
+            "flat_offs": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "zoom": 0.0,
             "frequency": 1.0,
-            "linear_at_vel": [6.9,0.0,9.33],
-            "linear_eye_vel": [6.5,0.0,9.0],
+            "linear_at_vel": [
+              6.9,
+              0.0,
+              9.33
+            ],
+            "linear_eye_vel": [
+              6.5,
+              0.0,
+              9.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -6215,8 +6433,16 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "min_cam_alt": 1.0,
-            "linear_at": [0.01,-1.0,0.01],
-            "linear_eye": [0.0,0.0,0.0],
+            "linear_at": [
+              0.01,
+              -1.0,
+              0.01
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "delayPlayer": true
           },
           "triggerDisable": {
@@ -6225,12 +6451,20 @@
           "missionSetFade": [
             {
               "mode": "fadeIn",
-              "color": [0.0,0.0,0.0],
+              "color": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "time": 3.0
             },
             {
               "mode": "fadeOut",
-              "color": [0.0,0.0,0.0],
+              "color": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "time": 3.0
             }
           ],
@@ -6618,7 +6852,11 @@
           },
           "missionSetFade": {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 3.0
           },
           "triggerActivate": [
@@ -6715,14 +6953,22 @@
           "__unitRespawn": [
             {
               "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "needStopOnRespawn": true,
               "object": "ai_enemy_tank_heavy_01",
               "target": "cutscene_07_pt_01"
             },
             {
               "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "needStopOnRespawn": true,
               "object": "pl_column_05",
               "target": "cutscene_07_pt_02"
@@ -6857,9 +7103,19 @@
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "ai_enemy_tank_heavy_01",
               "partName": "gun_barrel_dm"
             },
@@ -6867,9 +7123,19 @@
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "ai_enemy_tank_heavy_01",
               "partName": "track_r_dm"
             }
@@ -8726,7 +8992,11 @@
         "actions": {
           "missionSetFade": {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.0
           },
           "wait": {
@@ -9022,7 +9292,11 @@
         "actions": {
           "unitRespawn": {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "@player",
             "target": "@s_nearest_area"
           }
@@ -9030,7 +9304,11 @@
         "else_actions": {
           "unitRespawn": {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "@player",
             "target": "player_respawn_pt_01"
           }
@@ -9186,14 +9464,24 @@
           "unitPlayEffect": {
             "effect_type": "specify",
             "effect": "waypoint_ground",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "@way_wp_name",
-            "radiusOffset": [0.0,0.0]
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
           },
           "missionMarkAsWaypoint": {
             "visible": true,
@@ -9242,14 +9530,24 @@
           "unitPlayEffect": {
             "effect_type": "specify",
             "effect": "waypoint_ground",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": false,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "@way_wp_name",
-            "radiusOffset": [0.0,0.0]
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
           },
           "missionMarkAsWaypoint": {
             "visible": false,
@@ -9309,14 +9607,24 @@
           "__unitPlayEffect": {
             "effect_type": "specify",
             "effect": "waypoint_ground",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": false,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "@way_wp_name",
-            "radiusOffset": [0.0,0.0]
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
           },
           "__triggerDisable": {
             "target": [
@@ -9759,9 +10067,19 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "enemy_defence_1st",
           "partName": "engine_dm",
           "doExplosion": true,
@@ -9848,7 +10166,11 @@
         },
         "missionSetFade": {
           "mode": "fadeIn",
-          "color": [0.0,0.0,0.0],
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "time": 0.0
         }
       },
@@ -10091,19 +10413,31 @@
         "unitRespawn": [
           {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "pl_column_01c",
             "target": "debug_area_01"
           },
           {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "pl_column_02",
             "target": "debug_area_03"
           },
           {
             "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "pl_column_05",
             "target": "debug_area_02"
           }
@@ -10311,7 +10645,11 @@
         },
         "missionSetFade": {
           "mode": "fadeOut",
-          "color": [0.0,0.0,0.0],
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "time": 1.0
         },
         "wait": {
@@ -10873,10 +11211,26 @@
       {
         "name": "pl_column_08",
         "tm": [
-          [0.538153,0.0,0.842847],
-          [0.0,1.0,0.0],
-          [-0.842847,0.0,0.538153],
-          [1657.55,6.35,1410.0]
+          [
+            0.538153,
+            0.0,
+            0.842847
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.842847,
+            0.0,
+            0.538153
+          ],
+          [
+            1657.55,
+            6.35,
+            1410.0
+          ]
         ],
         "unit_class": "uk_crusader_aa_mk_2_tutorial",
         "objLayer": 1,
@@ -10899,8 +11253,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -10910,10 +11270,26 @@
       {
         "name": "pl_column_07",
         "tm": [
-          [0.462646,0.0,0.886543],
-          [0.0,1.0,0.0],
-          [-0.886543,0.0,0.462646],
-          [1667.25,6.35,1426.4]
+          [
+            0.462646,
+            0.0,
+            0.886543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.886543,
+            0.0,
+            0.462646
+          ],
+          [
+            1667.25,
+            6.35,
+            1426.4
+          ]
         ],
         "unit_class": "uk_crusader_aa_mk_2",
         "objLayer": 1,
@@ -10936,8 +11312,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -10947,10 +11329,26 @@
       {
         "name": "pl_column_06",
         "tm": [
-          [0.423535,0.0,0.90588],
-          [0.0,1.0,0.0],
-          [-0.90588,0.0,0.423535],
-          [1683.05,6.35,1459.9]
+          [
+            0.423535,
+            0.0,
+            0.90588
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.90588,
+            0.0,
+            0.423535
+          ],
+          [
+            1683.05,
+            6.35,
+            1459.9
+          ]
         ],
         "unit_class": "us_m24_chaffee",
         "objLayer": 1,
@@ -10973,8 +11371,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -10984,10 +11388,26 @@
       {
         "name": "pl_column_05",
         "tm": [
-          [0.423535,0.0,0.905879],
-          [0.0,1.0,0.0],
-          [-0.905879,0.0,0.423535],
-          [1675.15,6.35,1442.7]
+          [
+            0.423535,
+            0.0,
+            0.905879
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.905879,
+            0.0,
+            0.423535
+          ],
+          [
+            1675.15,
+            6.35,
+            1442.7
+          ]
         ],
         "unit_class": "us_m24_chaffee",
         "objLayer": 1,
@@ -11010,8 +11430,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11021,10 +11447,26 @@
       {
         "name": "pl_column_04",
         "tm": [
-          [0.462646,0.0,0.886543],
-          [0.0,1.0,0.0],
-          [-0.886543,0.0,0.462646],
-          [1692.6,6.35,1478.45]
+          [
+            0.462646,
+            0.0,
+            0.886543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.886543,
+            0.0,
+            0.462646
+          ],
+          [
+            1692.6,
+            6.35,
+            1478.45
+          ]
         ],
         "unit_class": "us_m4a2_76w_sherman_tutorial",
         "objLayer": 1,
@@ -11048,8 +11490,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11059,10 +11507,26 @@
       {
         "name": "pl_column_03",
         "tm": [
-          [0.609544,0.00804177,0.792711],
-          [-0.00953376,0.999951,-0.00281329],
-          [-0.792695,-0.00584269,0.609592],
-          [1703.9,6.35,1500.95]
+          [
+            0.609544,
+            0.00804177,
+            0.792711
+          ],
+          [
+            -0.00953376,
+            0.999951,
+            -0.00281329
+          ],
+          [
+            -0.792695,
+            -0.00584269,
+            0.609592
+          ],
+          [
+            1703.9,
+            6.35,
+            1500.95
+          ]
         ],
         "unit_class": "us_m4a2_76w_sherman",
         "objLayer": 1,
@@ -11085,8 +11549,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11096,10 +11566,26 @@
       {
         "name": "pl_column_02",
         "tm": [
-          [0.574405,0.0,0.818571],
-          [0.0,1.0,0.0],
-          [-0.818571,0.0,0.574405],
-          [1715.95,6.35,1516.25]
+          [
+            0.574405,
+            0.0,
+            0.818571
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.818571,
+            0.0,
+            0.574405
+          ],
+          [
+            1715.95,
+            6.35,
+            1516.25
+          ]
         ],
         "unit_class": "uk_sherman_vc_firefly",
         "objLayer": 1,
@@ -11122,8 +11608,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11133,10 +11625,26 @@
       {
         "name": "pl_column_01",
         "tm": [
-          [0.609564,0.0,0.792737],
-          [0.0,1.0,0.0],
-          [-0.792737,0.0,0.609564],
-          [1727.2,6.35,1531.3]
+          [
+            0.609564,
+            0.0,
+            0.792737
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.792737,
+            0.0,
+            0.609564
+          ],
+          [
+            1727.2,
+            6.35,
+            1531.3
+          ]
         ],
         "unit_class": "us_m26_pershing",
         "objLayer": 1,
@@ -11160,8 +11668,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11171,10 +11685,26 @@
       {
         "name": "pl_column_01c",
         "tm": [
-          [0.574405,0.0,0.818571],
-          [0.0,1.0,0.0],
-          [-0.818571,0.0,0.574405],
-          [1726.71,6.33701,1514.86]
+          [
+            0.574405,
+            0.0,
+            0.818571
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.818571,
+            0.0,
+            0.574405
+          ],
+          [
+            1726.71,
+            6.33701,
+            1514.86
+          ]
         ],
         "unit_class": "us_m26_pershing_tutorial",
         "objLayer": 1,
@@ -11198,8 +11728,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11209,10 +11745,26 @@
       {
         "name": "ai_enemy_tank_01",
         "tm": [
-          [-0.242789,0.0,-0.970079],
-          [0.0,1.0,0.0],
-          [0.970079,0.0,-0.242789],
-          [2706.85,6.375,2043.16]
+          [
+            -0.242789,
+            0.0,
+            -0.970079
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.970079,
+            0.0,
+            -0.242789
+          ],
+          [
+            2706.85,
+            6.375,
+            2043.16
+          ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_H",
         "objLayer": 1,
@@ -11235,8 +11787,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11246,10 +11804,26 @@
       {
         "name": "ai_enemy_tank_02",
         "tm": [
-          [-0.784296,0.0,0.620387],
-          [0.0,1.0,0.0],
-          [-0.620387,0.0,-0.784296],
-          [2678.57,6.375,2028.23]
+          [
+            -0.784296,
+            0.0,
+            0.620387
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.620387,
+            0.0,
+            -0.784296
+          ],
+          [
+            2678.57,
+            6.375,
+            2028.23
+          ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_H",
         "objLayer": 1,
@@ -11272,8 +11846,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11283,10 +11863,26 @@
       {
         "name": "ai_enemy_tank_03",
         "tm": [
-          [-7.32243e-05,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-7.32243e-05],
-          [2706.92,4.80101,2009.0]
+          [
+            -0.0000732243,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.0000732243
+          ],
+          [
+            2706.92,
+            4.80101,
+            2009.0
+          ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_H",
         "objLayer": 1,
@@ -11309,8 +11905,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11320,10 +11922,26 @@
       {
         "name": "ai_enemy_tank_04",
         "tm": [
-          [-0.66553,0.0,-0.746371],
-          [0.0,1.0,0.0],
-          [0.746371,0.0,-0.66553],
-          [2713.69,6.375,2024.36]
+          [
+            -0.66553,
+            0.0,
+            -0.746371
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.746371,
+            0.0,
+            -0.66553
+          ],
+          [
+            2713.69,
+            6.375,
+            2024.36
+          ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_H",
         "objLayer": 1,
@@ -11346,8 +11964,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11357,10 +11981,26 @@
       {
         "name": "ai_enemy_tank_heavy_01",
         "tm": [
-          [-0.66553,0.0,-0.746371],
-          [0.0,1.0,0.0],
-          [0.746371,0.0,-0.66553],
-          [2657.58,6.375,2061.2]
+          [
+            -0.66553,
+            0.0,
+            -0.746371
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.746371,
+            0.0,
+            -0.66553
+          ],
+          [
+            2657.58,
+            6.375,
+            2061.2
+          ]
         ],
         "unit_class": "germ_pzkpfw_VI_ausf_h1_tiger",
         "objLayer": 1,
@@ -11383,8 +12023,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11394,10 +12040,26 @@
       {
         "name": "ai_enemy_tank_3rd_01",
         "tm": [
-          [-0.748271,0.0,0.663393],
-          [0.0,1.0,0.0],
-          [-0.663393,0.0,-0.748271],
-          [2720.08,6.375,1920.32]
+          [
+            -0.748271,
+            0.0,
+            0.663393
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.663393,
+            0.0,
+            -0.748271
+          ],
+          [
+            2720.08,
+            6.375,
+            1920.32
+          ]
         ],
         "unit_class": "germ_pzkpfw_V_ausf_a_panther",
         "objLayer": 1,
@@ -11420,8 +12082,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11431,10 +12099,26 @@
       {
         "name": "ai_enemy_tank_3rd_02",
         "tm": [
-          [-0.996209,0.0,-0.0869958],
-          [0.0,1.0,0.0],
-          [0.0869958,0.0,-0.996209],
-          [2717.72,6.375,1928.67]
+          [
+            -0.996209,
+            0.0,
+            -0.0869958
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0869958,
+            0.0,
+            -0.996209
+          ],
+          [
+            2717.72,
+            6.375,
+            1928.67
+          ]
         ],
         "unit_class": "germ_pzkpfw_V_ausf_a_panther",
         "objLayer": 1,
@@ -11457,8 +12141,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11468,10 +12158,26 @@
       {
         "name": "ai_enemy_tank_3rd_03",
         "tm": [
-          [-0.470875,0.0,0.8822],
-          [0.0,1.0,0.0],
-          [-0.8822,0.0,-0.470875],
-          [2736.05,6.375,1937.7]
+          [
+            -0.470875,
+            0.0,
+            0.8822
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.8822,
+            0.0,
+            -0.470875
+          ],
+          [
+            2736.05,
+            6.375,
+            1937.7
+          ]
         ],
         "unit_class": "germ_pzkpfw_V_ausf_a_panther",
         "objLayer": 1,
@@ -11494,8 +12200,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -11505,10 +12217,26 @@
       {
         "name": "player",
         "tm": [
-          [0.521943,0.0,0.852981],
-          [0.0,1.0,0.0],
-          [-0.852981,0.0,0.521943],
-          [1661.8,7.15,1454.85]
+          [
+            0.521943,
+            0.0,
+            0.852981
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.852981,
+            0.0,
+            0.521943
+          ],
+          [
+            1661.8,
+            7.15,
+            1454.85
+          ]
         ],
         "unit_class": "us_m4a2_76w_sherman",
         "objLayer": 1,
@@ -11531,8 +12259,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -11541,10 +12275,26 @@
       {
         "name": "ai_at_hidden",
         "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [2265.8,12.4,1605.5]
+          [
+            -0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            2265.8,
+            12.4,
+            1605.5
+          ]
         ],
         "unit_class": "germ_pzkpfw_III_ausf_J",
         "objLayer": 1,
@@ -11567,8 +12317,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire",
           "isDelayed": false,
@@ -11586,10 +12342,26 @@
       {
         "name": "pl_column_sq",
         "tm": [
-          [0.930178,0.0,0.367108],
-          [0.0,1.0,0.0],
-          [-0.367108,0.0,0.930178],
-          [1724.53,4.425,1436.12]
+          [
+            0.930178,
+            0.0,
+            0.367108
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.367108,
+            0.0,
+            0.930178
+          ],
+          [
+            1724.53,
+            4.425,
+            1436.12
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11609,10 +12381,26 @@
       {
         "name": "enemy_defence_1st",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1984.95,6.375,1922.96]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1984.95,
+            6.375,
+            1922.96
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11627,10 +12415,26 @@
       {
         "name": "enemy_defence_2nd",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2286.4,6.375,2090.81]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2286.4,
+            6.375,
+            2090.81
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11640,10 +12444,26 @@
       {
         "name": "allies_aa",
         "tm": [
-          [0.930178,0.0,0.367108],
-          [0.0,1.0,0.0],
-          [-0.367108,0.0,0.930178],
-          [1675.01,4.425,1375.44]
+          [
+            0.930178,
+            0.0,
+            0.367108
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.367108,
+            0.0,
+            0.930178
+          ],
+          [
+            1675.01,
+            4.425,
+            1375.44
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11656,10 +12476,26 @@
       {
         "name": "allies_medium",
         "tm": [
-          [0.930178,0.0,0.367108],
-          [0.0,1.0,0.0],
-          [-0.367108,0.0,0.930178],
-          [1697.68,4.425,1418.16]
+          [
+            0.930178,
+            0.0,
+            0.367108
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.367108,
+            0.0,
+            0.930178
+          ],
+          [
+            1697.68,
+            4.425,
+            1418.16
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11674,10 +12510,26 @@
       {
         "name": "allies_heavy",
         "tm": [
-          [0.930178,0.0,0.367108],
-          [0.0,1.0,0.0],
-          [-0.367108,0.0,0.930178],
-          [1728.95,4.425,1477.91]
+          [
+            0.930178,
+            0.0,
+            0.367108
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.367108,
+            0.0,
+            0.930178
+          ],
+          [
+            1728.95,
+            4.425,
+            1477.91
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11690,10 +12542,26 @@
       {
         "name": "enemy_defence_3rd",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2714.77,6.375,1641.19]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2714.77,
+            6.375,
+            1641.19
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11707,10 +12575,26 @@
       {
         "name": "allies_light",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1681.8,4.425,1397.41]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1681.8,
+            4.425,
+            1397.41
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11720,10 +12604,26 @@
       {
         "name": "ai_aircraft_all_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1710.25,14.25,1635.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1710.25,
+            14.25,
+            1635.9
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11737,10 +12637,26 @@
       {
         "name": "ai_ground_all_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1742.93,5.40001,1664.66]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1742.93,
+            5.40001,
+            1664.66
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11768,10 +12684,26 @@
       {
         "name": "ai_enemy_ground_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2704.68,6.17801,1994.08]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2704.68,
+            6.17801,
+            1994.08
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11790,10 +12722,26 @@
       {
         "name": "t1_dummy_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2071.4,19.705,1992.72]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2071.4,
+            19.705,
+            1992.72
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11811,10 +12759,26 @@
       {
         "name": "t1_bombing_first_targets",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2081.65,19.705,2001.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2081.65,
+            19.705,
+            2001.55
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11829,10 +12793,26 @@
       {
         "name": "ai_enemy_bombers_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [992.019,1440.71,4086.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            992.019,
+            1440.71,
+            4086.2
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -11848,10 +12828,26 @@
       {
         "name": "ai_enemy_bombers_02",
         "tm": [
-          [0.642788,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642788],
-          [904.8,400.0,4370.95]
+          [
+            0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            904.8,
+            400.0,
+            4370.95
+          ]
         ],
         "unit_class": "ju-87b-2",
         "objLayer": 1,
@@ -11896,10 +12892,26 @@
       {
         "name": "ai_enemy_fighters_01",
         "tm": [
-          [0.953717,0.0,-0.300706],
-          [0.0,1.0,0.0],
-          [0.300706,0.0,0.953717],
-          [4585.3,500.0,4640.9]
+          [
+            0.953717,
+            0.0,
+            -0.300706
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.300706,
+            0.0,
+            0.953717
+          ],
+          [
+            4585.3,
+            500.0,
+            4640.9
+          ]
         ],
         "unit_class": "bf-109e-3",
         "objLayer": 1,
@@ -11943,10 +12955,26 @@
       {
         "name": "ai_friendly_fighters_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4253.89,500.0,-671.161]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4253.89,
+            500.0,
+            -671.161
+          ]
         ],
         "unit_class": "yak-1_early",
         "objLayer": 1,
@@ -11990,10 +13018,26 @@
       {
         "name": "ai_enemy_bombers_03",
         "tm": [
-          [0.642788,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642788],
-          [-469.75,400.0,5632.9]
+          [
+            0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            -469.75,
+            400.0,
+            5632.9
+          ]
         ],
         "unit_class": "ju-87b-2",
         "objLayer": 1,
@@ -12038,10 +13082,26 @@
       {
         "name": "ai_enemy_bombers_04",
         "tm": [
-          [0.642788,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642788],
-          [-1902.15,400.0,6938.0]
+          [
+            0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            -1902.15,
+            400.0,
+            6938.0
+          ]
         ],
         "unit_class": "ju-87b-2",
         "objLayer": 1,
@@ -12088,10 +13148,26 @@
       {
         "name": "defense_1st_spawn_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2051.38,6.02701,1905.28]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2051.38,
+            6.02701,
+            1905.28
+          ]
         ],
         "props": {
           "squad_members": [
@@ -12105,10 +13181,26 @@
       {
         "name": "defence_3rd_spawn_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2685.07,6.377,1599.19]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2685.07,
+            6.377,
+            1599.19
+          ]
         ],
         "props": {
           "squad_members": [
@@ -12121,10 +13213,26 @@
       {
         "name": "out_bounds_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [896.65,3.125,1608.16]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            896.65,
+            3.125,
+            1608.16
+          ]
         ],
         "props": {
           "squad_members": [
@@ -12141,10 +13249,26 @@
       {
         "name": "player_respawns_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1659.45,5.625,1496.86]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1659.45,
+            5.625,
+            1496.86
+          ]
         ],
         "props": {
           "squad_members": [
@@ -12161,10 +13285,26 @@
       {
         "name": "out_of_bounds_area_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2059.91,3.14101,1535.17]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2059.91,
+            3.14101,
+            1535.17
+          ]
         ],
         "props": {
           "squad_members": [
@@ -12184,10 +13324,26 @@
       {
         "name": "objectGroups_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1790.28,5.22301,1607.11]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1790.28,
+            5.22301,
+            1607.11
+          ]
         ],
         "unit_class": "czech_hedgehog_dynamic",
         "objLayer": 2,
@@ -12199,10 +13355,26 @@
       {
         "name": "zone_circle",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2189.1,6.4,1849.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2189.1,
+            6.4,
+            1849.1
+          ]
         ],
         "unit_class": "capture_zone_circle",
         "objLayer": 2,
@@ -12216,10 +13388,26 @@
       {
         "name": "dummy_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2195.15,8.30501,1822.58]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2195.15,
+            8.30501,
+            1822.58
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12242,8 +13430,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12255,10 +13449,26 @@
       {
         "name": "dummy_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2202.7,8.42001,1892.31]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2202.7,
+            8.42001,
+            1892.31
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12281,8 +13491,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12294,10 +13510,26 @@
       {
         "name": "dummy_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2152.29,6.23201,1833.32]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2152.29,
+            6.23201,
+            1833.32
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12320,8 +13552,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12333,10 +13571,26 @@
       {
         "name": "dummy_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2168.3,7.25101,1856.85]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2168.3,
+            7.25101,
+            1856.85
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12359,8 +13613,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12372,10 +13632,26 @@
       {
         "name": "dummy_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2243.37,7.07401,1855.43]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2243.37,
+            7.07401,
+            1855.43
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12398,8 +13674,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12411,10 +13693,26 @@
       {
         "name": "dummy_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2175.15,6.10001,1815.87]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2175.15,
+            6.10001,
+            1815.87
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12437,8 +13735,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12450,10 +13754,26 @@
       {
         "name": "dummy_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2172.63,9.752,1886.53]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2172.63,
+            9.752,
+            1886.53
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12476,8 +13796,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12489,10 +13815,26 @@
       {
         "name": "dummy_air_retreat",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6014.25,8.4,-1948.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6014.25,
+            8.4,
+            -1948.6
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12515,8 +13857,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true,
@@ -12528,10 +13876,26 @@
       {
         "name": "dummy_look_at_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1890.85,8.4,1754.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1890.85,
+            8.4,
+            1754.95
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12554,8 +13918,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "stealthRadius": 0.0,
@@ -12567,10 +13937,26 @@
       {
         "name": "dummy_look_at_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2266.5,8.4,1867.65]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2266.5,
+            8.4,
+            1867.65
+          ]
         ],
         "unit_class": "dummy",
         "objLayer": 1,
@@ -12593,8 +13979,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "stealthRadius": 0.0,
@@ -12609,10 +14001,26 @@
     "battle_area": {
       "type": "Box",
       "tm": [
-        [-1200.0,0.0,0.0],
-        [0.0,200.0,0.0],
-        [0.0,0.0,-1200.0],
-        [2170.68,6.244,1764.47]
+        [
+          -1200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1200.0
+        ],
+        [
+          2170.68,
+          6.244,
+          1764.47
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12620,10 +14028,26 @@
     "town_area": {
       "type": "Sphere",
       "tm": [
-        [655.6,0.0,0.0],
-        [0.0,655.6,0.0],
-        [0.0,0.0,655.6],
-        [2375.6,6.375,1813.11]
+        [
+          655.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          655.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          655.6
+        ],
+        [
+          2375.6,
+          6.375,
+          1813.11
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12631,10 +14055,26 @@
     "enemy_defence_trigger": {
       "type": "Sphere",
       "tm": [
-        [1250.0,0.0,0.0],
-        [0.0,1250.0,0.0],
-        [0.0,0.0,1250.0],
-        [2375.6,6.375,1813.11]
+        [
+          1250.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1250.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1250.0
+        ],
+        [
+          2375.6,
+          6.375,
+          1813.11
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12642,10 +14082,26 @@
     "key_point": {
       "type": "Cylinder",
       "tm": [
-        [25.0,0.0,0.0],
-        [0.0,96.1,0.0],
-        [0.0,0.0,25.0],
-        [2189.1,6.4,1849.1]
+        [
+          25.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          96.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          25.0
+        ],
+        [
+          2189.1,
+          6.4,
+          1849.1
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12653,10 +14109,26 @@
     "air_destination": {
       "type": "Point",
       "tm": [
-        [655.6,0.0,0.0],
-        [0.0,655.6,0.0],
-        [0.0,0.0,655.6],
-        [2375.6,1785.98,1813.11]
+        [
+          655.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          655.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          655.6
+        ],
+        [
+          2375.6,
+          1785.98,
+          1813.11
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12664,10 +14136,26 @@
     "key_point_02": {
       "type": "Cylinder",
       "tm": [
-        [96.1,0.0,0.0],
-        [0.0,96.1,0.0],
-        [0.0,0.0,96.1],
-        [2542.36,6.375,1733.43]
+        [
+          96.1,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          96.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          96.1
+        ],
+        [
+          2542.36,
+          6.375,
+          1733.43
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12675,10 +14163,26 @@
     "def_respawn_01": {
       "type": "Sphere",
       "tm": [
-        [-8.14108,0.0,5.80713],
-        [0.0,10.0,0.0],
-        [-5.80713,0.0,-8.14108],
-        [2137.76,6.38501,1783.38]
+        [
+          -8.14108,
+          0.0,
+          5.80713
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -5.80713,
+          0.0,
+          -8.14108
+        ],
+        [
+          2137.76,
+          6.38501,
+          1783.38
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12686,10 +14190,26 @@
     "def_respawn_02": {
       "type": "Sphere",
       "tm": [
-        [-7.76372,0.0,6.30275],
-        [0.0,10.0,0.0],
-        [-6.30275,0.0,-7.76372],
-        [2097.47,6.38501,1847.19]
+        [
+          -7.76372,
+          0.0,
+          6.30275
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -6.30275,
+          0.0,
+          -7.76372
+        ],
+        [
+          2097.47,
+          6.38501,
+          1847.19
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12697,10 +14217,26 @@
     "def_respawn_03": {
       "type": "Sphere",
       "tm": [
-        [-8.01806,0.0,5.97585],
-        [0.0,10.0,0.0],
-        [-5.97585,0.0,-8.01806],
-        [2187.75,6.38501,1752.02]
+        [
+          -8.01806,
+          0.0,
+          5.97585
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -5.97585,
+          0.0,
+          -8.01806
+        ],
+        [
+          2187.75,
+          6.38501,
+          1752.02
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12708,10 +14244,26 @@
     "def_respawn_04": {
       "type": "Sphere",
       "tm": [
-        [-5.60885,0.0,-8.27893],
-        [0.0,10.0,0.0],
-        [8.27893,0.0,-5.60885],
-        [2235.72,6.38501,1690.04]
+        [
+          -5.60885,
+          0.0,
+          -8.27893
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          8.27893,
+          0.0,
+          -5.60885
+        ],
+        [
+          2235.72,
+          6.38501,
+          1690.04
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12719,10 +14271,26 @@
     "wp_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2036.51,6.289,1837.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2036.51,
+          6.289,
+          1837.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12730,10 +14298,26 @@
     "wp_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2184.77,6.38501,1828.57]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2184.77,
+          6.38501,
+          1828.57
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12741,10 +14325,26 @@
     "cutscene_03": {
       "type": "Point",
       "tm": [
-        [30.0,0.0,0.0],
-        [0.0,96.1,0.0],
-        [0.0,0.0,30.0],
-        [2085.24,14.5464,1743.04]
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          96.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          2085.24,
+          14.5464,
+          1743.04
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12752,10 +14352,26 @@
     "cutscene_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1615.07,17.326,1371.34]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1615.07,
+          17.326,
+          1371.34
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12763,10 +14379,26 @@
     "cutscene_06": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1942.71,18.498,1364.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1942.71,
+          18.498,
+          1364.3
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12774,10 +14406,26 @@
     "cutscene_01": {
       "type": "Point",
       "tm": [
-        [0.507565,0.0,-0.861614],
-        [0.0,1.0,0.0],
-        [0.861614,0.0,0.507565],
-        [1649.06,20.0,1400.42]
+        [
+          0.507565,
+          0.0,
+          -0.861614
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.861614,
+          0.0,
+          0.507565
+        ],
+        [
+          1649.06,
+          20.0,
+          1400.42
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12785,10 +14433,26 @@
     "player_spawn_01": {
       "type": "Sphere",
       "tm": [
-        [4.19559,0.0,9.07728],
-        [0.0,10.0,0.0],
-        [-9.07728,0.0,4.19559],
-        [1654.85,7.45,1449.45]
+        [
+          4.19559,
+          0.0,
+          9.07728
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -9.07728,
+          0.0,
+          4.19559
+        ],
+        [
+          1654.85,
+          7.45,
+          1449.45
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12796,10 +14460,26 @@
     "defence_2nd_heavy_spawn_01": {
       "type": "Sphere",
       "tm": [
-        [-8.10116,0.0,-10.1285],
-        [0.0,12.9698,0.0],
-        [10.1285,0.0,-8.10116],
-        [2112.85,6.4,1848.2]
+        [
+          -8.10116,
+          0.0,
+          -10.1285
+        ],
+        [
+          0.0,
+          12.9698,
+          0.0
+        ],
+        [
+          10.1285,
+          0.0,
+          -8.10116
+        ],
+        [
+          2112.85,
+          6.4,
+          1848.2
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12807,10 +14487,26 @@
     "defence_3rd_spawn_01": {
       "type": "Sphere",
       "tm": [
-        [14.0034,0.0,17.3192],
-        [0.0,22.2721,0.0],
-        [-17.3192,0.0,14.0034],
-        [2576.35,6.4,1679.5]
+        [
+          14.0034,
+          0.0,
+          17.3192
+        ],
+        [
+          0.0,
+          22.2721,
+          0.0
+        ],
+        [
+          -17.3192,
+          0.0,
+          14.0034
+        ],
+        [
+          2576.35,
+          6.4,
+          1679.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12818,10 +14514,26 @@
     "defence_3rd_spawn_02": {
       "type": "Sphere",
       "tm": [
-        [-14.3666,0.0,-17.0191],
-        [0.0,22.2721,0.0],
-        [17.0191,0.0,-14.3666],
-        [2548.5,6.4,1738.42]
+        [
+          -14.3666,
+          0.0,
+          -17.0191
+        ],
+        [
+          0.0,
+          22.2721,
+          0.0
+        ],
+        [
+          17.0191,
+          0.0,
+          -14.3666
+        ],
+        [
+          2548.5,
+          6.4,
+          1738.42
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12829,10 +14541,26 @@
     "defence_3rd_spawn_03": {
       "type": "Sphere",
       "tm": [
-        [14.388,0.0,17.001],
-        [0.0,22.2721,0.0],
-        [-17.001,0.0,14.388],
-        [2513.62,6.4,1734.3]
+        [
+          14.388,
+          0.0,
+          17.001
+        ],
+        [
+          0.0,
+          22.2721,
+          0.0
+        ],
+        [
+          -17.001,
+          0.0,
+          14.388
+        ],
+        [
+          2513.62,
+          6.4,
+          1734.3
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12840,10 +14568,26 @@
     "cutscene_02_01": {
       "type": "Point",
       "tm": [
-        [0.970542,0.0,0.240931],
-        [0.0,1.0,0.0],
-        [-0.240931,0.0,0.970542],
-        [1833.33,45.832,1673.13]
+        [
+          0.970542,
+          0.0,
+          0.240931
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.240931,
+          0.0,
+          0.970542
+        ],
+        [
+          1833.33,
+          45.832,
+          1673.13
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12851,10 +14595,26 @@
     "cutscene_02_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2143.77,23.337,1843.14]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2143.77,
+          23.337,
+          1843.14
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12862,10 +14622,26 @@
     "cutscene_06_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2204.39,11.743,1915.06]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2204.39,
+          11.743,
+          1915.06
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12873,10 +14649,26 @@
     "cutscene_06_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2275.55,6.69701,2000.68]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2275.55,
+          6.69701,
+          2000.68
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12884,10 +14676,26 @@
     "wp_flank_heavy": {
       "type": "Sphere",
       "tm": [
-        [10.0,0.0,0.0],
-        [0.0,10.0,0.0],
-        [0.0,0.0,10.0],
-        [2087.65,7.15,1855.9]
+        [
+          10.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          2087.65,
+          7.15,
+          1855.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12895,10 +14703,26 @@
     "area_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [4215.1,2885.97,-1802.59]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4215.1,
+          2885.97,
+          -1802.59
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12906,10 +14730,26 @@
     "cutscene_07_pt_01": {
       "type": "Sphere",
       "tm": [
-        [-6.31785,0.0,-7.75144],
-        [0.0,10.0,0.0],
-        [7.75144,0.0,-6.31785],
-        [2193.23,6.38101,1916.02]
+        [
+          -6.31785,
+          0.0,
+          -7.75144
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          7.75144,
+          0.0,
+          -6.31785
+        ],
+        [
+          2193.23,
+          6.38101,
+          1916.02
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12917,10 +14757,26 @@
     "cutscene_07_pt_02": {
       "type": "Sphere",
       "tm": [
-        [8.33085,0.0,-5.53145],
-        [0.0,10.0,0.0],
-        [5.53145,0.0,8.33085],
-        [2188.4,6.38101,2048.31]
+        [
+          8.33085,
+          0.0,
+          -5.53145
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          5.53145,
+          0.0,
+          8.33085
+        ],
+        [
+          2188.4,
+          6.38101,
+          2048.31
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12928,10 +14784,26 @@
     "cutscene_07_pt_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2192.45,8.49901,1916.44]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2192.45,
+          8.49901,
+          1916.44
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12939,10 +14811,26 @@
     "cutscene_07_pt_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2159.07,20.072,1882.74]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2159.07,
+          20.072,
+          1882.74
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12950,10 +14838,26 @@
     "cutscene_08_pt_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2219.0,9.75,1830.75]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2219.0,
+          9.75,
+          1830.75
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12961,10 +14865,26 @@
     "cutscene_08_pt_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2170.1,17.45,1803.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2170.1,
+          17.45,
+          1803.15
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12972,10 +14892,26 @@
     "aircraft_escape": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-1873.33,385.975,5932.01]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1873.33,
+          385.975,
+          5932.01
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12983,10 +14919,26 @@
     "heavy_def_pt": {
       "type": "Sphere",
       "tm": [
-        [2.53571,0.0,5.43785],
-        [0.0,6.0,0.0],
-        [-5.43785,0.0,2.53571],
-        [2167.2,6.38101,1859.11]
+        [
+          2.53571,
+          0.0,
+          5.43785
+        ],
+        [
+          0.0,
+          6.0,
+          0.0
+        ],
+        [
+          -5.43785,
+          0.0,
+          2.53571
+        ],
+        [
+          2167.2,
+          6.38101,
+          1859.11
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -12994,10 +14946,26 @@
     "out_bounds_01": {
       "type": "Box",
       "tm": [
-        [-238.602,0.0,-439.397],
-        [0.0,100.0,0.0],
-        [87.8793,0.0,-47.7203],
-        [1499.36,3.33398,1136.8]
+        [
+          -238.602,
+          0.0,
+          -439.397
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          87.8793,
+          0.0,
+          -47.7203
+        ],
+        [
+          1499.36,
+          3.33398,
+          1136.8
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13005,10 +14973,26 @@
     "out_bounds_02": {
       "type": "Box",
       "tm": [
-        [481.582,0.0,974.146],
-        [0.0,100.0,0.0],
-        [-440.794,0.0,217.912],
-        [1305.22,3.33398,1314.4]
+        [
+          481.582,
+          0.0,
+          974.146
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -440.794,
+          0.0,
+          217.912
+        ],
+        [
+          1305.22,
+          3.33398,
+          1314.4
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13016,10 +15000,26 @@
     "out_bounds_03": {
       "type": "Box",
       "tm": [
-        [-774.194,0.0,649.626],
-        [0.0,100.0,0.0],
-        [-991.588,0.0,-1181.73],
-        [1661.71,3.33273,2302.24]
+        [
+          -774.194,
+          0.0,
+          649.626
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -991.588,
+          0.0,
+          -1181.73
+        ],
+        [
+          1661.71,
+          3.33273,
+          2302.24
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13027,10 +15027,26 @@
     "out_bounds_04": {
       "type": "Box",
       "tm": [
-        [-356.064,0.0,233.869],
-        [0.0,100.0,0.0],
-        [-439.191,0.0,-668.664],
-        [1770.22,3.32495,1141.98]
+        [
+          -356.064,
+          0.0,
+          233.869
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -439.191,
+          0.0,
+          -668.664
+        ],
+        [
+          1770.22,
+          3.32495,
+          1141.98
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13038,10 +15054,26 @@
     "out_bounds_05": {
       "type": "Box",
       "tm": [
-        [-966.481,0.0,832.188],
-        [0.0,100.0,0.0],
-        [-516.645,0.0,-600.019],
-        [2693.59,3.32501,2214.19]
+        [
+          -966.481,
+          0.0,
+          832.188
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -516.645,
+          0.0,
+          -600.019
+        ],
+        [
+          2693.59,
+          3.32501,
+          2214.19
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13049,10 +15081,26 @@
     "out_bounds_06": {
       "type": "Box",
       "tm": [
-        [-824.276,0.0,-973.239],
-        [0.0,100.0,0.0],
-        [604.214,0.0,-511.733],
-        [2223.6,3.3,1079.1]
+        [
+          -824.276,
+          0.0,
+          -973.239
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          604.214,
+          0.0,
+          -511.733
+        ],
+        [
+          2223.6,
+          3.3,
+          1079.1
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13060,10 +15108,26 @@
     "out_bounds_07": {
       "type": "Box",
       "tm": [
-        [800.468,0.0,992.91],
-        [0.0,100.0,0.0],
-        [-616.427,0.0,496.954],
-        [3024.2,3.32501,1499.76]
+        [
+          800.468,
+          0.0,
+          992.91
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -616.427,
+          0.0,
+          496.954
+        ],
+        [
+          3024.2,
+          3.32501,
+          1499.76
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13071,10 +15135,26 @@
     "ai_gather_3rd_stage": {
       "type": "Sphere",
       "tm": [
-        [10.0,0.0,0.0],
-        [0.0,10.0,0.0],
-        [0.0,0.0,10.0],
-        [2292.97,6.38101,1893.35]
+        [
+          10.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          2292.97,
+          6.38101,
+          1893.35
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13082,10 +15162,26 @@
     "cutscene_tiger_barrel": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [2091.05,7.1,1820.85]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2091.05,
+          7.1,
+          1820.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13093,10 +15189,26 @@
     "ai_hit": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [1902.81,3.149,1834.22]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          1902.81,
+          3.149,
+          1834.22
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13104,10 +15216,26 @@
     "wp_cover_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2429.2,5.75,1805.55]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2429.2,
+          5.75,
+          1805.55
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13115,10 +15243,26 @@
     "wp_cover_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2449.0,6.0,1828.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2449.0,
+          6.0,
+          1828.15
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13126,10 +15270,26 @@
     "wp_cover_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2363.65,5.9,1859.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2363.65,
+          5.9,
+          1859.25
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13137,10 +15297,26 @@
     "wp_cover_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2400.3,6.45,1868.65]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2400.3,
+          6.45,
+          1868.65
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13148,10 +15324,26 @@
     "wp_cover_05": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2448.85,6.0,1828.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2448.85,
+          6.0,
+          1828.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13159,10 +15351,26 @@
     "way_wp_01": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [2266.8,6.4,1867.3]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2266.8,
+          6.4,
+          1867.3
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13170,10 +15378,26 @@
     "wp_03": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [2325.7,6.425,1909.85]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2325.7,
+          6.425,
+          1909.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13181,10 +15405,26 @@
     "player_respawn_pt_01": {
       "type": "Sphere",
       "tm": [
-        [8.67157,0.0,13.3272],
-        [0.0,15.9,0.0],
-        [-13.3272,0.0,8.67157],
-        [1668.3,6.4,1457.8]
+        [
+          8.67157,
+          0.0,
+          13.3272
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.3272,
+          0.0,
+          8.67157
+        ],
+        [
+          1668.3,
+          6.4,
+          1457.8
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13192,10 +15432,26 @@
     "player_respawn_pt_02": {
       "type": "Sphere",
       "tm": [
-        [8.67157,0.0,13.3272],
-        [0.0,15.9,0.0],
-        [-13.3272,0.0,8.67157],
-        [1726.5,6.4,1548.55]
+        [
+          8.67157,
+          0.0,
+          13.3272
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.3272,
+          0.0,
+          8.67157
+        ],
+        [
+          1726.5,
+          6.4,
+          1548.55
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13203,10 +15459,26 @@
     "player_respawn_pt_03": {
       "type": "Sphere",
       "tm": [
-        [8.67157,0.0,13.3272],
-        [0.0,15.9,0.0],
-        [-13.3272,0.0,8.67157],
-        [1799.75,7.15,1645.9]
+        [
+          8.67157,
+          0.0,
+          13.3272
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.3272,
+          0.0,
+          8.67157
+        ],
+        [
+          1799.75,
+          7.15,
+          1645.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13214,10 +15486,26 @@
     "player_respawn_pt_04": {
       "type": "Sphere",
       "tm": [
-        [9.13785,0.0,13.0119],
-        [0.0,15.9,0.0],
-        [-13.0119,0.0,9.13785],
-        [1858.55,6.7,1710.24]
+        [
+          9.13785,
+          0.0,
+          13.0119
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.0119,
+          0.0,
+          9.13785
+        ],
+        [
+          1858.55,
+          6.7,
+          1710.24
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13225,10 +15513,26 @@
     "player_respawn_pt_05": {
       "type": "Sphere",
       "tm": [
-        [8.67157,0.0,13.3272],
-        [0.0,15.9,0.0],
-        [-13.3272,0.0,8.67157],
-        [2040.3,5.8,1820.1]
+        [
+          8.67157,
+          0.0,
+          13.3272
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.3272,
+          0.0,
+          8.67157
+        ],
+        [
+          2040.3,
+          5.8,
+          1820.1
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13236,10 +15540,26 @@
     "cutscene_shot": {
       "type": "Sphere",
       "tm": [
-        [14.0,0.0,0.0],
-        [0.0,14.0,0.0],
-        [0.0,0.0,14.0],
-        [1826.43,6.38101,1635.25]
+        [
+          14.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          14.0
+        ],
+        [
+          1826.43,
+          6.38101,
+          1635.25
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13247,10 +15567,26 @@
     "out_bounds_08": {
       "type": "Box",
       "tm": [
-        [-322.494,0.0,278.346],
-        [0.0,100.0,0.0],
-        [-152.506,0.0,-176.695],
-        [2047.62,3.32501,1542.5]
+        [
+          -322.494,
+          0.0,
+          278.346
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -152.506,
+          0.0,
+          -176.695
+        ],
+        [
+          2047.62,
+          3.32501,
+          1542.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13258,10 +15594,26 @@
     "cutscene02_pt_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1843.4,46.8,1637.85]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1843.4,
+          46.8,
+          1637.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13269,10 +15621,26 @@
     "cutscene02_pt_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2047.25,18.075,1799.26]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2047.25,
+          18.075,
+          1799.26
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13280,10 +15648,26 @@
     "cutscene02_pt_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2183.95,18.075,1665.21]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2183.95,
+          18.075,
+          1665.21
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13291,10 +15675,26 @@
     "cutscene_pt_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2028.9,10.0,1749.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2028.9,
+          10.0,
+          1749.7
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13302,10 +15702,26 @@
     "cutscene_pt_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1864.61,15.475,1668.47]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1864.61,
+          15.475,
+          1668.47
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13313,10 +15729,26 @@
     "cutscene_pt_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2092.3,12.25,1823.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2092.3,
+          12.25,
+          1823.05
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13324,10 +15756,26 @@
     "cutscene_04_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1841.77,47.756,1727.74]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1841.77,
+          47.756,
+          1727.74
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13335,10 +15783,26 @@
     "cutscene_04_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1853.14,79.656,1709.13]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1853.14,
+          79.656,
+          1709.13
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13346,10 +15810,26 @@
     "cutscene_04_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1863.44,79.656,1735.85]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1863.44,
+          79.656,
+          1735.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13357,10 +15837,26 @@
     "cutscene_02_03": {
       "type": "Point",
       "tm": [
-        [0.970542,0.0,0.240931],
-        [0.0,1.0,0.0],
-        [-0.240931,0.0,0.970542],
-        [1849.35,7.27301,1700.42]
+        [
+          0.970542,
+          0.0,
+          0.240931
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.240931,
+          0.0,
+          0.970542
+        ],
+        [
+          1849.35,
+          7.27301,
+          1700.42
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13368,10 +15864,26 @@
     "flank_wp_01": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [1892.78,6.39999,1755.71]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          1892.78,
+          6.39999,
+          1755.71
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13379,10 +15891,26 @@
     "flank_wp_02": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [1944.4,7.05,1817.9]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          1944.4,
+          7.05,
+          1817.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13390,10 +15918,26 @@
     "flank_wp_03": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [2029.0,6.85,1873.9]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          2029.0,
+          6.85,
+          1873.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13401,10 +15945,26 @@
     "area_01": {
       "type": "Sphere",
       "tm": [
-        [4000.0,0.0,0.0],
-        [0.0,4000.0,0.0],
-        [0.0,0.0,4000.0],
-        [-584.95,254.05,5494.4]
+        [
+          4000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4000.0
+        ],
+        [
+          -584.95,
+          254.05,
+          5494.4
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13412,10 +15972,26 @@
     "way_wp_02": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [2325.65,6.45,1909.9]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2325.65,
+          6.45,
+          1909.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13423,10 +15999,26 @@
     "cutscene_15_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2325.75,20.0,1912.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2325.75,
+          20.0,
+          1912.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13434,10 +16026,26 @@
     "cutscene_15_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2522.55,5.3,1743.65]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2522.55,
+          5.3,
+          1743.65
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13445,10 +16053,26 @@
     "player_tp_for_swap_01_a": {
       "type": "Sphere",
       "tm": [
-        [7.93353,0.0,-6.08761],
-        [0.0,10.0,0.0],
-        [6.08761,0.0,7.93353],
-        [2215.45,5.3,1908.8]
+        [
+          7.93353,
+          0.0,
+          -6.08761
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          6.08761,
+          0.0,
+          7.93353
+        ],
+        [
+          2215.45,
+          5.3,
+          1908.8
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13456,10 +16080,26 @@
     "player_tp_for_swap_01_b": {
       "type": "Sphere",
       "tm": [
-        [7.93353,0.0,-6.08761],
-        [0.0,10.0,0.0],
-        [6.08761,0.0,7.93353],
-        [2092.4,6.4,1779.35]
+        [
+          7.93353,
+          0.0,
+          -6.08761
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          6.08761,
+          0.0,
+          7.93353
+        ],
+        [
+          2092.4,
+          6.4,
+          1779.35
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13467,10 +16107,26 @@
     "debug_area_01": {
       "type": "Sphere",
       "tm": [
-        [4.76012,0.0,-3.65257],
-        [0.0,6.0,0.0],
-        [3.65257,0.0,4.76012],
-        [2236.98,5.91437,1891.09]
+        [
+          4.76012,
+          0.0,
+          -3.65257
+        ],
+        [
+          0.0,
+          6.0,
+          0.0
+        ],
+        [
+          3.65257,
+          0.0,
+          4.76012
+        ],
+        [
+          2236.98,
+          5.91437,
+          1891.09
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13478,10 +16134,26 @@
     "debug_area_02": {
       "type": "Sphere",
       "tm": [
-        [5.7223,0.0,1.80423],
-        [0.0,6.0,0.0],
-        [-1.80423,0.0,5.7223],
-        [2272.3,5.9,2014.25]
+        [
+          5.7223,
+          0.0,
+          1.80423
+        ],
+        [
+          0.0,
+          6.0,
+          0.0
+        ],
+        [
+          -1.80423,
+          0.0,
+          5.7223
+        ],
+        [
+          2272.3,
+          5.9,
+          2014.25
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13489,10 +16161,26 @@
     "debug_area_03": {
       "type": "Sphere",
       "tm": [
-        [4.76012,0.0,-3.65257],
-        [0.0,6.0,0.0],
-        [3.65257,0.0,4.76012],
-        [2271.14,5.91437,1802.35]
+        [
+          4.76012,
+          0.0,
+          -3.65257
+        ],
+        [
+          0.0,
+          6.0,
+          0.0
+        ],
+        [
+          3.65257,
+          0.0,
+          4.76012
+        ],
+        [
+          2271.14,
+          5.91437,
+          1802.35
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13500,10 +16188,26 @@
     "cutscene_15_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2346.7,8.3,1894.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2346.7,
+          8.3,
+          1894.45
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13511,10 +16215,26 @@
     "briefing_battlearea": {
       "type": "Box",
       "tm": [
-        [-1200.0,0.0,0.0],
-        [0.0,311.7,0.0],
-        [0.0,0.0,-1200.0],
-        [2183.45,5.35,1746.5]
+        [
+          -1200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          311.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1200.0
+        ],
+        [
+          2183.45,
+          5.35,
+          1746.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13522,10 +16242,26 @@
     "column_02_stop_pt": {
       "type": "Sphere",
       "tm": [
-        [8.3,0.0,0.0],
-        [0.0,8.3,0.0],
-        [0.0,0.0,8.3],
-        [2385.05,6.15,1855.25]
+        [
+          8.3,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.3,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8.3
+        ],
+        [
+          2385.05,
+          6.15,
+          1855.25
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13533,10 +16269,26 @@
     "cutscene_01a": {
       "type": "Point",
       "tm": [
-        [0.507565,0.0,-0.861614],
-        [0.0,1.0,0.0],
-        [0.861614,0.0,0.507565],
-        [1649.06,7.0,1400.42]
+        [
+          0.507565,
+          0.0,
+          -0.861614
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.861614,
+          0.0,
+          0.507565
+        ],
+        [
+          1649.06,
+          7.0,
+          1400.42
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13544,10 +16296,26 @@
     "player_respawn_pt_06": {
       "type": "Sphere",
       "tm": [
-        [8.67157,0.0,13.3272],
-        [0.0,15.9,0.0],
-        [-13.3272,0.0,8.67157],
-        [2161.0,8.1,1810.9]
+        [
+          8.67157,
+          0.0,
+          13.3272
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          -13.3272,
+          0.0,
+          8.67157
+        ],
+        [
+          2161.0,
+          8.1,
+          1810.9
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13555,10 +16323,26 @@
     "player_respawn_pt_07": {
       "type": "Sphere",
       "tm": [
-        [12.0813,0.0,-10.3369],
-        [0.0,15.9,0.0],
-        [10.3369,0.0,12.0813],
-        [2246.35,8.1,1882.85]
+        [
+          12.0813,
+          0.0,
+          -10.3369
+        ],
+        [
+          0.0,
+          15.9,
+          0.0
+        ],
+        [
+          10.3369,
+          0.0,
+          12.0813
+        ],
+        [
+          2246.35,
+          8.1,
+          1882.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13566,10 +16350,26 @@
     "flank_wp_04": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [2087.65,6.85,1855.8]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          2087.65,
+          6.85,
+          1855.8
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13577,10 +16377,26 @@
     "area_smoke_shelling": {
       "type": "Sphere",
       "tm": [
-        [20.0,0.0,0.0],
-        [0.0,20.0,0.0],
-        [0.0,0.0,20.0],
-        [2059.45,6.3737,1808.5]
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2059.45,
+          6.3737,
+          1808.5
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -13611,10 +16427,26 @@
         "way_points_01_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1732.55,6.75,1538.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1732.55,
+              6.75,
+              1538.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13627,10 +16459,26 @@
         "way_points_01_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1782.55,6.45,1604.1]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1782.55,
+              6.45,
+              1604.1
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13643,10 +16491,26 @@
         "way_points_01_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1809.7,6.6,1640.5]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1809.7,
+              6.6,
+              1640.5
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13659,10 +16523,26 @@
         "way_points_01_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1827.25,7.0,1660.5]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1827.25,
+              7.0,
+              1660.5
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13675,10 +16555,26 @@
         "way_points_01_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1924.9,7.25,1769.85]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1924.9,
+              7.25,
+              1769.85
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13691,10 +16587,26 @@
         "way_points_01_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1944.45,8.48566,1793.09]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1944.45,
+              8.48566,
+              1793.09
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13714,10 +16626,26 @@
         "way_points_01_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2087.76,7.42801,1850.41]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2087.76,
+              7.42801,
+              1850.41
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13730,10 +16658,26 @@
         "way_points_01_wp_08": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2078.74,6.62062,1846.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2078.74,
+              6.62062,
+              1846.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13746,10 +16690,26 @@
         "way_points_01_wp_09": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2073.56,7.77501,1836.34]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2073.56,
+              7.77501,
+              1836.34
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13769,10 +16729,26 @@
         "way_points_02_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2126.23,6.80501,1792.61]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2126.23,
+              6.80501,
+              1792.61
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13785,10 +16761,26 @@
         "way_points_02_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2114.74,6.375,1798.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2114.74,
+              6.375,
+              1798.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13801,10 +16793,26 @@
         "way_points_02_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2104.8,6.82501,1787.26]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2104.8,
+              6.82501,
+              1787.26
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13824,10 +16832,26 @@
         "way_points_03_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2174.21,6.61301,1759.99]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2174.21,
+              6.61301,
+              1759.99
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13840,10 +16864,26 @@
         "way_points_03_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2163.33,6.703,1754.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2163.33,
+              6.703,
+              1754.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13856,10 +16896,26 @@
         "way_points_03_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2147.64,7.375,1741.16]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2147.64,
+              7.375,
+              1741.16
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13879,10 +16935,26 @@
         "way_points_04_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2229.73,6.52501,1683.74]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2229.73,
+              6.52501,
+              1683.74
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13895,10 +16967,26 @@
         "way_points_04_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2227.22,6.375,1679.62]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2227.22,
+              6.375,
+              1679.62
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13911,10 +16999,26 @@
         "way_points_04_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2211.86,7.42499,1668.47]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2211.86,
+              7.42499,
+              1668.47
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13934,10 +17038,26 @@
         "way_points_01_wp_10": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2111.25,6.7,1835.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2111.25,
+              6.7,
+              1835.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13950,10 +17070,26 @@
         "way_points_01_wp_11": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2107.1,6.7,1827.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2107.1,
+              6.7,
+              1827.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13966,10 +17102,26 @@
         "def_2nd_way_01_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2092.4,6.75,1822.3]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2092.4,
+              6.75,
+              1822.3
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -13989,10 +17141,26 @@
         "way_points_01_wp_14": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1946.36,7.9569,1795.33]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1946.36,
+              7.9569,
+              1795.33
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14005,10 +17173,26 @@
         "way_points_01_wp_15": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1955.84,8.07701,1802.93]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1955.84,
+              8.07701,
+              1802.93
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14021,10 +17205,26 @@
         "way_points_01_wp_16": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2004.18,6.7122,1824.42]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2004.18,
+              6.7122,
+              1824.42
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14037,10 +17237,26 @@
         "way_points_01_wp_17": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2044.65,6.7,1839.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2044.65,
+              6.7,
+              1839.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14053,10 +17269,26 @@
         "way_points_01_wp_18": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2060.65,7.05275,1853.85]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2060.65,
+              7.05275,
+              1853.85
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14069,10 +17301,26 @@
         "way_points_01_wp_19": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2119.5,6.95,1953.9]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2119.5,
+              6.95,
+              1953.9
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14085,10 +17333,26 @@
         "column_way_flank_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2145.6,5.74588,1966.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2145.6,
+              5.74588,
+              1966.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14101,10 +17365,26 @@
         "column_way_flank_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2188.92,7.0,1929.46]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2188.92,
+              7.0,
+              1929.46
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14117,10 +17397,26 @@
         "column_way_flank_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2210.0,6.66637,1937.25]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2210.0,
+              6.66637,
+              1937.25
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14133,10 +17429,26 @@
         "column_way_flank_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2269.6,6.16739,2012.4]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2269.6,
+              6.16739,
+              2012.4
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14156,10 +17468,26 @@
         "way_points_02_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1947.86,7.9679,1795.43]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1947.86,
+              7.9679,
+              1795.43
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14172,10 +17500,26 @@
         "way_points_02_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1957.56,6.298,1802.84]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1957.56,
+              6.298,
+              1802.84
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14188,10 +17532,26 @@
         "way_points_02_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2004.07,7.9842,1824.14]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2004.07,
+              7.9842,
+              1824.14
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14204,10 +17564,26 @@
         "way_points_02_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2045.1,6.75,1839.69]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2045.1,
+              6.75,
+              1839.69
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14220,10 +17596,26 @@
         "way_points_02_wp_08": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2067.46,6.98391,1865.26]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2067.46,
+              6.98391,
+              1865.26
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14236,10 +17628,26 @@
         "way_points_02_wp_09": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2180.95,6.425,1796.06]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2180.95,
+              6.425,
+              1796.06
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14252,10 +17660,26 @@
         "column_way_front_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2207.45,6.4,1794.6]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2207.45,
+              6.4,
+              1794.6
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14268,10 +17692,26 @@
         "column_way_front_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2240.81,6.57501,1833.81]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2240.81,
+              6.57501,
+              1833.81
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14291,10 +17731,26 @@
         "way_points_01_wp_20": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1947.3,7.78089,1795.89]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1947.3,
+              7.78089,
+              1795.89
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14307,10 +17763,26 @@
         "way_points_01_wp_21": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1957.64,6.27501,1803.23]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1957.64,
+              6.27501,
+              1803.23
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14323,10 +17795,26 @@
         "way_points_01_wp_22": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2004.01,6.6872,1824.27]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2004.01,
+              6.6872,
+              1824.27
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14339,10 +17827,26 @@
         "way_points_01_wp_23": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2045.59,6.57117,1839.24]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2045.59,
+              6.57117,
+              1839.24
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14355,10 +17859,26 @@
         "way_points_01_wp_24": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2067.1,6.90591,1865.91]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2067.1,
+              6.90591,
+              1865.91
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14371,10 +17891,26 @@
         "way_points_01_wp_25": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2124.27,6.375,1840.38]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2124.27,
+              6.375,
+              1840.38
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14387,10 +17923,26 @@
         "way_points_01_wp_26": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2133.33,6.509,1842.46]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2133.33,
+              6.509,
+              1842.46
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14403,10 +17955,26 @@
         "way_points_01_wp_27": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2143.65,6.47501,1856.14]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2143.65,
+              6.47501,
+              1856.14
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14426,10 +17994,26 @@
         "way_points_01_wp_28": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1947.1,7.7309,1795.94]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1947.1,
+              7.7309,
+              1795.94
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14442,10 +18026,26 @@
         "way_points_01_wp_29": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1956.09,6.27501,1802.48]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1956.09,
+              6.27501,
+              1802.48
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14458,10 +18058,26 @@
         "column_way_aa_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2002.6,6.43721,1823.57]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2002.6,
+              6.43721,
+              1823.57
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14474,10 +18090,26 @@
         "column_way_aa_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2029.53,6.32502,1812.13]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2029.53,
+              6.32502,
+              1812.13
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14490,10 +18122,26 @@
         "column_way_aa_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2064.25,6.375,1794.61]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2064.25,
+              6.375,
+              1794.61
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14506,10 +18154,26 @@
         "column_way_aa_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2095.97,6.375,1777.07]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2095.97,
+              6.375,
+              1777.07
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14529,10 +18193,26 @@
         "way_points_01_wp_30": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1947.56,7.77689,1796.3]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1947.56,
+              7.77689,
+              1796.3
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14545,10 +18225,26 @@
         "way_points_01_wp_31": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1956.65,6.302,1803.34]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1956.65,
+              6.302,
+              1803.34
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14561,10 +18257,26 @@
         "column_way_secondary_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2003.71,6.6932,1824.28]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2003.71,
+              6.6932,
+              1824.28
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14577,10 +18289,26 @@
         "column_way_secondary_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2045.68,6.55018,1839.92]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2045.68,
+              6.55018,
+              1839.92
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14593,10 +18321,26 @@
         "column_way_secondary_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2067.55,6.91592,1866.13]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2067.55,
+              6.91592,
+              1866.13
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14609,10 +18353,26 @@
         "column_way_secondary_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2184.85,6.4,1793.45]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2184.85,
+              6.4,
+              1793.45
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14625,10 +18385,26 @@
         "column_way_secondary_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2205.9,6.4,1794.55]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2205.9,
+              6.4,
+              1794.55
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14641,10 +18417,26 @@
         "column_way_secondary_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2234.35,6.4,1825.65]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2234.35,
+              6.4,
+              1825.65
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14657,10 +18449,26 @@
         "column_way_secondary_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2275.3,6.4,1797.7]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2275.3,
+              6.4,
+              1797.7
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14680,10 +18488,26 @@
         "way_points_01_wp_32": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2538.9,6.4,1733.95]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2538.9,
+              6.4,
+              1733.95
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14696,10 +18520,26 @@
         "way_3rd_02_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2529.5,6.4,1739.4]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2529.5,
+              6.4,
+              1739.4
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14719,10 +18559,26 @@
         "way_points_02_wp_10": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2518.65,6.4,1743.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2518.65,
+              6.4,
+              1743.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14735,10 +18591,26 @@
         "way_3rd_03_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2510.2,6.4,1753.0]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2510.2,
+              6.4,
+              1753.0
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14758,10 +18630,26 @@
         "way_points_03_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2579.6,6.4,1694.2]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2579.6,
+              6.4,
+              1694.2
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14774,10 +18662,26 @@
         "way_3rd_01_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2566.85,6.4,1705.4]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2566.85,
+              6.4,
+              1705.4
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14797,10 +18701,26 @@
         "way_points_01_wp_33": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2156.33,6.38101,1843.51]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2156.33,
+              6.38101,
+              1843.51
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14813,10 +18733,26 @@
         "way_points_01_wp_34": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2166.22,6.38101,1857.17]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2166.22,
+              6.38101,
+              1857.17
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14836,10 +18772,26 @@
         "way_points_01_wp_35": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2288.05,6.4,1787.0]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2288.05,
+              6.4,
+              1787.0
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14852,10 +18804,26 @@
         "way_points_01_wp_36": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2304.35,6.4,1788.1]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2304.35,
+              6.4,
+              1788.1
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14868,10 +18836,26 @@
         "way_points_01_wp_37": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2353.75,6.4,1847.5]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2353.75,
+              6.4,
+              1847.5
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14884,10 +18868,26 @@
         "way_points_01_wp_38": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2364.95,6.4,1860.3]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2364.95,
+              6.4,
+              1860.3
+            ]
           ],
           "props": {
             "speed": 20.0,
@@ -14900,10 +18900,26 @@
         "way_points_01_wp_39": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2372.2,6.4,1863.4]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2372.2,
+              6.4,
+              1863.4
+            ]
           ],
           "props": {
             "speed": 5.0,
@@ -14916,10 +18932,26 @@
         "way_points_01_wp_12": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2386.35,6.4,1853.15]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2386.35,
+              6.4,
+              1853.15
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14939,10 +18971,26 @@
         "way_points_02_wp_15": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2298.95,6.4,2020.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2298.95,
+              6.4,
+              2020.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14955,10 +19003,26 @@
         "way_points_02_wp_16": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2392.55,6.4,1941.35]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2392.55,
+              6.4,
+              1941.35
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -14971,10 +19035,26 @@
         "way_points_02_wp_17": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2421.75,6.4,1915.45]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2421.75,
+              6.4,
+              1915.45
+            ]
           ],
           "props": {
             "speed": 5.0,
@@ -14987,10 +19067,26 @@
         "way_points_02_wp_18": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2401.5,6.4,1872.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2401.5,
+              6.4,
+              1872.75
+            ]
           ],
           "props": {
             "speed": 100.0,
@@ -15003,10 +19099,26 @@
         "way_points_02_wp_19": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2394.75,7.25,1860.9]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2394.75,
+              7.25,
+              1860.9
+            ]
           ],
           "props": {
             "speed": 20.0,
@@ -15019,10 +19131,26 @@
         "way_points_02_wp_11": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2401.4,7.15,1854.8]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2401.4,
+              7.15,
+              1854.8
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15042,10 +19170,26 @@
         "way_points_03_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2239.39,6.38101,1828.78]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2239.39,
+              6.38101,
+              1828.78
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15058,10 +19202,26 @@
         "way_points_03_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2308.04,6.38101,1911.32]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2308.04,
+              6.38101,
+              1911.32
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15074,10 +19234,26 @@
         "way_points_03_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2321.22,6.38101,1911.87]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2321.22,
+              6.38101,
+              1911.87
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15090,10 +19266,26 @@
         "way_points_03_wp_08": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2355.18,6.38101,1885.0]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2355.18,
+              6.38101,
+              1885.0
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15113,10 +19305,26 @@
         "way_points_04_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2241.9,6.38101,1843.89]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2241.9,
+              6.38101,
+              1843.89
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15129,10 +19337,26 @@
         "way_points_04_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2244.68,6.38101,1862.51]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2244.68,
+              6.38101,
+              1862.51
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15145,10 +19369,26 @@
         "way_ally_sacrifice_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2209.42,6.90453,1889.73]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2209.42,
+              6.90453,
+              1889.73
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15161,10 +19401,26 @@
         "way_ally_sacrifice_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2210.16,6.38101,1904.7]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2210.16,
+              6.38101,
+              1904.7
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15184,10 +19440,26 @@
         "way_points_04_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2177.3,6.3315,1871.4]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2177.3,
+              6.3315,
+              1871.4
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15200,10 +19472,26 @@
         "way_points_04_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2200.45,6.80985,1902.35]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2200.45,
+              6.80985,
+              1902.35
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15216,10 +19504,26 @@
         "way_points_04_wp_08": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2213.95,5.92967,1909.25]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2213.95,
+              5.92967,
+              1909.25
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15232,10 +19536,26 @@
         "way_points_04_wp_09": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [2233.09,5.96929,1893.74]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2233.09,
+              5.96929,
+              1893.74
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15255,10 +19575,26 @@
         "way_flank_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1888.69,6.49249,1751.03]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1888.69,
+              6.49249,
+              1751.03
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -15271,10 +19607,26 @@
         "way_flank_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1891.65,6.5,1753.7]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1891.65,
+              6.5,
+              1753.7
+            ]
           ],
           "props": {
             "speed": 300.0,

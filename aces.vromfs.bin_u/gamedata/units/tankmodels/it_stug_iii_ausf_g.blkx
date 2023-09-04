@@ -4,8 +4,18 @@
   "hasDmg2": false,
   "hasQualityModels": true,
   "useSimpleDeathConditionsAndEffects": false,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1716,13 +1726,25 @@
         "barrel": "bone_gun_barrel",
         "linkedAnimPart": {
           "verNode": "bone_camera_gunner",
-          "verLimits": [-180.0,180.0],
-          "verOriginLimits": [-180.0,180.0]
+          "verLimits": [
+            -180.0,
+            180.0
+          ],
+          "verOriginLimits": [
+            -180.0,
+            180.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-10.0,10.0],
-        "pitch": [-6.0,17.0]
+        "yaw": [
+          -10.0,
+          10.0
+        ],
+        "pitch": [
+          -6.0,
+          17.0
+        ]
       }
     },
     "hideNodes": {
@@ -1743,15 +1765,30 @@
       "Empty": 24050.0,
       "Fuel": 300.0,
       "TakeOff": 24350.0,
-      "momentOfInertia": [2.5,2.5,6.0],
-      "CenterOfGravity": [0.2,0.5,0.0],
-      "CenterOfGravityClampY": [0.0,0.7],
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.2,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
       "AdvancedMass": true,
       "trackMass": 940.0
     },
     "tracks": {
       "animationMultiplier": 0.5,
-      "tracksTensionK": [3.0,8.0,1.5],
+      "tracksTensionK": [
+        3.0,
+        8.0,
+        1.5
+      ],
       "trackMesh": "ger_kgs61_400_120_phys_track_line",
       "trackLen": 0.12,
       "trackCount": 93,
@@ -1793,11 +1830,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.05,-0.05,0.06],
+      "suspensionOffsets": [
+        -0.05,
+        -0.05,
+        0.06
+      ],
       "defaultGearRadius": 0.25,
       "topGearRadius": 0.1,
       "frontBackGearRadius": 0.4,
-      "defaultDampeningForce": [95000.0,95000.0],
+      "defaultDampeningForce": [
+        95000.0,
+        95000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.3855,
@@ -1832,8 +1876,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1846,21 +1898,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 1000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2514,8 +2599,16 @@
     "zoomInFov": 14.7,
     "sightFov": 8.0,
     "sightName": "sfl_zf_1a",
-    "headPos": [0.0,3.2,-6.5],
-    "headPosOnShooting": [-0.1,2.9,-0.6],
+    "headPos": [
+      0.0,
+      3.2,
+      -6.5
+    ],
+    "headPosOnShooting": [
+      -0.1,
+      2.9,
+      -0.6
+    ],
     "bone_turret": "",
     "detectionHeight": 2.16
   },
@@ -2606,13 +2699,25 @@
                 "barrel": "bone_gun_barrel",
                 "linkedAnimPart": {
                   "verNode": "bone_camera_gunner",
-                  "verLimits": [-180.0,180.0],
-                  "verOriginLimits": [-180.0,180.0]
+                  "verLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "verOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
                 }
               },
               "limits": {
-                "yaw": [-10.0,10.0],
-                "pitch": [-6.0,17.0]
+                "yaw": [
+                  -10.0,
+                  10.0
+                ],
+                "pitch": [
+                  -6.0,
+                  17.0
+                ]
               }
             },
             {
@@ -2623,7 +2728,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,6],
+              "emitterGenRange": [
+                1,
+                6
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -2654,8 +2762,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ],
@@ -2696,7 +2810,13 @@
     }
   ],
   "dmgAngles": {
-    "hatch_02": [45.0,90.0],
-    "hatch_03": [45.0,90.0]
+    "hatch_02": [
+      45.0,
+      90.0
+    ],
+    "hatch_03": [
+      45.0,
+      90.0
+    ]
   }
 }

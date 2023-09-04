@@ -4,7 +4,7 @@
   "transivers": {
     "search": {
       "pulsePower": 30000.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 1e-6,
       "prf": 2000.0,
       "band": 2,
       "rcs": 5.0,
@@ -24,15 +24,24 @@
   },
   "scanPatterns": {
     "search": {
-      "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-15.0,15.0],
+      "azimuthLimits": [
+        -30.0,
+        30.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
       "type": "no"
     }
   },
   "signals": {
     "search": {
       "groundClutter": true,
-      "dynamicRange": [30.0,3.0],
+      "dynamicRange": [
+        30.0,
+        3.0
+      ],
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -56,8 +65,14 @@
             "transiver": "search"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-30.0,30.0],
-            "distanceRange": [0.0,20000.0]
+            "azimuthRange": [
+              -30.0,
+              30.0
+            ],
+            "distanceRange": [
+              0.0,
+              20000.0
+            ]
           }
         },
         "setStandbyMode": {

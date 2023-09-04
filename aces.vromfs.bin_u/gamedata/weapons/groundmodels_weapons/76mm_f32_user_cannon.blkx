@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -37,7 +41,7 @@
     "explosiveMass": 0.15,
     "caliber": 0.0762,
     "speed": 615.0,
-    "Cx": 0.3598,
+    "Cx": 0.35979,
     "maxDistance": 10000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
@@ -50,13 +54,23 @@
     "stuckingAngle": 45.0,
     "bulletType": "aphebc_tank",
     "slopeEffectPreset": "apbc",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "76mm_br_350a",
-    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
     "fuseDelayDist": 1.2,
     "explodeTreshold": 14.0,
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_59_80mm_metal_ap",
     "groundCollisionEffect": "hit_59_80mm_dirt_ap",
@@ -66,17 +80,38 @@
     "waterRicochetEffect": "hit_59_80mm_water",
     "groundRicochetEffect": "hit_59_80mm_dirt_ap",
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.2],
-      "mod2": [20.0,0.4],
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
       "mod3": [
-        [30.0,0.6],
-        [45.0,0.9]
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "hitpower": {
-      "HitPower0m": [1.0,0.0],
-      "HitPower1000m": [0.9,0.0],
-      "HitPower10000m": [0.8,10000.0]
+      "HitPower0m": [
+        1.0,
+        0.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        0.0
+      ],
+      "HitPower10000m": [
+        0.8,
+        10000.0
+      ]
     },
     "damage": {
       "kinetic": {
@@ -88,7 +123,10 @@
       }
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "30mmWhite",
       "trail": "black"
@@ -221,7 +259,7 @@
       "explosiveMass": 0.05,
       "caliber": 0.076,
       "speed": 615.0,
-      "Cx": 0.4336,
+      "Cx": 0.43355,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -233,24 +271,58 @@
       "bulletType": "smoke_tank",
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_he",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/smoke.ivf",
       "bulletName": "76mm_d350a",
       "hitPowerMult": 20.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "nearArmorPower": [3.0,150.0],
-      "midArmorPower": [3.0,600.0],
-      "farArmorPower": [3.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        150.0
+      ],
+      "midArmorPower": [
+        3.0,
+        600.0
+      ],
+      "farArmorPower": [
+        3.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.5,
       "explodeHitPower": 90.0,
       "explodeArmorPower": 8.0,
-      "explodeRadius": [0.4,0.8],
+      "explodeRadius": [
+        0.4,
+        0.8
+      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
@@ -270,12 +342,24 @@
       "groundCollisionEffect": "smoke_shell_explosion",
       "ricochetEffect": "hit_59_80mm_metal_ap",
       "waterCollisionEffect": "hit_39_58mm_water",
-      "waterFxScale": [0.6,0.7],
+      "waterFxScale": [
+        0.6,
+        0.7
+      ],
       "explosionPatchRadius": 1.1,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
       },
       "collisions": {
         "steel": {
@@ -283,7 +367,10 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "noColor"
       }
@@ -297,7 +384,7 @@
       "explosiveMass": 0.621,
       "caliber": 0.0762,
       "speed": 615.0,
-      "Cx": 0.4336,
+      "Cx": 0.43355,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -308,18 +395,40 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "76mm_of_350m",
       "hitPowerMult": 2.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
@@ -336,9 +445,18 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -601,7 +719,7 @@
       "explosiveMass": 0.085,
       "caliber": 0.0762,
       "speed": 615.0,
-      "Cx": 0.5181,
+      "Cx": 0.51805,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
@@ -613,14 +731,24 @@
       "bulletType": "shrapnel_tank",
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_shrapnel",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/shrapnel.ivf",
       "bulletName": "76mm_sh_354t",
-      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "fuseDelayDist": 1.2,
       "explodeTreshold": 14.0,
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -632,14 +760,32 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
       },
       "hitpower": {
-        "HitPower0m": [1.0,0.0],
-        "HitPower1000m": [0.9,0.0],
-        "HitPower10000m": [0.8,10000.0]
+        "HitPower0m": [
+          1.0,
+          0.0
+        ],
+        "HitPower1000m": [
+          0.9,
+          0.0
+        ],
+        "HitPower10000m": [
+          0.8,
+          10000.0
+        ]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -660,63 +806,90 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [0.0,10.0],
+              "angles": [
+                0.0,
+                10.0
+              ],
               "countPortion": 0.09
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [11.0,39.0],
+              "angles": [
+                11.0,
+                39.0
+              ],
               "countPortion": 0.1
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.5,
-              "angles": [40.0,70.0],
+              "angles": [
+                40.0,
+                70.0
+              ],
               "countPortion": 0.11
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [71.0,180.0],
+              "angles": [
+                71.0,
+                180.0
+              ],
               "countPortion": 0.2
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [181.0,289.0],
+              "angles": [
+                181.0,
+                289.0
+              ],
               "countPortion": 0.2
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.5,
-              "angles": [290.0,320.0],
+              "angles": [
+                290.0,
+                320.0
+              ],
               "countPortion": 0.11
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [321.0,349.0],
+              "angles": [
+                321.0,
+                349.0
+              ],
               "countPortion": 0.1
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [350.0,359.0],
+              "angles": [
+                350.0,
+                359.0
+              ],
               "countPortion": 0.09
             }
           ]
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "noColor",
         "trail": "black"
@@ -958,7 +1131,7 @@
       "explosiveMass": 0.065,
       "caliber": 0.0762,
       "speed": 615.0,
-      "Cx": 0.4437,
+      "Cx": 0.44365,
       "maxDistance": 10000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
@@ -971,13 +1144,23 @@
       "stuckingAngle": 45.0,
       "bulletType": "aphebc_tank",
       "slopeEffectPreset": "apbc",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "76mm_br_350b",
-      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "fuseDelayDist": 0.9,
       "explodeTreshold": 14.0,
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_ap",
       "groundCollisionEffect": "hit_59_80mm_dirt_ap",
@@ -987,17 +1170,38 @@
       "waterRicochetEffect": "hit_59_80mm_water",
       "groundRicochetEffect": "hit_59_80mm_dirt_ap",
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.4],
+        "mod1": [
+          0.0,
+          0.2
+        ],
+        "mod2": [
+          20.0,
+          0.4
+        ],
         "mod3": [
-          [30.0,0.6],
-          [45.0,0.9]
+          [
+            30.0,
+            0.6
+          ],
+          [
+            45.0,
+            0.9
+          ]
         ]
       },
       "hitpower": {
-        "HitPower0m": [1.0,0.0],
-        "HitPower1000m": [0.9,0.0],
-        "HitPower10000m": [0.8,10000.0]
+        "HitPower0m": [
+          1.0,
+          0.0
+        ],
+        "HitPower1000m": [
+          0.9,
+          0.0
+        ],
+        "HitPower10000m": [
+          0.8,
+          10000.0
+        ]
       },
       "damage": {
         "kinetic": {
@@ -1009,7 +1213,10 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
         "trail": "black"
@@ -1143,7 +1350,7 @@
       "damageMass": 0.48,
       "ballisticCaliber": 0.0762,
       "damageCaliber": 0.028,
-      "Cx": 0.5627,
+      "Cx": 0.56265,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
@@ -1156,15 +1363,28 @@
       "stuckingAngle": 45.0,
       "bulletType": "apcr_tank",
       "slopeEffectPreset": "apcr",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/apcr.ivf",
       "bulletName": "76mm_br_354p",
       "breakingArmorThicknessEffective": true,
-      "breakingArmorThickness": [10.0,300.0],
+      "breakingArmorThickness": [
+        10.0,
+        300.0
+      ],
       "breakingCriticalSpeed": 1000.0,
       "breakingDistance": 0.05,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_ap",
       "groundCollisionEffect": "hit_59_80mm_dirt_ap",
@@ -1174,15 +1394,36 @@
       "waterRicochetEffect": "hit_59_80mm_water",
       "groundRicochetEffect": "hit_59_80mm_dirt_ap",
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.45]
+        "mod1": [
+          0.0,
+          0.2
+        ],
+        "mod2": [
+          20.0,
+          0.45
+        ]
       },
       "hitpower": {
-        "HitPower0m": [1.0,300.0],
-        "HitPower1000m": [0.7,1000.0],
-        "HitPower1500m": [0.6,1500.0],
-        "HitPower2500m": [0.6,2500.0],
-        "HitPower10000m": [0.5,10000.0]
+        "HitPower0m": [
+          1.0,
+          300.0
+        ],
+        "HitPower1000m": [
+          0.7,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.6,
+          1500.0
+        ],
+        "HitPower2500m": [
+          0.6,
+          2500.0
+        ],
+        "HitPower10000m": [
+          0.5,
+          10000.0
+        ]
       },
       "damage": {
         "kinetic": {
@@ -1193,18 +1434,39 @@
           "demarreCaliberPow": 1.07
         },
         "breakingScaleByArmor": {
-          "mod0": [5.0,1.0],
-          "mod1": [10.0,0.8],
-          "mod2": [40.0,0.5]
+          "mod0": [
+            5.0,
+            1.0
+          ],
+          "mod1": [
+            10.0,
+            0.8
+          ],
+          "mod2": [
+            40.0,
+            0.5
+          ]
         },
         "breakingScaleByAir": {
-          "mod0": [0.05,1.0],
-          "mod1": [0.2,0.7],
-          "mod2": [0.5,0.5]
+          "mod0": [
+            0.05,
+            1.0
+          ],
+          "mod1": [
+            0.2,
+            0.7
+          ],
+          "mod2": [
+            0.5,
+            0.5
+          ]
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "76mmRed",
         "trail": "black"
@@ -1337,7 +1599,7 @@
       "explosiveMass": 0.48,
       "caliber": 0.0762,
       "speed": 615.0,
-      "Cx": 0.3604,
+      "Cx": 0.36044,
       "maxDistance": 7000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
@@ -1349,12 +1611,22 @@
       "bulletType": "heat_tank",
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/heat.ivf",
       "bulletName": "76mm_bp_350a",
       "onHitChanceMultExplFuel": 0.3,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
@@ -1372,9 +1644,18 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
       },
       "DamageParts": {
         "body": {
@@ -1398,15 +1679,36 @@
         "damageType": "pressure"
       },
       "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower1000m": [0.9,1000.0],
-        "HitPower1500m": [0.65,1500.0],
-        "HitPower2500m": [0.5,2500.0],
-        "HitPower7000m": [0.0,7000.0]
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower1000m": [
+          0.9,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.65,
+          1500.0
+        ],
+        "HitPower2500m": [
+          0.5,
+          2500.0
+        ],
+        "HitPower7000m": [
+          0.0,
+          7000.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [5.0,10.0],
-        "ArmorPower10000m": [4.0,10000.0]
+        "ArmorPower0m": [
+          5.0,
+          10.0
+        ],
+        "ArmorPower10000m": [
+          4.0,
+          10000.0
+        ]
       },
       "damage": {
         "explosive": {
@@ -1421,7 +1723,10 @@
               "radiusScale": 0.3,
               "penetrationScale": 2.0,
               "damageScale": 1.5,
-              "angles": [0.0,5.0],
+              "angles": [
+                0.0,
+                5.0
+              ],
               "countPortion": 0.01,
               "onHitChanceMultFire": 10.0
             },
@@ -1429,7 +1734,10 @@
               "radiusScale": 0.15,
               "penetrationScale": 2.0,
               "damageScale": 1.0,
-              "angles": [0.0,29.0],
+              "angles": [
+                0.0,
+                29.0
+              ],
               "countPortion": 0.03,
               "onHitChanceMultFire": 10.0
             },
@@ -1437,14 +1745,20 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [30.0,69.0],
+              "angles": [
+                30.0,
+                69.0
+              ],
               "countPortion": 0.235
             },
             {
               "radiusScale": 0.25,
               "penetrationScale": 1.7,
               "damageScale": 1.5,
-              "angles": [70.0,110.0],
+              "angles": [
+                70.0,
+                110.0
+              ],
               "countPortion": 0.075,
               "onHitChanceMultFire": 50.0
             },
@@ -1452,21 +1766,30 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [111.0,180.0],
+              "angles": [
+                111.0,
+                180.0
+              ],
               "countPortion": 0.15
             },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [181.0,249.0],
+              "angles": [
+                181.0,
+                249.0
+              ],
               "countPortion": 0.15
             },
             {
               "radiusScale": 0.25,
               "penetrationScale": 1.7,
               "damageScale": 1.5,
-              "angles": [250.0,290.0],
+              "angles": [
+                250.0,
+                290.0
+              ],
               "countPortion": 0.075,
               "onHitChanceMultFire": 50.0
             },
@@ -1474,14 +1797,20 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [291.0,329.0],
+              "angles": [
+                291.0,
+                329.0
+              ],
               "countPortion": 0.235
             },
             {
               "radiusScale": 0.15,
               "penetrationScale": 2.0,
               "damageScale": 1.0,
-              "angles": [330.0,359.0],
+              "angles": [
+                330.0,
+                359.0
+              ],
               "countPortion": 0.03,
               "onHitChanceMultFire": 10.0
             },
@@ -1489,7 +1818,10 @@
               "radiusScale": 0.3,
               "penetrationScale": 2.0,
               "damageScale": 1.5,
-              "angles": [355.0,359.0],
+              "angles": [
+                355.0,
+                359.0
+              ],
               "countPortion": 0.01,
               "onHitChanceMultFire": 10.0
             }
@@ -1506,7 +1838,10 @@
         "onHitChanceMultFire": 15.0
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
         "trail": "black"

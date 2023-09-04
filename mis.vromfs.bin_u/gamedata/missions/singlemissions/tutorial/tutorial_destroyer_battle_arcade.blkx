@@ -1095,7 +1095,11 @@
               "removeAreas": false,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "radius": -1.0,
               "target": "@t1_boat_spawn_name",
               "postfix": "",
@@ -1124,7 +1128,11 @@
               "removeAreas": false,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "radius": -1.0,
               "target": "@t2_boat_spawn_name",
               "postfix": "",
@@ -1153,7 +1161,11 @@
               "removeAreas": false,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "radius": -1.0,
               "target": "@t1_destroyer_spawn_name",
               "postfix": "",
@@ -1182,7 +1194,11 @@
               "removeAreas": false,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "radius": -1.0,
               "target": "@t2_destroyer_spawn_name",
               "postfix": "",
@@ -1299,35 +1315,55 @@
           "unitRespawn": [
             {
               "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "object": "t1_half_sq_01",
               "object_type": "isActive",
               "target": "ndom_t1_destroyer_spawn_01"
             },
             {
               "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "object": "t1_half_sq_02",
               "object_type": "isActive",
               "target": "ndom_t1_destroyer_spawn_02"
             },
             {
               "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "object": "t2_half_sq_01",
               "object_type": "isActive",
               "target": "t2_shipspawn_bot_sq"
             },
             {
               "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "object": "t2_half_sq_02",
               "object_type": "isActive",
               "target": "ndom_t2_destroyer_spawn_02"
             },
             {
               "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
               "object": "t2_ship_01",
               "target": "t2_shipspawn_bot_target"
             }
@@ -1336,9 +1372,19 @@
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "all_players_squad",
             "doExplosion": true,
             "target_type": "isNotPlayer"
@@ -1423,7 +1469,11 @@
         "actions": {
           "missionSetFade": {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           },
           "triggerEnable": {
@@ -1461,7 +1511,11 @@
         "actions": {
           "missionSetFade": {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           },
           "triggerEnable": {
@@ -1837,10 +1891,26 @@
       {
         "name": "t1_ship_01",
         "tm": [
-          [0.996194,0.0,0.0871555],
-          [0.0,1.0,0.0],
-          [-0.0871555,0.0,0.996194],
-          [-2310.2,0.0,6126.9]
+          [
+            0.996194,
+            0.0,
+            0.0871555
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871555,
+            0.0,
+            0.996194
+          ],
+          [
+            -2310.2,
+            0.0,
+            6126.9
+          ]
         ],
         "unit_class": "us_destroyer_clemson_litchfield",
         "objLayer": 1,
@@ -1864,8 +1934,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1874,10 +1950,26 @@
       {
         "name": "t1_ship_02",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1501.1,0.0,-7181.25]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1501.1,
+            0.0,
+            -7181.25
+          ]
         ],
         "unit_class": "us_destroyer_clemson_litchfield",
         "objLayer": 1,
@@ -1900,8 +1992,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -1911,10 +2009,26 @@
       {
         "name": "t1_ship_03",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1500.05,0.0,-7049.75]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1500.05,
+            0.0,
+            -7049.75
+          ]
         ],
         "unit_class": "us_destroyer_farragut_1942",
         "objLayer": 1,
@@ -1937,8 +2051,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -1948,10 +2068,26 @@
       {
         "name": "t1_ship_04",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1499.15,0.0,-6915.05]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1499.15,
+            0.0,
+            -6915.05
+          ]
         ],
         "unit_class": "us_destroyer_clemson_barker",
         "objLayer": 1,
@@ -1974,8 +2110,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -1985,10 +2127,26 @@
       {
         "name": "t1_ship_05",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1491.45,0.0,-6795.55]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1491.45,
+            0.0,
+            -6795.55
+          ]
         ],
         "unit_class": "germ_destroyer_class1924_leopard1932",
         "objLayer": 1,
@@ -2011,8 +2169,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2022,10 +2186,26 @@
       {
         "name": "t1_ship_06",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1496.7,0.0,-6661.1]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1496.7,
+            0.0,
+            -6661.1
+          ]
         ],
         "unit_class": "germ_destroyer_class1934a_1944",
         "objLayer": 1,
@@ -2048,8 +2228,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2059,10 +2245,26 @@
       {
         "name": "t1_ship_07",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1488.85,0.0,-6544.55]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1488.85,
+            0.0,
+            -6544.55
+          ]
         ],
         "unit_class": "germ_destroyer_class1939_t22",
         "objLayer": 1,
@@ -2085,8 +2287,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2096,10 +2304,26 @@
       {
         "name": "t1_ship_08",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1487.2,0.0,-6428.35]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1487.2,
+            0.0,
+            -6428.35
+          ]
         ],
         "unit_class": "ussr_destroyer_frunze",
         "objLayer": 1,
@@ -2122,8 +2346,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2133,10 +2363,26 @@
       {
         "name": "t1_ship_09",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1483.45,0.0,-6286.85]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1483.45,
+            0.0,
+            -6286.85
+          ]
         ],
         "unit_class": "ussr_destroyer_7_besposhchadny",
         "objLayer": 1,
@@ -2159,8 +2405,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2170,10 +2422,26 @@
       {
         "name": "t1_ship_10",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-6160.9]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -6160.9
+          ]
         ],
         "unit_class": "ussr_destroyer_moskva",
         "objLayer": 1,
@@ -2196,8 +2464,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2207,10 +2481,26 @@
       {
         "name": "t2_ship_01",
         "tm": [
-          [0.819152,0.0,-0.573576],
-          [0.0,1.0,0.0],
-          [0.573576,0.0,0.819152],
-          [6105.4,0.0,6199.4]
+          [
+            0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573576,
+            0.0,
+            0.819152
+          ],
+          [
+            6105.4,
+            0.0,
+            6199.4
+          ]
         ],
         "unit_class": "ussr_destroyer_pr30_ognevoy",
         "objLayer": 1,
@@ -2233,8 +2523,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": false
@@ -2244,10 +2540,26 @@
       {
         "name": "t2_ship_02",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1642.85,0.0,-7172.0]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1642.85,
+            0.0,
+            -7172.0
+          ]
         ],
         "unit_class": "ussr_destroyer_regele_ferdinand_class_letuchiy",
         "objLayer": 1,
@@ -2270,8 +2582,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2281,10 +2599,26 @@
       {
         "name": "t2_ship_03",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1647.8,0.0,-7044.55]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1647.8,
+            0.0,
+            -7044.55
+          ]
         ],
         "unit_class": "uk_destroyer_hunt_2series",
         "objLayer": 1,
@@ -2307,8 +2641,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2318,10 +2658,26 @@
       {
         "name": "t2_ship_04",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1644.0,0.0,-6907.35]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1644.0,
+            0.0,
+            -6907.35
+          ]
         ],
         "unit_class": "jp_destroyer_mutsuki",
         "objLayer": 1,
@@ -2344,8 +2700,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2355,10 +2717,26 @@
       {
         "name": "t2_ship_05",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1636.4,0.0,-6788.5]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1636.4,
+            0.0,
+            -6788.5
+          ]
         ],
         "unit_class": "jp_destroyer_fubuki",
         "objLayer": 1,
@@ -2381,8 +2759,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2392,10 +2776,26 @@
       {
         "name": "t2_ship_06",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1635.15,0.0,-6663.7]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1635.15,
+            0.0,
+            -6663.7
+          ]
         ],
         "unit_class": "it_destroyer_turbine",
         "objLayer": 1,
@@ -2418,8 +2818,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2429,10 +2835,26 @@
       {
         "name": "t2_ship_07",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1633.85,0.0,-6538.85]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1633.85,
+            0.0,
+            -6538.85
+          ]
         ],
         "unit_class": "it_destroyer_dardo",
         "objLayer": 1,
@@ -2455,8 +2877,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2466,10 +2894,26 @@
       {
         "name": "t2_ship_08",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1623.8,0.0,-6403.9]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1623.8,
+            0.0,
+            -6403.9
+          ]
         ],
         "unit_class": "it_destroyer_vifor_class_aquila",
         "objLayer": 1,
@@ -2492,8 +2936,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2503,10 +2953,26 @@
       {
         "name": "t2_ship_09",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1619.4,0.0,-6281.8]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1619.4,
+            0.0,
+            -6281.8
+          ]
         ],
         "unit_class": "us_destroyer_clemson_litchfield",
         "objLayer": 1,
@@ -2529,8 +2995,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2540,10 +3012,26 @@
       {
         "name": "t2_ship_10",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-6156.45]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -6156.45
+          ]
         ],
         "unit_class": "us_destroyer_farragut_1942",
         "objLayer": 1,
@@ -2566,8 +3054,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2577,10 +3071,26 @@
       {
         "name": "t1_ship_11",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-6048.85]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -6048.85
+          ]
         ],
         "unit_class": "us_destroyer_clemson_barker",
         "objLayer": 1,
@@ -2603,8 +3113,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2614,10 +3130,26 @@
       {
         "name": "t1_ship_12",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-5936.8]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5936.8
+          ]
         ],
         "unit_class": "germ_destroyer_class1924_leopard1932",
         "objLayer": 1,
@@ -2640,8 +3172,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2651,10 +3189,26 @@
       {
         "name": "t1_ship_13",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-5824.75]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5824.75
+          ]
         ],
         "unit_class": "germ_destroyer_class1934a_1944",
         "objLayer": 1,
@@ -2677,8 +3231,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2688,10 +3248,26 @@
       {
         "name": "t1_ship_14",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-5712.7]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5712.7
+          ]
         ],
         "unit_class": "germ_destroyer_class1939_t22",
         "objLayer": 1,
@@ -2714,8 +3290,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2725,10 +3307,26 @@
       {
         "name": "t1_ship_15",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-5600.65]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5600.65
+          ]
         ],
         "unit_class": "ussr_destroyer_frunze",
         "objLayer": 1,
@@ -2751,8 +3349,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2762,10 +3366,26 @@
       {
         "name": "t1_ship_16",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1479.05,0.0,-5488.6]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5488.6
+          ]
         ],
         "unit_class": "ussr_destroyer_7_besposhchadny",
         "objLayer": 1,
@@ -2788,8 +3408,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2799,10 +3425,26 @@
       {
         "name": "t2_ship_11",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-6047.65]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -6047.65
+          ]
         ],
         "unit_class": "ussr_destroyer_moskva",
         "objLayer": 1,
@@ -2825,8 +3467,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2836,10 +3484,26 @@
       {
         "name": "t2_ship_12",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-5938.85]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -5938.85
+          ]
         ],
         "unit_class": "ussr_destroyer_pr30_ognevoy",
         "objLayer": 1,
@@ -2862,8 +3526,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2873,10 +3543,26 @@
       {
         "name": "t2_ship_13",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-5830.05]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -5830.05
+          ]
         ],
         "unit_class": "ussr_destroyer_regele_ferdinand_class_letuchiy",
         "objLayer": 1,
@@ -2899,8 +3585,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2910,10 +3602,26 @@
       {
         "name": "t2_ship_14",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-5721.25]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -5721.25
+          ]
         ],
         "unit_class": "uk_destroyer_hunt_2series",
         "objLayer": 1,
@@ -2936,8 +3644,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2947,10 +3661,26 @@
       {
         "name": "t2_ship_15",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-5612.45]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -5612.45
+          ]
         ],
         "unit_class": "jp_destroyer_mutsuki",
         "objLayer": 1,
@@ -2973,8 +3703,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2984,10 +3720,26 @@
       {
         "name": "t2_ship_16",
         "tm": [
-          [0.793353,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793353],
-          [1615.05,0.0,-5503.65]
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -5503.65
+          ]
         ],
         "unit_class": "jp_destroyer_fubuki",
         "objLayer": 1,
@@ -3010,8 +3762,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -3023,10 +3781,26 @@
       {
         "name": "all_players_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1548.5,0.0,-7697.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1548.5,
+            0.0,
+            -7697.8
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3069,10 +3843,26 @@
       {
         "name": "t1_players_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1434.1,0.0,-7572.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1434.1,
+            0.0,
+            -7572.75
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3099,10 +3889,26 @@
       {
         "name": "t2_players_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1664.2,0.0,-7573.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1664.2,
+            0.0,
+            -7573.4
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3129,10 +3935,26 @@
       {
         "name": "t1_half_sq_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1396.6,0.0,-7472.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1396.6,
+            0.0,
+            -7472.35
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3150,10 +3972,26 @@
       {
         "name": "t1_half_sq_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1361.75,0.0,-7315.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1361.75,
+            0.0,
+            -7315.3
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3171,10 +4009,26 @@
       {
         "name": "t2_half_sq_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1739.7,0.0,-7463.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1739.7,
+            0.0,
+            -7463.5
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3192,10 +4046,26 @@
       {
         "name": "t2_half_sq_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1719.9,0.0,-7359.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1719.9,
+            0.0,
+            -7359.35
+          ]
         ],
         "props": {
           "squad_members": [
@@ -3214,10 +4084,26 @@
     "area_squad": {
       "name": "t2_shipspawn_bot_sq",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [7021.3,0.0,4762.55]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          7021.3,
+          0.0,
+          4762.55
+        ]
       ],
       "props": {
         "squad_members": [
@@ -3245,10 +4131,26 @@
     "t2_shipspawn_bot_01": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6342.24,0.0,3503.26]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6342.24,
+          0.0,
+          3503.26
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3256,10 +4158,26 @@
     "t2_shipspawn_bot_02": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6403.63,0.0,3657.28]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6403.63,
+          0.0,
+          3657.28
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3267,10 +4185,26 @@
     "t2_shipspawn_bot_03": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6465.02,0.0,3811.31]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6465.02,
+          0.0,
+          3811.31
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3278,10 +4212,26 @@
     "t2_shipspawn_bot_04": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6526.41,0.0,3965.33]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6526.41,
+          0.0,
+          3965.33
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3289,10 +4239,26 @@
     "t2_shipspawn_bot_05": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6587.8,0.0,4119.35]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6587.8,
+          0.0,
+          4119.35
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3300,10 +4266,26 @@
     "t2_shipspawn_bot_06": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6649.19,0.0,4273.37]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6649.19,
+          0.0,
+          4273.37
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3311,10 +4293,26 @@
     "t2_shipspawn_bot_07": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6710.58,0.0,4427.4]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6710.58,
+          0.0,
+          4427.4
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3322,10 +4320,26 @@
     "t2_shipspawn_bot_08": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6771.97,0.0,4581.42]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6771.97,
+          0.0,
+          4581.42
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3333,10 +4347,26 @@
     "t2_shipspawn_bot_09": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [7216.81,0.0,4376.98]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          7216.81,
+          0.0,
+          4376.98
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3344,10 +4374,26 @@
     "t2_shipspawn_bot_10": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [7160.6,0.0,4230.39]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          7160.6,
+          0.0,
+          4230.39
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3355,10 +4401,26 @@
     "t2_shipspawn_bot_11": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [7104.4,0.0,4083.81]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          7104.4,
+          0.0,
+          4083.81
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3366,10 +4428,26 @@
     "t2_shipspawn_bot_12": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [7048.19,0.0,3937.21]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          7048.19,
+          0.0,
+          3937.21
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3377,10 +4455,26 @@
     "t2_shipspawn_bot_13": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6991.98,0.0,3790.62]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6991.98,
+          0.0,
+          3790.62
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3388,10 +4482,26 @@
     "t2_shipspawn_bot_14": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6935.77,0.0,3644.03]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6935.77,
+          0.0,
+          3644.03
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3399,10 +4509,26 @@
     "t2_shipspawn_bot_15": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6879.56,0.0,3497.44]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6879.56,
+          0.0,
+          3497.44
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3410,10 +4536,26 @@
     "t2_shipspawn_bot_16": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6823.35,0.0,3350.85]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6823.35,
+          0.0,
+          3350.85
+        ]
       ],
       "objLayer": 0,
       "props": {}
@@ -3421,10 +4563,26 @@
     "t2_shipspawn_bot_target": {
       "type": "Sphere",
       "tm": [
-        [-183.41,0.0,79.7544],
-        [0.0,200.0,0.0],
-        [-43.1546,0.0,-99.2421],
-        [6034.1,0.0,2891.1]
+        [
+          -183.41,
+          0.0,
+          79.7544
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.1546,
+          0.0,
+          -99.2421
+        ],
+        [
+          6034.1,
+          0.0,
+          2891.1
+        ]
       ],
       "objLayer": 0,
       "props": {}

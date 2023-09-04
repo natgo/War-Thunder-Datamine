@@ -38,8 +38,14 @@
   "scanPatterns": {
     "searchNarrow": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 1.0,
@@ -50,8 +56,14 @@
     },
     "searchWide3Bars": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 3.0,
@@ -62,8 +74,14 @@
     },
     "searchWide1Bar": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 1.0,
@@ -74,16 +92,28 @@
     },
     "boresightLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "period": 1.0,
       "width": 1.75,
       "indicate": true
     },
     "designationLock": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
       "period": 0.5,
@@ -95,15 +125,24 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ]
     }
   },
   "signals": {
     "pulseSearch": {
       "rangeFinder": true,
       "dopplerSpeedFinder": false,
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -117,7 +156,10 @@
     "pulseDopplerSearch": {
       "rangeFinder": false,
       "dopplerSpeedFinder": true,
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": false,
@@ -136,7 +178,10 @@
     "pulseTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": false,
-      "dynamicRange": [40.0,13.0],
+      "dynamicRange": [
+        40.0,
+        13.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -152,7 +197,10 @@
     "pulseDopplerTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "dynamicRange": [40.0,13.0],
+      "dynamicRange": [
+        40.0,
+        13.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -221,13 +269,25 @@
             "signal": "pulseSearch"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-60.0,60.0],
+            "azimuthRange": [
+              -60.0,
+              60.0
+            ],
             "azmithWidth": 2.5,
-            "elevationRange": [-60.0,60.0],
-            "distanceRange": [0.0,92500.0],
+            "elevationRange": [
+              -60.0,
+              60.0
+            ],
+            "distanceRange": [
+              0.0,
+              92500.0
+            ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
-            "dopplerSpeedRange": [-150.0,1500.0],
+            "dopplerSpeedRange": [
+              -150.0,
+              1500.0
+            ],
             "dopplerSpeedWidth": 65.0,
             "dopplerSpeedRelWidthMin": 0.05
           }

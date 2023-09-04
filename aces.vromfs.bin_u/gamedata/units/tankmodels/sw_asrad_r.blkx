@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -45,7 +55,11 @@
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [-3.0,0.0,2.0],
+  "smokeScreenOffset": [
+    -3.0,
+    0.0,
+    2.0
+  ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
@@ -1537,7 +1551,10 @@
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
-      "emitterGenRange": [1,4],
+      "emitterGenRange": [
+        1,
+        4
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "ammo_turret_%02d_dm",
       "recoilMultiplier": 0.0,
@@ -1576,8 +1593,14 @@
         "gunnerDm": "gunner_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,35.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          35.0
+        ]
       }
     },
     "animatedBones": {
@@ -1614,9 +1637,20 @@
       "Empty": 11000.0,
       "Fuel": 160.0,
       "TakeOff": 11160.0,
-      "momentOfInertia": [2.0,2.0,5.0],
-      "CenterOfGravity": [0.1,0.5,0.0],
-      "CenterOfGravityClampY": [0.4,0.6],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        5.0
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.4,
+        0.6
+      ],
       "AdvancedMass": false,
       "trackMass": 800.0
     },
@@ -1637,7 +1671,7 @@
       "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 3.7757,
+      "sideGearRatio": 3.77573,
       "gearRatios": {
         "ratio": [
           -4.35,
@@ -1649,10 +1683,17 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.12,-0.11,0.05],
+      "suspensionOffsets": [
+        -0.12,
+        -0.11,
+        0.05
+      ],
       "defaultGearRadius": 0.3,
       "frontBackGearRadius": 0.2,
-      "defaultDampeningForce": [48768.0,48768.0],
+      "defaultDampeningForce": [
+        48768.0,
+        48768.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }
@@ -1665,8 +1706,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1679,21 +1728,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.08,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 500.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2348,8 +2430,16 @@
     "sightFov": 9.0,
     "sightName": "isu",
     "openedCockpit": true,
-    "headPos": [0.0,3.5,-7.5],
-    "headPosOnShooting": [-0.6,4.1,-0.5],
+    "headPos": [
+      0.0,
+      3.5,
+      -7.5
+    ],
+    "headPosOnShooting": [
+      -0.6,
+      4.1,
+      -0.5
+    ],
     "detectionHeight": 2.92
   },
   "modifications": {
@@ -2388,7 +2478,10 @@
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
-              "emitterGenRange": [1,4],
+              "emitterGenRange": [
+                1,
+                4
+              ],
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.0,
@@ -2427,8 +2520,14 @@
                 "gunnerDm": "gunner_dm"
               },
               "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-5.0,35.0]
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  35.0
+                ]
               }
             },
             {
@@ -2439,7 +2538,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,8],
+              "emitterGenRange": [
+                1,
+                8
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "ignoreLoaderPenalty": true,
               "createGunEffects": true,
@@ -2472,8 +2574,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ],
@@ -2491,11 +2599,17 @@
       "effects": {
         "nightVision": {
           "gunnerThermal": {
-            "resolution": [500,300],
+            "resolution": [
+              500,
+              300
+            ],
             "noiseFactor": 0.05
           },
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2

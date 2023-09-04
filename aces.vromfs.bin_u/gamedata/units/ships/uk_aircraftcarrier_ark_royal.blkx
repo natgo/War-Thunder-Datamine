@@ -36,7 +36,11 @@
   "smokeScreenRad": 60.0,
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
-  "smokeScreenOffset": [-80.0,2.0,0.0],
+  "smokeScreenOffset": [
+    -80.0,
+    2.0,
+    0.0
+  ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
   "depthTraceWarningDepth": 7.0,
@@ -44,7 +48,11 @@
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
   "customImage": "!#ui/unitskin#image_in_progress",
   "customTooltipImage": "ui/aircrafts/image_in_progress",
-  "aimPointOffset": [0.0,-7.0,0.0],
+  "aimPointOffset": [
+    0.0,
+    -7.0,
+    0.0
+  ],
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1330,50 +1338,92 @@
   "ShipPhys": {
     "mass": {
       "Empty": 59000000.0,
-      "momentOfInertia": [210.0,6500.0,3200.0],
-      "CenterOfGravity": [11.1,0.0,0.0]
+      "momentOfInertia": [
+        210.0,
+        6500.0,
+        3200.0
+      ],
+      "CenterOfGravity": [
+        11.1,
+        0.0,
+        0.0
+      ]
     },
     "engines": {
       "maxSpeed": 16.2,
       "maxReverseSpeed": 5.0,
       "speedToTime": {
         "row": [
-          [4.5,12.1],
-          [9.0,19.7],
-          [16.2,31.8]
+          [
+            4.5,
+            12.1
+          ],
+          [
+            9.0,
+            19.7
+          ],
+          [
+            16.2,
+            31.8
+          ]
         ]
       },
       "reverseSpeedToTime": {
         "row": [
-          [2.0,6.2],
-          [3.7,14.0],
-          [5.0,21.0]
+          [
+            2.0,
+            6.2
+          ],
+          [
+            3.7,
+            14.0
+          ],
+          [
+            5.0,
+            21.0
+          ]
         ]
       },
       "engine": [
         {
-          "pos": [-103.5,-8.1,12.5],
+          "pos": [
+            -103.5,
+            -8.1,
+            12.5
+          ],
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_room_01_dm",
           "transmissionDmPart": "transmission_01_dm",
           "propeller": "propeller_01"
         },
         {
-          "pos": [-120.0,-8.1,6.1],
+          "pos": [
+            -120.0,
+            -8.1,
+            6.1
+          ],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_01_dm",
           "transmissionDmPart": "transmission_02_dm",
           "propeller": "propeller_02"
         },
         {
-          "pos": [-120.0,-8.1,-6.1],
+          "pos": [
+            -120.0,
+            -8.1,
+            -6.1
+          ],
           "outputParam": "propeller_rotate_03:CRS",
           "engineDmPart": "engine_room_02_dm",
           "transmissionDmPart": "transmission_03_dm",
           "propeller": "propeller_03"
         },
         {
-          "pos": [-103.5,-8.1,-12.5],
+          "pos": [
+            -103.5,
+            -8.1,
+            -12.5
+          ],
           "outputParam": "propeller_rotate_04:CRS",
           "engineDmPart": "engine_room_02_dm",
           "transmissionDmPart": "transmission_04_dm",
@@ -1414,13 +1464,21 @@
       "mulReaction": 1.5,
       "rudder": [
         {
-          "pos": [-100.5,-6.0,2.5],
+          "pos": [
+            -100.5,
+            -6.0,
+            2.5
+          ],
           "area": 50.0,
           "deflection": 36.0,
           "dmPart": "steering_gear_01_dm"
         },
         {
-          "pos": [-100.5,-6.0,-2.5],
+          "pos": [
+            -100.5,
+            -6.0,
+            -2.5
+          ],
           "area": 50.0,
           "deflection": 36.0,
           "dmPart": "steering_gear_02_dm"
@@ -1429,8 +1487,16 @@
     }
   },
   "cockpit": {
-    "headPos": [0.0,50.0,-170.0],
-    "headPosOnShooting": [35.6,35.8,0.0],
+    "headPos": [
+      0.0,
+      50.0,
+      -170.0
+    ],
+    "headPosOnShooting": [
+      35.6,
+      35.8,
+      0.0
+    ],
     "detectionHeight": 58.0
   },
   "sound": {
@@ -2298,7 +2364,11 @@
     "sideSplashUpDirMult": 1.5,
     "sideSplashSpawnRate": 2.0,
     "sideSplashNormalMult": 1.5,
-    "sideSplashEmissionCurve": [1.5,1.0,-1.4],
+    "sideSplashEmissionCurve": [
+      1.5,
+      1.0,
+      -1.4
+    ],
     "waterSplashFxBow": "water_splash_medium_bow",
     "bowSplashSpeedMult": 1.0,
     "bowSplashUpDirMult": 4.0,
@@ -2309,7 +2379,12 @@
     "repairSpeed": 30.0,
     "waterMassVel": -100000.0,
     "waterMassMult": 400.0,
-    "sizeToRepair": [0.01,5.0,25.0,600.0],
+    "sizeToRepair": [
+      0.01,
+      5.0,
+      25.0,
+      600.0
+    ],
     "additionalWaterDeathThreshold": 185000000.0,
     "additionalWaterShouldDiePercent": 0.28,
     "fatalBreachDrownTime": 45.0,

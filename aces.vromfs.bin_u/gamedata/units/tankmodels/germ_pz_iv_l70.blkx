@@ -4,8 +4,18 @@
   "hasDmg2": false,
   "hasQualityModels": true,
   "useSimpleDeathConditionsAndEffects": false,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1008,14 +1018,30 @@
     "points": {
       "suspension": {
         "name": "bone_suspension_$1",
-        "limitMin": [0.0,0.0,0.0],
-        "limitMax": [0.0,0.0,0.0]
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ]
       },
       "wheel": {
         "searchChildren": {
           "occurence": 1,
-          "limitMin": [0.0,0.0,0.0],
-          "limitMax": [0.0,0.0,0.0],
+          "limitMin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "limitMax": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "parent": "suspension",
           "find": ""
         }
@@ -1687,8 +1713,16 @@
     "zoomInFov": 14.7,
     "sightFov": 8.0,
     "sightName": "sfl_zf_1a",
-    "headPos": [0.0,3.2,-6.5],
-    "headPosOnShooting": [-0.2,3.0,-0.45],
+    "headPos": [
+      0.0,
+      3.2,
+      -6.5
+    ],
+    "headPosOnShooting": [
+      -0.2,
+      3.0,
+      -0.45
+    ],
     "bone_turret": "",
     "detectionHeight": 1.85
   },
@@ -2330,15 +2364,30 @@
       "Empty": 25900.0,
       "Fuel": 300.0,
       "TakeOff": 26200.0,
-      "momentOfInertia": [2.5,2.5,6.0],
-      "CenterOfGravity": [0.4,0.4,0.0],
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.4,
+        0.4,
+        0.0
+      ],
       "AdvancedMass": true,
       "trackMass": 940.0,
-      "CenterOfGravityClampY": [0.0,0.7]
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ]
     },
     "tracks": {
       "animationMultiplier": 0.5,
-      "tracksTensionK": [3.0,8.0,1.5],
+      "tracksTensionK": [
+        3.0,
+        8.0,
+        1.5
+      ],
       "trackMesh": "ger_kgs61_400_120_phys_track_line",
       "trackLen": 0.12,
       "trackCount": 99,
@@ -2379,11 +2428,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.1,-0.07,0.05],
+      "suspensionOffsets": [
+        -0.1,
+        -0.07,
+        0.05
+      ],
       "defaultGearRadius": 0.23,
       "topGearRadius": 0.125,
       "frontBackGearRadius": 0.324,
-      "defaultDampeningForce": [110000.0,110000.0],
+      "defaultDampeningForce": [
+        110000.0,
+        110000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.355,
@@ -2430,8 +2486,14 @@
           "barrel": "bone_gun_barrel"
         },
         "limits": {
-          "yaw": [-12.0,12.0],
-          "pitch": [-7.0,15.0]
+          "yaw": [
+            -12.0,
+            12.0
+          ],
+          "pitch": [
+            -7.0,
+            15.0
+          ]
         }
       },
       {
@@ -2468,8 +2530,14 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-5.0,5.0],
-          "pitch": [-6.0,15.0]
+          "yaw": [
+            -5.0,
+            5.0
+          ],
+          "pitch": [
+            -6.0,
+            15.0
+          ]
         }
       }
     ]
@@ -2643,8 +2711,14 @@
                 "barrel": "bone_gun_barrel"
               },
               "limits": {
-                "yaw": [-12.0,12.0],
-                "pitch": [-7.0,15.0]
+                "yaw": [
+                  -12.0,
+                  12.0
+                ],
+                "pitch": [
+                  -7.0,
+                  15.0
+                ]
               }
             },
             {
@@ -2681,8 +2755,14 @@
                 "gunnerDm": "gunner_dm"
               },
               "limits": {
-                "yaw": [-5.0,5.0],
-                "pitch": [-6.0,15.0]
+                "yaw": [
+                  -5.0,
+                  5.0
+                ],
+                "pitch": [
+                  -6.0,
+                  15.0
+                ]
               }
             },
             {
@@ -2693,7 +2773,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,1],
+              "emitterGenRange": [
+                1,
+                1
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -2724,8 +2807,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ]
@@ -2817,21 +2906,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 1250.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {

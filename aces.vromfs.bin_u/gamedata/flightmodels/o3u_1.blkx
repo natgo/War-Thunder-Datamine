@@ -47,7 +47,11 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenDmPart": "tail_dm",
-  "smokeScreenOffset": [-8.0,-12.0,0.0],
+  "smokeScreenOffset": [
+    -8.0,
+    -12.0,
+    0.0
+  ],
   "DamageParts": {
     "armor10": {
       "gun1_dm": {
@@ -1645,34 +1649,66 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.2
+        ],
         "type": "leftHand",
-        "detachedNodeYpr": [0.0,-15.0,-90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          -90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.5
+        ],
         "type": "rightHand",
-        "detachedNodeYpr": [0.0,-15.0,90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.0,1.0,0.3]
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.3
+        ]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [0.0,1.0,-0.3]
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.3
+        ]
       }
     ]
   },
@@ -1691,28 +1727,44 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_",
-        "flexionDir": [0.0,-1.0,0.1]
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.1
+        ]
       },
       {
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_",
-        "flexionDir": [0.0,-1.0,-0.1]
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.1
+        ]
       },
       {
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_",
-        "flexionDir": [0.0,1.0,-0.2]
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.2
+        ]
       },
       {
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_",
-        "flexionDir": [0.0,1.0,0.2]
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.2
+        ]
       }
     ]
   },
@@ -1749,23 +1801,45 @@
         "gun": "gun1"
       },
       "limits": {
-        "yaw": [-80.0,80.0],
-        "pitch": [-20.0,60.0]
+        "yaw": [
+          -80.0,
+          80.0
+        ],
+        "pitch": [
+          -20.0,
+          60.0
+        ]
       },
       "limitsDeadzone": [
         {
-          "yaw": [-1.0,1.0],
-          "pitch": [-20.0,13.0]
+          "yaw": [
+            -1.0,
+            1.0
+          ],
+          "pitch": [
+            -20.0,
+            13.0
+          ]
         },
         {
-          "yaw": [-25.0,25.0],
-          "pitch": [-20.0,-8.0]
+          "yaw": [
+            -25.0,
+            25.0
+          ],
+          "pitch": [
+            -20.0,
+            -8.0
+          ]
         }
       ]
     }
   },
   "gunnerFps": {
-    "pos": [-0.6,0.25,0.0],
+    "pos": [
+      -0.6,
+      0.25,
+      0.0
+    ],
     "head": "turret1"
   },
   "weapon_presets": {
@@ -1790,8 +1864,14 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [55.0,138.0],
-    "engineExtinguishFireSpeedChance": [0.01,0.1],
+    "engineExtinguishFireSpeed": [
+      55.0,
+      138.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.01,
+      0.1
+    ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
@@ -1864,9 +1944,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -1876,7 +1964,11 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
@@ -1951,9 +2043,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing1_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -1963,13 +2063,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_l_dm",
         "side4": 1.05
       },
@@ -2041,9 +2149,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing2_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2053,13 +2169,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_l_dm",
         "side4": 1.05
       },
@@ -2130,9 +2254,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2142,7 +2274,11 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,-1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
@@ -2217,9 +2353,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing1_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2229,13 +2373,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,-1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_r_dm",
         "side4": 1.05
       },
@@ -2307,9 +2459,17 @@
           "gear_3c_dm"
         ],
         "dm1": "wing2_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2319,13 +2479,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,-1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_r_dm",
         "side4": 1.05
       },
@@ -2395,7 +2563,11 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [-1.0,0.0,0.0],
+        "axis1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm1": [
           "tail_dm",
           "stab_dm",
@@ -2474,9 +2646,17 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [0.0,1.0,0.0],
+        "axis1": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "side1": -0.65,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2554,9 +2734,17 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.6,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2634,9 +2822,17 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.6,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2714,9 +2910,17 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.6,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2794,9 +2998,17 @@
           "gear_2c_dm",
           "gear_3c_dm"
         ],
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.6,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2819,9 +3031,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2831,13 +3051,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,0.0,-1.0],
+        "axis4": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -2857,9 +3085,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing1_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2869,16 +3105,28 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_l_dm",
         "side4": 1.05,
-        "axis5": [0.0,0.0,-1.0],
+        "axis5": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "positive5": false,
         "dm5": [
           "fuse_dm",
@@ -2898,9 +3146,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing2_l_dm",
-        "axis1": [0.0,0.0,1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2910,10 +3166,18 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,1.0,0.0],
+        "axis3": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm3": "wing_l_dm",
         "side3": 1.05,
-        "axis4": [0.0,0.0,-1.0],
+        "axis4": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -2933,9 +3197,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2945,13 +3217,21 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,-1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,0.0,1.0],
+        "axis4": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -2971,9 +3251,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing1_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -2983,16 +3271,28 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,0.0,-1.0],
+        "axis3": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "dm3": [
           "fuse_dm",
           "fuse%d_dm"
         ],
         "side3": 1.1,
-        "axis4": [0.0,1.0,0.0],
+        "axis4": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm4": "wing_r_dm",
         "side4": 1.05,
-        "axis5": [0.0,0.0,1.0],
+        "axis5": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "positive5": false,
         "dm5": [
           "fuse_dm",
@@ -3012,9 +3312,17 @@
           "engine%d_dm"
         ],
         "dm1": "wing2_r_dm",
-        "axis1": [0.0,0.0,-1.0],
+        "axis1": [
+          0.0,
+          0.0,
+          -1.0
+        ],
         "side1": -0.95,
-        "axis2": [1.0,0.0,0.0],
+        "axis2": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3024,10 +3332,18 @@
           "elevator1_dm"
         ],
         "side2": 1.05,
-        "axis3": [0.0,1.0,0.0],
+        "axis3": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "dm3": "wing_r_dm",
         "side3": 1.05,
-        "axis4": [0.0,0.0,1.0],
+        "axis4": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "positive4": false,
         "dm4": [
           "fuse_dm",
@@ -3046,7 +3362,11 @@
           "transmission%d_dm",
           "engine%d_dm"
         ],
-        "axis1": [-1.0,0.0,0.0],
+        "axis1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm1": [
           "tail_dm",
           "stab_dm",
@@ -3069,9 +3389,17 @@
           "transmission%d_dm",
           "engine%d_dm"
         ],
-        "axis1": [0.0,1.0,0.0],
+        "axis1": [
+          0.0,
+          1.0,
+          0.0
+        ],
         "side1": -0.65,
-        "axis2": [-1.0,0.0,0.0],
+        "axis2": [
+          -1.0,
+          0.0,
+          0.0
+        ],
         "dm2": [
           "stab_dm",
           "stab1_dm",
@@ -3405,18 +3733,48 @@
       "table": {
         "rpmWep": 1700.0,
         "manifoldPressureWep": 1.19,
-        "airSpeedWep0": [0.0,315.0],
-        "climbRateWep0": [0.0,17.2],
-        "climbTimeWep0": [2000.0,220.405],
-        "turnTimeWep": [1000.0,16.0],
+        "airSpeedWep0": [
+          0.0,
+          315.0
+        ],
+        "climbRateWep0": [
+          0.0,
+          17.2
+        ],
+        "climbTimeWep0": [
+          2000.0,
+          220.405
+        ],
+        "turnTimeWep": [
+          1000.0,
+          16.0
+        ],
         "rpmMil": 1600.0,
         "manifoldPressureMil": 0.97,
-        "airSpeedMil0": [0.0,291.0],
-        "airSpeedMil1": [1500.0,306.0],
-        "climbRateMil0": [0.0,14.8],
-        "climbRateMil1": [1000.0,15.1],
-        "climbTimeMil0": [2000.0,235.004],
-        "turnTimeMil": [1000.0,16.2],
+        "airSpeedMil0": [
+          0.0,
+          291.0
+        ],
+        "airSpeedMil1": [
+          1500.0,
+          306.0
+        ],
+        "climbRateMil0": [
+          0.0,
+          14.8
+        ],
+        "climbRateMil1": [
+          1000.0,
+          15.1
+        ],
+        "climbTimeMil0": [
+          2000.0,
+          235.004
+        ],
+        "turnTimeMil": [
+          1000.0,
+          16.2
+        ],
         "takeoffDistance": 312.277,
         "ceiling": 3800.0,
         "rollRate": 105.0,
@@ -3424,26 +3782,71 @@
         "powerToWeightRatio": 0.36
       },
       "plot": {
-        "airSpeedWep0": [0.0,315.0],
-        "airSpeedWep1": [2200.0,299.0],
-        "airSpeedWep2": [3800.0,242.0],
-        "climbRateWep0": [0.0,17.2],
-        "climbRateWep1": [2000.0,13.2],
-        "climbRateWep2": [3800.0,7.2],
-        "airSpeedMil0": [0.0,291.0],
-        "airSpeedMil1": [1500.0,306.0],
-        "airSpeedMil2": [1900.0,305.0],
-        "airSpeedMil3": [2800.0,282.0],
-        "airSpeedMil4": [3800.0,238.0],
-        "climbRateMil0": [0.0,14.8],
-        "climbRateMil1": [1000.0,15.1],
-        "climbRateMil2": [2000.0,13.3],
-        "climbRateMil3": [3800.0,7.2]
+        "airSpeedWep0": [
+          0.0,
+          315.0
+        ],
+        "airSpeedWep1": [
+          2200.0,
+          299.0
+        ],
+        "airSpeedWep2": [
+          3800.0,
+          242.0
+        ],
+        "climbRateWep0": [
+          0.0,
+          17.2
+        ],
+        "climbRateWep1": [
+          2000.0,
+          13.2
+        ],
+        "climbRateWep2": [
+          3800.0,
+          7.2
+        ],
+        "airSpeedMil0": [
+          0.0,
+          291.0
+        ],
+        "airSpeedMil1": [
+          1500.0,
+          306.0
+        ],
+        "airSpeedMil2": [
+          1900.0,
+          305.0
+        ],
+        "airSpeedMil3": [
+          2800.0,
+          282.0
+        ],
+        "airSpeedMil4": [
+          3800.0,
+          238.0
+        ],
+        "climbRateMil0": [
+          0.0,
+          14.8
+        ],
+        "climbRateMil1": [
+          1000.0,
+          15.1
+        ],
+        "climbRateMil2": [
+          2000.0,
+          13.3
+        ],
+        "climbRateMil3": [
+          3800.0,
+          7.2
+        ]
       }
     }
   },
   "balanceData": {
-    "accSpd": 0.8633,
+    "accSpd": 0.863331,
     "climbSpeed": 17.1581,
     "maxSpeed": 107.779,
     "turnTime": 13.6679
@@ -3479,26 +3882,106 @@
     ]
   },
   "cutting": {
-    "emtr_break_wing0_l_from": [-0.379616,-0.367498,1.38876],
-    "emtr_break_wing0_l_to": [-0.379616,-0.367498,2.00062],
-    "emtr_break_wing1_l_from": [-0.379616,-0.367498,0.942398],
-    "emtr_break_wing1_l_to": [-0.379616,-0.367498,1.75724],
-    "emtr_break_wing2_l_from": [-0.379616,-0.367498,2.97951],
-    "emtr_break_wing2_l_to": [-0.379616,-0.367498,4.17133],
-    "emtr_break_wing0_r_from": [-0.379616,-0.367498,-1.38876],
-    "emtr_break_wing0_r_to": [-0.379616,-0.367498,-2.00062],
-    "emtr_break_wing1_r_from": [-0.379616,-0.367498,-0.942408],
-    "emtr_break_wing1_r_to": [-0.379616,-0.367498,-1.75724],
-    "emtr_break_wing2_r_from": [-0.379616,-0.367498,-2.9795],
-    "emtr_break_wing2_r_to": [-0.379616,-0.367498,-4.17132],
-    "emtr_break_wing_tail": [-2.76622,0.0,0.0],
-    "emtr_break_wing_biplane": [-0.379616,0.378938,0.0],
+    "emtr_break_wing0_l_from": [
+      -0.379616,
+      -0.367498,
+      1.38876
+    ],
+    "emtr_break_wing0_l_to": [
+      -0.379616,
+      -0.367498,
+      2.00062
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.379616,
+      -0.367498,
+      0.942398
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.379616,
+      -0.367498,
+      1.75724
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.379616,
+      -0.367498,
+      2.97951
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.379616,
+      -0.367498,
+      4.17133
+    ],
+    "emtr_break_wing0_r_from": [
+      -0.379616,
+      -0.367498,
+      -1.38876
+    ],
+    "emtr_break_wing0_r_to": [
+      -0.379616,
+      -0.367498,
+      -2.00062
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.379616,
+      -0.367498,
+      -0.942408
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.379616,
+      -0.367498,
+      -1.75724
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.379616,
+      -0.367498,
+      -2.9795
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.379616,
+      -0.367498,
+      -4.17132
+    ],
+    "emtr_break_wing_tail": [
+      -2.76622,
+      0.0,
+      0.0
+    ],
+    "emtr_break_wing_biplane": [
+      -0.379616,
+      0.378938,
+      0.0
+    ],
     "finCut": false,
-    "emtr_break_stab_l_from": [-4.66231,0.481791,0.443217],
-    "emtr_break_stab_l_to": [-4.66231,0.481791,1.77287],
-    "emtr_break_stab_r_from": [-4.66231,0.481791,-0.443636],
-    "emtr_break_stab_r_to": [-4.66231,0.481791,-1.77454],
-    "emtr_break_fin_from": [-4.709,0.575739,-3.86827e-07],
-    "emtr_break_fin_to": [-4.709,1.08332,-3.86827e-07]
+    "emtr_break_stab_l_from": [
+      -4.66231,
+      0.481791,
+      0.443217
+    ],
+    "emtr_break_stab_l_to": [
+      -4.66231,
+      0.481791,
+      1.77287
+    ],
+    "emtr_break_stab_r_from": [
+      -4.66231,
+      0.481791,
+      -0.443636
+    ],
+    "emtr_break_stab_r_to": [
+      -4.66231,
+      0.481791,
+      -1.77454
+    ],
+    "emtr_break_fin_from": [
+      -4.709,
+      0.575739,
+      -3.86827e-7
+    ],
+    "emtr_break_fin_to": [
+      -4.709,
+      1.08332,
+      -3.86827e-7
+    ]
   }
 }

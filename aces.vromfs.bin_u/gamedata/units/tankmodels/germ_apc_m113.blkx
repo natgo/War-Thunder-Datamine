@@ -4,8 +4,18 @@
   "hasDmg2": false,
   "hasQualityModels": true,
   "allowAnimCharInHangar": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1287,8 +1297,14 @@
         "gunnerDm": "commander_dm"
       },
       "limits": {
-        "yaw": [-120.0,120.0],
-        "pitch": [-10.0,50.0]
+        "yaw": [
+          -120.0,
+          120.0
+        ],
+        "pitch": [
+          -10.0,
+          50.0
+        ]
       }
     },
     "hideNodes": {
@@ -1311,9 +1327,20 @@
       "Empty": 11000.0,
       "Fuel": 160.0,
       "TakeOff": 11160.0,
-      "momentOfInertia": [2.0,2.0,5.0],
-      "CenterOfGravity": [0.0,0.5,0.0],
-      "CenterOfGravityClampY": [0.4,0.6],
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        5.0
+      ],
+      "CenterOfGravity": [
+        0.0,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.4,
+        0.6
+      ],
       "AdvancedMass": true,
       "trackMass": 800.0
     },
@@ -1334,7 +1361,7 @@
       "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 3.7757,
+      "sideGearRatio": 3.77573,
       "gearRatios": {
         "ratio": [
           -4.35,
@@ -1346,35 +1373,100 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.12,-0.11,0.05],
+      "suspensionOffsets": [
+        -0.12,
+        -0.11,
+        0.05
+      ],
       "defaultGearRadius": 0.3,
       "frontBackGearRadius": 0.2,
-      "defaultDampeningForce": [48768.0,48768.0],
+      "defaultDampeningForce": [
+        48768.0,
+        48768.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     },
     "floats": {
       "volume": [
-        [2.1,1.3,1.0,0.8],
-        [2.1,1.3,-1.0,0.8],
-        [1.3,1.3,0.0,0.8],
-        [0.7,1.3,1.0,0.8],
-        [0.7,1.3,-1.0,0.8],
-        [0.0,1.3,1.0,0.8],
-        [0.0,1.3,-1.0,0.8],
-        [-1.0,1.3,0.0,0.8],
-        [-2.1,1.3,1.0,0.8],
-        [-2.1,1.3,-1.0,0.8]
+        [
+          2.1,
+          1.3,
+          1.0,
+          0.8
+        ],
+        [
+          2.1,
+          1.3,
+          -1.0,
+          0.8
+        ],
+        [
+          1.3,
+          1.3,
+          0.0,
+          0.8
+        ],
+        [
+          0.7,
+          1.3,
+          1.0,
+          0.8
+        ],
+        [
+          0.7,
+          1.3,
+          -1.0,
+          0.8
+        ],
+        [
+          0.0,
+          1.3,
+          1.0,
+          0.8
+        ],
+        [
+          0.0,
+          1.3,
+          -1.0,
+          0.8
+        ],
+        [
+          -1.0,
+          1.3,
+          0.0,
+          0.8
+        ],
+        [
+          -2.1,
+          1.3,
+          1.0,
+          0.8
+        ],
+        [
+          -2.1,
+          1.3,
+          -1.0,
+          0.8
+        ]
       ],
       "waterJet": [
         {
           "exhaustNode": "emtr_track_l_back_top",
-          "intake": [-1.25,0.4,0.85],
+          "intake": [
+            -1.25,
+            0.4,
+            0.85
+          ],
           "thrust": 11000.0
         },
         {
           "exhaustNode": "emtr_track_r_back_top",
-          "intake": [-1.25,0.4,-0.85],
+          "intake": [
+            -1.25,
+            0.4,
+            -0.85
+          ],
           "thrust": 11000.0
         }
       ]
@@ -1388,8 +1480,16 @@
       },
       "wheel": {
         "name": "bone_wheel_$1",
-        "limitMin": [-1.0,-1.0,0.0],
-        "limitMax": [1.0,1.0,0.0]
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
@@ -1402,21 +1502,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.08,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 500.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "unitFx": {
     "event": [
@@ -2061,8 +2194,16 @@
     "zoomInFov": 9.217,
     "sightFov": 9.0,
     "sightName": "centauro",
-    "headPos": [0.0,3.5,-7.5],
-    "headPosOnShooting": [-1.5,3.2,-0.25],
+    "headPos": [
+      0.0,
+      3.5,
+      -7.5
+    ],
+    "headPosOnShooting": [
+      -1.5,
+      3.2,
+      -0.25
+    ],
     "detectionHeight": 2.0
   },
   "modifications": {
@@ -2086,19 +2227,28 @@
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "commanderViewIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
           "driverIr": {
-            "resolution": [800,600],
+            "resolution": [
+              800,
+              600
+            ],
             "lightMult": 5.0,
             "ghosting": 0.7,
             "noiseFactor": 0.2
@@ -2122,12 +2272,34 @@
     }
   },
   "defaultDecals": {
-    "decal0Line0": [-2.5,-1.09278e-07,-1.15484e-05,2.8105],
-    "decal0Line1": [1.0932e-07,-2.5,-8.9698e-06,4.31089],
+    "decal0Line0": [
+      -2.5,
+      -1.09278e-7,
+      -0.0000115484,
+      2.8105
+    ],
+    "decal0Line1": [
+      1.0932e-7,
+      -2.5,
+      -8.9698e-6,
+      4.31089
+    ],
     "decal0HaveCP": true,
-    "decal0CP": [1805.62,60.4172,-1098.13],
-    "decal0CPNormDepth": [-4.61936e-06,-3.58792e-06,1.0,-1.28954],
-    "decal0RotScale": [1.5708,0.4],
+    "decal0CP": [
+      1805.62,
+      60.4172,
+      -1098.13
+    ],
+    "decal0CPNormDepth": [
+      -4.61936e-6,
+      -3.58792e-6,
+      1.0,
+      -1.28954
+    ],
+    "decal0RotScale": [
+      1.5708,
+      0.4
+    ],
     "decal0Mirrored": false,
     "decal0Wrap": false,
     "decal0Abs": true,

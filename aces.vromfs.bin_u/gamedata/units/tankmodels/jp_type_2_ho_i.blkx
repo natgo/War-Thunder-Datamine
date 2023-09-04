@@ -3,8 +3,18 @@
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -637,9 +647,20 @@
       "Empty": 15800.0,
       "Fuel": 250.0,
       "TakeOff": 16100.0,
-      "momentOfInertia": [2.5,2.5,6.0],
-      "CenterOfGravity": [0.2,0.5,0.0],
-      "CenterOfGravityClampY": [0.0,0.7],
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.2,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
       "AdvancedMass": true,
       "trackMass": 840.0
     },
@@ -647,7 +668,11 @@
       "animationMultiplier": -0.49,
       "height": 0.05,
       "width": 0.4,
-      "tracksTensionK": [4.0,7.0,1.5],
+      "tracksTensionK": [
+        4.0,
+        7.0,
+        1.5
+      ],
       "trackMesh": "jp_type_97_chi_ha_phys_track_line",
       "trackLen": 0.122,
       "trackCount": 96,
@@ -668,7 +693,7 @@
       "maxBrakeForce": 64000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 5.1407,
+      "sideGearRatio": 5.14068,
       "gearRatios": {
         "ratio": [
           -5.35,
@@ -686,11 +711,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.2,-0.1,0.06],
+      "suspensionOffsets": [
+        -0.2,
+        -0.1,
+        0.06
+      ],
       "defaultGearRadius": 0.28,
       "topGearRadius": 0.133,
       "frontBackGearRadius": 0.32,
-      "defaultDampeningForce": [90000.0,90000.0],
+      "defaultDampeningForce": [
+        90000.0,
+        90000.0
+      ],
       "dampeningRelaxationRatio": 1.0,
       "dampeningCompressionRatio": 0.15
     }
@@ -702,21 +734,45 @@
         "points": {
           "lever": {
             "name": "bone_suspension_$1_$2",
-            "limitMin": [0.0,0.0,0.0],
-            "limitMax": [0.0,0.0,0.0]
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ]
           },
           "suspension_01_01": {
             "name": "bone_suspension_$1_$2_01",
-            "limitMin": [-0.5,-0.5,0.0],
-            "limitMax": [0.5,0.5,0.0]
+            "limitMin": [
+              -0.5,
+              -0.5,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.5,
+              0.0
+            ]
           },
           "wheel_01": {
             "searchChildren": {
               "parent": "suspension_01_01",
               "find": "bone_wheel_",
               "occurence": 1,
-              "limitMin": [-1.0,-1.0,0.0],
-              "limitMax": [1.0,1.0,0.0]
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
             }
           },
           "wheel_02": {
@@ -724,14 +780,30 @@
               "find": "bone_wheel_",
               "parent": "suspension_01_01",
               "occurence": 2,
-              "limitMin": [-1.0,-1.0,0.0],
-              "limitMax": [1.0,1.0,0.0]
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
             }
           },
           "suspension_01_02": {
             "name": "suspension_$1_$2_02",
-            "limitMin": [-0.5,0.0,0.0],
-            "limitMax": [0.5,0.0,0.0]
+            "limitMin": [
+              -0.5,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.0,
+              0.0
+            ]
           }
         },
         "constraints": {
@@ -767,15 +839,31 @@
         "find": "^bone_suspension_tb_(._\\d\\d)$",
         "points": {
           "suspension": {
-            "limitMin": [0.0,0.0,0.0],
-            "limitMax": [0.0,0.0,0.0],
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "name": "bone_suspension_tb_$1"
           },
           "wheel": {
             "searchChildren": {
               "occurence": 1,
-              "limitMin": [-1000.0,-1000.0,0.0],
-              "limitMax": [1000.0,1000.0,0.0],
+              "limitMin": [
+                -1000.0,
+                -1000.0,
+                0.0
+              ],
+              "limitMax": [
+                1000.0,
+                1000.0,
+                0.0
+              ],
               "parent": "suspension",
               "find": "bone_wheel_"
             }
@@ -783,8 +871,16 @@
           "suspension_01_02": {
             "searchChildren": {
               "occurence": 1,
-              "limitMin": [-0.5,0.0,0.0],
-              "limitMax": [-0.5,0.0,0.0],
+              "limitMin": [
+                -0.5,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                -0.5,
+                0.0,
+                0.0
+              ],
               "parent": "suspension",
               "find": "suspension_tb_"
             }
@@ -802,21 +898,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 1000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2109,13 +2238,34 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-15.0,20.0]
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -15.0,
+            20.0
+          ]
         },
         "limitsTable": {
-          "lim1": [-180.0,-135.0,-5.0,20.0],
-          "lim2": [-135.0,135.0,-15.0,20.0],
-          "lim3": [135.0,180.0,-5.0,20.0]
+          "lim1": [
+            -180.0,
+            -135.0,
+            -5.0,
+            20.0
+          ],
+          "lim2": [
+            -135.0,
+            135.0,
+            -15.0,
+            20.0
+          ],
+          "lim3": [
+            135.0,
+            180.0,
+            -5.0,
+            20.0
+          ]
         }
       },
       {
@@ -2152,8 +2302,14 @@
           "gunnerDm": "machine_gunner_dm"
         },
         "limits": {
-          "yaw": [-14.0,14.0],
-          "pitch": [-8.0,8.0]
+          "yaw": [
+            -14.0,
+            14.0
+          ],
+          "pitch": [
+            -8.0,
+            8.0
+          ]
         }
       },
       {
@@ -2188,8 +2344,14 @@
           "gunnerDm": "commander_dm"
         },
         "limits": {
-          "yaw": [-60.0,60.0],
-          "pitch": [-10.0,70.0]
+          "yaw": [
+            -60.0,
+            60.0
+          ],
+          "pitch": [
+            -10.0,
+            70.0
+          ]
         }
       }
     ],
@@ -2251,8 +2413,16 @@
     "zoomInFov": 21.0,
     "sightFov": 20.0,
     "sightName": "default_tank_spg",
-    "headPos": [0.0,4.0,-8.0],
-    "headPosOnShooting": [0.2,3.2,-0.25],
+    "headPos": [
+      0.0,
+      4.0,
+      -8.0
+    ],
+    "headPosOnShooting": [
+      0.2,
+      3.2,
+      -0.25
+    ],
     "detectionHeight": 2.5
   },
   "skin": [

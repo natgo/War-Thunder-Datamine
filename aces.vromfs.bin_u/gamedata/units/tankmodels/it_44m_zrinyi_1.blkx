@@ -4,8 +4,18 @@
   "hasDmg2": false,
   "hasQualityModels": true,
   "useSimpleDeathConditionsAndEffects": false,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
   "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1628,8 +1638,14 @@
           "gunnerDm": "gunner_dm"
         },
         "limits": {
-          "yaw": [-12.0,10.0],
-          "pitch": [-8.0,25.0]
+          "yaw": [
+            -12.0,
+            10.0
+          ],
+          "pitch": [
+            -8.0,
+            25.0
+          ]
         }
       },
       {
@@ -1639,7 +1655,10 @@
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
-        "emitterGenRange": [1,6],
+        "emitterGenRange": [
+          1,
+          6
+        ],
         "emitterGenFmt": "bone_rocket_%02d",
         "maxAdditionalPitch": 0.0,
         "createGunEffects": true,
@@ -1678,13 +1697,25 @@
           "pitchParentScale": 0.9,
           "linkedAnimPart": {
             "verNode": "bone_gun_mount_01",
-            "verLimits": [-10.0,25.0],
-            "verOriginLimits": [-10.0,25.0]
+            "verLimits": [
+              -10.0,
+              25.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              25.0
+            ]
           }
         },
         "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,10.0]
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            10.0
+          ]
         }
       }
     ]
@@ -1700,15 +1731,30 @@
       "Empty": 21500.0,
       "Fuel": 500.0,
       "TakeOff": 22000.0,
-      "momentOfInertia": [1.4,2.5,2.5],
-      "CenterOfGravity": [0.1,0.0,0.0],
-      "CenterOfGravityClampY": [0.0,0.7],
+      "momentOfInertia": [
+        1.4,
+        2.5,
+        2.5
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.0,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
       "AdvancedMass": false,
       "trackMass": 900.0
     },
     "tracks": {
       "animationMultiplier": 0.38,
-      "tracksTensionK": [4.0,10.0,3.0],
+      "tracksTensionK": [
+        4.0,
+        10.0,
+        3.0
+      ],
       "trackMesh": "it_turan_phys_track_line",
       "trackLen": 0.111,
       "trackCount": 103,
@@ -1750,11 +1796,18 @@
       }
     },
     "suspension": {
-      "suspensionOffsets": [-0.1,-0.05,0.14],
+      "suspensionOffsets": [
+        -0.1,
+        -0.05,
+        0.14
+      ],
       "defaultGearRadius": 0.19,
       "frontBackGearRadius": 0.28,
       "topGearRadius": 0.1,
-      "defaultDampeningForce": [110000.0,110000.0],
+      "defaultDampeningForce": [
+        110000.0,
+        110000.0
+      ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_01": 0.18,
@@ -1770,21 +1823,45 @@
         "points": {
           "lever": {
             "name": "bone_suspension_$1",
-            "limitMin": [0.0,0.0,0.0],
-            "limitMax": [0.0,0.0,0.0]
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ]
           },
           "suspension_01_01": {
             "name": "bone_suspension_$1_01",
-            "limitMin": [-0.5,-0.5,0.0],
-            "limitMax": [0.5,0.5,0.0]
+            "limitMin": [
+              -0.5,
+              -0.5,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.5,
+              0.0
+            ]
           },
           "wheel_01": {
             "searchChildren": {
               "parent": "suspension_01_01",
               "find": "bone_wheel_",
               "occurence": 1,
-              "limitMin": [-1.0,-1.0,0.0],
-              "limitMax": [1.0,1.0,0.0]
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
             }
           },
           "wheel_02": {
@@ -1792,8 +1869,16 @@
               "parent": "suspension_01_01",
               "find": "bone_wheel_",
               "occurence": 2,
-              "limitMin": [-1.0,-1.0,0.0],
-              "limitMax": [1.0,1.0,0.0]
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
             }
           }
         },
@@ -1822,15 +1907,31 @@
         "find": "^suspension_(\\w)$",
         "points": {
           "suspension": {
-            "limitMin": [0.0,0.0,0.0],
-            "limitMax": [0.0,0.0,0.0],
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "name": "bone_suspension_$1_03"
           },
           "wheelBack": {
             "searchChildren": {
               "occurence": 1,
-              "limitMin": [-1.0,0.0,0.0],
-              "limitMax": [1.0,0.0,0.0],
+              "limitMin": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                0.0,
+                0.0
+              ],
               "parent": "suspension",
               "find": "wheel_"
             }
@@ -1848,21 +1949,54 @@
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
-    "detonatePortion": [0.3,0.9],
+    "detonatePortion": [
+      0.3,
+      0.9
+    ],
     "explodeHitPower": 1000.0,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.0001,
     "explodeArmorPower": 30.0,
-    "explodeRadius": [1.5,10.0]
+    "explodeRadius": [
+      1.5,
+      10.0
+    ]
   },
   "wreckedParts": {
     "part": {
@@ -2516,8 +2650,16 @@
     "zoomInFov": 14.7,
     "sightFov": 8.0,
     "sightName": "sfl_zf_1a",
-    "headPos": [0.0,3.2,-6.5],
-    "headPosOnShooting": [0.6,2.4,-0.6],
+    "headPos": [
+      0.0,
+      3.2,
+      -6.5
+    ],
+    "headPosOnShooting": [
+      0.6,
+      2.4,
+      -0.6
+    ],
     "bone_turret": "",
     "detectionHeight": 2.16
   },
@@ -2586,8 +2728,14 @@
                 "gunnerDm": "gunner_dm"
               },
               "limits": {
-                "yaw": [-12.0,10.0],
-                "pitch": [-8.0,25.0]
+                "yaw": [
+                  -12.0,
+                  10.0
+                ],
+                "pitch": [
+                  -8.0,
+                  25.0
+                ]
               }
             },
             {
@@ -2597,7 +2745,10 @@
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
-              "emitterGenRange": [1,6],
+              "emitterGenRange": [
+                1,
+                6
+              ],
               "emitterGenFmt": "bone_rocket_%02d",
               "maxAdditionalPitch": 0.0,
               "createGunEffects": true,
@@ -2636,13 +2787,25 @@
                 "pitchParentScale": 0.9,
                 "linkedAnimPart": {
                   "verNode": "bone_gun_mount_01",
-                  "verLimits": [-10.0,25.0],
-                  "verOriginLimits": [-10.0,25.0]
+                  "verLimits": [
+                    -10.0,
+                    25.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    25.0
+                  ]
                 }
               },
               "limits": {
-                "yaw": [0.0,0.0],
-                "pitch": [0.0,10.0]
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  10.0
+                ]
               }
             },
             {
@@ -2653,7 +2816,10 @@
               "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1,5],
+              "emitterGenRange": [
+                1,
+                5
+              ],
               "emitterGenFmt": "emtr_mortar_flame_%02d",
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -2684,8 +2850,14 @@
                 "gun": "bone_grenade"
               },
               "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           ]
@@ -2888,7 +3060,13 @@
     }
   ],
   "dmgAngles": {
-    "hatch_02": [45.0,90.0],
-    "hatch_03": [45.0,90.0]
+    "hatch_02": [
+      45.0,
+      90.0
+    ],
+    "hatch_03": [
+      45.0,
+      90.0
+    ]
   }
 }
