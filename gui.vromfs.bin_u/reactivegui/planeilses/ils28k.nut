@@ -13,6 +13,7 @@ let { IsHighRateOfFire, RocketsSalvo, BombsSalvo, IsAgmLaunchZoneVisible,
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
+let { round } = require("math")
 
 let AtgmMode = Computed(@() SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER)
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
@@ -158,7 +159,7 @@ let function pitch(width, height) {
   }
 }
 
-let SpeedVal = Computed(@() (Speed.value * mpsToKmh).tointeger())
+let SpeedVal = Computed(@() round(Speed.value * mpsToKmh).tointeger())
 let speed = @() {
   watch = SpeedVal
   pos = [pw(20), ph(17)]

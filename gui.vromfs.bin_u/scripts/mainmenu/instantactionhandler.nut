@@ -46,6 +46,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_MP_DOMINATION, USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
 
 gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -104,7 +105,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     this.getGamercardDrawerHandler()
 
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
+    setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
 
     this.initToBattleButton()
     this.setCurrentGameModeName()
@@ -832,7 +833,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function testCurrentUnitForMode(country) {
     if (country == "country_0") {
-      let option = ::get_option(::USEROPT_COUNTRY)
+      let option = ::get_option(USEROPT_COUNTRY)
       foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled) {
           let unit = this.getQueueAircraft(optionCountryName)
@@ -850,7 +851,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   function testCrewsForMode(country) {
     let countryToCheckArr = []
     if (country == "country_0") { //fill countryToCheckArr with countries, allowed by game mode
-      let option = ::get_option(::USEROPT_COUNTRY)
+      let option = ::get_option(USEROPT_COUNTRY)
       foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
           countryToCheckArr.append(optionCountryName)

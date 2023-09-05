@@ -6,6 +6,7 @@ let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let { USEROPT_RANDB_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
 
 let function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
   for (local i = 0; i < clusterOpt.values.len(); ++i)
@@ -31,7 +32,7 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
   alignObj = null
 
   function getSceneTplView() {
-    let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTER)
     let isAutoItemSelected = isAutoSelected(clusterOpt)
     return {
       value = clusterOpt.value
@@ -54,18 +55,18 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onChangeValue(obj) {
-    let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTER)
     let prevVal = clusterOpt.value
     let curVal = obj.getValue()
     if (curVal == prevVal)
       return
 
-    set_option(::USEROPT_RANDB_CLUSTER, curVal, clusterOpt)
+    set_option(USEROPT_RANDB_CLUSTER, curVal, clusterOpt)
     checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt)
   }
 
   function onEventClusterChange(_) {
-    let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTER)
     let listObj = this.scene.findObject("multi_select")
 
     let isAutoItemSelected = isAutoSelected(clusterOpt)

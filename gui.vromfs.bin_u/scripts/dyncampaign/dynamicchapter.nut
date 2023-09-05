@@ -12,6 +12,9 @@ let { get_gui_option } = require("guiOptions")
 let { dynamicInit, dynamicGetList } = require("dynamicMission")
 let { get_cur_game_mode_name } = require("mission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
+  USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::dynamic_req_country_rank <- 1
 
@@ -24,7 +27,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
 
-  wndOptionsMode = ::OPTIONS_MODE_DYNAMIC
+  wndOptionsMode = OPTIONS_MODE_DYNAMIC
   wndGameMode = GM_DYNAMIC
 
   descItems = ["name", "maintext"]
@@ -37,7 +40,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     let headerTitle = this.scene.findObject("chapter_name")
     headerTitle.setValue(loc("mainmenu/btnDynamic"))
     showObjById("btn_back", false, this.scene.findObject("nav-help"))
-    this.yearsArray = ::get_option(::USEROPT_YEAR).values
+    this.yearsArray = ::get_option(USEROPT_YEAR).values
 
     this.scene.findObject("optionlist-container").mislist = "yes"
 
@@ -264,11 +267,11 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
 
   function openMissionOptions() {
     let options =   [
-      [::USEROPT_MP_TEAM_COUNTRY, "combobox"],
-      [::USEROPT_YEAR, "combobox"],
-      [::USEROPT_DYN_FL_ADVANTAGE, "spinner"],
-      [::USEROPT_DYN_WINS_TO_COMPLETE, "spinner"],
-      [::USEROPT_DIFFICULTY, "spinner"]
+      [USEROPT_MP_TEAM_COUNTRY, "combobox"],
+      [USEROPT_YEAR, "combobox"],
+      [USEROPT_DYN_FL_ADVANTAGE, "spinner"],
+      [USEROPT_DYN_WINS_TO_COMPLETE, "spinner"],
+      [USEROPT_DIFFICULTY, "spinner"]
     ]
 
     this.createModalOptions(options, Callback(this.checkCustomDifficulty, this))
@@ -287,7 +290,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
       return
 
     this.checkedNewFlight(function() {
-      if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+      if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
         ::gui_start_cd_options(this.finalApplyCallback, this)
       else
         this.finalApplyCallback()
@@ -297,30 +300,30 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
   function finalApply() {
     let map = ::mission_settings.layout
 
-    local desc = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
+    local desc = ::get_option(USEROPT_MP_TEAM_COUNTRY);
     let team = desc.values[desc.value];
     let settings = DataBlock();
     settings.setInt("playerSide", team)
 
-    //desc = ::get_option(::USEROPT_DYN_ALLIES);
+    //desc = ::get_option(USEROPT_DYN_ALLIES);
     //local allies = desc.values[desc.value];
 
-    //desc = ::get_option(::USEROPT_DYN_ENEMIES);
+    //desc = ::get_option(USEROPT_DYN_ENEMIES);
     //local enemies = desc.values[desc.value];
 
     //settings.setInt("enemyCount", enemies)
     //settings.setInt("allyCount", allies)
 
-    desc = ::get_option(::USEROPT_DYN_FL_ADVANTAGE);
+    desc = ::get_option(USEROPT_DYN_FL_ADVANTAGE);
     settings.setInt("frontlineAdvantage", desc.values[desc.value])
 
-    desc = ::get_option(::USEROPT_DYN_WINS_TO_COMPLETE);
+    desc = ::get_option(USEROPT_DYN_WINS_TO_COMPLETE);
     settings.setInt("needWinsToComplete", desc.values[desc.value]);
 
-    desc = ::get_option(::USEROPT_YEAR);
+    desc = ::get_option(USEROPT_YEAR);
     settings.setStr("year", desc.values[desc.value]);
 
-    desc = ::get_option(::USEROPT_DIFFICULTY)
+    desc = ::get_option(USEROPT_DIFFICULTY)
     ::mission_settings.diff = desc.value
     settings.setInt("difficulty", desc.value);
 

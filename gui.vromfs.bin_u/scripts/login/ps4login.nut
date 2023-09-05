@@ -12,6 +12,7 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { requestPackageUpdateStatus } = require("sony")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -27,7 +28,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     setVersionText(this.scene)
     ::setProjectAwards(this)
     showTitleLogo(this.scene, 128)
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false)
 

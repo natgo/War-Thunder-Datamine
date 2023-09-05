@@ -9,6 +9,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { ActionGroup, hasXInputDevice } = require("controls")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_INVERTY_SUBMARINE } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -128,7 +129,7 @@ return [
   {
     id = "invert_y_submarine"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_SUBMARINE
+    optionType = USEROPT_INVERTY_SUBMARINE
   }
   {
     id = "submarine_mouse_aim_x"

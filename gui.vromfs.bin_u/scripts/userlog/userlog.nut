@@ -11,6 +11,8 @@ let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
 let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
+let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -149,8 +151,8 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function fillTabs() {
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
-    let value = get_gui_option(::USEROPT_USERLOG_FILTER)
+    setGuiOptionsMode(OPTIONS_MODE_SEARCH)
+    let value = get_gui_option(USEROPT_USERLOG_FILTER)
     let curIdx = (value in ::userlog_pages) ? value : 0
 
     let view = {
@@ -400,7 +402,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateTabNewIconWidgets()
     }
     this.initPage(newPage)
-    set_gui_option(::USEROPT_USERLOG_FILTER, value)
+    set_gui_option(USEROPT_USERLOG_FILTER, value)
     ::update_gamercards()
   }
 

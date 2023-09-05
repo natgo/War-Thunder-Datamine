@@ -20,6 +20,8 @@ let { is_replay_playing } = require("replays")
 let { get_game_mode, get_game_type } = require("mission")
 let { get_mission_difficulty_int, get_mp_tbl_teams } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
+} = require("%scripts/options/optionsExtNames.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -124,7 +126,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
       obj.inactiveColor = !isOrderCanBeActivated ? "yes" : "no"
     }
     if (isOrderCanBeActivated
-      && ::get_option_in_mode(::USEROPT_ORDER_AUTO_ACTIVATE, ::OPTIONS_MODE_GAMEPLAY).value)
+      && ::get_option_in_mode(USEROPT_ORDER_AUTO_ACTIVATE, OPTIONS_MODE_GAMEPLAY).value)
         ::g_orders.activateSoonExpiredOrder()
   }
 

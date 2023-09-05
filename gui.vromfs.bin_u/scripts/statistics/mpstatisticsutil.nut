@@ -5,7 +5,7 @@ let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -198,7 +198,7 @@ let function guiStartMPStatScreenFromGame() {
       else if (hdr[j] == "name") {
         local nameText = item
         if (!isEmpty && !isHeader && !table[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         nameText = stripTags(nameText)
 
@@ -444,7 +444,7 @@ let function guiStartMPStatScreenFromGame() {
       else if (hdr == "name") {
         local nameText = item
         if (!table[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
@@ -455,8 +455,8 @@ let function guiStartMPStatScreenFromGame() {
               color = "teamBlueInactiveColor"
           }
 
-          local playerName = colorize(color, platformModule.getPlayerName(table[i].invitedName))
-          nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
+          local playerName = colorize(color, getPlayerName(table[i].invitedName))
+          nameText = $"{getPlayerName(nameText)}... {playerName}"
         }
 
         let objName = objTd.findObject("name-text")

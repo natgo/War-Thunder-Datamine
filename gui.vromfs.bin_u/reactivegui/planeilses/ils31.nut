@@ -11,7 +11,7 @@ let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
-let { floor, ceil } = require("%sqstd/math.nut")
+let { floor, ceil, round } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { IsAgmLaunchZoneVisible, IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y,
@@ -24,7 +24,7 @@ let AirTargetCannonMode = Computed(@() AirCannonMode.value && RadarTargetValid.v
 let AirNoTargetCannonMode = Computed(@() AirCannonMode.value && !AirTargetCannonMode.value)
 let RadarDistanceMax = Computed(@() AirTargetCannonMode.value ? 5.0 : DistanceMax.value)
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKmh).tointeger())
 let speed = @() {
   watch = [SpeedValue, IlsColor]
   size = SIZE_TO_CONTENT

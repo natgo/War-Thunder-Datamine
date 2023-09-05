@@ -29,6 +29,7 @@
   "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
+  "shipsDisableDeadCoverParts": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 60.0,
@@ -1401,28 +1402,28 @@
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
       "cover_01_dm": {
-        "hp": 18800.0
+        "hp": 9400.0
       },
       "cover_02_dm": {
-        "hp": 18800.0
+        "hp": 9400.0
       },
       "cover_03_dm": {
-        "hp": 18800.0
+        "hp": 9400.0
       },
       "cover_04_dm": {
-        "hp": 15000.0
+        "hp": 7500.0
       },
       "cover_05_dm": {
-        "hp": 18800.0
+        "hp": 9400.0
       },
       "cover_06_dm": {
-        "hp": 15000.0
+        "hp": 7500.0
       },
       "cover_07_dm": {
-        "hp": 17027.0
+        "hp": 8513.0
       },
       "cover_08_dm": {
-        "hp": 18800.0
+        "hp": 9400.0
       }
     },
     "superstructures": {
@@ -10560,7 +10561,11 @@
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.19
+    "sideCenterOfMassOffsetPercent": 0.19,
+    "minCaliberToBreach": 0.12,
+    "minExplRadiusToBreach": 0.2,
+    "deadCoverCounterfloodingRel": 0.5,
+    "counterFloodingWaterMassVel": 70000.0
   },
   "shipCover": {
     "cover": [
@@ -10895,11 +10900,11 @@
       "descLocId": "ship_flag_germany_06/desc",
       "texture": "flag_germany_06_c*"
     },
-    "ship_flag_ireland_modern": {
+    "ship_flag_ireland_01": {
       "category": "national",
-      "unlockId": "ship_flag_ireland_modern",
-      "nameLocId": "ship_flag_ireland_modern/name",
-      "descLocId": "ship_flag_ireland_modern/desc",
+      "unlockId": "ship_flag_ireland_01",
+      "nameLocId": "ship_flag_ireland_01/name",
+      "descLocId": "ship_flag_ireland_01/desc",
       "texture": "flag_ireland_01_c*"
     },
     "ship_flag_uk_01": {
@@ -10916,11 +10921,11 @@
       "descLocId": "ship_flag_uk_02/desc",
       "texture": "flag_uk_02_c*"
     },
-    "ship_flag_flag_egypt_01": {
+    "ship_flag_egypt_01": {
       "category": "naval",
-      "unlockId": "ship_flag_flag_egypt_01",
-      "nameLocId": "ship_flag_flag_egypt_01/name",
-      "descLocId": "ship_flag_flag_egypt_01/desc",
+      "unlockId": "ship_flag_egypt_01",
+      "nameLocId": "ship_flag_egypt_01/name",
+      "descLocId": "ship_flag_egypt_01/desc",
       "texture": "flag_egypt_01_c*"
     },
     "ship_flag_japan_01": {

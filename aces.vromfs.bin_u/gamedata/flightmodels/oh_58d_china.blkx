@@ -796,8 +796,8 @@
     "zoomOutFov": 37.49,
     "zoomInFov": 18.49,
     "sightFov": 5.5,
-    "sightOutFov": 37.4944,
-    "sightInFov": 9.2171,
+    "sightOutFov": 8.0,
+    "sightInFov": 2.0,
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.15,
@@ -1929,7 +1929,7 @@
   "gunnerOpticFps": {
     "pos": [
       0.0,
-      1.6,
+      1.25,
       0.0
     ],
     "head": "optic1_turret",
@@ -2254,6 +2254,7 @@
           {
             "iconType": "gau_19_new",
             "name": "gau_19",
+            "reqModification": "us_gau_19",
             "ShowNodes": {
               "node": [
                 "gun2",
@@ -2479,14 +2480,19 @@
         }
       }
     },
+    "us_gau_19": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "GAU_19_ground_targets": {},
     "GAU_19_belt_pack": {
+      "reqModification": "us_gau_19",
       "tier": 2,
       "modClass": "weapon"
     },
     "GAU_19_new_gun": {
-      "prevModification": "GAU_19_belt_pack",
-      "tier": 4,
+      "reqModification": "GAU_19_belt_pack",
+      "tier": 3,
       "modClass": "weapon"
     },
     "us_apkws": {

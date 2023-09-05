@@ -4,8 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format, split_by_chars } = require("string")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,7 +14,7 @@ let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { getPlayerName, isPlatformSony, isPlatformXboxOne, isPlatformPC
+let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -38,6 +36,7 @@ let { toUpper } = require("%sqstd/string.nut")
 let { getGameModesByEconomicName, getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"

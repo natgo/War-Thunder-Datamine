@@ -473,8 +473,9 @@ if (platform.isPlatformXboxOne) {
   require("%scripts/xbox/onLoad.nut")
 }
 
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 ::cross_call_api.platform <- {
-  getPlayerName = platform.getPlayerName
+  getPlayerName
 }
 
 //------- ^^^ files before login ^^^ ----------

@@ -97,6 +97,16 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     canFindOnMarketplace = !canConsumeCoupon
   }
 
+  let markup = params?.additionalDescriptionMarkup
+  let dObj = showObjById("additional_description", markup != null, obj)
+  if (markup != null)
+    dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
+
+  let { hideUnlockInfo = false } = params
+  showObjById("conditions", !hideUnlockInfo, obj)
+  if (hideUnlockInfo)
+    return
+
   //fill unlock info
   let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
   let mainCond = canShowUnlockDesc ? getUnlockMainCondDescByCfg(config) : ""
@@ -146,11 +156,6 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     : hasDecor ? "#ui/gameuiskin#favorite"
     : "#ui/gameuiskin#locked.svg"
   cObj.findObject("state")["background-image"] = iconName
-
-  let markup = params?.additionalDescriptionMarkup
-  let dObj = showObjById("additional_description", markup != null, obj)
-  if (markup != null)
-    dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
 }
 
 return {

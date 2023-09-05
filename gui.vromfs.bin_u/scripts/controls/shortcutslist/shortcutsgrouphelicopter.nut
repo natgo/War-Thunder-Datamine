@@ -17,6 +17,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
+  USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER,
+  USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,
+  USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
+} = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -55,27 +60,27 @@ return [
   {
     id = "mouse_usage_helicopter"
     type = CONTROL_TYPE.SPINNER
-    optionType = ::USEROPT_MOUSE_USAGE
+    optionType = USEROPT_MOUSE_USAGE
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "mouse_usage_no_aim_helicopter"
     type = CONTROL_TYPE.SPINNER
     showFunc = @() hasFeature("SimulatorDifficulty") && (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
-    optionType = ::USEROPT_MOUSE_USAGE_NO_AIM
+    optionType = USEROPT_MOUSE_USAGE_NO_AIM
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "instructor_enabled_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INSTRUCTOR_ENABLED
+    optionType = USEROPT_INSTRUCTOR_ENABLED
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "autotrim_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_AUTOTRIM
+    optionType = USEROPT_AUTOTRIM
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
@@ -354,12 +359,12 @@ return [
   }
   {
     id = "atgm_aim_sens_helicopter"
-    optionType = ::USEROPT_ATGM_AIM_SENS_HELICOPTER
+    optionType = USEROPT_ATGM_AIM_SENS_HELICOPTER
     type = CONTROL_TYPE.SLIDER
   }
   {
     id = "atgm_aim_zoom_sens_helicopter"
-    optionType = ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER
+    optionType = USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER
     type = CONTROL_TYPE.SLIDER
   }
   {
@@ -459,12 +464,12 @@ return [
   {
     id = "invert_y_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_HELICOPTER
+    optionType = USEROPT_INVERTY_HELICOPTER
   }
   {
     id = "invert_y_helicopter_gunner"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_HELICOPTER_GUNNER
+    optionType = USEROPT_INVERTY_HELICOPTER_GUNNER
   }
   {
     id = "helicopter_mouse_aim_x"
@@ -517,25 +522,25 @@ return [
     id = "instructor_ground_avoidance_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
-    optionType = ::USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
+    optionType = USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
   }
   {
     id = "instructor_gear_control_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
-    optionType = ::USEROPT_INSTRUCTOR_GEAR_CONTROL
+    optionType = USEROPT_INSTRUCTOR_GEAR_CONTROL
   }
   {
     id = "instructor_engine_control_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
-    optionType = ::USEROPT_INSTRUCTOR_ENGINE_CONTROL
+    optionType = USEROPT_INSTRUCTOR_ENGINE_CONTROL
   }
   {
     id = "instructor_simple_joy_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [ globalEnv.EM_INSTRUCTOR ]
-    optionType = ::USEROPT_INSTRUCTOR_SIMPLE_JOY
+    optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
 //-------------------------------------------------------
   {

@@ -14,6 +14,10 @@ let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
+  USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
+  USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
+} = require("%scripts/options/optionsExtNames.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW
@@ -22,21 +26,21 @@ global enum SEL_UNIT_BUTTON {
 }
 
 let defaultFilterOptions = [
-  ::USEROPT_BIT_CHOOSE_UNITS_TYPE,
-  ::USEROPT_BIT_CHOOSE_UNITS_RANK,
-  ::USEROPT_BIT_CHOOSE_UNITS_OTHER,
-  ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
-  ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
+  USEROPT_BIT_CHOOSE_UNITS_TYPE,
+  USEROPT_BIT_CHOOSE_UNITS_RANK,
+  USEROPT_BIT_CHOOSE_UNITS_OTHER,
+  USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
+  USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 ]
 
 let getOptionsMaskForUnit = {
-  [::USEROPT_BIT_CHOOSE_UNITS_TYPE] = @(unit, _crew, _config) 1 << unit.esUnitType,
-  [::USEROPT_BIT_CHOOSE_UNITS_RANK] = @(unit, _crew, _config) 1 << (unit.rank - 1),
-  [::USEROPT_BIT_CHOOSE_UNITS_OTHER] =
+  [USEROPT_BIT_CHOOSE_UNITS_TYPE] = @(unit, _crew, _config) 1 << unit.esUnitType,
+  [USEROPT_BIT_CHOOSE_UNITS_RANK] = @(unit, _crew, _config) 1 << (unit.rank - 1),
+  [USEROPT_BIT_CHOOSE_UNITS_OTHER] =
     @(unit, crew, _config) (unit.name in (crew?.trainedSpec ?? {}) ? 0 : unit.trainCost) ? 2 : 1,
-  [::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE] =
+  [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE] =
     @(unit, _crew, config) ::is_unit_enabled_for_slotbar(unit, config) ? 2 : 1,
-  [::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST] =
+  [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST] =
     @(unit, _crew, config) ::isUnitInCustomList(unit, config) ? 2 : 1
 }
 
@@ -501,8 +505,8 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateOptionShowUnsupportedForCustomList() {
-    let modeOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
-    let customOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
+    let modeOption = ::get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
+    let customOption = ::get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
 
     let customOptionObj = this.scene.findObject(customOption.id)
     if (!checkObj(customOptionObj))
@@ -510,7 +514,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
 
     let isModeOptionChecked = modeOption.value & 1
     if (!isModeOptionChecked) {
-      let idx = this.filterOptionsList.indexof(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
+      let idx = this.filterOptionsList.indexof(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
       let maskOptions = this.curOptionsMasks?[idx]
       if (maskOptions)
         customOptionObj.setValue(modeOption.value - (modeOption.value & (~maskOptions)))

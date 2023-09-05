@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")
@@ -25,6 +23,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -209,7 +208,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.gm == GM_TEST_FLIGHT) {
       m_aircraft = ::get_test_flight_unit_info()?.unit.name
-      m_weapon = get_gui_option(::USEROPT_WEAPONS)
+      m_weapon = get_gui_option(USEROPT_WEAPONS)
     }
     if ((m_aircraft != "") && !(this.gt & GT_VERSUS))
       res.append(loc("options/aircraft") + loc("ui/colon") +

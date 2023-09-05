@@ -16,7 +16,7 @@ let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/plane
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
   watch = [IlsColor, SpeedValue]
   size = SIZE_TO_CONTENT

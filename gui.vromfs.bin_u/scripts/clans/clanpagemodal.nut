@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { getPlayerName, isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
+let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
 } = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
@@ -22,6 +22,7 @@ let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboar
 let { cutPrefix } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }

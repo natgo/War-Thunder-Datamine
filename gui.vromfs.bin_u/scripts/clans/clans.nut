@@ -2,8 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -15,11 +13,12 @@ let time = require("%scripts/time.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
-let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { EPLX_CLAN } = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"

@@ -10,6 +10,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { is_running } = require("steam")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -19,7 +20,7 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
     setVersionText()
     ::setProjectAwards(this)
     showTitleLogo(this.scene, 128)
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let lp = ::get_login_pass()
     this.defaultSaveLoginFlagVal = lp.login != ""

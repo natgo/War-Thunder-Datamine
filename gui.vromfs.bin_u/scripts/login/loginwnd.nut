@@ -26,6 +26,7 @@ let { validateEmail } = require("%sqstd/string.nut")
 let { subscribe } = require("eventbus")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -78,7 +79,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     showTitleLogo(this.scene, 128)
     this.initLanguageSwitch()
     this.checkShardingCircuits()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     ::enable_keyboard_layout_change_tracking(true)
     ::enable_keyboard_locks_change_tracking(true)

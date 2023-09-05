@@ -13,9 +13,10 @@ let { DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceSc
   HasAzimuthScale, IsCScopeVisible } = require("%rGui/radarState.nut")
 let { mode } = require("%rGui/radarComponent.nut")
 let { cvt } = require("dagor.math")
+let { round } = require("math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
-let ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
+let ASPSpeedValue = Computed(@() round(Speed.value * mpsToKmh).tointeger())
 let ASPSpeed = @() {
   watch = [ASPSpeedValue, IlsColor]
   size = SIZE_TO_CONTENT

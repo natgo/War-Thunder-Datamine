@@ -1,17 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
   hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -111,10 +109,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     checkRoomId  = function(roomId) { return !startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) { //roomId == playerName
-      local res = ::g_contacts.getPlayerFullName(
-        platformModule.getPlayerName(roomId),
-        ::clanUserTable?[roomId] ?? ""
-      )
+      local res = ::g_contacts.getPlayerFullName(getPlayerName(roomId), ::clanUserTable?[roomId] ?? "")
       if (isColored)
         res = colorize(::g_chat.getSenderColor(roomId), res)
       return res

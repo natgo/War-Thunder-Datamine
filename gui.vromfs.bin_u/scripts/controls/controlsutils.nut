@@ -12,6 +12,7 @@ let { subscribe } = require("eventbus")
 let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM } = require("%scripts/options/optionsExtNames.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -44,8 +45,8 @@ let presetsNamesByTypes =
   }
 
 let function getMouseUsageMask() {
-  let usage = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE)
-  let usageNoAim = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE_NO_AIM)
+  let usage = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
+  let usageNoAim = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
   return (usage ?? 0) | (usageNoAim ?? 0)
 }
 

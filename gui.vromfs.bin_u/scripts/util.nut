@@ -19,7 +19,7 @@ let { json_to_string } = require("json")
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
-let { isPlatformSony, getPlayerName } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -35,6 +35,11 @@ let { stripTags, cutPrefix, isStringFloat } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
+  OPTIONS_MODE_SINGLE_MISSION, OPTIONS_MODE_DYNAMIC, OPTIONS_MODE_MP_DOMINATION,
+  OPTIONS_MODE_MP_SKIRMISH
+} = require("%scripts/options/optionsExtNames.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -207,17 +212,17 @@ let function on_lost_psn() {
 
 ::get_options_mode <- function get_options_mode(game_mode) {
   switch (game_mode) {
-    case GM_CAMPAIGN: return ::OPTIONS_MODE_CAMPAIGN;
-    case GM_TRAINING: return ::OPTIONS_MODE_TRAINING;
-    case GM_TEST_FLIGHT: return ::OPTIONS_MODE_TRAINING;
-    case GM_SINGLE_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
-    case GM_USER_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
-    case GM_DYNAMIC: return ::OPTIONS_MODE_DYNAMIC;
-    case GM_BUILDER: return ::OPTIONS_MODE_DYNAMIC;
-    case GM_DOMINATION: return ::OPTIONS_MODE_MP_DOMINATION;
-    case GM_SKIRMISH: return ::OPTIONS_MODE_MP_SKIRMISH;
+    case GM_CAMPAIGN: return OPTIONS_MODE_CAMPAIGN;
+    case GM_TRAINING: return OPTIONS_MODE_TRAINING;
+    case GM_TEST_FLIGHT: return OPTIONS_MODE_TRAINING;
+    case GM_SINGLE_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
+    case GM_USER_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
+    case GM_DYNAMIC: return OPTIONS_MODE_DYNAMIC;
+    case GM_BUILDER: return OPTIONS_MODE_DYNAMIC;
+    case GM_DOMINATION: return OPTIONS_MODE_MP_DOMINATION;
+    case GM_SKIRMISH: return OPTIONS_MODE_MP_SKIRMISH;
   }
-  return ::OPTIONS_MODE_GAMEPLAY
+  return OPTIONS_MODE_GAMEPLAY
 }
 
 ::preload_ingame_scenes <- function preload_ingame_scenes() {

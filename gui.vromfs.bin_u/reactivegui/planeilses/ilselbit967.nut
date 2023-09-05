@@ -9,7 +9,7 @@ let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let { Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
-let { floor } = require("%sqstd/math.nut")
+let { floor, round } = require("%sqstd/math.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { sin, cos, abs } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
@@ -73,7 +73,7 @@ let function speed(height, generateFunc) {
   }
 }
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let function speedWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]

@@ -589,8 +589,8 @@ let cfg = {
       { shortcut = [ "ID_SHIP_WEAPON_PRIMARY" ],    enable = hasWeaponPrimary    }
       { shortcut = [ "ID_SHIP_WEAPON_SECONDARY" ],  enable = hasWeaponSecondary  }
       { shortcut = [ "ID_SHIP_WEAPON_MACHINEGUN" ], enable = hasWeaponMachinegun }
-      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET off
-      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET on
+      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET off
+      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET on
       null
       null
       null

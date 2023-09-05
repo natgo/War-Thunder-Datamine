@@ -7,6 +7,11 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
+  USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY,
+  USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
+  USEROPT_HEADTRACK_SCALE_Y
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console() {
   if (!hasFeature("ControlsAdvancedSettings"))
@@ -27,16 +32,16 @@ gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
   function initScreen() {
     setBreadcrumbGoBackParams(this)
     this.options = [
-      [::USEROPT_INVERTY, "spinner"],
-      [::USEROPT_INVERTY_TANK, "spinner"],
-      [::USEROPT_INVERTCAMERAY, "spinner"],
-      [::USEROPT_MOUSE_AIM_SENSE, "slider"],
-      [::USEROPT_ZOOM_SENSE, "slider"],
-      [::USEROPT_GUNNER_INVERTY, "spinner"],
-      [::USEROPT_GUNNER_VIEW_SENSE, "slider"],
-      [::USEROPT_HEADTRACK_ENABLE, "spinner", ::ps4_headtrack_is_attached()],
-      [::USEROPT_HEADTRACK_SCALE_X, "slider", ::ps4_headtrack_is_attached()],
-      [::USEROPT_HEADTRACK_SCALE_Y, "slider", ::ps4_headtrack_is_attached()]
+      [USEROPT_INVERTY, "spinner"],
+      [USEROPT_INVERTY_TANK, "spinner"],
+      [USEROPT_INVERTCAMERAY, "spinner"],
+      [USEROPT_MOUSE_AIM_SENSE, "slider"],
+      [USEROPT_ZOOM_SENSE, "slider"],
+      [USEROPT_GUNNER_INVERTY, "spinner"],
+      [USEROPT_GUNNER_VIEW_SENSE, "slider"],
+      [USEROPT_HEADTRACK_ENABLE, "spinner", ::ps4_headtrack_is_attached()],
+      [USEROPT_HEADTRACK_SCALE_X, "slider", ::ps4_headtrack_is_attached()],
+      [USEROPT_HEADTRACK_SCALE_Y, "slider", ::ps4_headtrack_is_attached()]
     ]
 
     let guiScene = ::get_gui_scene()
@@ -74,7 +79,7 @@ gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
 
   function checkHeadtrackRows() {
     let show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
-    foreach (o in [::USEROPT_HEADTRACK_SCALE_X, ::USEROPT_HEADTRACK_SCALE_Y])
+    foreach (o in [USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y])
       this.showOptionRow(::get_option(o), show)
     this.showSceneBtn("btn_calibrate", show)
   }

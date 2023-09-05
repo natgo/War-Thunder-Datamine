@@ -3507,6 +3507,36 @@
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_ger"
     },
+    "tank_bulldozer_blade": {
+      "modClass": "firepower",
+      "tier": 2,
+      "requiresModelReload": true,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 0.99,
+        "diggingAvailable": true,
+        "diggingActivateTime": 3.0,
+        "diggingLevel": 0.25,
+        "digMaxSpeed": 7.0,
+        "digMaxRevSpeed": -12.0,
+        "hideNodes": {}
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "ex_armor_body_01",
+            "ex_armor_body_02",
+            "ex_armor_body_03",
+            "ex_lantern_l_02",
+            "ex_lantern_r_02",
+            "roll_01",
+            "roll_02",
+            "roll_03",
+            "roll_04"
+          ]
+        }
+      }
+    },
     "120mm_DM_HE_FS": {},
     "120mm_NATO_APDS_FS": {},
     "120mm_DM_APDS_FS": {},
@@ -3936,6 +3966,7 @@
     "night_vision_system": {
       "tier": 3,
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
           "gunnerThermal": {

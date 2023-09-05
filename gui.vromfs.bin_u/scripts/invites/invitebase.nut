@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { get_charserver_time_sec } = require("chard")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
+} = require("%scripts/options/optionsExtNames.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::g_invites_classes <- {}
 
@@ -78,7 +79,7 @@ let { get_charserver_time_sec } = require("chard")
   }
 
   function getInviterName() {
-    return platformModule.getPlayerName(this.inviterName)
+    return getPlayerName(this.inviterName)
   }
 
   function isVisible() {
@@ -153,7 +154,7 @@ let { get_charserver_time_sec } = require("chard")
   function showInvitePopup() {
     if (!this.isVisible()
         || isInReloading()
-        || ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY) == false
+        || ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
       )
       return
     local msg = this.getPopupText()

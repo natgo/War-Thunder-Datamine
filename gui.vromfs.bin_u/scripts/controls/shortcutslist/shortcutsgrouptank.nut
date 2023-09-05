@@ -10,6 +10,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK
+} = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -49,7 +51,7 @@ return [
   {
     id = "gm_automatic_transmission"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_AUTOMATIC_TRANSMISSION_TANK
+    optionType = USEROPT_AUTOMATIC_TRANSMISSION_TANK
     onChangeValue = "doControlsGroupChangeDelayed"
   }
   {
@@ -95,7 +97,7 @@ return [
   {
     id = "ID_TRANS_GEAR_NEUTRAL"
     checkAssign = false
-    showFunc = @() checkOptionValue(::USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
+    showFunc = @() checkOptionValue(USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
   }
   {
     id = "ID_ENABLE_GM_DIRECTION_DRIVING"
@@ -321,7 +323,7 @@ return [
   {
     id = "invert_y_tank"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_TANK
+    optionType = USEROPT_INVERTY_TANK
   }
   {
     id = "gm_mouse_aim_x"

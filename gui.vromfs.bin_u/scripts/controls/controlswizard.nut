@@ -22,11 +22,13 @@ let { joystickSetCurSettings, setShortcutsAndSaveControls
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
+  USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"
     type = CONTROL_TYPE.LISTBOX
-    optionType = ::USEROPT_HELPERS_MODE
+    optionType = USEROPT_HELPERS_MODE
     isFilterObj = true
     skipAllBefore = [null, "msg/use_mouse_for_control", "msg/use_mouse_for_control", "msg/use_mouse_for_control"]
   }
@@ -133,7 +135,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
     }
 
     { id = "viewtype", type = CONTROL_TYPE.MSG_BOX
-      optionType = ::USEROPT_VIEWTYPE
+      optionType = USEROPT_VIEWTYPE
     }
     "ID_CAMERA_DEFAULT"
     { id = "camx", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", relSens = 0.75
@@ -247,7 +249,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 ::tank_controls_wizard_config <- [
   { id = "helpers_mode"
     type = CONTROL_TYPE.LISTBOX
-    optionType = ::USEROPT_HELPERS_MODE_GM
+    optionType = USEROPT_HELPERS_MODE_GM
     isFilterObj = true
   }
   { id = "ID_ENGINE_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
@@ -1441,7 +1443,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     this.showSceneBtn("btn_prevItem", false)
 
     let optionItems = [
-      [::USEROPT_CONTROLS_PRESET, "spinner"],
+      [USEROPT_CONTROLS_PRESET, "spinner"],
     ]
     let container = ::create_options_container("preset_options", optionItems, false, 0.5, true, null, false)
     this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
@@ -1450,7 +1452,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
   }
 
   function getOptionPresetValue() {
-    return ::get_option(::USEROPT_CONTROLS_PRESET).value
+    return ::get_option(USEROPT_CONTROLS_PRESET).value
   }
 
   function onSelectPreset(obj) {
@@ -1458,7 +1460,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
   }
 
   function processPresetValue(presetValue) {
-    let opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
+    let opdata = ::get_option(USEROPT_CONTROLS_PRESET)
     if (presetValue in opdata.values) {
       this.presetSelected = opdata.values[presetValue]
       this.showSceneBtn("btn_controlsWizard", this.presetSelected == "")

@@ -25,6 +25,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
 
 ::g_hud_action_bar_type <- {
   types = []
@@ -550,7 +551,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_SHIP_CURRENT_TRIGGER_GROUP
     _name = "ship_current_trigger_group"
     getShortcut = @(_actionItem, _hudUnitType = null)
-      ::get_option(::USEROPT_WHEEL_CONTROL_SHIP)?.value
+      ::get_option(USEROPT_WHEEL_CONTROL_SHIP)?.value
         && (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : null

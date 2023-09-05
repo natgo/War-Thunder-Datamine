@@ -26,6 +26,8 @@ let { isOptionReqRestartChanged, setOptionReqRestartValue
 } = require("%scripts/options/optionsUtils.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_LEFT_BULLETS_WARNING,
+  USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -45,7 +47,7 @@ let function getOptionsWndOpenParams(group) {
       ? ::is_multiplayer() ? null : loc("flightmenu/title")
       : loc("mainmenu/btnGameplay")
     optGroups = options
-    wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
+    wndOptionsMode = OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
     function cancelFunc() {
       ::set_option_gamma(::get_option_gamma(), false)
@@ -339,7 +341,7 @@ gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
       data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
 
     this.scene.findObject("ptt_shortcut").setValue(data)
-    showObjById("ptt_buttons_block", ::get_option(::USEROPT_PTT).value, this.scene)
+    showObjById("ptt_buttons_block", ::get_option(USEROPT_PTT).value, this.scene)
 
     let echoButton = this.scene.findObject("joinEchoButton");
     if (echoButton)
@@ -567,8 +569,8 @@ gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function resetNotifications() {
-    foreach (opt in [::USEROPT_SKIP_LEFT_BULLETS_WARNING,
-                     ::USEROPT_SKIP_WEAPON_WARNING
+    foreach (opt in [USEROPT_SKIP_LEFT_BULLETS_WARNING,
+                     USEROPT_SKIP_WEAPON_WARNING
                     ])
       set_gui_option(opt, false)
 

@@ -7,6 +7,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let { USEROPT_FONTS_CSS } = require("%scripts/options/optionsExtNames.nut")
 
 local wasOpened = false
 
@@ -30,7 +31,7 @@ gui_handlers.FontChoiceWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getSceneTplView() {
-    this.option = ::get_option(::USEROPT_FONTS_CSS)
+    this.option = ::get_option(USEROPT_FONTS_CSS)
     return {
       options = ::create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
     }
@@ -47,7 +48,7 @@ gui_handlers.FontChoiceWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     if (newValue == this.option.value)
       return
 
-    set_option(::USEROPT_FONTS_CSS, newValue, this.option)
+    set_option(USEROPT_FONTS_CSS, newValue, this.option)
     this.guiScene.performDelayed(this, @() handlersManager.getActiveBaseHandler().fullReloadScene())
   }
 

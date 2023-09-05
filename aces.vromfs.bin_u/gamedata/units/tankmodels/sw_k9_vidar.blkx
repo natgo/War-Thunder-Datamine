@@ -1782,10 +1782,7 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": [
-        "tank_gunner",
-        "commander"
-      ]
+      "role": "commander"
     }
   },
   "gunConvergence": {
@@ -2740,7 +2737,7 @@
       "shells": [
         {
           "firstStage": true,
-          "ammo_turret_03_dm": {
+          "ammo_turret_42_dm": {
             "count": 1
           },
           "ammo_turret_01_dm": {
@@ -2752,6 +2749,9 @@
         },
         {
           "reloadTimeMult": 1.65,
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
           "ammo_turret_04_dm": {
             "count": 1
           },
@@ -2864,9 +2864,6 @@
             "count": 1
           },
           "ammo_turret_41_dm": {
-            "count": 1
-          },
-          "ammo_turret_42_dm": {
             "count": 1
           },
           "ammo_turret_43_dm": {
@@ -3078,6 +3075,7 @@
     "night_vision_system": {
       "tier": 3,
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
           "gunnerThermal": {

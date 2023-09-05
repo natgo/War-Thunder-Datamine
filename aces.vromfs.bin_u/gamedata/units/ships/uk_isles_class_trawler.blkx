@@ -40,6 +40,7 @@
     0.0
   ],
   "rearmSmokeTimeOnField": 180.0,
+  "shipsDisableDeadCoverParts": true,
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "hideNodesInDmg": {
@@ -862,16 +863,16 @@
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
       "cover_01_dm": {
-        "hp": 8500.0
+        "hp": 4300.0
       },
       "cover_02_dm": {
-        "hp": 8500.0
+        "hp": 4300.0
       },
       "cover_03_dm": {
-        "hp": 10600.0
+        "hp": 5400.0
       },
       "cover_04_dm": {
-        "hp": 8500.0
+        "hp": 4300.0
       }
     },
     "superstructures": {
@@ -3800,7 +3801,11 @@
     "criticalHeelingAnglePercent": 0.65,
     "maxCriticalHeelingTime": 2.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18
+    "sideCenterOfMassOffsetPercent": 0.18,
+    "minCaliberToBreach": 0.07,
+    "minExplRadiusToBreach": 0.15,
+    "deadCoverCounterfloodingRel": 0.5,
+    "counterFloodingWaterMassVel": 30000.0
   },
   "shipCover": {
     "cover": [
@@ -4041,11 +4046,11 @@
       "descLocId": "ship_flag_germany_06/desc",
       "texture": "flag_germany_06_c*"
     },
-    "ship_flag_ireland_modern": {
+    "ship_flag_ireland_01": {
       "category": "national",
-      "unlockId": "ship_flag_ireland_modern",
-      "nameLocId": "ship_flag_ireland_modern/name",
-      "descLocId": "ship_flag_ireland_modern/desc",
+      "unlockId": "ship_flag_ireland_01",
+      "nameLocId": "ship_flag_ireland_01/name",
+      "descLocId": "ship_flag_ireland_01/desc",
       "texture": "flag_ireland_01_c*"
     },
     "ship_flag_uk_01": {
@@ -4062,11 +4067,11 @@
       "descLocId": "ship_flag_uk_02/desc",
       "texture": "flag_uk_02_c*"
     },
-    "ship_flag_flag_egypt_01": {
+    "ship_flag_egypt_01": {
       "category": "naval",
-      "unlockId": "ship_flag_flag_egypt_01",
-      "nameLocId": "ship_flag_flag_egypt_01/name",
-      "descLocId": "ship_flag_flag_egypt_01/desc",
+      "unlockId": "ship_flag_egypt_01",
+      "nameLocId": "ship_flag_egypt_01/name",
+      "descLocId": "ship_flag_egypt_01/desc",
       "texture": "flag_egypt_01_c*"
     },
     "ship_flag_japan_01": {

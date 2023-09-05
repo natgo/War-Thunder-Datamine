@@ -7,13 +7,13 @@ let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement,
 let { split_by_chars } = require("string")
 let { get_game_version_str } = require("app")
 let time = require("%scripts/time.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
 let { isPollVoted } = require("%scripts/web/webpoll.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS
 } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -116,7 +116,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     }
   }
 
-  let localizedTbl = { name = platformModule.getPlayerName(::my_user_name), uid = ::my_user_id_str }
+  let localizedTbl = { name = getPlayerName(::my_user_name), uid = ::my_user_id_str }
   let popupTable = {
     name = ""
     popupImage = ""

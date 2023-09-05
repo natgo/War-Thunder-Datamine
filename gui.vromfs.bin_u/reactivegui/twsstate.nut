@@ -9,32 +9,35 @@ let rwrSetting = require("rwrSetting.nut")
 
 let warningSystemState = {
   CurrentTime = Watched(0.0),
+
+  IsTwsActivated = Watched(false),
+  CollapsedIcon = Watched(false), //for designer switch from Icon (true) to collapsed Tws
   LastTargetAge = Watched(1.0),
 
   IsMlwsLwsHudVisible = Watched(false),
+  MlwsLwsSignalHoldTimeInv = Watched(0.0),
 
   mlwsTargets = [],
   mlwsTargetsTriggers = Watched(0),
-  MlwsLwsSignalHoldTimeInv = Watched(0.0),
+  mlwsTargetsAgeMin = Watched(1000.0),
 
   lwsTargets = [],
-  lwsTargetsTriggers = Watched(0)
+  lwsTargetsTriggers = Watched(0),
+  lwsTargetsAgeMin = Watched(1000.0),
 
   rwrTargets = [],
   rwrTargetsPresence = [],
   rwrTargetsTriggers = Watched(0),
   rwrTargetsPresenceTriggers = Watched(0),
-  rwrTrackingTargetAgeMin = 1000.0,
+  rwrTrackingTargetAgeMin = Watched(1000.0),
+  rwrLaunchingTargetAgeMin = Watched(1000.0),
   RwrSignalHoldTimeInv = Watched(0.0),
   RwrNewTargetHoldTimeInv = Watched(1000000.0),
   IsRwrHudVisible = Watched(false)
   rwrTargetsUsed = [],
   rwrTargetsUnused = [],
   rwrLastTargetsBlinkTick = 0,
-  rwrBlinkableTargetsPresence = false,
-
-  IsTwsActivated = Watched(false),
-  CollapsedIcon = Watched(false) //for designer switch from Icon (true) to collapsed Tws
+  rwrBlinkableTargetsPresence = false
 }
 
 interop.clearMlwsTargets <- function() {
@@ -46,6 +49,7 @@ interop.clearMlwsTargets <- function() {
     }
   }
   if (needUpdateTargets) {
+    warningSystemState.mlwsTargetsAgeMin.update(1000.0)
     warningSystemState.mlwsTargetsTriggers.trigger()
   }
 }
@@ -59,6 +63,7 @@ interop.clearLwsTargets <- function() {
     }
   }
   if (needUpdateTargets) {
+    warningSystemState.lwsTargetsAgeMin.update(1000.0)
     warningSystemState.lwsTargetsTriggers.trigger()
   }
 }
@@ -73,6 +78,7 @@ interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _la
     enemy = enemy,
     sector = sector
   }
+  warningSystemState.mlwsTargetsAgeMin.update(min(warningSystemState.mlwsTargetsAgeMin.value, age))
   warningSystemState.mlwsTargetsTriggers.trigger()
 }
 
@@ -86,6 +92,7 @@ interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _lau
     enemy = enemy,
     sector = sector
   }
+  warningSystemState.lwsTargetsAgeMin.update(warningSystemState.lwsTargetsAgeMin.value, age)
   warningSystemState.lwsTargetsTriggers.trigger()
 }
 
@@ -105,7 +112,8 @@ interop.clearRwrTargets <- function() {
   }
 
   if (needUpdateTargets) {
-    warningSystemState.rwrTrackingTargetAgeMin = 1000.0
+    warningSystemState.rwrTrackingTargetAgeMin.update(1000.0)
+    warningSystemState.rwrLaunchingTargetAgeMin.update(1000.0)
     warningSystemState.rwrBlinkableTargetsPresence = false
     warningSystemState.rwrTargetsTriggers.trigger()
   }
@@ -173,7 +181,9 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
 
   warningSystemState.rwrTargetsTriggers.trigger()
   if (track)
-    warningSystemState.rwrTrackingTargetAgeMin = min(warningSystemState.rwrTrackingTargetAgeMin, age)
+    warningSystemState.rwrTrackingTargetAgeMin.update(min(warningSystemState.rwrTrackingTargetAgeMin.value, age))
+  if (launch)
+    warningSystemState.rwrLaunchingTargetAgeMin.update(min(warningSystemState.rwrLaunchingTargetAgeMin.value, age))
   warningSystemState.rwrBlinkableTargetsPresence = warningSystemState.rwrBlinkableTargetsPresence || (sector > 2.0 || (targetGroupId != null && targetGroupId >= 0))
 
   let groupsId = group_id != null && group_id >= 0 && group_id < rwrSetting.value.presenceMap.len() ? rwrSetting.value.presenceMap[group_id] : rwrSetting.value.presenceDefault

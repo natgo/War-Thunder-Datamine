@@ -55,6 +55,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -1425,7 +1426,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (!zero && !::is_game_mode_with_spendable_weapons())
       return true
 
-    if (textArr.len() && (zero || !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) { //skip warning only
+    if (textArr.len() && (zero || !get_gui_option(USEROPT_SKIP_WEAPON_WARNING))) { //skip warning only
       ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
         {
           parentHandler = this

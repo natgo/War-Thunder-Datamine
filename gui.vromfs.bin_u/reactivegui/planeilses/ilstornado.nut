@@ -8,7 +8,7 @@ let { cvt } = require("dagor.math")
 let string = require("string")
 let { SUMAltitude } = require("commonElements.nut")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
-let { sin, cos } = require("math")
+let { sin, cos, round } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 
@@ -65,7 +65,7 @@ let SUMVerticalSpeed = @() {
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
-let SpeedWatch = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedWatch = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
   watch = [Speed, IlsColor]
   rendObj = ROBJ_TEXT

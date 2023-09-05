@@ -14,7 +14,7 @@ let { cvt } = require("dagor.math")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { ShellCnt }  = require("%rGui/planeState/planeWeaponState.nut");
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let a10Speed = @() {
   watch = [SpeedValue, IlsColor]
   rendObj = ROBJ_TEXT

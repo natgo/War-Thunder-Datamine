@@ -21,6 +21,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
 let { performPromoAction } = require("%scripts/promo/promo.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -101,8 +102,8 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
       }
 
       let count = localConfig?.count ?? 1
-      localConfig.count = 0
-      let itemData =  {
+      localConfig.hideCount <- true
+      let itemData = {
         description = ::trophyReward.getRewardText(localConfig, false, "#FFFFFF")
         count = count > 1 ? $"x{count}" : ""
         firstInBlock
@@ -153,7 +154,26 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
         itemData.actionParamsMarkup <- button[0].actionParamsMarkup
         group.units.append(itemData)
       }
+      itemData.cost <- this.getCost(offerType, localConfig)
     }
+  }
+
+  function getCost(offerType, localConfig) {
+    if(offerType == "unit")
+      return Cost().setGold(::wp_get_cost_gold(localConfig.unit))
+    else if(offerType == "item") {
+      let item = ::ItemsManager.findItemById(localConfig.item)
+      if(item != null)
+        return item.getCost().multiply(localConfig.count)
+      return Cost()
+    }
+    else if(offerType == "unlock")
+      return getUnlockCost(localConfig.unlock).multiply(localConfig.count)
+    else
+      return ::g_decorator_type.getTypeByResourceType(localConfig.resourceType)
+        .getCost(localConfig.resource)
+        .multiply(localConfig.count)
+    return Cost()
   }
 
   function updateRewards() {

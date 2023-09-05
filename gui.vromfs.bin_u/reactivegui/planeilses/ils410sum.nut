@@ -9,6 +9,7 @@ let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
 let { yawIndicator, angleTxt, bombFallingLine, SUMAltitude } = require("commonElements.nut")
+let { round } = require("math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -71,7 +72,7 @@ let flyDirectionSUM = @() {
   ]
 }
 
-let SUMSpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SUMSpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let SUMSpeed = @() {
   watch = [SUMSpeedValue, IlsColor]
   size = SIZE_TO_CONTENT

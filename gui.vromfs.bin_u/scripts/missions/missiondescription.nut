@@ -4,14 +4,13 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_game_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
+let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 
 /* API:
   static create(nest, mission = null)
@@ -243,7 +242,7 @@ gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
       config.maintext = ""
     }
     else if (this.gm == GM_DOMINATION && blk?.timeLimit) {
-      let option = ::get_option(::USEROPT_TIME_LIMIT)
+      let option = ::get_option(USEROPT_TIME_LIMIT)
       let timeLimitText = option.getTitle() + loc("ui/colon") + option.getValueLocText(blk.timeLimit)
       config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
     }

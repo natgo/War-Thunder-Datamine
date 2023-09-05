@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -102,24 +101,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function init() {
     this.fillGamercard()
     base.init()
-  }
-
-  onEventGuiSceneCleared = @(p) this.setGuiRootOptions(p.guiScene, false)
-
-  function setGuiRootOptions(guiScene, forceUpdate = true) {
-    let rootObj = guiScene.getRoot()
-    rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" //should to force box buttons in WoP?
-    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
-      rootObj["swap_ab"] = "yes";
-
-    if (!forceUpdate)
-      return
-
-    rootObj["css-hier-invalidate"] = "all"  //need to update scene after set this parameters
-    guiScene.performDelayed(this, function() {
-      if (check_obj(rootObj))
-        rootObj["css-hier-invalidate"] = "no"
-    })
   }
 
   function getNavbarMarkup() {

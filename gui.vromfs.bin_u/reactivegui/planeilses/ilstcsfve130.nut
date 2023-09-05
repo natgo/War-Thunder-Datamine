@@ -16,7 +16,7 @@ let { CurWeaponName, GunBullets0, GunBullets1, BulletImpactPoints, BulletImpactL
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { AamTimeOfFlightMax, IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
   watch = [IlsColor, SpeedValue]
   size = SIZE_TO_CONTENT

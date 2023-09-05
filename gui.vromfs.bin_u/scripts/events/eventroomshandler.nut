@@ -24,6 +24,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -52,7 +53,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
-  wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
+  wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
 
   event = null
   hasBackToEventsButton = false

@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -10,7 +8,6 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
@@ -18,6 +15,8 @@ let { is_replay_playing } = require("replays")
 let { send } = require("eventbus")
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send, chat_set_mode } = require("chat")
 let { get_mplayers_list } = require("mission")
+let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::game_chat_handler <- null
 
@@ -563,7 +562,7 @@ local MP_CHAT_PARAMS = {
       this.log_text = "\n".join([this.log_text,  this.makeTextFromMessage(logObj[i])], true)
     this.updateAllLogs()
 
-    let autoShowOpt = ::get_option(::USEROPT_AUTO_SHOW_CHAT)
+    let autoShowOpt = ::get_option(USEROPT_AUTO_SHOW_CHAT)
     if (autoShowOpt.value) {
       this.doForAllScenes(function(sceneData) {
         if (!sceneData.scene.isVisible())
@@ -599,7 +598,7 @@ local MP_CHAT_PARAMS = {
     let msgColor = this.getMessageColor(message)
     let clanTag = ::get_player_tag(message.sender)
     let fullName = ::g_contacts.getPlayerFullName(
-      platformModule.getPlayerName(message.sender),
+      getPlayerName(message.sender),
       clanTag
     )
     message.userColor = userColor

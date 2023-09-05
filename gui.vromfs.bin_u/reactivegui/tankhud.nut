@@ -62,7 +62,9 @@ let function tankDmgIndicator() {
       posWatched = Watched([0, 0]),
       sizeWatched = Computed(@() dmgIndicatorStates.value.size.map(@(v) 0.8*v)),
       relativCircleSize = 49,
-      needDrawCentralIcon = false
+      needDrawCentralIcon = false,
+      needDrawBackground =  true,
+      needAdditionalLights = false
     }))
   return {
     rendObj = ROBJ_IMAGE

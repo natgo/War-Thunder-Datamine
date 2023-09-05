@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,6 +9,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStates.nut")
 let { get_option_voicechat } = require("chat")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -114,7 +113,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
       memberCrossPlayObj["isEnabledCrossPlay"] = member.crossplay ? "yes" : "no"
 
       let speakingMemberNickTextObj = memberObj.findObject("speaking_member_nick_text_" + indexStr)
-      speakingMemberNickTextObj.setValue(platformModule.getPlayerName(member.name))
+      speakingMemberNickTextObj.setValue(getPlayerName(member.name))
     }
   }
 

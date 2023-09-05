@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -107,7 +105,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
     let rowName = row?.name ?? ""
-    let playerName = this.isClanLb ? rowName : platformModule.getPlayerName(rowName)
+    let playerName = this.isClanLb ? rowName : getPlayerName(rowName)
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")

@@ -2,12 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getXboxChatEnableStatus } = require("%scripts/chat/chatStates.nut")
 let { startLogout } = require("%scripts/login/logout.nut")

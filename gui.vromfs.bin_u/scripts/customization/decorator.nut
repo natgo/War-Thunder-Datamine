@@ -57,18 +57,17 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
       this.blk = blkOrId
       this.id = this.blk.getBlockName()
     }
-
-    this.unlockId = getTblValue("unlock", this.blk, "")
+    this.unlockId = this.blk?.unlock ?? this.blk?.unlockId ?? ""
     this.unlockBlk = getUnlockById(this.unlockId)
-    this.limit = getTblValue("limit", this.blk, this.decoratorType.defaultLimitUsage)
-    this.category = getTblValue("category", this.blk, "")
-    this.group = getTblValue("group", this.blk, "")
+    this.limit = this.blk?.limit ?? this.decoratorType.defaultLimitUsage
+    this.category = this.blk?.category ?? ""
+    this.group = this.blk?.group ?? ""
 
     // Only decorators from live.warthunder.com has GUID in id.
     let slashPos = this.id.indexof("/")
     this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
 
-    this.cost = this.decoratorType.getCost(this.id)
+    this.cost = this.decoratorType.getCost(this)
     this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
     this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id

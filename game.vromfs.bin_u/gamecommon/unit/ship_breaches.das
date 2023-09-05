@@ -843,18 +843,24 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
       let ship = as_ship(unit)
       let maxWater = part_water.z
       let counter_flooding_level = ship == null ? 0.f : ship.shipProps.deadCoverCounterfloodingRel
-      if counter_flooding_level > 0.f && is_equal_float(part_water.x, part_water.z) && abs(part_water.y / maxWater) > counter_flooding_level
+      if counter_flooding_level > 0.f && is_equal_float(part_water.x, part_water.z) && (1.f - abs(part_water.y / maxWater) < counter_flooding_level)
         if is_equal_float(part_water.x, part_water.y)
           *ship |> onStraighteningRoll()
         let pumpedDelta = ship.shipProps.counterFloodingWaterMassVel * info.dt
         let waterDir = sign(part_water.y)
+        let leftWater = v.ship_flooding__waterLeftSide
+        let rightWater = v.ship_flooding__waterRightSide
         part_water.y = clamp(part_water.y - waterDir * pumpedDelta, -maxWater, maxWater)
-        v.ship_flooding__waterLeftSide  += -waterDir * pumpedDelta
-        v.ship_flooding__waterRightSide += waterDir * pumpedDelta
+        let balance = safediv(leftWater - rightWater, ship.shipProps.additionalSideWaterThreshold)
+        let threshold = (counter_flooding_level - 0.5f) * 2.f
+        if waterDir > 0.f ? balance > -threshold : balance < threshold
+          v.ship_flooding__waterLeftSide = min(max(leftWater - waterDir * pumpedDelta, 0.f), ship.shipProps.additionalSideWaterThreshold)
+          v.ship_flooding__waterRightSide = min(max(rightWater + waterDir * pumpedDelta, 0.f), ship.shipProps.additionalSideWaterThreshold)
     else
       // update water level
       let prev_water = part_water.x
       part_water.x = max(0.0f, part_water.x + pump_water_mass_vel * info.dt)
+      part_water.y = max(0.0f, part_water.y + pump_water_mass_vel * info.dt)
 
       // restore pumped out parts
       for j in inner_parts_range.x..inner_parts_range.y

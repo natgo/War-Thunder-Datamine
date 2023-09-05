@@ -2,8 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -13,14 +11,11 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
-
 let regexp2 = require("regexp2")
 let { parse_json } = require("json")
 let { clearBorderSymbols, startsWith, replace, stripTags } = require("%sqstd/string.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
-let { getPlayerName,
-        isPlayerFromXboxOne,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlayerFromXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
@@ -34,6 +29,9 @@ let { get_option_voicechat, set_gchat_event_cb,
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { get_charserver_time_sec } = require("chard")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_VOICE_CHAT, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY,
+  USEROPT_ONLY_FRIENDLIST_CONTACT } = require("%scripts/options/optionsExtNames.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1634,12 +1632,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       return
     this.shouldCheckVoiceChatSuggestion = false
 
-    let VCdata = ::get_option(::USEROPT_VOICE_CHAT)
+    let VCdata = ::get_option(USEROPT_VOICE_CHAT)
     let voiceChatShowCount = ::load_local_account_settings(VOICE_CHAT_SHOW_COUNT_SAVE_ID, 0)
     if (this.isFirstAskForSession && voiceChatShowCount < ::g_chat.MAX_MSG_VC_SHOW_TIMES && !VCdata.value) {
       this.msgBox("join_voiceChat", loc("msg/enableVoiceChat"),
               [
-                ["yes", function() { set_option(::USEROPT_VOICE_CHAT, true) }],
+                ["yes", function() { set_option(USEROPT_VOICE_CHAT, true) }],
                 ["no", function() {} ]
               ], "no",
               { cancel_fn = function() {} })
@@ -2448,7 +2446,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function showRoomPopup(msgBlock, roomId) {
-    if (::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY))
+    if (::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
       ::g_popups.add(msgBlock.fullName && msgBlock.fullName.len() ? (msgBlock.fullName + ":") : null,
         msgBlock.msgs.top(),
         @() ::g_chat.openChatRoom(roomId)
@@ -2766,7 +2764,7 @@ if (::g_login.isLoggedIn())
 ::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, userName = "") {
   let checkUid = uid != null
 
-  let privateValue = ::get_gui_option_in_mode(::USEROPT_ONLY_FRIENDLIST_CONTACT, ::OPTIONS_MODE_GAMEPLAY)
+  let privateValue = ::get_gui_option_in_mode(USEROPT_ONLY_FRIENDLIST_CONTACT, OPTIONS_MODE_GAMEPLAY)
   return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, userName))
     || ::isPlayerNickInContacts(userName, EPL_BLOCKLIST)
 }

@@ -420,19 +420,24 @@
         "armorThickness": 50.0
       },
       "ex_armor_11_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_armor_12_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_armor_13_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_armor_14_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "turret_06_front_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 40.0,
+        "armorClass": "tank_structural_steel"
       }
     },
     "CHA_hull_turret": {
@@ -2359,52 +2364,6 @@
       "blk": "gameData/units/tankModels/weaponPresets/uk_t_90s_bheeshma_default.blk"
     }
   },
-  "counterMeasures": {
-    "counterMeasure": [
-      {
-        "turretIndex": 0,
-        "blk": "gameData/counterMeasures/tshu_1_right.blk",
-        "dmPart": "countermeasure_01_dm",
-        "ircmProjector": {
-          "node": "countermeasure_01",
-          "beamRadius": [
-            700.0,
-            100.0
-          ],
-          "power": [
-            0.015,
-            0.025
-          ],
-          "glowOffset": [
-            0.3,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "turretIndex": 0,
-        "blk": "gameData/counterMeasures/tshu_1_left.blk",
-        "dmPart": "countermeasure_02_dm",
-        "ircmProjector": {
-          "node": "countermeasure_02",
-          "beamRadius": [
-            700.0,
-            100.0
-          ],
-          "power": [
-            0.015,
-            0.025
-          ],
-          "glowOffset": [
-            0.3,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    ]
-  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 45500.0,
@@ -2416,7 +2375,7 @@
         6.0
       ],
       "CenterOfGravity": [
-        0.05,
+        0.2,
         0.5,
         0.0
       ],
@@ -2424,7 +2383,7 @@
         0.0,
         0.7
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 2500.0
     },
     "tracks": {
@@ -3864,9 +3823,36 @@
     "125mm_ussr_ATGM_ammo_pack": {
       "tier": 3
     },
-    "tank_bulldozer_blade": {
-      "modClass": "protection",
-      "tier": 1
+    "t_90s_twmp": {
+      "tier": 1,
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 0.98
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "body_01",
+            "ex_armor_11",
+            "ex_armor_12",
+            "ex_armor_13",
+            "ex_armor_14",
+            "roll_01",
+            "roll_02",
+            "roll_03",
+            "roll_04",
+            "roll_05",
+            "roll_06",
+            "roll_07",
+            "roll_08",
+            "roll_09",
+            "roll_10",
+            "roll_11",
+            "roll_12"
+          ]
+        }
+      }
     },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
@@ -4219,6 +4205,7 @@
     },
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 2,
       "modClass": "protection",
       "effects": {
@@ -4308,7 +4295,34 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "in_camo_forest_four_color*"
-      }
+      },
+      "set_tex": [
+        {
+          "from": "t_90a_body_c*",
+          "to": "t_90a_noskin_bh_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_gun_c*",
+          "to": "t_90a_noskin_bh_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_turret_c*",
+          "to": "t_90a_noskin_bh_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_blade_c*",
+          "to": "t_90s_bheeshma_noskin_bh_blade_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_c*",
+          "to": "t_90s_bheeshma_noskin_bh_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     },
     {
       "name": "in_camo_summer_four_color",
@@ -4317,7 +4331,70 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "in_camo_summer_four_color*"
-      }
+      },
+      "set_tex": [
+        {
+          "from": "t_90a_body_c*",
+          "to": "t_90a_noskin_bh_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_gun_c*",
+          "to": "t_90a_noskin_bh_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_turret_c*",
+          "to": "t_90a_noskin_bh_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_blade_c*",
+          "to": "t_90s_bheeshma_noskin_bh_blade_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_c*",
+          "to": "t_90s_bheeshma_noskin_bh_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    },
+    {
+      "name": "fr_camo_winter_green_white",
+      "nameLocId": "skin/fr_camo_winter_green_white",
+      "descLocId": "skin/fr_camo_winter_green_white/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "fr_camo_winter_green_white*"
+      },
+      "set_tex": [
+        {
+          "from": "t_90a_body_c*",
+          "to": "t_90a_noskin_bh_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_gun_c*",
+          "to": "t_90a_noskin_bh_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_turret_c*",
+          "to": "t_90a_noskin_bh_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_blade_c*",
+          "to": "t_90s_bheeshma_noskin_bh_blade_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90s_bheeshma_c*",
+          "to": "t_90s_bheeshma_noskin_bh_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   ]
 }

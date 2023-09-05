@@ -25,6 +25,9 @@ let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
+  USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -76,7 +79,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   sideBlockMaxWidth = null
 
   objectsTable = {
-    [::USEROPT_DAMAGE_INDICATOR_SIZE] = {
+    [USEROPT_DAMAGE_INDICATOR_SIZE] = {
       objectsToScale = {
         hud_tank_damage_indicator = "@sizeDamageIndicatorFull"
         xray_render_dmg_indicator = "@sizeDamageIndicator"
@@ -95,7 +98,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       }
       onChangedFunc = @(_obj) ::g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
     },
-    [::USEROPT_TACTICAL_MAP_SIZE] = {
+    [USEROPT_TACTICAL_MAP_SIZE] = {
       objectsToScale = {
         hud_tank_tactical_map     = "@sizeTacticalMap"
         hud_air_tactical_map      = "@sizeTacticalMap"
@@ -299,8 +302,8 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     else
       this.sideBlockMaxWidth = null
 
-    this.changeObjectsSize(::USEROPT_DAMAGE_INDICATOR_SIZE)
-    this.changeObjectsSize(::USEROPT_TACTICAL_MAP_SIZE)
+    this.changeObjectsSize(USEROPT_DAMAGE_INDICATOR_SIZE)
+    this.changeObjectsSize(USEROPT_TACTICAL_MAP_SIZE)
   }
 
   //get means determine in this case, but "determine" is too long for function name
@@ -333,10 +336,10 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
       hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
-      hud_kill_log              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true)
-      chatPlace                 = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_CHAT_PLACE, ::OPTIONS_MODE_GAMEPLAY, true)
+      hud_kill_log              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+      chatPlace                 = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_ORDERS, ::OPTIONS_MODE_GAMEPLAY, true)
+      order_status              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
     }
 
     updateExtWatched({
@@ -460,7 +463,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
         : format("%d, %d", this.sideBlockMaxWidth, this.sideBlockMaxWidth)
       this.guiScene.applyPendingChanges(false)
 
-      if (optionNum == ::USEROPT_TACTICAL_MAP_SIZE)
+      if (optionNum == USEROPT_TACTICAL_MAP_SIZE)
         this.curTacticalMapObj = obj
 
       let func = getTblValue("onChangedFunc", table)

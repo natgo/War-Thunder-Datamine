@@ -26,6 +26,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { get_team_colors } = require("guiMission")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -455,6 +457,22 @@ handlersManager.__update({
 
   function getRootScreenBlkPath() {
     return rootScreenBlkPathWatch.value
+  }
+
+  function setGuiRootOptions(guiScene, forceUpdate = true) {
+    let rootObj = guiScene.getRoot()
+    rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" //should to force box buttons in WoP?
+    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
+      rootObj["swap_ab"] = "yes";
+
+    if (!forceUpdate)
+      return
+
+    rootObj["css-hier-invalidate"] = "all"  //need to update scene after set this parameters
+    guiScene.performDelayed(this, function() {
+      if (check_obj(rootObj))
+        rootObj["css-hier-invalidate"] = "no"
+    })
   }
 })
 

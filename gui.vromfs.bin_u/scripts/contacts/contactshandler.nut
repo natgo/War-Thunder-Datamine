@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -26,6 +24,7 @@ let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -278,7 +277,7 @@ groupBottom {
     playerList = playerList.filter(function(contact) {
       if (filterText == "")
         return true
-      let contactName = platformModule.getPlayerName(contact.lowerName)
+      let contactName = getPlayerName(contact.lowerName)
       return contactName.indexof(filterText) != null
     })
     return playerList
@@ -533,7 +532,7 @@ groupBottom {
   }
 
   function onSearchEditBoxChangeValue(obj) {
-    this.setSearchText(platformModule.getPlayerName(obj.getValue()), false)
+    this.setSearchText(getPlayerName(obj.getValue()), false)
     this.applyContactFilter()
   }
 
@@ -578,7 +577,7 @@ groupBottom {
       if (!checkObj(contactObject))
         continue
 
-      let contactName = platformModule.getPlayerName(contact_data.lowerName)
+      let contactName = getPlayerName(contact_data.lowerName)
       let searchResult = this.searchText == "" || contactName.indexof(this.searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)

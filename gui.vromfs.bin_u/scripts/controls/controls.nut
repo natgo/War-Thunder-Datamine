@@ -47,6 +47,11 @@ let { joystickSetCurSettings, setShortcutsAndSaveControls
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
+  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_SEPERATED_ENGINE_CONTROL_SHIP,
+  USEROPT_BULLET_COUNT0, userOptionNameByIdx
+} = require("%scripts/options/optionsExtNames.nut")
+
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -55,17 +60,17 @@ let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 ::shortcutsList <- shortcutsListModule.types
 
 let function resetDefaultControlSettings() {
-  set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); //::USEROPT_AILERONS_MULTIPLIER
-  set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER,         0.64); //::USEROPT_ELEVATOR_MULTIPLIER
-  set_option_multiplier(OPTION_RUDDER_MULTIPLIER,           0.43); //::USEROPT_RUDDER_MULTIPLIER
+  set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); //USEROPT_AILERONS_MULTIPLIER
+  set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER,         0.64); //USEROPT_ELEVATOR_MULTIPLIER
+  set_option_multiplier(OPTION_RUDDER_MULTIPLIER,           0.43); //USEROPT_RUDDER_MULTIPLIER
   set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER,   0.79); //
   set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,  0.64); //
   set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER,        0.43); //
-  set_option_multiplier(OPTION_ZOOM_SENSE,                  0); //::USEROPT_ZOOM_SENSE
-  set_option_multiplier(OPTION_MOUSE_SENSE,                 0.5); //::USEROPT_MOUSE_SENSE
-  set_option_multiplier(OPTION_MOUSE_AIM_SENSE,             0.5); //::USEROPT_MOUSE_AIM_SENSE
-  set_option_multiplier(OPTION_GUNNER_VIEW_SENSE,           1); //::USEROPT_GUNNER_VIEW_SENSE
-  set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER,    1); //::USEROPT_ATGM_AIM_SENS_HELICOPTER
+  set_option_multiplier(OPTION_ZOOM_SENSE,                  0); //USEROPT_ZOOM_SENSE
+  set_option_multiplier(OPTION_MOUSE_SENSE,                 0.5); //USEROPT_MOUSE_SENSE
+  set_option_multiplier(OPTION_MOUSE_AIM_SENSE,             0.5); //USEROPT_MOUSE_AIM_SENSE
+  set_option_multiplier(OPTION_GUNNER_VIEW_SENSE,           1); //USEROPT_GUNNER_VIEW_SENSE
+  set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER,    1); //USEROPT_ATGM_AIM_SENS_HELICOPTER
   set_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE,     0.1); //mouseJoystickDeadZone
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE,     0.1);
   set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENSIZE,   0.6); //mouseJoystickScreenSize
@@ -91,7 +96,7 @@ let function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); //
 
   ::set_option_mouse_joystick_square(0); //mouseJoystickSquare
-  ::set_option_gain(1); //::USEROPT_FORCE_GAIN
+  ::set_option_gain(1); //USEROPT_FORCE_GAIN
 }
 
 ::can_change_helpers_mode <- function can_change_helpers_mode() {
@@ -263,7 +268,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
   function initScreen() {
     setBreadcrumbGoBackParams(this)
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.scene.findObject("hotkeys_update").setUserData(this)
 
@@ -780,7 +785,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     let options = u.values(::g_aircraft_helpers.controlHelpersOptions)
     foreach (optionId in options) {
-      if (optionId == ::USEROPT_HELPERS_MODE)
+      if (optionId == USEROPT_HELPERS_MODE)
         continue
       let option = ::get_option(optionId)
       for (local i = 0; i < ::shortcutsList.len(); i++)
@@ -865,7 +870,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     this.delayedControlsGroupStrated = true
     this.guiScene.performDelayed(this, function() {
       this.delayedControlsGroupStrated = false
-      let filterOption = ::get_option(::USEROPT_HELPERS_MODE)
+      let filterOption = ::get_option(USEROPT_HELPERS_MODE)
       let filterObj = this.getFilterObj()
       if (checkObj(filterObj) && filterObj.getValue() != filterOption.value)
         filterObj.setValue(filterOption.value)
@@ -946,7 +951,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
           }
 
           local preset = "empty_ver1"
-          let opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
+          let opdata = ::get_option(USEROPT_CONTROLS_PRESET)
           if (presetSelected in opdata.values)
             preset = opdata.values[presetSelected]
           else
@@ -1509,9 +1514,9 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     else if (axisName && (axisName == "camx" || axisName == "camy")
       && item.axis_num == MouseAxis.MOUSE_SCROLL) {
       let isMouseView = AIR_MOUSE_USAGE.VIEW ==
-        ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE)
+        ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
       let isMouseViewWhenNoAim = AIR_MOUSE_USAGE.VIEW ==
-        ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE_NO_AIM)
+        ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
 
       if (isMouseView || isMouseViewWhenNoAim) {
         let msg = isMouseView
@@ -1522,9 +1527,9 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
           [
             ["replace", function() {
               ::g_aircraft_helpers.setOptionValue(
-                ::USEROPT_MOUSE_USAGE, AIR_MOUSE_USAGE.AIM)
+                USEROPT_MOUSE_USAGE, AIR_MOUSE_USAGE.AIM)
               ::g_aircraft_helpers.setOptionValue(
-                ::USEROPT_MOUSE_USAGE_NO_AIM, AIR_MOUSE_USAGE.JOYSTICK)
+                USEROPT_MOUSE_USAGE_NO_AIM, AIR_MOUSE_USAGE.JOYSTICK)
               this.onAircraftHelpersChanged(null)
             }],
             ["cancel", function() {
@@ -1560,10 +1565,10 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     ::g_controls_manager.clearGuiOptions()
     let curPreset = ::g_controls_manager.getCurPreset()
     let mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
     foreach (item in ::shortcutsList)
-      if ("optionType" in item && item.optionType in ::user_option_name_by_idx) {
-        let optionName = ::user_option_name_by_idx[item.optionType]
+      if ("optionType" in item && item.optionType in userOptionNameByIdx) {
+        let optionName = userOptionNameByIdx[item.optionType]
         let value = ::get_option(item.optionType).value
         if (value != null)
           curPreset.params[optionName] <- value
@@ -1876,7 +1881,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
 ::applySelectedPreset <- function applySelectedPreset(presetName) {
   if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
-    set_option(::USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
+    set_option(USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
   return ($"{controlsPresetConfigPath.value}config/hotkeys/hotkey." + presetName + ".blk")
 }
 
@@ -1979,7 +1984,7 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   let difficulty = ::is_in_flight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
   if (difficulty == 2)
     return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
-  let option = ::get_option_in_mode(::USEROPT_HELPERS_MODE, ::OPTIONS_MODE_GAMEPLAY)
+  let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
   return option.values[option.value]
 }
 
@@ -2193,7 +2198,7 @@ let function getWeaponFeatures(weaponsList) {
     let unitControls = fmBlk?.AvailableControls || DataBlock()
 
     let gotInstructor = isMouseAimMode || helpersMode == globalEnv.EM_INSTRUCTOR
-    let option = ::get_option_in_mode(::USEROPT_INSTRUCTOR_GEAR_CONTROL, ::OPTIONS_MODE_GAMEPLAY)
+    let option = ::get_option_in_mode(USEROPT_INSTRUCTOR_GEAR_CONTROL, OPTIONS_MODE_GAMEPLAY)
     let instructorGearControl = gotInstructor && option.value
 
     controls = [ "throttle" ]
@@ -2332,7 +2337,7 @@ let function getWeaponFeatures(weaponsList) {
     controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP"]
 
     let isSeperatedEngineControl =
-      ::get_gui_option_in_mode(::USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, ::OPTIONS_MODE_GAMEPLAY)
+      ::get_gui_option_in_mode(USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, OPTIONS_MODE_GAMEPLAY)
     if (isSeperatedEngineControl)
       controls.append("ship_port_engine", "ship_star_engine")
     else
@@ -2406,7 +2411,7 @@ let function getWeaponFeatures(weaponsList) {
       local bulletsChoice = 0
       for (local groupIndex = 0; groupIndex < unitType.bulletSetsQuantity; groupIndex++) {
         if (isBulletGroupActive(unit, groupIndex)) {
-          let bullets = get_unit_option(unitId, ::USEROPT_BULLET_COUNT0 + groupIndex)
+          let bullets = get_unit_option(unitId, USEROPT_BULLET_COUNT0 + groupIndex)
           if (bullets != null && bullets > 0)
             bulletsChoice++
         }

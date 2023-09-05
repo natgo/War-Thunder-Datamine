@@ -12,6 +12,7 @@ let time = require("%scripts/time.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { get_charserver_time_sec } = require("chard")
+let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
 let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -30,7 +31,7 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     ::set_presence_to_player("menu")
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
+    setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
 
     this.autoStartQueueWnd = this.scene.findObject("autoStartQueueWnd")
 

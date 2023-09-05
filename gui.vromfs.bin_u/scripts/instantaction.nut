@@ -16,6 +16,7 @@ let { AMMO,
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { get_gui_option } = require("guiOptions")
+let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -120,7 +121,7 @@ let { get_gui_option } = require("guiOptions")
 }
 
 ::checkBrokenAirsAndDo <- function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry = true, cancelFunc = null) {
-  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING)) {
+  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(USEROPT_SKIP_WEAPON_WARNING)) {
     let price = Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
     msg += "\n\n" + format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())

@@ -11,6 +11,8 @@ let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
   if (!hasFeature("ControlsDeviceChoice"))
@@ -29,7 +31,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let txt = this.scene.findObject("txt_icon")
     txt.show(!this.onlyDevicesChoice)
@@ -48,7 +50,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onIconChoosen(option) {
-    set_option(::USEROPT_PILOT, option.idx)
+    set_option(USEROPT_PILOT, option.idx)
     ::save_profile(false)
     this.updateProfileIcon()
   }
@@ -100,13 +102,13 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
-  set_option(::USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
+  set_option(USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
   ::set_control_helpers_mode(mode); //instant
 }
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id) {
   let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+  setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
   local ct_preset = ""
   if (ct_id == "ct_own") {
@@ -147,7 +149,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
   ::apply_joy_preset_xchange(preset.fileName)
 
   if (isPlatformSony || isPlatformXboxOne || isPlatformSteamDeck) {
-    let presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
+    let presetMode = ::get_option(USEROPT_CONTROLS_PRESET)
     ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
     //TODO: is it obsolete?
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]

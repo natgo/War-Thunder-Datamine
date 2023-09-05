@@ -2,8 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -17,6 +15,8 @@ let { clearBorderSymbolsMultiline, endsWith, cutPrefix  } = require("%sqstd/stri
 let regexp2 = require("regexp2")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
+} = require("%scripts/options/optionsExtNames.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -92,7 +92,7 @@ global enum chatErrorName {
 //to test filters - use console "chat_filter_for_myself=true"
 ::chat_filter_for_myself <- false
 ::g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
-  if (::get_option(::USEROPT_CHAT_FILTER).value &&
+  if (::get_option(USEROPT_CHAT_FILTER).value &&
     (!isMyMessage || ::chat_filter_for_myself))
     return dirtyWordsFilter.checkPhrase(text)
   return text
@@ -160,7 +160,7 @@ global enum chatErrorName {
 
   if (::menu_chat_handler)
     ::menu_chat_handler.addRoomMsg("", "", msg)
-  if (needPopup && ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY))
+  if (needPopup && ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
     ::g_popups.add(null, colorize(this.SYSTEM_COLOR, msg))
 }
 

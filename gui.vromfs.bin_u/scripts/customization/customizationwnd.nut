@@ -21,7 +21,8 @@ let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
   set_hangar_opposite_mirrored, get_hangar_opposite_mirrored, set_tank_camo_scale,
   get_tank_camo_scale_result_value, set_tank_skin_condition, set_tank_camo_rotation,
   show_model_damaged, get_loaded_model_damage_state, can_save_current_skin_template,
-  save_current_skin_template, MDS_UNDAMAGED, MDS_DAMAGED, MDS_ORIGINAL
+  save_current_skin_template, MDS_UNDAMAGED, MDS_DAMAGED, MDS_ORIGINAL,
+  get_ship_flag_in_slot, get_avail_ship_flags_blk, apply_ship_flag, get_default_ship_flag
 } = require("unitCustomization")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
@@ -54,6 +55,8 @@ let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule
 let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
+  USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -143,6 +146,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   access_WikiOnline = false
   access_Decals = false
   access_Attachables = false
+  access_Flags = false
   access_UserSkins = false
   access_Skins = false
   access_SkinsUnrestrictedPreview = false
@@ -153,6 +157,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   skinList = null
   curSlot = 0
   curAttachSlot = 0
+  curFlagSlot = 0
   previewSkinId = null
 
   initialAppliedSkinId = null
@@ -182,6 +187,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   needForceShowUnitInfoPanel = false
 
   decorMenu = null
+  defaultFlag = ""
+  flagsBlk = null
 
   function initScreen() {
     this.owner = this
@@ -190,6 +197,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return this.goBack()
     ::cur_aircraft_name = this.unit.name
 
+    this.defaultFlag = get_default_ship_flag()
+    this.flagsBlk = get_avail_ship_flags_blk()
     this.access_WikiOnline = hasFeature("WikiUnitInfo")
     this.access_UserSkins = isPlatformPC && hasFeature("UserSkins")
     this.access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
@@ -259,6 +268,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.access_Decals      = !this.previewMode && this.isUnitOwn && ::g_decorator_type.DECALS.isAvailable(this.unit)
     this.access_Attachables = !this.previewMode && this.isUnitOwn && ::g_decorator_type.ATTACHABLES.isAvailable(this.unit)
+    this.access_Flags = !this.previewMode && this.isUnitOwn && ::g_decorator_type.FLAGS.isAvailable(this.unit) && this.isUnitShipOrBoat
     this.access_Skins = (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)) ? true
       : (this.previewMode & PREVIEW_MODE.DECORATOR) ? false
       : this.isUnitOwn || this.access_SkinsUnrestrictedPreview || this.access_SkinsUnrestrictedExport
@@ -280,6 +290,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateMainGuiElements() {
     this.updateSlotsBlockByType()
     this.updateSkinList()
+    this.updateFlagName()
     this.updateAutoSkin()
     this.updateUserSkinList()
     this.updateSkinSliders()
@@ -365,8 +376,16 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.updateUserSkinList()
-    if (::get_option(::USEROPT_USER_SKIN).value > 0)
+    if (::get_option(USEROPT_USER_SKIN).value > 0)
       hangar_force_reload_model()
+  }
+
+  function resetFlagToDefault(_obj) {
+    if (!hangar_is_model_loaded())
+      return
+    apply_ship_flag(this.defaultFlag, true)
+    this.updateFlagName()
+    this.updateFlagSlots()
   }
 
   function switchUnit(unitName) {
@@ -473,6 +492,23 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     tooltipObj.tooltipId = DECORATION.getTooltipId($"{this.unit.name}/{skinId}", UNLOCKABLE_SKIN)
   }
 
+  function isDefaultFlag(currentFlag) {
+    return currentFlag == this.defaultFlag
+  }
+
+  function updateFlagName() {
+    if (!this.access_Flags)
+      return
+
+    local currentFlag = get_ship_flag_in_slot(this.unit.name, this.getSelectedBuiltinSkinId())
+    if(currentFlag == "default")
+      currentFlag = this.defaultFlag
+
+    this.scene.findObject("flag_name").setValue(this.isDefaultFlag(currentFlag) ?
+      loc("flags/defaultFlag") :
+      loc(this.flagsBlk[currentFlag].nameLocId))
+  }
+
   function renewDropright(nestObjId, listObjId, items, index, cb) {
     local nestObj = this.scene.findObject(listObjId)
     local needCreateList = false
@@ -491,7 +527,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateUserSkinList() {
     ::reload_user_skins()
-    let userSkinsOption = ::get_option(::USEROPT_USER_SKIN)
+    let userSkinsOption = ::get_option(USEROPT_USER_SKIN)
     this.renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
 
@@ -499,10 +535,10 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
-    let options = [::USEROPT_TANK_CAMO_SCALE,
-                     ::USEROPT_TANK_CAMO_ROTATION]
+    let options = [USEROPT_TANK_CAMO_SCALE,
+                     USEROPT_TANK_CAMO_ROTATION]
     if (hasFeature("SpendGold"))
-      options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
+      options.insert(0, USEROPT_TANK_SKIN_CONDITION)
 
     let view = { isTooltipByHold = showConsoleButtons.value, rows = [] }
     foreach (optType in options) {
@@ -532,7 +568,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let have_premium = havePremium.value
     local option = null
 
-    option = ::get_option(::USEROPT_TANK_SKIN_CONDITION)
+    option = ::get_option(USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
     let tscTrObj = this.scene.findObject("tr_" + tscId)
     if (checkObj(tscTrObj)) {
@@ -544,7 +580,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateSkinConditionValue(value, sliderObj)
     }
 
-    option = ::get_option(::USEROPT_TANK_CAMO_SCALE)
+    option = ::get_option(USEROPT_TANK_CAMO_SCALE)
     let tcsId = option.id
     let tcsTrObj = this.scene.findObject("tr_" + tcsId)
     if (checkObj(tcsTrObj)) {
@@ -556,7 +592,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.onChangeTankCamoScale(sliderObj)
     }
 
-    option = ::get_option(::USEROPT_TANK_CAMO_ROTATION)
+    option = ::get_option(USEROPT_TANK_CAMO_ROTATION)
     let tcrId = option.id
     let tcrTrObj = this.scene.findObject("tr_" + tcrId)
     if (checkObj(tcrTrObj)) {
@@ -573,7 +609,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(obj))
       return
 
-    let oldValue = ::get_option(::USEROPT_TANK_SKIN_CONDITION).value
+    let oldValue = ::get_option(USEROPT_TANK_SKIN_CONDITION).value
     let newValue = obj.getValue()
     if (oldValue == newValue)
       return
@@ -636,7 +672,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
     for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
-      button.id = "slot_attach_" + i
+      button.id = $"slot_attach_{i}"
       button.onClick = "onAttachableSlotClick"
       button.onDblClick = "onAttachableSlotDoubleClick"
       button.onDeleteClick = "onDeleteAttachable"
@@ -662,7 +698,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
     for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.DECALS)
-      button.id = "slot_" + i
+      button.id = $"slot_{i}"
       button.onClick = "onDecalSlotClick"
       button.onDblClick = "onDecalSlotDoubleClick"
       button.onDeleteClick = "onDeleteDecal"
@@ -678,12 +714,36 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     dObj.setValue(this.curSlot)
   }
 
+  function updateFlagSlots() {
+    let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
+    for (local i = 0; i < ::g_decorator_type.FLAGS.getMaxSlots(); i++) {
+      let button = this.getViewButtonTable(i, ::g_decorator_type.FLAGS)
+      button.id = $"slot_flag_{i}"
+      button.onClick = "onFlagSlotClick"
+      view.buttons.append(button)
+    }
+
+    let dObj = this.scene.findObject("flag_div")
+    if (!checkObj(dObj))
+      return
+
+    let flagListObj = dObj.findObject("slots_flag_list")
+    if (!checkObj(flagListObj))
+      return
+
+    dObj.show(true)
+    let data = handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+
+    this.guiScene.replaceContentFromText(flagListObj, data, data.len(), this)
+    flagListObj.setValue(this.curFlagSlot)
+  }
+
   function getViewButtonTable(slotIdx, decoratorType) {
     let canEditDecals = this.isUnitOwn && this.previewSkinId == null
     let slot = this.getSlotInfo(slotIdx, false, decoratorType)
     let decalId = slot.decalId
     let decorator = getDecorator(decalId, decoratorType)
-    let slotRatio = clamp(decoratorType.getRatio(decorator), 1, 2)
+    let slotRatio = clamp(decoratorType.getRatio(decorator), 0.5, 2)
     local buttonTooltip = slot.isEmpty ? loc(decoratorType.emptySlotLocId) : ""
     if (!this.isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
@@ -710,7 +770,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       image = decoratorType.getImage(decorator)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
-      tooltipId = slot.isEmpty ? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
+      tooltipId = slot.isEmpty ? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType,
+        decoratorType == ::g_decorator_type.FLAGS && this.isDefaultFlag(decalId) ? { hideUnlockInfo = true } : null)
       tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
   }
@@ -718,7 +779,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   onSlotsHoverChange = @() this.updateButtons()
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true) {
-    let isGift   = ::isUnitGift(this.unit)
+    let isGift = ::isUnitGift(this.unit)
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
     let canBuyIngame = !canBuyOnline && (::canBuyUnit(this.unit) || canBuyNotResearchedUnit)
@@ -818,6 +879,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
           skins_div = !isInEditMode && !this.decorMenu?.isOpened && this.access_Skins
           user_skins_block = !this.previewMode && this.access_UserSkins
+          user_flags_block = !this.previewMode && this.access_UserSkins
           tank_skin_settings = !this.previewMode && (this.isUnitTank || this.isUnitShipOrBoat)
 
           previewed_decorator_div  = !isInEditMode && this.decoratorPreview
@@ -854,6 +916,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           decalslots_div     = isHangarLoaded
           slots_list         = isHangarLoaded
           skins_navigator    = isHangarLoaded
+          flags_navigator    = isHangarLoaded
           tank_skin_settings = isHangarLoaded
     })
 
@@ -934,9 +997,13 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let showAttachableSlotsDiv = this.access_Attachables
       && (inBasicMode || (decoratorType == ::g_decorator_type.ATTACHABLES && (this.currentState & decoratorEditState.SELECT)))
 
+    let showFlagsSlotDiv = this.access_Flags
+      && (inBasicMode || (decoratorType == ::g_decorator_type.FLAGS && (this.currentState & decoratorEditState.SELECT)))
+
     showObjectsByTable(this.scene, {
       decalslots_div = showDecalsSlotDiv
       attachable_div = showAttachableSlotsDiv
+      flags_navigator = showFlagsSlotDiv
     })
   }
 
@@ -1004,6 +1071,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (decoratorType == ::g_decorator_type.ATTACHABLES)
       return this.curAttachSlot
 
+    if (decoratorType == ::g_decorator_type.FLAGS)
+      return this.curFlagSlot
+
     return this.curSlot
   }
 
@@ -1012,6 +1082,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.curSlot = slotIdx
     else if (decoratorType == ::g_decorator_type.ATTACHABLES)
       this.curAttachSlot = slotIdx
+    else if (decoratorType == ::g_decorator_type.FLAGS)
+      this.curFlagSlot = slotIdx
   }
 
   function onSkinOptionSelect(_obj) {
@@ -1046,6 +1118,16 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.setCurrentDecoratorSlot(slotId, ::g_decorator_type.ATTACHABLES)
     this.updateButtons(::g_decorator_type.ATTACHABLES)
+  }
+
+  function onFlagSlotSelect(obj) {
+    if (!checkObj(obj))
+      return
+
+    let slotId = obj.getValue()
+
+    this.setCurrentDecoratorSlot(slotId, ::g_decorator_type.FLAGS)
+    this.updateButtons(::g_decorator_type.FLAGS)
   }
 
   function onAttachableSlotActivate(obj) {
@@ -1083,7 +1165,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let slot = this.getSlotInfo(slotId, false, decoratorType)
     if (!slot.isEmpty && decoratorType != ::g_decorator_type.ATTACHABLES
-                      && decoratorType != ::g_decorator_type.DECALS)
+                      && decoratorType != ::g_decorator_type.DECALS
+                      && decoratorType != ::g_decorator_type.FLAGS)
       decoratorType.specifyEditableSlot(slotId)
 
     this.generateDecorationsList(slot, decoratorType)
@@ -1162,6 +1245,12 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.openDecorationsListForSlot(slotId, obj, ::g_decorator_type.DECALS)
   }
 
+  function onFlagSlotClick(obj) {
+    if (!checkObj(obj))
+      return
+    this.openDecorationsListForSlot(0, obj, ::g_decorator_type.FLAGS)
+  }
+
   function onDecalSlotDoubleClick(_obj) {
     this.onDecoratorSlotDoubleClick(::g_decorator_type.DECALS)
   }
@@ -1175,7 +1264,6 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let slotInfo = this.getSlotInfo(slotIdx, false, decoratorType)
     if (slotInfo.isEmpty)
       return
-
     let decorator = getDecorator(slotInfo.decalId, decoratorType)
     this.currentState = decoratorEditState.REPLACE
     this.enterEditDecalMode(slotIdx, decorator)
@@ -1189,7 +1277,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.currentType = decoratorType
 
-    this.decorMenu?.updateHandlerData(this.currentType, this.unit, slot.decalId, this.preSelectDecorator?.id)
+    this.decorMenu?.updateHandlerData(this.currentType, this.unit, slot.decalId, this.preSelectDecorator?.id,
+      decoratorType.unlockedItemType == UNLOCKABLE_SHIP_FLAG ? [this.defaultFlag] : [] )
     this.decorMenu?.createCategories()
 
     this.showDecoratorsList()
@@ -1383,9 +1472,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function stopDecalEdition(save = false) {
     if (!(this.currentState & decoratorEditState.EDITING))
       return
-
     let decorator = getDecorator(this.editableDecoratorId, this.currentType)
-
     if (!save || !decorator) {
       this.currentType.exitEditMode(false, false, Callback(this.afterStopDecalEdition, this))
       return
@@ -1405,6 +1492,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.setDecoratorInSlot(decorator)
+    this.updateFlagName()
   }
 
   function askBuyDecoratorOnExitEditMode(decorator) {
@@ -1412,6 +1500,10 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
               Callback((@(decorator) function() {
                           this.askBuyDecorator(decorator, function() {
                               save_current_attachables()
+                              if(decorator.decoratorType == ::g_decorator_type.FLAGS ) {
+                                this.updateFlagSlots()
+                                this.updateFlagName()
+                              }
                             })
                         })(decorator), this)))
       this.showFailedInstallPopup(decorator)
@@ -1573,6 +1665,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     }
   }
 
+  onFlagChange = @(_obj) null
+
   function onSkinReadyToShow(unitId, skinId, result) {
     if (!result || !canStartPreviewScene(true, true) ||
       unitId != this.unit.name || (this.skinList?.values ?? []).indexof(skinId) == null)
@@ -1587,11 +1681,11 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onUserSkinChanged(obj) {
     let value = obj.getValue()
-    let prevValue = ::get_option(::USEROPT_USER_SKIN).value
+    let prevValue = ::get_option(USEROPT_USER_SKIN).value
     if (prevValue == value)
       return
 
-    set_option(::USEROPT_USER_SKIN, value)
+    set_option(USEROPT_USER_SKIN, value)
     hangar_force_reload_model()
   }
 
@@ -1600,7 +1694,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.initialUserSkinId = ""
-    set_option(::USEROPT_USER_SKIN, 0)
+    set_option(USEROPT_USER_SKIN, 0)
 
     if (needReloadModel)
       hangar_force_reload_model()
@@ -1726,7 +1820,11 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (decalId == "" && isValid && decoratorType != null) {
       let liveryName = this.getSelectedBuiltinSkinId()
-      decalId = decoratorType.getDecoratorNameInSlot(slotId, this.unit.name, liveryName, false)
+      decalId = decoratorType.getDecoratorNameInSlot(slotId, this.unit.name, liveryName, false) ?? ""
+      if(decalId == "default" && decoratorType == ::g_decorator_type.FLAGS && this.unit.isShipOrBoat()) {
+        decalId = get_default_ship_flag()
+        apply_ship_flag(decalId, true)
+      }
       isValid = isValid && slotId < decoratorType.getMaxSlots()
     }
 
@@ -1850,6 +1948,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (all || decoratorType == ::g_decorator_type.DECALS)
       this.updateDecalSlots()
 
+    if (all || decoratorType == ::g_decorator_type.FLAGS)
+      this.updateFlagSlots()
+
     this.updatePenaltyText()
   }
 
@@ -1914,6 +2015,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     ::g_decorator_type.DECALS.save(this.unit.name, withProgressBox)
     ::g_decorator_type.ATTACHABLES.save(this.unit.name, withProgressBox)
+    ::g_decorator_type.FLAGS.save(this.unit.name, withProgressBox)
   }
 
   function showDecoratorsList() {
@@ -2001,6 +2103,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return ::g_decorator_type.DECALS
     if (this.scene.findObject("slots_attachable_list").isHovered())
       return ::g_decorator_type.ATTACHABLES
+    if (this.scene.findObject("slots_flag_list").isHovered())
+      return ::g_decorator_type.FLAGS
     return ::g_decorator_type.UNKNOWN
   }
 
@@ -2038,7 +2142,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function onEventItemsShopUpdate(_params) {
     this.updateDecalSlots()
     this.updateAttachablesSlots()
+    this.updateFlagSlots()
     this.updateSkinList()
+    this.updateFlagName()
     this.updateButtons()
   }
 
@@ -2068,7 +2174,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function removeAllDecorators(save) {
-    foreach (decoratorType in [ ::g_decorator_type.DECALS, ::g_decorator_type.ATTACHABLES ])
+    foreach (decoratorType in [ ::g_decorator_type.DECALS, ::g_decorator_type.ATTACHABLES, ::g_decorator_type.FLAGS ])
       for (local i = 0; i < decoratorType.getAvailableSlots(this.unit); i++) {
         let slot = this.getSlotInfo(i, false, decoratorType)
         if (!slot.isEmpty)

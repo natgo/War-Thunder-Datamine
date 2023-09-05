@@ -26,6 +26,7 @@ let { get_game_mode, get_game_type } = require("mission")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { split, utf8ToLower } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -742,7 +743,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let gt = get_game_type()
     let optionItems = ::get_briefing_options(this.gm, gt, this.missionBlk)
-    let diffOption = u.search(optionItems, function(item) { return getTblValue(0, item) == ::USEROPT_DIFFICULTY })
+    let diffOption = u.search(optionItems, function(item) { return getTblValue(0, item) == USEROPT_DIFFICULTY })
     this.needCheckDiffAfterOptions = diffOption != null
 
     let cb = Callback(this.afterMissionOptionsApply, this)
@@ -759,7 +760,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.checkedNewFlight(function() {
-      if (this.needCheckDiffAfterOptions && get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+      if (this.needCheckDiffAfterOptions && get_gui_option(USEROPT_DIFFICULTY) == "custom")
         ::gui_start_cd_options(::briefing_options_apply, this)
       else
         ::briefing_options_apply.call(this) //!!FIX ME: DIRTY HACK

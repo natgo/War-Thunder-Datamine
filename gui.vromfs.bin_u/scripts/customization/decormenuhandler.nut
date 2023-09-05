@@ -38,13 +38,16 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
   currentSeenListId = ""
   currentSeenList = null
 
-  function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId) {
+  hideUnlockInfoList = []
+
+  function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId, hideUnlockInfoIds = []) {
     this.curDecorType = decorType
     this.curUnit = unit
     this.curSlotDecorId = slotDecorId
     this.preSelectDecorId = preSelectDecoratorId
     this.currentSeenListId = this.curDecorType.name == "DECALS" ? SEEN.DECALS : SEEN.DECORATORS
     this.currentSeenList = seenList.get(this.currentSeenListId)
+    this.hideUnlockInfoList = hideUnlockInfoIds
   }
 
   function prepareDecoratorsCache(decorCache) {
@@ -277,6 +280,7 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
     let slotDecorId = this.curSlotDecorId
     let unit = this.curUnit
     let currentListId = this.currentSeenListId
+    let list = this.hideUnlockInfoList
     return {
       isTooltipByHold = showConsoleButtons.value
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
@@ -287,6 +291,7 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
           ? "onCollectionIconClick"
           : null
         unseenIcon = decorator.canUse(unit) ? bhvUnseen.makeConfigStr(currentListId, decorator.id) : ""
+        hideUnlockInfo = list.contains(decorator.id)
       }))
     }
   }

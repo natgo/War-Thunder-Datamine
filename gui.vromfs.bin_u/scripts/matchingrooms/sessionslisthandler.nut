@@ -18,6 +18,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { get_game_mode } = require("mission")
+let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::match_search_gm <- -1
 
@@ -141,16 +143,16 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
   }
 
   function initOptions() {
-    setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
+    setGuiOptionsMode(OPTIONS_MODE_SEARCH)
     local options = null
     if (this.isCoop)
       options = [
-        [::USEROPT_SEARCH_GAMEMODE, "spinner"],
-        [::USEROPT_SEARCH_DIFFICULTY, "spinner"],
+        [USEROPT_SEARCH_GAMEMODE, "spinner"],
+        [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
     else if (::match_search_gm == GM_SKIRMISH)
       options = [
-        [::USEROPT_SEARCH_DIFFICULTY, "spinner"],
+        [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
 
     if (!options)
@@ -168,7 +170,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
     if (!obj)
       return
     let value = obj.getValue()
-    let option = ::get_option(::USEROPT_SEARCH_GAMEMODE)
+    let option = ::get_option(USEROPT_SEARCH_GAMEMODE)
     if (!(value in option.values))
       return
 
@@ -180,7 +182,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
       return
 
     let value = obj.getValue()
-    let option = ::get_option(::USEROPT_SEARCH_DIFFICULTY)
+    let option = ::get_option(USEROPT_SEARCH_DIFFICULTY)
     if (!(value in option.values))
       return
 

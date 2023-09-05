@@ -19,6 +19,7 @@ let { select_mission_full, get_mission_difficulty } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner() {
   ::gui_start_modal_wnd(gui_handlers.MissionBuilderTuner)
@@ -318,7 +319,7 @@ gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT 
         this.goForward(::gui_start_flight)
     }
 
-    if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+    if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
       ::gui_start_cd_options(appFunc, this)
     else
       appFunc()

@@ -411,12 +411,12 @@ let handlersManager = {
     guiScene.loadScene(this.getRootScreenBlkPath(), this)
 
     this.updateCssParams(guiScene)
-    //this.setGuiRootOptions(guiScene, false) // need to uncomment after merging with baseGuiHandlerManagerWT
+    this.setGuiRootOptions(guiScene, false)
     this.startActionsDelay()
     guiScene.initCursor("%gui/cursor.blk", "normal")
     if (!guiScene.isEqual(::get_cur_gui_scene())) {
       this.onClearScene(guiScene)
-      broadcastEvent("GuiSceneCleared", { guiScene })
+      broadcastEvent("GuiSceneCleared")
       return
     }
 
@@ -427,7 +427,7 @@ let handlersManager = {
 
     this.updateLoadingFlag()
     this.onClearScene(guiScene)
-    broadcastEvent("GuiSceneCleared", { guiScene })
+    broadcastEvent("GuiSceneCleared")
   }
 
   function updateLoadingFlag() {

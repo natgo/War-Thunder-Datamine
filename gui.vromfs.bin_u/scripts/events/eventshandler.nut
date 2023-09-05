@@ -31,6 +31,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { setPromoButtonText, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -111,7 +112,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
+    setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
     this.eventsListObj = this.scene.findObject("items_list")
     if (!checkObj(this.eventsListObj))
       return this.goBack()
@@ -440,7 +441,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let params = {
       options = optionsData.options
       optionsConfig = optionsData.context
-      wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
+      wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
       wndGameMode = GM_DOMINATION
       align = ALIGN.TOP
       alignObj = obj

@@ -133,7 +133,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
     if (onlyImage)
       return item.getIcon()
-
+    let { hideCount = false } = config
     image = handyman.renderCached(("%gui/items/item.tpl"), {
       items = item.getViewData({
             enableBackground = config?.enableBackground ?? false,
@@ -142,7 +142,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
             contentIcon = false,
             shouldHideAdditionalAmmount = true,
             hasCraftTimer = false,
-            count = getTblValue("count", config, 0)
+            count = hideCount ? 0 : config?.count ?? 0
           })
       })
     return image

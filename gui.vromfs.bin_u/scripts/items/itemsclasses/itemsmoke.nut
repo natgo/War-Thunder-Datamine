@@ -10,6 +10,10 @@ let { getUnlockCost, buyUnlock, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
+  USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY,
+  USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -34,7 +38,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
   }
 
   function getOptionData() {
-    let option = ::get_option(::USEROPT_AEROBATICS_SMOKE_TYPE)
+    let option = ::get_option(USEROPT_AEROBATICS_SMOKE_TYPE)
     if (!option)
       return {}
 
@@ -108,20 +112,20 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
     ::update_test_flight_unit_info({unit})
     ::cur_aircraft_name = unit.name
     let defaultValues = {
-      [::USEROPT_WEAPONS] = "",
-      [::USEROPT_AIRCRAFT] = unit.name,
-      [::USEROPT_CLIME] = "clear",
-      [::USEROPT_TIME] = "Day",
-      [::USEROPT_SKIN] = "default",
-      [::USEROPT_DIFFICULTY] = "arcade",
-      [::USEROPT_LIMITED_FUEL] = "no",
-      [::USEROPT_LIMITED_AMMO] = "no",
-      [::USEROPT_MODIFICATIONS] = "yes",
-      [::USEROPT_LOAD_FUEL_AMOUNT] = "300000"
+      [USEROPT_WEAPONS] = "",
+      [USEROPT_AIRCRAFT] = unit.name,
+      [USEROPT_CLIME] = "clear",
+      [USEROPT_TIME] = "Day",
+      [USEROPT_SKIN] = "default",
+      [USEROPT_DIFFICULTY] = "arcade",
+      [USEROPT_LIMITED_FUEL] = "no",
+      [USEROPT_LIMITED_AMMO] = "no",
+      [USEROPT_MODIFICATIONS] = "yes",
+      [USEROPT_LOAD_FUEL_AMOUNT] = "300000"
     }
 
     foreach (idx, val in defaultValues)
-      ::set_gui_option_in_mode(idx, val, ::OPTIONS_MODE_TRAINING)
+      ::set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
 
     let misName = "aerobatic_smoke_preview"
     let misInfo = get_meta_mission_info_by_name(misName)

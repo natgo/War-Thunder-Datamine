@@ -27,6 +27,8 @@ let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.n
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
+} = require("%scripts/options/optionsExtNames.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -410,7 +412,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
   function updateVisibility() {
     if (checkObj(this.scene)) {
-      let showActionBarOption = ::get_gui_option_in_mode(::USEROPT_SHOW_ACTION_BAR, ::OPTIONS_MODE_GAMEPLAY, true)
+      let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
       this.scene.show(!::g_hud_live_stats.isVisible() && showActionBarOption)
     }
   }

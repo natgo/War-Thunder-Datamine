@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_GAMEPAD_CURSOR_CONTROLLER
+} = require("%scripts/options/optionsExtNames.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
@@ -23,9 +25,9 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     ::get_cur_gui_scene()?.setUseGamepadCursorControl(newValue)
     if (::g_login.isProfileReceived())
       ::set_gui_option_in_mode(
-        ::USEROPT_GAMEPAD_CURSOR_CONTROLLER,
+        USEROPT_GAMEPAD_CURSOR_CONTROLLER,
         newValue,
-        ::OPTIONS_MODE_GAMEPLAY
+        OPTIONS_MODE_GAMEPLAY
       )
     this.currentOptionValue = newValue
     ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
@@ -40,8 +42,8 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     if (!::g_login.isProfileReceived())
       return ::getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, IS_GAMEPAD_CURSOR_ENABLED_DEFAULT)
     return ::get_gui_option_in_mode(
-      ::USEROPT_GAMEPAD_CURSOR_CONTROLLER,
-      ::OPTIONS_MODE_GAMEPLAY,
+      USEROPT_GAMEPAD_CURSOR_CONTROLLER,
+      OPTIONS_MODE_GAMEPLAY,
       IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
     )
   }

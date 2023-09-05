@@ -18,6 +18,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -34,7 +35,7 @@ enum CChoiceState {
 gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/countryChoice.blk"
-  wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
+  wndOptionsMode = OPTIONS_MODE_GAMEPLAY
 
   countries = null
   availableCountriesArray = null

@@ -62,6 +62,7 @@ let { set_option } = require("%scripts/options/optionsExt.nut")
 let { doPreviewUnlockPrize } = require("%scripts/unlocks/unlocksView.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -179,7 +180,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
     //prepare options
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.unlocksTree = {}
 
@@ -1681,11 +1682,11 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function onIconChoosen(option) {
-    let value = ::get_option(::USEROPT_PILOT).value
+    let value = ::get_option(USEROPT_PILOT).value
     if (value == option.idx)
       return
 
-    set_option(::USEROPT_PILOT, option.idx)
+    set_option(USEROPT_PILOT, option.idx)
     ::save_profile(false)
 
     if (!checkObj(this.scene))

@@ -29,6 +29,7 @@
   "exhaustFx": "ship_exhaust_big",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
+  "shipsDisableDeadCoverParts": true,
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 14.0,
@@ -6586,31 +6587,31 @@
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
       "cover_01_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       },
       "cover_02_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       },
       "cover_03_dm": {
-        "hp": 33814.0
+        "hp": 16907.0
       },
       "cover_04_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       },
       "cover_05_dm": {
-        "hp": 37200.0
+        "hp": 18700.0
       },
       "cover_06_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       },
       "cover_07_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       },
       "cover_08_dm": {
-        "hp": 35488.0
+        "hp": 17744.0
       },
       "cover_09_dm": {
-        "hp": 28600.0
+        "hp": 14400.0
       }
     },
     "superstructures": {
@@ -21614,7 +21615,11 @@
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.08
+    "sideCenterOfMassOffsetPercent": 0.08,
+    "minCaliberToBreach": 0.18,
+    "minExplRadiusToBreach": 0.3,
+    "deadCoverCounterfloodingRel": 0.5,
+    "counterFloodingWaterMassVel": 70000.0
   },
   "shipCover": {
     "cover": [
@@ -21636,43 +21641,43 @@
           "part": [
             {
               "partNo": "ammunition_storage_aux_12_dm",
-              "critWaterLevel": 0.4
-            },
-            {
-              "partNo": "ammunition_storage_aux_13_dm",
-              "critWaterLevel": 0.4
-            },
-            {
-              "partNo": "ammunition_storage_aux_14_dm",
-              "critWaterLevel": 0.45
-            },
-            {
-              "partNo": "ammunition_storage_aux_01_dm",
               "critWaterLevel": 0.6
             },
             {
+              "partNo": "ammunition_storage_aux_13_dm",
+              "critWaterLevel": 0.65
+            },
+            {
+              "partNo": "ammunition_storage_aux_14_dm",
+              "critWaterLevel": 0.7
+            },
+            {
+              "partNo": "ammunition_storage_aux_01_dm",
+              "critWaterLevel": 0.75
+            },
+            {
               "partNo": "ammunition_storage_aux_02_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.8
             },
             {
               "partNo": "ammunition_storage_aux_03_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.85
             },
             {
               "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.9
             },
             {
               "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -21689,7 +21694,7 @@
             },
             {
               "partNo": "ammunition_storage_aux_05_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.8
             },
             {
               "partNo": "ammunition_storage_aux_15_dm",
@@ -21706,23 +21711,23 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.5
-            },
-            {
-              "partNo": "engine_room_02_dm",
               "critWaterLevel": 0.6
             },
             {
-              "partNo": "engine_room_03_dm",
+              "partNo": "engine_room_02_dm",
               "critWaterLevel": 0.7
             },
             {
-              "partNo": "ammunition_storage_aux_06_dm",
+              "partNo": "engine_room_03_dm",
               "critWaterLevel": 0.8
             },
             {
+              "partNo": "ammunition_storage_aux_06_dm",
+              "critWaterLevel": 0.65
+            },
+            {
               "partNo": "ammunition_storage_aux_07_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.75
             }
           ]
         }
@@ -21735,23 +21740,23 @@
           "part": [
             {
               "partNo": "ammunition_storage_aux_06_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.65
             },
             {
               "partNo": "ammunition_storage_aux_07_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.7
             },
             {
               "partNo": "ammunition_storage_charges_03_dm",
-              "critWaterLevel": 0.45
+              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_04_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.8
             },
             {
               "partNo": "ammunition_storage_shells_03_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -21764,11 +21769,11 @@
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.7
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -21781,15 +21786,15 @@
           "part": [
             {
               "partNo": "ammunition_storage_aux_08_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.6
             },
             {
               "partNo": "ammunition_storage_aux_09_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.7
             },
             {
               "partNo": "ammunition_storage_aux_10_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.8
             },
             {
               "partNo": "ammunition_storage_aux_04_dm",
@@ -21797,19 +21802,19 @@
             },
             {
               "partNo": "ammunition_storage_charges_05_dm",
-              "critWaterLevel": 0.45
+              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_06_dm",
-              "critWaterLevel": 0.45
+              "critWaterLevel": 0.9
             },
             {
               "partNo": "ammunition_storage_shells_04_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_shells_05_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -22040,11 +22045,11 @@
       "descLocId": "ship_flag_germany_06/desc",
       "texture": "flag_germany_06_c*"
     },
-    "ship_flag_ireland_modern": {
+    "ship_flag_ireland_01": {
       "category": "national",
-      "unlockId": "ship_flag_ireland_modern",
-      "nameLocId": "ship_flag_ireland_modern/name",
-      "descLocId": "ship_flag_ireland_modern/desc",
+      "unlockId": "ship_flag_ireland_01",
+      "nameLocId": "ship_flag_ireland_01/name",
+      "descLocId": "ship_flag_ireland_01/desc",
       "texture": "flag_ireland_01_c*"
     },
     "ship_flag_uk_01": {
@@ -22061,11 +22066,11 @@
       "descLocId": "ship_flag_uk_02/desc",
       "texture": "flag_uk_02_c*"
     },
-    "ship_flag_flag_egypt_01": {
+    "ship_flag_egypt_01": {
       "category": "naval",
-      "unlockId": "ship_flag_flag_egypt_01",
-      "nameLocId": "ship_flag_flag_egypt_01/name",
-      "descLocId": "ship_flag_flag_egypt_01/desc",
+      "unlockId": "ship_flag_egypt_01",
+      "nameLocId": "ship_flag_egypt_01/name",
+      "descLocId": "ship_flag_egypt_01/desc",
       "texture": "flag_egypt_01_c*"
     },
     "ship_flag_japan_01": {
