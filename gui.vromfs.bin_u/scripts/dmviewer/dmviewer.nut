@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -14,12 +14,8 @@ let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { KGF_TO_NEWTON,
-        isCaliberCannon,
-        getCommonWeapons,
-        getLastPrimaryWeapon,
-        getPrimaryWeaponsList,
-        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { KGF_TO_NEWTON, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
+  getPrimaryWeaponsList, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
@@ -33,6 +29,7 @@ let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { shopIsModificationEnabled } = require("chardResearch")
 
 /*
   dmViewer API:
@@ -69,10 +66,10 @@ let function isViewModeTutorAvailableForUser() {
   if (!::my_stats.isStatsLoaded())
     return false
 
-  local res = ::load_local_account_settings("tutor/dmViewer/isAvailable")
+  local res = loadLocalAccountSettings("tutor/dmViewer/isAvailable")
   if (res == null) {
     res = ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
-    ::save_local_account_settings("tutor/dmViewer/isAvailable", res)
+    saveLocalAccountSettings("tutor/dmViewer/isAvailable", res)
   }
   return res
 }
@@ -156,7 +153,7 @@ let function distanceToStr(val) {
   }
 
   function init(handler) {
-    this.screen = [ ::screen_width(), ::screen_height() ]
+    this.screen = [ screen_width(), screen_height() ]
     this.unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
     this.offset = [ this.screen[1] * 0.1, 0 ]
 
@@ -362,7 +359,7 @@ let function distanceToStr(val) {
   }
 
   function needShowExtHints() {
-    return ::load_local_account_settings("dmViewer/needShowExtHints", true)
+    return loadLocalAccountSettings("dmViewer/needShowExtHints", true)
   }
 
   function checkShowViewModeTutor(modeId) {
@@ -382,7 +379,7 @@ let function distanceToStr(val) {
       return
 
     let modeName = this.modes[modeId]
-    let dmTutorData = ::load_local_account_settings("tutor/dmViewer")
+    let dmTutorData = loadLocalAccountSettings("tutor/dmViewer")
     let numShows = dmTutorData?.numShows[modeName] ?? 0
     if (numShows >= MAX_VIEW_MODE_TUTOR_SHOWS)
       return
@@ -409,8 +406,8 @@ let function distanceToStr(val) {
     if (!listObj?.isValid())
       return
 
-    ::save_local_account_settings($"tutor/dmViewer/numShows/{modeName}", numShows + 1)
-    ::save_local_account_settings("tutor/dmViewer/lastSeen", get_charserver_time_sec())
+    saveLocalAccountSettings($"tutor/dmViewer/numShows/{modeName}", numShows + 1)
+    saveLocalAccountSettings("tutor/dmViewer/lastSeen", get_charserver_time_sec())
 
     let steps = [{
       obj = listObj.getChild(modeId)
@@ -591,7 +588,7 @@ let function distanceToStr(val) {
     let guiScene = obj.getScene()
 
     guiScene.setUpdatesEnabled(true, true)
-    let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    let cursorPos = get_dagui_mouse_cursor_pos_RC()
     let size = obj.getSize()
     let posX = clamp(cursorPos[0] + this.offset[0], this.unsafe[0], max(this.unsafe[0], this.screen[0] - this.unsafe[0] - size[0]))
     let posY = clamp(cursorPos[1] + this.offset[1], this.unsafe[1], max(this.unsafe[1], this.screen[1] - this.unsafe[1] - size[1]))
@@ -892,57 +889,68 @@ let function distanceToStr(val) {
   }
 
   function addRwrDescription(sensorPropsBlk, indent, desc) {
-    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
-    for (local band = 0; band < 16; ++band) {
+    local bandsIndexes = []
+    for (local band = 0; band < 16; ++band)
       if (sensorPropsBlk.getBool(format("band%d", band), false))
-        bands = bands + loc(format("radar_freq_band_%d", band)) + " "
+        bandsIndexes.append(band)
+
+    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
+    if (bandsIndexes.len() > 1) {
+      local bandStart = null
+      for (local i = 0; i < bandsIndexes.len(); ++i) {
+        let band = bandsIndexes[i]
+        if (bandStart == null)
+          bandStart = band
+        else {
+          let bandPrev = bandsIndexes[i - 1]
+          if (band > bandPrev + 1) {
+            if (bandPrev > bandStart)
+              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandPrev)) + ", "
+            else
+              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + ", "
+            bandStart = band
+          }
+        }
+      }
+      let bandLast = bandsIndexes[bandsIndexes.len() - 1]
+      if (bandLast > bandStart)
+        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandLast)) + " "
+      else
+        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + " "
     }
+    else
+      bands = bands + loc(format("radar_freq_band_%d", bandsIndexes[0]))
     desc.append(bands)
 
     let rangeMax = sensorPropsBlk.getReal("range", 0.0)
     desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
 
-    let mandatoryRecognition = sensorPropsBlk.getBool("mandatoryRecognition", false)
     let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
     let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
 
-    local threatTypes = {}
-    local trackingThreatTypes = {}
     local launchingThreatTypes = {}
     let groupsBlk = sensorPropsBlk.getBlockByName("groups")
-    if (mandatoryRecognition || !detectTracking || !detectLaunch)
+    if (!detectLaunch)
       for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
         let groupBlk = groupsBlk.getBlock(g)
-        let detectGroupTracking = !detectTracking && groupBlk.getBool("detectTracking", false)
         let detectGroupLaunching = !detectLaunch && groupBlk.getBool("detectLaunch", false)
         for (local t = 0; t < groupBlk.paramCount(); ++t)
           if (groupBlk.getParamName(t) == "type") {
             let threatType = groupBlk.getParamValue(t)
-            if (mandatoryRecognition)
-              if (!threatTypes?[threatType])
-                threatTypes[threatType] <- true
-            if (detectGroupTracking)
-              if (!trackingThreatTypes?[threatType])
-                trackingThreatTypes[threatType] <- true
             if (detectGroupLaunching)
               if (!launchingThreatTypes?[threatType])
                 launchingThreatTypes[threatType] <- true
           }
       }
 
-    desc.append(indent + loc("rwr_threats_types") + loc("ui/colon") +
-      (!mandatoryRecognition ? loc("rwr_threats_unlimited") : format("%d", threatTypes.len())))
-
     if (sensorPropsBlk.getBool("targetTracking", false))
       desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
 
-    if (detectTracking || trackingThreatTypes.len() > 0)
-      desc.append(indent + loc("rwr_tracking_threats_types") + loc("ui/colon") +
-        (detectTracking ? loc("rwr_threats_unlimited") : format("%d", trackingThreatTypes.len())))
+    if (detectTracking)
+      desc.append(indent + loc("rwr_tracking_detection"))
 
-    if (detectLaunch || launchingThreatTypes.len() > 0)
-      desc.append(indent + loc("rwr_launching_threats_types") + loc("ui/colon") +
-        (detectLaunch ? loc("rwr_threats_unlimited") : format("%d", launchingThreatTypes.len())))
+    if (detectLaunch || launchingThreatTypes.len() > 3)
+      desc.append(indent + loc("rwr_launch_detection"))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
@@ -1196,7 +1204,7 @@ let function distanceToStr(val) {
 
           case ES_UNIT_TYPE_AIRCRAFT:
           case ES_UNIT_TYPE_HELICOPTER:
-            local partIndex = ::to_integer_safe(this.trimBetween(partName, "engine", "_"), -1, false)
+            local partIndex = to_integer_safe(this.trimBetween(partName, "engine", "_"), -1, false)
             if (partIndex <= 0)
               break
 
@@ -1517,9 +1525,7 @@ let function distanceToStr(val) {
             continue
           desc.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
             this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
-          if (sensorType == "radar" || sensorType == "radar_irst")
-            this.addRadarDescription(sensorPropsBlk, "  ", desc)
-          else if (sensorType == "rwr")
+          if (sensorType == "rwr")
             this.addRwrDescription(sensorPropsBlk, "  ", desc)
         }
 
@@ -1640,6 +1646,7 @@ let function distanceToStr(val) {
           desc.extend(this.getAPSDesc(activeProtectionSystemBlk))
         break
 
+      case "ex_aps_launcher":
       case "aps_launcher":
         let activeProtectionSystemBlk = this.unitBlk?.ActiveProtectionSystem
         if (activeProtectionSystemBlk) {
@@ -1931,7 +1938,7 @@ let function distanceToStr(val) {
   }
 
   function getModEffect(modId, effectId) {
-    if (::shop_is_modification_enabled(this.unit.name, modId))
+    if (shopIsModificationEnabled(this.unit.name, modId))
       return 1.0
 
     return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
@@ -1942,7 +1949,7 @@ let function distanceToStr(val) {
       let modBlk = this.unitBlk.modifications.getBlock(b)
       let value = modBlk?.effects[effectId]
       if (value != null
-        && (this.isDebugBatchExportProcess || ::shop_is_modification_enabled(this.unit.name, modBlk.getBlockName())))
+        && (this.isDebugBatchExportProcess || shopIsModificationEnabled(this.unit.name, modBlk.getBlockName())))
           return value
     }
     return null
@@ -2476,7 +2483,7 @@ let function distanceToStr(val) {
   function extractIndexFromDmPartName(partName) {
     let strArr = partName.split("_")
     let l = strArr.len()
-    return (l > 2 && strArr[l - 1] == "dm") ? ::to_integer_safe(strArr[l - 2], -1, false) : -1
+    return (l > 2 && strArr[l - 1] == "dm") ? to_integer_safe(strArr[l - 2], -1, false) : -1
   }
 
   function checkPartLocId(partId, partName, weaponInfoBlk, params) {

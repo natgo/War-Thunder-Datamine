@@ -75,6 +75,7 @@
       },
       {
         "name": "Pulse Doppler",
+        "block": true,
         "search": true,
         "track": true,
         "launch": false,
@@ -83,9 +84,14 @@
           "AN/APG-66(V)1",
           "AN/APG-66(V)3",
           "AN/APG-66J",
+          "AN/APG-68(V)5",
+          "AN/APG-68(V)7",
+          "AN/APG-68(V)9",
+          "AN/APG-65Q",
           "Thales RDY",
           "N019_S31",
           "N010 Zhuk",
+          "N010M Zhuk-M",
           "ELTA EL/M-2001B",
           "PS-371A",
           "PS-37A",
@@ -110,9 +116,14 @@
           "AN/APG-66(V)1",
           "AN/APG-66(V)3",
           "AN/APG-66J",
+          "AN/APG-68(V)5",
+          "AN/APG-68(V)7",
+          "AN/APG-68(V)9",
+          "AN/APG-65Q",
           "Thales RDY",
           "N019_S31",
           "N010 Zhuk",
+          "N010M Zhuk-M",
           "ELTA EL/M-2001B",
           "PS-371A",
           "PS-37A",
@@ -129,18 +140,15 @@
       }
     ]
   },
-  "noTargetsDirectionGroup": {
-    "group": "Pulse Doppler"
-  },
   "targetsPresenceGroups": {
     "targetsPresenceGroup": [
       {
-        "text": "PULSE",
+        "text": "hud/rwr_threat_pulse",
         "default": true,
         "group": "Pulse + CW"
       },
       {
-        "text": "CW",
+        "text": "hud/rwr_threat_cw",
         "group": [
           "Pulse + CW",
           "Pulse Doppler + CW"

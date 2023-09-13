@@ -51,9 +51,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "bomber",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "gun1_dm": {
@@ -1914,14 +1911,46 @@
         },
         "limits": {
           "yaw": [
-            -35.0,
-            35.0
+            -100.0,
+            100.0
           ],
           "pitch": [
-            -35.0,
-            25.0
+            -30.0,
+            75.0
           ]
-        }
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -45.0,
+              -2.0
+            ],
+            "pitch": [
+              -30.0,
+              -5.0
+            ]
+          },
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -30.0,
+              75.0
+            ]
+          },
+          {
+            "yaw": [
+              2.0,
+              45.0
+            ],
+            "pitch": [
+              -30.0,
+              -5.0
+            ]
+          }
+        ]
       }
     ]
   },

@@ -66,7 +66,7 @@
   "targetsPresenceGroups": {
     "targetsPresenceGroup": [
       {
-        "text": "AI TRK",
+        "text": "hud/rwr_threat_ai_track",
         "search": false,
         "track": true,
         "launch": true,
@@ -82,6 +82,7 @@
           "F-5",
           "F-14",
           "F-16",
+          "F-18",
           "Tornado F",
           "Tornado Gr1",
           "Vautour",
@@ -100,6 +101,7 @@
           "F-104 CW",
           "F-14 CW",
           "F-16 CW",
+          "F-18 CW",
           "J-37 CW",
           "Tornado F CW",
           "Mirage 2000 CW",
@@ -108,14 +110,14 @@
         ]
       },
       {
-        "text": "AAA TRK",
+        "text": "hud/rwr_threat_aaa_track",
         "search": false,
         "track": true,
         "launch": true,
         "group": "AAA"
       },
       {
-        "text": "SAM TRK",
+        "text": "hud/rwr_threat_sam_track",
         "search": false,
         "track": true,
         "launch": true,
@@ -130,7 +132,7 @@
         ]
       },
       {
-        "text": "CW LNC",
+        "text": "hud/rwr_threat_cw",
         "search": false,
         "track": true,
         "launch": true,
@@ -142,6 +144,7 @@
           "F-104 CW",
           "F-14 CW",
           "F-16 CW",
+          "F-18 CW",
           "Tornado F CW",
           "Mirage 2000 CW",
           "J-37 CW",
@@ -167,9 +170,13 @@
         "type": "1RL114 TA"
       },
       {
+        "name": "PG9",
+        "type": "PGZ-09 TA"
+      },
+      {
         "name": "9K330",
         "detectLaunch": true,
-        "type": "9K330"
+        "type": "9K330 TA"
       },
       {
         "name": "S1",
@@ -180,11 +187,12 @@
         "name": "AAA",
         "type": [
           "DR-VC-1A",
-          "Rooikat radar"
+          "Rooikat TA"
         ]
       },
       {
         "name": "Crotale",
+        "detectLaunch": true,
         "type": "Crotale TA"
       },
       {
@@ -249,7 +257,8 @@
         "detectLaunch": true,
         "type": [
           "N019_S31",
-          "N010 Zhuk"
+          "N010 Zhuk",
+          "N010M Zhuk-M"
         ]
       },
       {
@@ -372,7 +381,10 @@
           "AN/APG-66",
           "AN/APG-66(V)1",
           "AN/APG-66(V)3",
-          "AN/APG-66J"
+          "AN/APG-66J",
+          "AN/APG-68(V)5",
+          "AN/APG-68(V)7",
+          "AN/APG-68(V)9"
         ]
       },
       {
@@ -387,6 +399,22 @@
           "AN/APG-66(V)3",
           "AN/APG-66J"
         ]
+      },
+      {
+        "name": "F-18",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": "AN/APG-65Q"
+      },
+      {
+        "name": "F-18 CW",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": "AN/APG-65Q"
       },
       {
         "name": "Tornado F",
@@ -532,9 +560,13 @@
         "type": "1RL114 TT"
       },
       {
+        "name": "PG9",
+        "type": "PGZ-09 TT"
+      },
+      {
         "name": "9K330",
         "detectLaunch": true,
-        "type": "9K330"
+        "type": "9K330 TT"
       },
       {
         "name": "ADATS",
@@ -547,6 +579,7 @@
       },
       {
         "name": "Crotale",
+        "detectLaunch": true,
         "type": "Crotale TT"
       },
       {
@@ -572,7 +605,6 @@
           "MR-102-Baklan",
           "MR-104-Rys",
           "MR-105",
-          "4R-90-Yatagan",
           "Yakor-M",
           "Type-275",
           "Type 903",
@@ -712,6 +744,13 @@
         "group": [
           "F-16",
           "F-16 CW"
+        ]
+      },
+      {
+        "text": "F18",
+        "group": [
+          "F-18",
+          "F-18 CW"
         ]
       },
       {

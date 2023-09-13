@@ -2276,6 +2276,10 @@
         "blk": "gameData/flightModels/weaponPresets/ah_1z_aim_9l.blk"
       },
       {
+        "name": "ah_1z_aim_9m",
+        "blk": "gameData/flightModels/weaponPresets/ah_1z_aim_9m.blk"
+      },
+      {
         "name": "ah_1z_hydra_70_m247",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_hydra_70_m247.blk"
       },
@@ -2512,25 +2516,46 @@
         "index": 1,
         "tier": 9,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "aim_9l",
-          "reqModification": "us_aim_9l",
-          "ShowNodes": {
-            "node": "aero_3b_001"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "aero_3b_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": [
+                true,
+                true
+              ],
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9e_001",
+              "bullets": 1,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": [
-              true,
-              true
-            ],
-            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-            "emitter": "us_aim_9e_001",
-            "bullets": 1,
-            "separate": true
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "aero_3b_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": [
+                true,
+                true
+              ],
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9e_001",
+              "bullets": 1,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -2874,25 +2899,46 @@
         "index": 6,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "aim_9l",
-          "reqModification": "us_aim_9l",
-          "ShowNodes": {
-            "node": "aero_3b_002"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "aero_3b_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": [
+                true,
+                true
+              ],
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9e_002",
+              "bullets": 1,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": [
-              true,
-              true
-            ],
-            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-            "emitter": "us_aim_9e_002",
-            "bullets": 1,
-            "separate": true
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "aero_3b_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": [
+                true,
+                true
+              ],
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9e_002",
+              "bullets": 1,
+              "separate": true
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -4174,6 +4220,11 @@
     "us_aim_9l": {
       "prevModification": "us_apkws",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9m": {
+      "reqModification": "us_aim_9l",
+      "tier": 4,
       "modClass": "weapon"
     },
     "maw_countermeasures_launcher_chaff_only": {},

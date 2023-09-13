@@ -10,7 +10,8 @@ let rwrSetting = Computed(function() {
     directionMap = [],
     presence = [],
     presenceMap = [],
-    presenceDefault = []
+    presenceDefault = [],
+    targetTracking = false
   }
   if (BlkFileName.value == "")
     return res
@@ -24,6 +25,7 @@ let rwrSetting = Computed(function() {
     return res
 
   local rwrBlk = null
+  local rwrBlkName = null
   for (local i = 0; i < sensorsBlk.blockCount(); i++) {
     let sensorBlk = sensorsBlk.getBlock(i)
     let sensorBlkName = sensorBlk.getStr("blk", "")
@@ -32,6 +34,7 @@ let rwrSetting = Computed(function() {
       let sensorType = sensorDataBlk.getStr("type", "")
       if (sensorType == "rwr") {
         rwrBlk = sensorDataBlk
+        rwrBlkName = sensorBlkName
         break
       }
     }
@@ -39,6 +42,8 @@ let rwrSetting = Computed(function() {
 
   if (rwrBlk == null)
     return res
+
+  res.targetTracking = rwrBlk.getBool("targetTracking", false)
 
   let groupsBlk = rwrBlk.getBlockByName("groups")
   if (groupsBlk == null)
@@ -48,6 +53,9 @@ let rwrSetting = Computed(function() {
   for (local i = 0; i < groupsBlk.blockCount(); i++) {
     let groupBlk = groupsBlk.getBlock(i)
     let groupName = groupBlk.getStr("name", "")
+    let blocked = groupBlk.getBool("block", false)
+    if (blocked == true)
+      continue
     local groupIndex = groupNames.findindex(@(name) name == groupName)
     if (groupIndex == null) {
       groupIndex = groupNames.len()
@@ -70,7 +78,7 @@ let rwrSetting = Computed(function() {
           continue
         let directionGroupName = targetsDirectionGroupBlk.getParamValue(j)
         local groupIndex = groupNames.findindex(@(groupName) groupName == directionGroupName)
-        assert(groupIndex != null, $"RWR target direction group \"{directionGroupName}\" not found for targetsDirectionGroup {directionIndex}")
+        assert(groupIndex != null, $"RWR target direction group \"{directionGroupName}\" not found for targetsDirectionGroup {directionIndex} in {rwrBlkName}")
         if (groupIndex != null) {
           res.directionMap.resize(max(res.directionMap.len(), groupIndex + 1))
           res.directionMap[groupIndex] = directionIndex
@@ -81,16 +89,14 @@ let rwrSetting = Computed(function() {
 
   let noTargetsDirectionGroup = rwrBlk.getBlockByName("noTargetsDirectionGroup")
   if (noTargetsDirectionGroup != null) {
-    print($"noTargetsDirectionGroup")
     for (local j = 0; j < noTargetsDirectionGroup.paramCount(); j++) {
       if (noTargetsDirectionGroup.getParamName(j) != "group")
         continue
       let noDirectionGroupName = noTargetsDirectionGroup.getParamValue(j)
       local groupIndex = groupNames.findindex(@(groupName) groupName == noDirectionGroupName)
-      assert(groupIndex != null, $"RWR target direction group \"{noDirectionGroupName}\" not found for noTargetsDirectionGroup")
+      assert(groupIndex != null, $"RWR target direction group \"{noDirectionGroupName}\" not found for noTargetsDirectionGroup in {rwrBlkName}")
       if (groupIndex != null) {
         res.directionMap.resize(max(res.directionMap.len(), groupIndex + 1))
-        print($"Dont show direction of {noDirectionGroupName} {groupIndex}")
         res.directionMap[groupIndex] = -1
       }
     }
@@ -116,7 +122,7 @@ let rwrSetting = Computed(function() {
           continue
         let presenceGroupName = targetsPresenceGroupBlk.getParamValue(j)
         local groupIndex = groupNames.findindex(@(groupName) groupName == presenceGroupName)
-        assert(groupIndex != null, $"RWR target presence group \"{presenceGroupName}\" not found for targetsPresenceGroup {i}")
+        assert(groupIndex != null, $"RWR target presence group \"{presenceGroupName}\" not found for targetsPresenceGroup {i} in {rwrBlkName}")
         if (groupIndex != null) {
           res.presenceMap.resize(max(res.presenceMap.len(), groupIndex + 1))
           if (res.presenceMap[groupIndex] == null)

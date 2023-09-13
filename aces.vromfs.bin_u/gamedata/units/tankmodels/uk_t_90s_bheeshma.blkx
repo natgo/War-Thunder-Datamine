@@ -63,9 +63,6 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -143,10 +140,12 @@
       "ex_armor_turret_l_02_dm": {},
       "ex_armor_turret_l_03_dm": {},
       "ex_armor_turret_l_04_dm": {},
+      "ex_armor_turret_l_05_dm": {},
       "ex_armor_turret_r_01_dm": {},
       "ex_armor_turret_r_02_dm": {},
       "ex_armor_turret_r_03_dm": {},
       "ex_armor_turret_r_04_dm": {},
+      "ex_armor_turret_r_05_dm": {},
       "ex_armor_07_dm": {},
       "ex_armor_08_dm": {},
       "ex_armor_body_l_07_dm": {},
@@ -308,7 +307,9 @@
       "ex_armor_r_03_dm": {},
       "ex_armor_r_04_dm": {},
       "ex_armor_r_05_dm": {},
-      "ex_decor_l_20_dm": {}
+      "ex_decor_l_20_dm": {},
+      "ex_armor_l_06_dm": {},
+      "ex_armor_r_06_dm": {}
     },
     "turret_screens": {
       "armorClass": "tank_structural_steel",
@@ -2295,12 +2296,12 @@
         },
         "limits": {
           "yaw": [
-            -180.0,
-            180.0
+            -40.0,
+            55.0
           ],
           "pitch": [
-            -4.0,
-            75.0
+            -3.0,
+            66.0
           ]
         }
       },
@@ -3826,14 +3827,18 @@
     "125mm_ussr_ATGM_ammo_pack": {
       "tier": 3
     },
-    "t_90s_twmp": {
+    "tank_bulldozer_blade_bhishma": {
+      "modClass": "protection",
       "tier": 1,
-      "invertEnableLogic": false,
       "turn_it_off": false,
+      "group": "t90_equip",
       "effects": {
-        "rcostAddParam": 0.98
-      },
-      "disableModEffects": {
+        "rcostAddParam": 0.99,
+        "diggingAvailable": true,
+        "diggingActivateTime": 3.0,
+        "diggingLevel": 0.25,
+        "digMaxSpeed": 7.0,
+        "digMaxRevSpeed": -12.0,
         "hideNodes": {
           "node": [
             "body_01",
@@ -4085,12 +4090,12 @@
               },
               "limits": {
                 "yaw": [
-                  -180.0,
-                  180.0
+                  -40.0,
+                  55.0
                 ],
                 "pitch": [
-                  -4.0,
-                  75.0
+                  -3.0,
+                  66.0
                 ]
               }
             },
@@ -4210,7 +4215,7 @@
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "tier": 2,
+      "tier": 4,
       "modClass": "protection",
       "effects": {
         "nightVision": {

@@ -606,7 +606,11 @@
       "defaultVol": 100.0
     },
     "vws": {
-      "name": "vws_rwr",
+      "name": "vws",
+      "defaultVol": 70.0
+    },
+    "rwr": {
+      "name": "rwr",
       "defaultVol": 70.0
     },
     "tinnitus": {
@@ -20463,19 +20467,19 @@
           "event": "08_state_ship/voice_message_officer_critical_low_flotation",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "minSpeechInterval": 60.0
         },
         "lowFlotation": {
           "event": "08_state_ship/voice_message_officer_low_flotation",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "minSpeechInterval": 60.0
         },
         "criticalRollLeft": {
           "event": "08_state_ship/voice_message_officer_critical_roll_to_port",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "minSpeechInterval": 45.0
         },
         "rollLeft": {
           "event": "08_state_ship/voice_message_officer_roll_to_port",
@@ -20487,7 +20491,7 @@
           "event": "08_state_ship/voice_message_officer_critical_roll_to_starboard",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "minSpeechInterval": 45.0
         },
         "rollRight": {
           "event": "08_state_ship/voice_message_officer_roll_to_starboard",
@@ -21066,7 +21070,8 @@
     "country_poland": "Polish",
     "country_spain": "Spanish",
     "country_turkey": "Turkish",
-    "country_vietnam": "Vietnamese"
+    "country_vietnam": "Vietnamese",
+    "country_china": "Chinese"
   },
   "radioNoise": {
     "path": "dialogs_crew_ground/background_noises",
@@ -21385,6 +21390,7 @@
     },
     "vws_hydrosystem_failure": {
       "forSystem": "betty",
+      "autoStop": true,
       "priority": 16
     },
     "vws_eject": {

@@ -47,6 +47,23 @@
   "groups": {
     "group": [
       {
+        "name": "E-H",
+        "band": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "name": "I",
+        "band": 8
+      },
+      {
+        "name": "J",
+        "band": 9
+      },
+      {
         "name": "SAM LOW",
         "detectLaunch": true
       },
@@ -147,6 +164,7 @@
       {
         "text": "LO",
         "group": [
+          "E-H",
           "SAM LOW",
           "AAA LOW"
         ]
@@ -154,6 +172,7 @@
       {
         "text": "MID",
         "group": [
+          "I",
           "SAM MID",
           "AI/AAA MID"
         ]
@@ -161,6 +180,7 @@
       {
         "text": "HI",
         "group": [
+          "J",
           "SAM HIGH",
           "AI HIGH"
         ]
@@ -170,27 +190,27 @@
   "targetsPresenceGroups": {
     "targetsPresenceGroup": [
       {
-        "text": "SAM LO",
+        "text": "hud/rwr_threat_sam_low",
         "group": "SAM LOW"
       },
       {
-        "text": "SAM",
+        "text": "hud/rwr_threat_sam_mid",
         "group": "SAM MID"
       },
       {
-        "text": "SAM HI",
+        "text": "hud/rwr_threat_sam_high",
         "group": "SAM HIGH"
       },
       {
-        "text": "AAA LO",
+        "text": "hud/rwr_threat_aaa_low",
         "group": "AAA LOW"
       },
       {
-        "text": "AI/AAA",
+        "text": "hud/rwr_threat_aaa_ai_mid",
         "group": "AI/AAA MID"
       },
       {
-        "text": "AI HI",
+        "text": "hud/rwr_threat_ai_high",
         "group": "AI HIGH"
       }
     ]
