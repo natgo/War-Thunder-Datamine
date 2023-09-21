@@ -32,6 +32,10 @@ let getEmptyConditionsConfig = @() {
   locId = ""
   locDescId = ""
   locStagesDescId = ""
+  locMultDescId = ""
+  mulArcade = 0
+  mulRealistic = 0
+  mulHardcore = 0
   useSubUnlockName = false
   hideSubunlocks = false
   curVal = 0
@@ -238,6 +242,12 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   foreach (mode in blk % "mode") {
     let modeType = mode?.type ?? ""
     config.type = modeType
+
+    // Custom multiplier description and its associated parameters
+    config.locMultDescId = mode?.locMultDescId ?? ""
+    config.mulArcade = mode?.mulArcade ?? 0
+    config.mulRealistic = mode?.mulRealistic ?? 0
+    config.mulHardcore = mode?.mulHardcore ?? 0
 
     if (config.unlockType == UNLOCKABLE_TROPHY_PSN) {
       //do not show secondary conditions anywhere for psn trophies
@@ -678,6 +688,20 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     case UNLOCKABLE_AWARD:
       if (isTask)
         break
+
+      if(id.indexof("ship_flag_") != -1) {
+        let decoratorType = ::g_decorator_type.FLAGS
+        res.image = decoratorType.userlogPurchaseIcon
+        res.name = decoratorType.getLocName(id)
+        let decorator = getDecorator(id, decoratorType)
+        if (decorator) {
+          res.image = decoratorType.getImage(decorator)
+          res.descrImage <- res.image
+          res.descrImageSize <- decoratorType.getImageSize(decorator)
+          res.descrImageRatio <- decoratorType.getRatio(decorator)
+        }
+        break
+      }
 
       res.desc = loc("award/" + id + "/desc", "")
       if (id == "money_back") {

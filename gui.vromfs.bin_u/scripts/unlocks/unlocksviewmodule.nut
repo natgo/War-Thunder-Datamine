@@ -846,6 +846,13 @@ let function getUnlockMultDescByCfg(cfg) {
   if (!cfg?.conditions)
     return ""
 
+  if (cfg.locMultDescId != "")
+    return loc(cfg.locMultDescId, {
+      mulArcade = cfg.mulArcade
+      mulRealistic = cfg.mulRealistic
+      mulHardcore = cfg.mulHardcore
+    })
+
   let mainCond = getMainProgressCondition(cfg.conditions)
   return getUnlockMultDesc(mainCond)
 }
