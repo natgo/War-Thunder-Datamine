@@ -2254,32 +2254,21 @@
               "chute4"
             ]
           },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 200,
-              "spread": 1.0,
-              "counterIndex": 1,
-              "gearLimit": [
-                0.0,
-                0.1
-              ],
-              "gearName": "gear_c"
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 12,
-              "external": true,
-              "separate": true
-            }
-          ]
+          "Weapon": {
+            "trigger": "cannon",
+            "blk": "gameData/Weapons/cannonGSh_23L.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "cannon1_dm",
+            "bullets": 200,
+            "spread": 1.0,
+            "counterIndex": 1,
+            "gearLimit": [
+              0.0,
+              0.1
+            ],
+            "gearName": "gear_c"
+          }
         }
       },
       {
@@ -2462,7 +2451,7 @@
               "separate": true
             },
             "DependentWeaponPreset": {
-              "slot": 3,
+              "slot": 4,
               "preset": "delta_ng"
             }
           },
@@ -2719,7 +2708,6 @@
           {
             "iconType": "ltc",
             "name": "ltc",
-            "reqModification": "countermeasures_belt_pack",
             "ShowNodes": {
               "node": "su_infrared_flare_pkvp_23"
             },
@@ -3069,7 +3057,7 @@
               "separate": true
             },
             "DependentWeaponPreset": {
-              "slot": 3,
+              "slot": 4,
               "preset": "delta_ng"
             }
           },

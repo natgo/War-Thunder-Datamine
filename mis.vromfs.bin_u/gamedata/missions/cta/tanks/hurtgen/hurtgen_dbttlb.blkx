@@ -80,12 +80,10 @@
     "mission": {
       "level": "levels/avg_hurtgen.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_DBttlB;hurtgen/name",
-      "locDesc": "hurtgen/desc;missions/_DBttl/desc",
+      "locDesc": "missions/_DBttl/desc",
       "scoreLimit": 6000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
@@ -95,9 +93,12 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
+      "showTacticalMapCellSize": true,
+      "timeLimitWarn": 3600,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -105,7 +106,6 @@
         "isHelicoptersAllowed": true
       }
     },
-    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -157,7 +157,10 @@
               "target": "t2_briefing_airspawn",
               "lookAt": "t1_briefing_airspawn"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area"
+          }
         }
       }
     }
@@ -165,35 +168,7 @@
   "imports": {
     "import_record": [
       {
-        "file": "gameData/missions/cta/tanks/hurtgen/mainareas/template_hurtgen_Dbttl.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/tank_templates/ai_base_defense_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -233,6 +208,48 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/hurtgen/mainareas/template_hurtgen_Dbttl.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_short_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_at_guns_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -252,6 +269,33 @@
   "effects": {},
   "units": {},
   "areas": {
+    "briefing_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          2600.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2600.0
+        ],
+        [
+          1360.68,
+          18.504,
+          2530.26
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
     "briefing_dbttl_t2_capture_area": {
       "type": "Point",
       "tm": [
@@ -360,33 +404,6 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dbttl_t1_spawn_02": {
-      "type": "Point",
-      "tm": [
-        [
-          0.819152,
-          0.0,
-          0.573577
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.573577,
-          0.0,
-          0.819152
-        ],
-        [
-          761.309,
-          6.62921,
-          3234.86
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "t1_briefing_airspawn": {
       "type": "Point",
       "tm": [
@@ -408,7 +425,7 @@
         [
           1230.72,
           296.38,
-          3860.21
+          3709.44
         ]
       ],
       "objLayer": 0,
@@ -433,9 +450,36 @@
           -0.186653
         ],
         [
-          3499.15,
+          2518.19,
           292.324,
-          367.497
+          1352.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_dbttl_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.819152,
+          0.0,
+          0.573577
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.573577,
+          0.0,
+          0.819152
+        ],
+        [
+          761.309,
+          6.62921,
+          3234.86
         ]
       ],
       "objLayer": 0,
