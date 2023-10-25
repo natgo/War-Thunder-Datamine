@@ -25,6 +25,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_mission_difficulty_int } = require("guiMission")
+let { isInFlight } = require("gameplayBinding")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -222,7 +223,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     if (verAngles != null)
       addProp(props, loc("sonicDamage/verAngles"),
-        format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
+        format("%+d%s/%+d%s", verAngles.x, degText, verAngles.y, degText))
     descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props })
   }
 
@@ -384,7 +385,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
           roundToDigits(item.angle, 2) + loc("measureUnits/deg"))
 
   if ("reloadTimes" in bulletsData) {
-    let currentDiffficulty = ::is_in_flight() ? get_mission_difficulty_int()
+    let currentDiffficulty = isInFlight() ? get_mission_difficulty_int()
       : ::get_current_shop_difficulty().diffCode
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
     if (reloadTime > 0)
@@ -441,7 +442,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
     let filteredBulletParameters = []
     foreach (p in bullet_parameters) {
       let params = p ? {} : null
-      if (p) {
+      if (params) {
         foreach (key in whitelistParams)
           if (key in p)
             params[key] <- p[key]
@@ -577,6 +578,12 @@ let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 
 
+
+
+
+
+
+
 let function addBulletsParamToDesc(descTbl, unit, item) {
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return
@@ -622,6 +629,22 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
     useDefaultBullet, false)
 
   let bulletsData = buildBulletsData(bullet_parameters, bulletsSet)
+
+  if(bulletsSet?.guiArmorpower != null) {
+    let res = []
+    foreach(value in bulletsSet.guiArmorpower) {
+      let armorPiercing = { [0] = value.x, [30] = value.y, [60] = value.z}
+      res.append({ armorPiercingDist = value.w, armorPiercing })
+    }
+    res.sort(@(v1, v2) v1.armorPiercingDist <=> v2.armorPiercingDist)
+    bulletsData.armorPiercingDist.clear()
+    bulletsData.armorPiercing.clear()
+    res.each(function(v) {
+      bulletsData.armorPiercingDist.append(v.armorPiercingDist)
+      bulletsData.armorPiercing.append(v.armorPiercing)
+    })
+  }
+
   //
 
 

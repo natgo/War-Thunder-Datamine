@@ -119,15 +119,14 @@ let function fillTooltipObj(tooltipObj, tooltipId) {
 }
 
 let function showTooltipForObj(obj) {
-  let objId = obj?.id // warning disable: -declared-never-used
-  let tooltipId = obj?.tooltipId // warning disable: -declared-never-used
+  let tooltipId = obj?.tooltipId
   let tooltip = getTooltipForObj(obj)
   if (!tooltip)
     return
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, obj?.tooltipId ?? "")
+  let isSuccess = fillTooltipObj(tooltip, tooltipId ?? "")
   show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -135,6 +134,7 @@ let function showTooltipForObj(obj) {
     return
 
   if (!obj?.isValid()) {
+    let objId = obj?.id // warning disable: -declared-never-used
     script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
     return
   }

@@ -1,10 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 subscriptions.addListenersWithoutEnv({
   UnitBought = function(p) {
@@ -21,9 +21,9 @@ subscriptions.addListenersWithoutEnv({
     let customFeedParams = {
       requireLocalization = ["unitName", "country"]
       unitNameId = unit.name
-      unitName = unit.name + "_shop"
+      unitName = $"{unit.name}_shop"
       rank = get_roman_numeral(unit?.rank ?? -1)
-      country = ::getUnitCountry(unit)
+      country = getUnitCountry(unit)
       link = format(loc("url/wiki_objects"), unit.name)
     }
 

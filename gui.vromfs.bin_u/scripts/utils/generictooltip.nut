@@ -93,7 +93,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     if (u.isFunction(value) && startsWith(key, "onEvent")) {
       let eventName = key.slice("onEvent".len())
       add_event_listener(eventName,
-        @(eventParams) tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params))
+        @(eventParams) tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params), data)
     }
   return data
 }
@@ -102,7 +102,8 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
   if (tIdx != null) {
-    openedTooltipObjs[tIdx].tooltipType.onClose(obj)
+    let tooltipData = openedTooltipObjs[tIdx]
+    tooltipData.tooltipType.onClose(obj)
     openedTooltipObjs.remove(tIdx)
   }
 

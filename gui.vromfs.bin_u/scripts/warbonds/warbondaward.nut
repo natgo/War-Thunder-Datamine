@@ -6,6 +6,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let DataBlock = require("DataBlock")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let WarbondAward = class {
   id = ""
@@ -44,7 +45,7 @@ let WarbondAward = class {
   function getFullId() {
     if (!this.warbondWeak)
       return ""
-    return this.warbondWeak.getFullId() + ::g_warbonds.FULL_ID_SEPARATOR + this.idx
+    return "".concat(this.warbondWeak.getFullId(), ::g_warbonds.FULL_ID_SEPARATOR, this.idx)
   }
 
   function getLayeredImage() {
@@ -142,15 +143,7 @@ let WarbondAward = class {
                           { purchase = colorize("userlogColoredText", this.getNameText()),
                             cost = colorize("activeTextColor", this.getCostText())
                           })
-
-    scene_msg_box("purchase_ask", null, msgText,
-      [
-        ["purchase", Callback(this._buy, this) ],
-        ["cancel", function() {} ]
-      ],
-      "purchase",
-      { cancel_fn = function() {} }
-    )
+    purchaseConfirmation("purchase_ask", msgText, Callback(this._buy, this))
   }
 
   function _buy() {
@@ -189,7 +182,7 @@ let WarbondAward = class {
       return colorize("warningTextColor", loc("warbond/alreadyBoughtMax"))
     if (!this.awardType.showAvailableAmount)
       return ""
-    return loc("warbond/availableForPurchase") + loc("ui/colon") + leftAmount
+    return "".concat(loc("warbond/availableForPurchase"), loc("ui/colon"), leftAmount)
   }
 
   getLeftBoughtCount = @() this.isValid()

@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -28,7 +27,6 @@ let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boos
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
@@ -44,6 +42,7 @@ let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_
 } = require("%sqDagui/framework/msgBox.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_game_settings_blk } = require("blkGetters")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -67,8 +66,6 @@ local gui_start_logout_scheduled = false
 
 registerPersistentData("util", getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
-
-::nbsp <- " " // Non-breaking space character
 
 dagui_propid_add_name_id("tooltipId")
 
@@ -265,12 +262,12 @@ let function on_lost_psn() {
     if (effectType == boosterEffectType.WP) {
       let blk = get_warpoints_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
-      rate = ::getWpPriceText(colorize("activeTextColor", rate), true)
+      rate = $"{colorize("activeTextColor", rate)}{loc("warpoints/short/colored")}"
     }
     else if (effectType == boosterEffectType.RP) {
       let blk = get_ranks_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
-      rate = ::getRpPriceText(colorize("activeTextColor", rate), true)
+      rate = $"{colorize("activeTextColor", rate)}{loc("currency/researchPoints/sign/colored")}"
     }
     tooltipText.append(loc("mainmenu/activePremium") + loc("ui/colon") + rate)
   }
@@ -383,7 +380,7 @@ local last_update_entitlements_time = get_time_msec()
   if (cost.isZero())
     return true
 
-  let balance = ::get_gui_balance()
+  let balance = get_gui_balance()
   local text = null
   local isGoldNotEnough = false
   if (cost.wp > 0 && balance.wp < cost.wp)
@@ -418,53 +415,12 @@ local last_update_entitlements_time = get_time_msec()
   return false
 }
 
-//need to remove
-let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold = false) {
-  local text = ""
-  if (gold != 0 || showGold)
-    text += gold + loc(colored ? "gold/short/colored" : "gold/short")
-  if (wp != 0 || showWp)
-    text += ((text == "") ? "" : ", ") + wp + loc(colored ? "warpoints/short/colored" : "warpoints/short")
-  return text
-}
-
-::getPriceAccordingToPlayersCurrency <- function getPriceAccordingToPlayersCurrency(wpCurrency, eaglesCurrency, colored = true) {
-  let cost = Cost(wpCurrency, eaglesCurrency)
-  if (colored)
-    return cost.getTextAccordingToBalance()
-  return cost.getUncoloredText()
-}
-
-::getWpPriceText <- function getWpPriceText(wp, colored = false) {
-  return getPriceText(wp, 0, colored, true)
-}
-
-//need to remove
-::getRpPriceText <- function getRpPriceText(rp, colored = false) { // -return-different-types
-  if (rp == 0)
-    return ""
-  return rp.tostring() + loc("currency/researchPoints/sign" + (colored ? "/colored" : ""))
-}
-
-::get_crew_sp_text <- function get_crew_sp_text(sp, showEmpty = true) { // -return-different-types
-  if (!showEmpty && sp == 0)
-    return ""
-  return decimalFormat(sp) + loc("currency/skillPoints/sign/colored")
-}
-
 ::get_flush_exp_text <- function get_flush_exp_text(exp_value) {
   if (exp_value == null || exp_value < 0)
     return ""
   let rpPriceText = exp_value.tostring() + loc("currency/researchPoints/sign/colored")
   let coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
   return format(loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
-}
-
-::getCrewSpText <- function getCrewSpText(sp, colored = true) { // -return-different-types
-  if (sp == 0)
-    return ""
-  return decimalFormat(sp)
-    + loc("currency/skillPoints/sign" + (colored ? "/colored" : ""))
 }
 
 ::colorTextByValues <- function colorTextByValues(text, val1, val2, useNeutral = true, useGood = true) {

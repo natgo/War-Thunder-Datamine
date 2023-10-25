@@ -11,7 +11,8 @@ let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -190,7 +191,7 @@ let CrewTakeUnitProcess = class {
 
     this.unit = unitToTake
     if (!crewOrCountry)
-      this.country = ::getUnitCountry(this.unit)
+      this.country = getUnitCountry(this.unit)
     else if (u.isString(crewOrCountry))
       this.country = crewOrCountry
     else
@@ -217,7 +218,7 @@ let CrewTakeUnitProcess = class {
     if (crew || (!unit && !country))
       return resCost
 
-    let crewCostTbl = ::get_crew_slot_cost(country || ::getUnitCountry(unit))
+    let crewCostTbl = ::get_crew_slot_cost(country || getUnitCountry(unit))
     if (crewCostTbl) {
       resCost.wp += crewCostTbl.cost
       resCost.gold += crewCostTbl.costGold
@@ -312,7 +313,7 @@ let CrewTakeUnitProcess = class {
   }
 
   function onEventLoadingStateChange(_p) {
-    if (::is_in_flight())
+    if (isInFlight())
       this.remove()
   }
 

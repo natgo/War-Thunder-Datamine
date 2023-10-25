@@ -17,6 +17,7 @@ let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
@@ -105,7 +106,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
                   countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
             }
             if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
-              tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + ::nbsp + ::nbsp + ::nbsp + ::nbsp)
+              tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + nbsp + nbsp + nbsp + nbsp)
           }
         }
         else {
@@ -158,13 +159,13 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
     text = text != "" ? "".concat(text, p.newLine) : ""
     if (isShortDesc) {
       if (weapTypeCount > 0) //Turrets
-        text = "".concat(text, loc($"weapons_types/{weaponType}"), ::nbsp,
+        text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
           format(loc("weapons/counter/right/short"), weapTypeCount))
       if (gunNames.len() > 0) { //Guns
         let gunsTxt = []
         foreach (name, count in gunNames)
           gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
-            ? $"{::nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
+            ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
         text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
       }
     }
@@ -212,7 +213,7 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
       return "".concat( // -unconditional-terminated-loop
         loc($"weapons/{weaponName}"),
         format(loc("weapons/counter"), weapon.ammo),
-        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
+        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(nbsp))
       )
   return ""
 }
@@ -318,10 +319,10 @@ let function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
   let misRules = ::g_mis_custom_state.getCurMissionRules()
 
-  if ((!::is_in_flight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
+  if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()
 
-  if (::is_in_flight() && misRules.isScoreRespawnEnabled) {
+  if (isInFlight() && misRules.isScoreRespawnEnabled) {
     let scoreCostText = wType.getScoreCostText(unit, item)
     if (scoreCostText.len())
       res += (res.len() ? ", " : "") + scoreCostText

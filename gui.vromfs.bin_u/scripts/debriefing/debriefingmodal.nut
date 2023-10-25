@@ -39,7 +39,7 @@ let { minValuesToShowRewardPremium, playerRankByCountries } = require("%scripts/
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
 gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
 } = require("%scripts/debriefing/debriefingFull.nut")
-let { needCheckForVictory } = require("%scripts/missions/missionsUtils.nut")
+let { needCheckForVictory, locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { goToBattleAction,
   openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
@@ -78,12 +78,16 @@ let { blendProp } = require("%sqDagui/guiBhv/bhvBasic.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
+let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
 const DEBR_MYSTATS_TOP_BAR_GAP_MAX = 6
 const LAST_WON_VERSION_SAVE_ID = "lastWonInVersion"
 const VISIBLE_GIFT_NUMBER = 4
+const KG_TO_TONS = 0.001
+
 
 enum DEBR_THEME {
   WIN       = "win"
@@ -110,6 +114,60 @@ let statTooltipColumnParamByType = {
   info = @(rowConfig) {
     pId = rowConfig?.infoName ?? ""
     paramType = rowConfig?.infoType ?? ""
+  }
+}
+
+let viewByRowType = {
+   wp = {
+     image = "#ui/gameuiskin#item_type_warpoints.svg"
+     getText = @(value) Cost(value).toStringWithParams({ isWpAlwaysShown = true, needIcon = false })
+   }
+   gold = {
+     image = "#ui/gameuiskin#item_type_eagles.svg"
+     getText = @(value) Cost(0, value).toStringWithParams({ isGoldAlwaysShown = true, needIcon = false })
+   }
+   exp = {
+     image = "#ui/gameuiskin#item_type_RP.svg"
+     getText = @(value) Cost().setRp(value).toStringWithParams({ needIcon = false })
+   }
+   frp = {
+     image = "#ui/gameuiskin#item_type_Free_RP.svg"
+     getText = @(value) Cost().setFrp(value).toStringWithParams({ needIcon = false })
+   }
+   num = {
+     getText = @(value) value.tostring()
+   }
+   sec = {
+     getText = @(value) $"{value}{loc("debriefing/timeSec")}"
+   }
+   mul = {
+     getText = @(value) $"x{value}"
+   }
+   pct = {
+     getText = @(value) $"{(100.0 * value + 0.5).tointeger()}%"
+   }
+   tim = {
+     getText = @(value) time.secondsToString(value, false)
+   }
+   ptm = {
+     getText = @(value) time.getRaceTimeFromSeconds(value)
+   }
+   tnt = {
+     getText = @(value) stdMath.roundToDigits(value * KG_TO_TONS, 3).tostring()
+   }
+}
+
+let function getViewByType(value, paramType, showEmpty = false) {
+  if (!showEmpty && (value == 0 || (value == 1 && paramType == "mul")))
+    return {
+      text = ""
+      image = ""
+    }
+
+  let text = viewByRowType?[paramType].getText(value) ?? ""
+  return {
+    text
+    image = text == "" ? "" : viewByRowType?[paramType].image ?? ""
   }
 }
 
@@ -165,7 +223,7 @@ let statTooltipColumnParamByType = {
     log("gui_nav gui_start_debriefing back_from_replays is null");
 
   if (is_benchmark_game_mode()) {
-    let title = ::loc_current_mission_name()
+    let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
     ::gui_start_mainmenu()
     ::gui_start_modal_wnd(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
@@ -315,7 +373,11 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     //update title
     local resTitle = ""
-    local resReward = " "
+    let resReward = {
+      title = ""
+      textWp = ""
+      textRp = ""
+    }
     local resTheme = DEBR_THEME.PROGRESS
 
     if (this.isMp) {
@@ -346,9 +408,11 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
         resTitle = loc("MISSION_SUCCESS")
         resTheme = DEBR_THEME.WIN
 
-        let victoryBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonusText() : ""
-        if (victoryBonus != "")
-          resReward = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"), victoryBonus)
+        let victoryBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
+        if ((victoryBonus?.textWp ?? "") != "" || (victoryBonus?.textRp ?? "") != "") {
+          resReward.__update(victoryBonus)
+          resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
+        }
 
         let currentMajorVersion = get_game_version() >> 16
         let lastWinVersion = loadLocalAccountSettings(LAST_WON_VERSION_SAVE_ID, 0)
@@ -359,16 +423,18 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
         resTitle = loc("MISSION_FAIL")
         resTheme = DEBR_THEME.LOSE
 
-        let loseBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonusText() : ""
-        if (loseBonus != "")
-          resReward = "".concat(loc("debriefing/MissionLoseReward"), loc("ui/colon"), loseBonus)
+        let loseBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
+        if ((loseBonus?.textWp ?? "") != "" || (loseBonus?.textRp ?? "") != "") {
+          resReward.__update(loseBonus)
+          resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
+        }
       }
       else if (mpResult == STATS_RESULT_ABORTED_BY_KICK) {
-        resReward = colorize("badTextColor", loc("MISSION_ABORTED_BY_KICK"))
+        resReward.title = colorize("badTextColor", loc("MISSION_ABORTED_BY_KICK"))
         resTheme = DEBR_THEME.LOSE
       }
       else if (mpResult == STATS_RESULT_ABORTED_BY_ANTICHEAT) {
-        resReward = colorize("badTextColor", this.getKickReasonLocText())
+        resReward.title = colorize("badTextColor", this.getKickReasonLocText())
         resTheme = DEBR_THEME.LOSE
       }
     }
@@ -378,7 +444,18 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     }
 
     this.scene.findObject("result_title").setValue(resTitle)
-    this.scene.findObject("result_reward").setValue(resReward)
+    let rewardObj = this.scene.findObject("result_reward_title")
+    rewardObj.setValue(resReward.title)
+    let { textWp, textRp } = resReward
+    let isVisibleWp = textWp != ""
+    let isVisibleRp = textRp != ""
+    let wpRewardObj = this.showSceneBtn("result_reward_wp", isVisibleWp)
+    if (isVisibleWp)
+      wpRewardObj.findObject("text").setValue(textWp)
+    let rpRewardObj = this.showSceneBtn("result_reward_rp", isVisibleRp)
+    if (isVisibleRp)
+      rpRewardObj.findObject("text").setValue(textRp)
+    this.showSceneBtn("result_reward_comma", isVisibleWp && isVisibleRp)
 
     this.gatherAwardsLists()
 
@@ -409,7 +486,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
           ::g_squad_manager.setReadyFlag(true)
       }
     }
-    ::first_generation <- false //for dynamic campaign
+    ::first_generation = false //for dynamic campaign
     this.isInited = false
     ::check_logout_scheduled()
 
@@ -630,10 +707,10 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let markup = handyman.renderCached("%gui/debriefing/debriefingTotals.tpl", {
       showTeaser = canSuggestPrem && premTeaser.isPositive
       canSuggestPrem = canSuggestPrem
-      exp = Cost().setRp(this.totalCurValues["exp"]).tostring()
-      wp  = Cost(this.totalCurValues["wp"]).tostring()
-      expTeaser = Cost().setRp(premTeaser.exp).toStringWithParams({ isColored = false })
-      wpTeaser  = Cost(premTeaser.wp).toStringWithParams({ isColored = false })
+      exp = Cost().setRp(this.totalCurValues["exp"]).toStringWithParams({ needIcon = false })
+      wp  = Cost(this.totalCurValues["wp"]).toStringWithParams({ needIcon = false })
+      expTeaser = Cost().setRp(premTeaser.exp).toStringWithParams({ isColored = false, needIcon = false })
+      wpTeaser  = Cost(premTeaser.wp).toStringWithParams({ isColored = false, needIcon = false })
       teaserTooltip = tooltip
     })
     this.guiScene.replaceContentFromText(this.totalObj, markup, markup.len(), this)
@@ -658,7 +735,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     let iconObj = containerObj.findObject("active_wager_icon")
     if (checkObj(iconObj))
-      wager.setIcon(iconObj, { bigPicture = false })
+      wager.setIcon(iconObj)
 
     let wagerResult = activeWagerData.wagerResult
     let isWagerHasResult = wagerResult != null
@@ -826,7 +903,9 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let rewardTrophyStages = this.pveRewardInfo.stagesTime
     let showTrophiesOnBar  = ! this.pveRewardInfo.isRewardReceivedEarlier
     let maxValue = this.pveRewardInfo.victoryStageTime
-    let stage = rewardTrophyStages.len() ? [] : null
+
+    let stage = []
+
     foreach (_stageIndex, val in rewardTrophyStages) {
       let isVictoryStage = val == maxValue
 
@@ -849,7 +928,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let view = {
       maxValue = maxValue
       value = 0
-      stage = stage
+      stage = stage.len() > 0 ? stage : null
     }
 
     let data = handyman.renderCached("%gui/debriefing/pveReward.tpl", view)
@@ -1111,7 +1190,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       let objTarget = objPlace.findObject("bonus_ico")
       if (checkObj(objTarget)) {
         objTarget["background-image"] = havePremium.value ?
-          "#ui/gameuiskin#medal_premium" : "#ui/gameuiskin#medal_bonus"
+          "#ui/gameuiskin#medal_premium.avif" : "#ui/gameuiskin#medal_bonus.avif"
         objTarget.tooltip = "\n\n".join(textArray, true)
       }
 
@@ -1284,8 +1363,9 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       if (row.isFreeRP && paramType == "exp")
         paramType = "frp" //show exp as FreeRP currency
 
-      local text = this.getTextByType(nextValue, paramType, showEmpty)
+      let { text, image } = getViewByType(nextValue, paramType, showEmpty)
       obj.setValue(text)
+      rowObj.findObject($"{p}_image")["background-image"] = image
     }
     this.needPlayCount = this.needPlayCount || !finished
     return finished
@@ -1295,25 +1375,6 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     if (!tgtName)
       tgtName = "base"
     return !u.isTable(row[name]) ? row[name] : getTblValue(tgtName, row[name], null)
-  }
-
-  function getTextByType(value, paramType, showEmpty = false) {
-    if (!showEmpty && (value == 0 || (value == 1 && paramType == "mul")))
-      return ""
-    switch (paramType) {
-      case "wp":  return Cost(value).toStringWithParams({ isWpAlwaysShown = true })
-      case "gold": return Cost(0, value).toStringWithParams({ isGoldAlwaysShown = true })
-      case "exp": return Cost().setRp(value).tostring()
-      case "frp": return Cost().setFrp(value).tostring()
-      case "num": return value.tostring()
-      case "sec": return value + loc("debriefing/timeSec")
-      case "mul": return "x" + value
-      case "pct": return (100.0 * value + 0.5).tointeger() + "%"
-      case "tim": return time.secondsToString(value, false)
-      case "ptm": return time.getRaceTimeFromSeconds(value)
-      case "tnt": return stdMath.roundToDigits(value * ::KG_TO_TONS, 3).tostring()
-    }
-    return ""
   }
 
   function updateTotal(dt) {
@@ -1338,7 +1399,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
         if (checkObj(obj)) {
           cost.wp = p.indexof("wp") != null ? this.totalCurValues[p] : 0
           cost.rp = p.indexof("exp") != null ? this.totalCurValues[p] : 0
-          obj.setValue(cost.toStringWithParams({ isColored = p.indexof("Teaser") == null }))
+          obj.setValue(cost.toStringWithParams({ isColored = p.indexof("Teaser") == null, needIcon = false }))
         }
         this.needPlayCount = true
       }
@@ -1422,7 +1483,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let unitData = this.debriefingResult.exp.aircrafts?[unitId]
     return unitData?.expTotal && unitData?.sessionTime &&
       ((unitData?.investModuleName ?? "") != "" ||
-      ::SessionLobby.isUsedPlayersOwnUnit(this.playersInfo?[::my_user_id_int64], unitId))
+      ::SessionLobby.isUsedPlayersOwnUnit(this.playersInfo?[userIdInt64.value], unitId))
   }
 
   function hasAnyFinishedResearch() {
@@ -1508,7 +1569,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let view = {
       id = unitId
       unitImg = ::image_for_air(unit)
-      unitName = ::stringReplace(getUnitName(unit), ::nbsp, " ")
+      unitName = ::stringReplace(getUnitName(unit), nbsp, " ")
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = this.getBoostersTotalEffects() })
@@ -1730,7 +1791,11 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
             if (effect)
               extra = colorize("fadedTextColor", loc("ui/parentheses", { text = effect.tointeger().tostring() + "%" }))
           }
-          currencySourcesView.append((sourcesConfig?[source] ?? {}).__merge({ text = $"{this.getTextByType(val, currency)}{extra}" }))
+          let { text, image } = getViewByType(val, currency)
+          currencySourcesView.append((sourcesConfig?[source] ?? {}).__merge({
+            text = $"{text}{extra}"
+            currencyImg = image
+          }))
         }
         if (currencySourcesView.len() > 1) {
           if (!("bonuses" in rowView))
@@ -1748,7 +1813,10 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
       foreach (p in ["time", "value", "reward", "info"]) {
         let { paramType, pId, showEmpty = false } = statTooltipColumnParamByType[p](cfg.row)
-        rowView[p] <- this.getTextByType(cfg.expData?[pId] ?? 0, paramType, showEmpty)
+        let { text, image } = getViewByType(cfg.expData?[pId] ?? 0, paramType, showEmpty)
+        rowView[p] <- text
+        if (image != "")
+          rowView[$"{p}_image"] <- image
       }
 
       view.append(rowView)
@@ -1762,7 +1830,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     foreach (rowView in view)
       foreach (col, isShow in showColumns)
         if (isShow && u.isEmpty(rowView[col]))
-          rowView[col] = ::nbsp
+          rowView[col] = nbsp
 
     let headerRow = { name = colorize("fadedTextColor", loc("options/unit")) }
     foreach (col, isShow in showColumns) {
@@ -2184,6 +2252,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       topBarNestObj.flow = "horisontal"
       local totalWidth = 0.5 * (myPlaceObj.getSize()[0] + containerObj.getSize()[0])
       myPlaceObj.pos = $"0.5pw-{totalWidth}, 0.5ph-0.5h"
+      containerObj.pos = "0, 0"
     }
     else {                            //Two rows
       topBarNestObj.flow = "vertical"
@@ -2637,7 +2706,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     let isMpMode = (this.gameType & GT_COOPERATIVE) || (this.gameType & GT_VERSUS)
 
-    if (::SessionLobby.status == lobbyStates.IN_DEBRIEFING && ::SessionLobby.haveLobby())
+    if (sessionLobbyStatus.get() == lobbyStates.IN_DEBRIEFING && ::SessionLobby.haveLobby())
       return
     if (isMpMode && !::is_online_available())
       return
@@ -2666,7 +2735,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     if (this.gm == GM_DYNAMIC) {
       if (isMpMode) {
-        if (::SessionLobby.isInRoom() && getDynamicResult() == MISSION_STATUS_RUNNING) {
+        if (isInSessionRoom.get() && getDynamicResult() == MISSION_STATUS_RUNNING) {
           ::go_debriefing_next_func = ::gui_start_dynamic_summary
           if (is_mplayer_host())
             this.recalcDynamicLayout()
@@ -3086,7 +3155,8 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     ? USERLOG_POPUP.OPEN_TROPHY
     : USERLOG_POPUP.NONE
 
-  function onEventModalWndDestroy(_p) {
+  function onEventModalWndDestroy(p) {
+    base.onEventModalWndDestroy(p)
     if (this.state == debrState.done && this.isSceneActiveNoModals())
       ::checkNewNotificationUserlogs()
   }
@@ -3101,15 +3171,15 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     return ""
   }
 
-  function getMissionBonusText() {
+  function getMissionBonus() {
     if (this.gm != GM_DOMINATION)
-      return ""
+      return {}
 
     let isWin = this.debriefingResult.isSucceed
 
     let bonusWp = (isWin ? get_warpoints_blk()?.winK : get_warpoints_blk()?.defeatK) ?? 0.0
     let wp = (bonusWp > 0) ? ceil(bonusWp * 100) : 0
-    let textWp = (wp > 0) ? ::getWpPriceText($"+{wp}%", true) : ""
+    let textWp = (wp > 0) ? $"+{wp}%" : ""
 
     let mis = get_current_mission_info_cached()
     let useTimeAwardingExp = mis?.useTimeAwardingEconomics ?? false
@@ -3120,10 +3190,13 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       let baseRp = rBlk?.expBaseVersusPerSec ?? 0
       if (missionRp > 0 && baseRp > 0) {
         let rp = ceil((missionRp.tofloat() / baseRp - 1.0) * 100)
-        textRp = ::getRpPriceText($"+{rp}%", true)
+        textRp = $"+{rp}%"
       }
     }
-    return loc("ui/comma").join([textRp, textWp], true)
+    return {
+      textWp
+      textRp
+    }
   }
 
   function getCurAwardText() {

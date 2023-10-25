@@ -25,6 +25,9 @@ let { isBattleTask, isBattleTaskDone, isBattleTaskExpired, getBattleTaskById,
 let { get_charserver_time_sec } = require("chard")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -133,8 +136,8 @@ let function setImageByUnlockType(config, unlockBlk) {
   else if (unlockBlk?.battlePassSeason != null)
     config.image = "#ui/gameuiskin#item_challenge"
 
-  let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen()) {
+  let decoratorType = getTypeByUnlockedItemType(unlockType)
+  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     config.image <- decoratorType.getImage(decorator)
     config.imgRatio <- decoratorType.getRatio(decorator)
@@ -174,7 +177,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   }
 
   if (prize?.resourceType && prize?.resource) {
-    let decType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+    let decType = getTypeByResourceType(prize.resourceType)
     let decorator = getDecorator(prize.resource, decType)
     let image = decType.getImage(decorator)
     if (image == "")
@@ -210,7 +213,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   config.locStagesDescId = blk.getStr("locStagesDescId", "")
   config.useSubUnlockName = blk?.useSubUnlockName ?? false
   config.hideSubunlocks = blk?.hideSubunlocks ?? false
-  config.link = ::g_language.getLocTextFromConfig(blk, "link", "")
+  config.link = getLocTextFromConfig(blk, "link", "")
   config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   config.needToFillStages = blk?.needToFillStages ?? true
   config.needToAddCurStageToName = blk?.needToAddCurStageToName ?? true
@@ -366,8 +369,8 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
 ::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk) {
   let unlockType = ::get_unlock_type(unlockBlk.type)
-  let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen()) {
+  let decoratorType = getTypeByUnlockedItemType(unlockType)
+  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     return decoratorType.getImage(decorator)
   }
@@ -580,7 +583,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     case UNLOCKABLE_SKIN:
     case UNLOCKABLE_ATTACHABLE:
     case UNLOCKABLE_DECAL:
-      let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(uType)
+      let decoratorType = getTypeByUnlockedItemType(uType)
       res.image = decoratorType.userlogPurchaseIcon
       res.name = decoratorType.getLocName(id)
 
@@ -689,8 +692,8 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
       if (isTask)
         break
 
-      if(id.indexof("ship_flag_") != -1) {
-        let decoratorType = ::g_decorator_type.FLAGS
+      if(id.contains("ship_flag_")) {
+        let decoratorType = decoratorTypes.FLAGS
         res.image = decoratorType.userlogPurchaseIcon
         res.name = decoratorType.getLocName(id)
         let decorator = getDecorator(id, decoratorType)
@@ -711,7 +714,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
             loc("award/money_back/unit", { unitName = getUnitName(unitName) }))
       }
       if (config?.isAerobaticSmoke) {
-        res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)
+        res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id == config.unlockId)
             ?.getDescriptionTitle() ?? ""
         res.image = "#ui/gameuiskin#item_type_aerobatic_smoke.svg"
       }
@@ -742,7 +745,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
       let crewName = crew ? ::g_crew.getCrewName(crew) : loc("options/crew")
       let country = crew ? crew.country : config?.country ?? ""
       let skillPoints = getTblValue("sp", config, 0)
-      let skillPointsStr = ::getCrewSpText(skillPoints)
+      let skillPointsStr = getCrewSpTextIfNotZero(skillPoints)
 
       if (::checkCountry(country, "userlog EULT_*_CREW"))
         res.image2 = getCountryIcon(country)
@@ -896,7 +899,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
         res.frp = (type(rBlock.amount_exp) == "instance") ? rBlock.amount_exp.x : rBlock.amount_exp
     }
 
-    let popupImage = ::g_language.getLocTextFromConfig(rBlock, "popupImage", "")
+    let popupImage = getLocTextFromConfig(rBlock, "popupImage", "")
     if (popupImage != "")
       res.popupImage <- popupImage
   }
@@ -1019,11 +1022,10 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 }
 
 ::is_any_award_received_by_mode_type <- function is_any_award_received_by_mode_type(modeType) {
-  foreach (cb in getAllUnlocks())
-    foreach (mode in cb % "mode") {
-      if (mode.type == modeType && cb.id && isUnlockOpened(cb.id))
-        return true
-      break
-    }
+  foreach (cb in getAllUnlocks()) {
+    let { mode = null } = cb
+    if (mode != null && mode.type == modeType && cb.id && isUnlockOpened(cb.id))
+      return true
+  }
   return false
 }

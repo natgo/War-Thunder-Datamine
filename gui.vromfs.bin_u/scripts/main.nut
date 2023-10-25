@@ -41,15 +41,11 @@ sqdebugger?.setObjPrintFunc(debugTableData)
 console.setObjPrintFunc(debugTableData)
 
 require("%globalScripts/version.nut")
-require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
 let { get_local_unixtime } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
-
-
-::TEXT_EULA <- 0
 
 ::is_dev_version <- false // WARNING : this is unsecure
 
@@ -113,6 +109,7 @@ global enum weaponsItem {
   bundle
   nextUnit
   curUnit
+  skin
   unknown
 }
 
@@ -514,8 +511,7 @@ local isFullScriptsLoaded = false
   if (platform.isPlatformSony) {
     require("%scripts/global/psnCallbacks.nut")
     require("%scripts/social/psnSessionManager/loadPsnSessionManager.nut")
-    if (require("sony.webapi").getPreferredVersion() == 2)
-      require("%scripts/social/psnMatches.nut").enableMatchesReporting()
+    require("%scripts/social/psnMatches.nut").enableMatchesReporting()
   }
 
   if (platform.isPlatformPS5) {

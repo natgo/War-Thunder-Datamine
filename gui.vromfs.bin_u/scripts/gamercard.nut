@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { money_type, Money, Balance } = require("%scripts/money.nut")
+let { Balance, Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
@@ -61,16 +61,14 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
             obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
           let titleObj = getObj($"{prefix}prestige_title")
           if (titleObj) {
-            let prestigeTitle = (val > 0)
-                                  ? loc($"rank/prestige{val}")
-                                  : ""
+            let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
             titleObj.setValue(prestigeTitle)
           }
           break
         case "exp":
           let expTable = ::get_cur_exp_table("", cfg)
           obj.setValue(expTable
-            ? ::nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+            ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
             : "")
           obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
           break
@@ -87,7 +85,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
           }
           break
         case "gold":
-          let moneyInst = Money(money_type.none, 0, val)
+          let moneyInst = Cost(0, val)
           let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
 
           let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
@@ -96,8 +94,9 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
           obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
           break
         case "balance":
-          let valStr = decimalFormat(val)
-          let tooltipText = "\n".concat(::getWpPriceText(colorize("activeTextColor", valStr), true),
+          let moneyInst = Cost(val)
+          let valStr = moneyInst.toStringWithParams({ isWpAlwaysShown = true })
+          let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
             loc("mainmenu/warpoints"),
             ::get_current_bonuses_text(boosterEffectType.WP))
 
@@ -106,7 +105,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
           buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
           buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
 
-          obj.setValue(valStr)
+          obj.setValue(moneyInst.toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
           break
         case "free_exp":
           let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })

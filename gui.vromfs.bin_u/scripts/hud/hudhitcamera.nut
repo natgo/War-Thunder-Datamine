@@ -8,6 +8,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
@@ -405,19 +406,21 @@ let function onEnemyPartDamage(data) {
       parts[partName] <- { dmParts = {} }
 
     partDmName = data?.partDmName
-    if (!(partDmName in parts[partName].dmParts))
-      parts[partName].dmParts[partDmName] <- { partKilled = isPartKilled }
-    let dmPart = parts[partName].dmParts[partDmName]
+    if (partDmName != null) {
+      if (!(partDmName in parts[partName].dmParts))
+        parts[partName].dmParts[partDmName] <- { partKilled = isPartKilled }
+      let dmPart = parts[partName].dmParts[partDmName]
 
-    isPartKilled = isPartKilled ||  dmPart.partKilled
-    dmPart.partKilled = isPartKilled
+      isPartKilled = isPartKilled ||  dmPart.partKilled
+      dmPart.partKilled = isPartKilled
 
-    foreach (k, v in data)
-      dmPart[k] <- v
+      foreach (k, v in data)
+        dmPart[k] <- v
 
-    let isPartDead = dmPart?.partDead ?? false
-    let partHp  = dmPart?.partHp ?? 1.0
-    dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHp
+      let isPartDead = dmPart?.partDead ?? false
+      let partHp  = dmPart?.partHp ?? 1.0
+      dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHp
+    }
   }
 
   if (isVisible && unitInfo.unitId == curUnitId) {
@@ -509,7 +512,7 @@ let function hitCameraInit(nest) {
 
 addListenersWithoutEnv({
   function LoadingStateChange(_) {
-    if (!::is_in_flight())
+    if (!isInFlight())
       reset()
   }
 })

@@ -12,11 +12,12 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let eventbus = require("eventbus")
-let http = require("dagor.http")
+let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { send_counter } = require("statsd")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
 let { parse_json } = require("json")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -31,12 +32,11 @@ let ERROR_PAGE = {
   content = [ { v = loc("matching/SERVER_ERROR_INTERNAL") } ]
 }
 let chosenPatchnote = Watched(null)
-let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()Watched(false))
-let chosenPatchnoteContent = persist("chosenPatchnoteContent",
-  @()Watched({ title = "", text = "" }))
-let patchnotesReceived = persist("patchnotesReceived", @()Watched(false))
-let patchnotesCache = persist("patchnotesCache", @() Watched({}))
-let versions = persist("versions", @() Watched([]))
+let chosenPatchnoteLoaded = mkWatched(persist, "chosenPatchnoteLoaded", false)
+let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "" })
+let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
+let patchnotesCache = mkWatched(persist, "patchnotesCache", {})
+let versions = mkWatched(persist, "versions", [])
 let requestMadeTime = persist("requestMadeTime", @() { value = null })
 let lastSeenVersionInfoNum = Watched(-1)
 let lastLoadedVersionInfoNum = Watched(-1)
@@ -62,13 +62,13 @@ let function logError(event, params = {}) {
   log(txt)
   send_counter(event, 1, {
     exe_version = get_base_game_version()
-    language = ::g_language.getShortName()
+    language = getCurLangShortName()
   }.__update(params))
 }
 let remapPlatform = @(v) platformMap?[v] ?? v
 
 let getUrl = @(p)
-  "".concat(BASE_URL, ::g_language.getShortName(), "/patchnotes/", p, "platform=",
+  "".concat(BASE_URL, getCurLangShortName(), "/patchnotes/", p, "platform=",
     remapPlatform(targetPlatform), "&target=game")
 
 let function mkVersion(v) {
@@ -115,7 +115,7 @@ let function filterVersions(vers) {
 let function processPatchnotesList(response) {
   let status = response?.status ?? -1
   let http_code = response?.http_code ?? -1
-  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_versions_receive_errors", {
       reason = "Error in version response"
       stage = "get_versions"
@@ -150,11 +150,11 @@ let function requestAllPatchnotes() {
   let request = {
     method = "GET"
     url = getUrl("?page=1&")
+    respEventId = PatchnoteIds
   }
 
-  request.respEventId <- PatchnoteIds
   patchnotesReceived(false)
-  http.request(request)
+  httpRequest(request)
   requestMadeTime.value = currTimeMsec
 }
 
@@ -211,7 +211,7 @@ let function afterGetRequestedPatchnote(result) {
 let function cachePatchnote(response) {
   let status = response?.status ?? -1
   let http_code = response?.http_code ?? -1
-  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_receive_errors", {
       reason = "Error in patchnotes response"
       stage = "get_patchnote",
@@ -245,7 +245,7 @@ let function requestPatchnote(v) {
   }
   request.respEventId <- PatchnoteReceived
   chosenPatchnoteLoaded(false)
-  http.request(request)
+  httpRequest(request)
 }
 
 let function choosePatchnote(v) {

@@ -14,6 +14,7 @@ let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 ::mission_rules.Base <- class {
   missionParams = null
@@ -95,7 +96,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
     if (u.isEmpty(presetIconsText))
       return ""
 
-    return presetNumber + presetIconsText
+    return $"{presetNumber}{presetIconsText}"
   }
 
   function getRespawnInfoTextForUnit(unit) {
@@ -109,7 +110,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
       return ""
-    return loc("unitInfo/team_left_respawns") + loc("ui/colon") + unitLeftRespawns
+    return "".concat(loc("unitInfo/team_left_respawns"), loc("ui/colon"), unitLeftRespawns)
   }
 
   function getSpecialCantRespawnMessage(_unit) {
@@ -308,7 +309,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
   }
 
   function getMyStateBlk() {
-    return ::get_user_custom_state(::my_user_id_int64, false)
+    return ::get_user_custom_state(userIdInt64.value, false)
   }
 
   function getCustomRulesBlk() {
@@ -444,7 +445,8 @@ let { get_current_mission_info_cached } = require("blkGetters")
     let valueRank = this.getRandomUnitsGroupValueRange(randomGroups, getRank)
     let minRank = valueRank.minValue
     let maxRank = valueRank.maxValue
-    return get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + get_roman_numeral(maxRank) : "")
+    let minRankText = get_roman_numeral(minRank)
+    return minRank == maxRank ? minRankText : $"{minRankText}-{get_roman_numeral(maxRank)}"
   }
 
   function getRandomUnitsGroupValueRange(randomGroups, getValue) {

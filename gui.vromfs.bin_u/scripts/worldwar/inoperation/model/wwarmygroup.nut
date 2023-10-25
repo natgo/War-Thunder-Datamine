@@ -6,8 +6,10 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { round } = require("math")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
-::WwArmyGroup <- class {
+let WwArmyGroup = class {
   clanId               = ""
   name                 = ""
   supremeCommanderUid   = ""
@@ -118,13 +120,13 @@ let { round } = require("math")
   }
 
   function getAccessLevel() {
-    if (this.supremeCommanderUid == ::my_user_id_int64 || hasFeature("worldWarMaster"))
+    if (this.supremeCommanderUid == userIdInt64.value || hasFeature("worldWarMaster"))
       return WW_BATTLE_ACCESS.SUPREME
 
-    if (this.owner.side == ::ww_get_player_side()) {
-      if (isInArray(::my_user_id_int64, this.managerUids))
+    if (this.owner.side == wwGetPlayerSide()) {
+      if (isInArray(userIdInt64.value, this.managerUids))
         return WW_BATTLE_ACCESS.MANAGER
-      if (isInArray(::my_user_id_int64, this.observerUids))
+      if (isInArray(userIdInt64.value, this.observerUids))
         return WW_BATTLE_ACCESS.OBSERVER
     }
 
@@ -181,3 +183,4 @@ let { round } = require("math")
     return this.armyManagers.filter(@(m) m.name == "" && !(m.uid in armyManagersNames)).map(@(m) m.uid)
   }
 }
+return {WwArmyGroup}

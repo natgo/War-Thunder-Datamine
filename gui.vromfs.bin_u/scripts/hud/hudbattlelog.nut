@@ -15,6 +15,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { get_mplayer_by_id, get_local_mplayer } = require("mission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG
 } = require("%scripts/options/optionsExtNames.nut")
+let { userName, userIdInt64 } = require("%scripts/user/myUser.nut")
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
@@ -25,6 +26,12 @@ enum BATTLE_LOG_FILTER {
 
   SQUAD     = 0x0003
   ALL       = 0x001F
+}
+
+let function getActionColor(isKill, isLoss) {
+  if (isKill)
+    return isLoss ? "hudColorDeathAlly" : "hudColorDeathEnemy"
+  return isLoss ? "hudColorDarkRed" : "hudColorDarkBlue"
 }
 
 ::HudBattleLog <- {
@@ -229,8 +236,8 @@ enum BATTLE_LOG_FILTER {
 
     local filters = 0
     if (msg.type == HUD_MSG_MULTIPLAYER_DMG) {
-      let p1 = get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
-      let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
+      let p1 = get_mplayer_by_id(msg?.playerId ?? userIdInt64.value)
+      let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? userIdInt64.value)
       let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
       let t2Friendly = ::is_team_friendly(msg?.victimTeam ?? Team.B)
 
@@ -246,7 +253,7 @@ enum BATTLE_LOG_FILTER {
         filters = filters | BATTLE_LOG_FILTER.OTHER
     }
     else {
-      let player = get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
+      let player = get_mplayer_by_id(msg?.playerId ?? userIdInt64.value)
       let localPlayer = get_local_mplayer()
       if (msg.text.indexof("\x1B011") != null || player?.isLocal)
         filters = filters | BATTLE_LOG_FILTER.HERO
@@ -365,7 +372,7 @@ enum BATTLE_LOG_FILTER {
     if (msgAction == "kill" || msgAction == "crash")
       iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
     let icon = loc($"icon/hud_msg_mp_dmg/{iconId}")
-    let actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
+    let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
 
     let killerProjectileKey = msg?.killerProjectileName ?? ""
     if (killerProjectileKey == "")
@@ -383,14 +390,13 @@ enum BATTLE_LOG_FILTER {
     let msgAction = msg?.action ?? "kill"
     let verb = getTblValue(victimUnitType, getTblValue(msgAction, this.actionVerbs, {}), msgAction)
     let isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
-    let color = "hudColor" + (msg?.isKill ?? true ? (isLoss ? "DeathAlly" : "DeathEnemy") : (isLoss ? "DarkRed" : "DarkBlue"))
-    return colorize(color, loc(verb))
+    return colorize(getActionColor(msg?.isKill ?? true, isLoss), loc(verb))
   }
 
   function msgMultiplayerDmgToText(msg, iconic = false) {
     let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
-    let who = this.getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? ::my_user_name, msg?.team ?? Team.A)
-    let whom = this.getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? ::my_user_name, msg?.victimTeam ?? Team.B)
+    let who = this.getUnitNameEx(msg?.playerId ?? userIdInt64.value, msg?.unitNameLoc ?? userName.value, msg?.team ?? Team.A)
+    let whom = this.getUnitNameEx(msg?.victimPlayerId ?? userIdInt64.value, msg?.victimUnitNameLoc ?? userName.value, msg?.victimTeam ?? Team.B)
 
     let msgAction = msg?.action ?? "kill"
     let isCrash = msgAction == "crash" || msgAction == "exit" || msgAction == "air_defense"

@@ -34,6 +34,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -127,7 +128,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     })
 
     this.showSceneBtn("custom_weapons_available_txt", this.unit.hasWeaponSlots
-      && !::is_in_flight() && !this.unit.isUsable())
+      && !isInFlight() && !this.unit.isUsable())
   }
 
   function updateCustomIdx() {
@@ -163,7 +164,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
           showButtons = true
           actionBtnText = this.onChangeValueCb != null ? loc("mainmenu/btnSelect") : null
         })
-      let idx = this.presets.findindex(@(p) p.name == preset.name)
+      let idx = this.presets.findindex(@(p) p.name == preset.name) ?? 0
       this.presetIdxToChildIdx[idx] <- res.len()
       let wpParams = getWeaponItemViewParams($"item_{idx}", this.unit, preset.weaponPreset, params).__update({
         presetTextWidth = this.presetTextWidth
@@ -414,7 +415,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     && hasFeature("WeaponryCustomPresets")
 
   isCustomPresetsEditAvailable = @() this.isCustomPresetsAvailable()
-     && !::is_in_flight() && this.unit.isUsable()
+     && !isInFlight() && this.unit.isUsable()
 
   function updateButtons() {
     let isAvailable = this.isCustomPresetsEditAvailable()
@@ -474,11 +475,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
     // Select chosen or first preset
-    local firstIdx = null
-    foreach (idx, _v in this.presetIdxToChildIdx) {
-      firstIdx = idx
-      break
-    }
+    local firstIdx = this.presetIdxToChildIdx.findindex(@(_) true)
     this.selectPreset(this.chosenPresetIdx in this.presetIdxToChildIdx ? this.chosenPresetIdx : firstIdx, true)
 
     // Enable/disable filter options depends on whether filtering result exist.

@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
@@ -15,6 +14,8 @@ let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { isInFlight } = require("gameplayBinding")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -33,7 +34,7 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns) {
 let function getStatusIcon(unit, item) {
   let misRules = ::g_mis_custom_state.getCurMissionRules()
   if (item.type == weaponsItem.weapon
-    && ::is_in_flight()
+    && isInFlight()
     && misRules.isWorldWar
     && misRules.needCheckWeaponsAllowed(unit)
     && misRules.isUnitWeaponAllowed(unit, item))
@@ -194,7 +195,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     !isSwitcher || isFakeBullet(visualItem.name)
   res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
-  let isScoreCost = ::is_in_flight()
+  let isScoreCost = isInFlight()
     && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
   let haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount && !isScoreCost) {
@@ -261,8 +262,9 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   let bulletsManager = params?.selectBulletsByManager
   let bulGroup = bulletsManager?.canChangeBulletsCount() ?
     bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
-  res.hideBulletsChoiceBlock = bulGroup == null
-  if (!res.hideBulletsChoiceBlock) {
+  let hideBullets = bulGroup == null
+  res.hideBulletsChoiceBlock = hideBullets
+  if (!hideBullets) {
     let guns = bulGroup.guns
     let maxVal = bulGroup.maxBulletsCount
     let curVal = bulGroup.bulletsCount
@@ -290,7 +292,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
         btnText = loc("mainmenu/btnBuy")
       else if (isSwitcher && !statusTbl.equipped)
         btnText = loc("mainmenu/btnSelect")
-      else if (visualItem.type == weaponsItem.modification)
+      else if (visualItem.type == weaponsItem.modification || visualItem.type == weaponsItem.expendables)
         btnText = statusTbl.equipped ?
           (canBeDisabled ? loc("mod/disable") : "") : loc("mod/enable")
     }
@@ -339,7 +341,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   // ensuring maximum visibility of the displayed text.
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
   itemObj.findObject("name").setValue(isSingleLine
-    ? ::stringReplace(viewParams.nameText, " ", ::nbsp)
+    ? ::stringReplace(viewParams.nameText, " ", nbsp)
     : viewParams.nameText)
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId
@@ -473,12 +475,39 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     textObj.setValue(viewParams.altBtnBuyText)
 }
 
+let function getSkinModView(id, unit, item, pos) {
+  let { decor, canDo, progress } = item
+  return {
+    id
+    itemImg                = decor.decoratorType.getImage(decor)
+    nameText               = "#skins"
+    isTooltipByHold        = showConsoleButtons.value
+    tooltipId              = UNLOCK_SHORT.getTooltipId(decor.unlockBlk.id)
+    optStatus              = canDo ? "research" : "owned"
+    hideProgressBlock      = !canDo
+    researchProgress       = progress
+    hideBulletsChoiceBlock = true
+    hideStatus             = true
+    hideVisualHasMenu      = true
+    hideWarningIcon        = true
+    actionBtnCanShow       = decor.canPreview() ? "yes" : "no"
+    actionBtnText          = unit.isUsable()
+      ? loc("mainmenu/btnShowroom")
+      : loc("mainmenu/btnPreview")
+  }.__update(pos)
+}
+
 let function createModItemLayout(id, unit, item, iType, params = {}) {
   if (!("type" in item))
     item.type <- iType
-  let {isBonusTier = false, isFakeMod = false } = item
-  if(isBonusTier || isFakeMod)
+
+  let { isBonusTier = false, isFakeMod = false } = item
+  if (isBonusTier || isFakeMod)
     return handyman.renderCached("%gui/weaponry/bonusTierItem.tpl", getBonusTierViewParams(item, params))
+
+  if (item.type == weaponsItem.skin)
+    return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getSkinModView(id, unit, item, params))
+
   return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }
 

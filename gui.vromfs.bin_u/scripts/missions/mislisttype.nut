@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -13,6 +11,8 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { toUpper } = require("%sqstd/string.nut")
+let { isMissionComplete, getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -164,7 +164,7 @@ enum mislistTabsOrder {
       if (this.showChapterHeaders) {
         local isChapterUnlocked = true
         if (lastMission && gm == GM_CAMPAIGN)
-          isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
+          isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
         let chapterHeader = this.getMissionConfig(chapterName, true, false, isChapterUnlocked)
         campMissions.append(chapterHeader)
       }
@@ -185,7 +185,7 @@ enum mislistTabsOrder {
     //add victory video for campaigns
     if (lastMission && gm == GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43")) {
-      let isVideoUnlocked = ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
+      let isVideoUnlocked = ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
       res.append(this.getMissionConfig("victory", true, false, isVideoUnlocked))
     }
   }
@@ -203,7 +203,7 @@ enum mislistTabsOrder {
 }
 
 ::g_mislist_type._getCurMission <- function _getCurMission() {
-  if (::SessionLobby.isInRoom()) {
+  if (isInSessionRoom.get()) {
     let misName = ::SessionLobby.getMissionName(true)
     if (misName)
       return this.getMissionConfig(misName)
@@ -221,7 +221,7 @@ enum mislistTabsOrder {
   if (mission?.isHeader)
     return loc((mission?.isCampaign ? "campaigns/" : "chapters/") + (mission?.id ?? ""))
   if ("blk" in mission)
-    return ::get_combine_loc_name_mission(mission.blk)
+    return getCombineLocNameMission(mission.blk)
   return loc("missions/" + (mission?.id ?? ""))
 }
 
@@ -383,7 +383,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     }
 
     getCurMission = function() {
-      if (::SessionLobby.isInRoom()) {
+      if (isInSessionRoom.get()) {
         let url = ::SessionLobby.getMissionUrl()
         let urlMission = ::g_url_missions.findMissionByUrl(url)
         if (urlMission)

@@ -1438,8 +1438,10 @@
     "tiltShakeMultiplierForShips": 0.0,
     "mouseSpeedMul": 1.57,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": {
+          "isFlightModel": {}
+        }
       }
     },
     "up": {
@@ -1582,8 +1584,10 @@
     "tiltShakeMultiplierForTanks": 0.0,
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": {
+          "isFlightModel": {}
+        }
       }
     },
     "up": {
@@ -3947,7 +3951,8 @@
       "maxNumSamples": 16.0,
       "fallTimeThreshold": 0.5,
       "fallThresholdEnableAfter": 5.0,
-      "cameraStopDistance": 250.0
+      "cameraStopDistance": 250.0,
+      "trackWeaponTarget": true
     }
   },
   "weapon_aim_camera": {

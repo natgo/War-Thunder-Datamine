@@ -36,7 +36,12 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitDefault, isUnitGift,
+  isUnitGroup, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 /*
 if need - put commented in array above
@@ -83,7 +88,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   let showBR = getTblValue("showBR", params, hasFeature("GlobalShowBattleRating"))
   let curEdiff = ("getEdiffFunc" in params) ?  params.getEdiffFunc() : ::get_current_ediff()
 
-  if (air && !::isUnitGroup(air) && !air?.isFakeUnit) {
+  if (air && !isUnitGroup(air) && !air?.isFakeUnit) {
     let isLocalState        = params?.isLocalState ?? true
     let forceNotInResearch  = params?.forceNotInResearch ?? false
     local inactive            = params?.inactive ?? false
@@ -93,7 +98,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     let isOwn               = ::isUnitBought(air)
     let isUsable            = ::isUnitUsable(air)
     let isMounted           = ::isUnitInSlotbar(air)
-    let canResearch         = ::canResearchUnit(air)
+    let canResearch         = canResearchUnit(air)
     let special             = ::isUnitSpecial(air)
     let isVehicleInResearch = ::isUnitInResearch(air) && !forceNotInResearch
     let isSquadronVehicle   = air.isSquadronVehicle()
@@ -193,7 +198,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     // Air research progress view
     //
 
-    let showProgress = isLocalState && !isOwn && canResearch && !::is_in_flight()
+    let showProgress = isLocalState && !isOwn && canResearch && !isInFlight()
       && (!isLockedSquadronVehicle || unitExpGranted > 0)
     let airResearchProgressView = {
       airResearchProgress = []
@@ -245,7 +250,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       isPkgDev            = air.isPkgDev
       isRecentlyReleased  = air.isRecentlyReleased()
       discountId          = id + "-discount"
-      showDiscount        = isLocalState && !isOwn && (!::isUnitGift(air) || checkNotification)
+      showDiscount        = isLocalState && !isOwn && (!isUnitGift(air) || checkNotification)
       shopItemTextId      = id + "_txt"
       shopItemText        = ::get_slot_unit_name_text(air, params)
       progressText        = progressText
@@ -285,7 +290,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
     res = handyman.renderCached("%gui/slotbar/slotbarSlotSingle.tpl", resView)
   }
-  else if (air && ::isUnitGroup(air)) { //group of aircrafts
+  else if (air && isUnitGroup(air)) { //group of aircrafts
     let groupStatus         = params?.status ?? defaultStatus
     let forceNotInResearch  = params?.forceNotInResearch ?? false
     let shopResearchMode    = params?.shopResearchMode ?? false
@@ -322,7 +327,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       let isInResearch = !forceNotInResearch && ::isUnitInResearch(a)
       let isUsable = ::isUnitUsable(a)
 
-      if (isInResearch || (::canResearchUnit(a) && !researchingUnit)) {
+      if (isInResearch || (canResearchUnit(a) && !researchingUnit)) {
         researchingUnit = a
         isGroupInResearch = isInResearch
       }
@@ -565,7 +570,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     return
 
   local rentedUnit = null
-  if (::isUnitGroup(unit)) {
+  if (isUnitGroup(unit)) {
     rentedUnit = unit.airsGroup[0]
     foreach (un in unit.airsGroup) {
       if (un.isRented())
@@ -727,7 +732,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     }
   }
 
-  if (::is_in_flight()) {
+  if (isInFlight()) {
     let maxSpawns = get_max_spawns_unit_count(unit.name)
     if (curSlotIdInCountry >= 0 && maxSpawns > 1) {
       let leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
@@ -736,7 +741,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   }
   else if (isLocalState && priceText == "") {
     let { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
-    priceText = overlayPrice >= 0 ? ::getPriceAccordingToPlayersCurrency(overlayPrice, 0, true)
+    priceText = overlayPrice >= 0 ? Cost(overlayPrice).getTextAccordingToBalance()
       : getUnitShopPriceText(unit)
 
     if (priceText == "" && ::isUnitBought(unit) && showAsTrophyContent && !isReceivedPrizes)
@@ -749,7 +754,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 ::get_unit_item_research_progress_text <- function get_unit_item_research_progress_text(unit, _params, priceText = "") {
   if (!u.isEmpty(priceText))
     return ""
-  if (!::canResearchUnit(unit))
+  if (!canResearchUnit(unit))
     return ""
 
   let unitExpReq  = ::getUnitReqExp(unit)
@@ -788,19 +793,18 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 }
 
 ::get_unit_rank_text <- function get_unit_rank_text(unit, crew = null, showBR = false, ediff = -1) {
-  let isInFlight = ::is_in_flight()
   if ((unit?.hideBrForVehicle ?? false) ||
-      (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar))
+      (isInFlight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar))
     return ""
 
   let reserveText = stripTags(loc("shop/reserve"))
-  if (::isUnitGroup(unit)) {
+  if (isUnitGroup(unit)) {
     local isReserve = false
     local rank = 0
     local minBR = 0
     local maxBR = 0
     foreach (un in unit.airsGroup) {
-      isReserve = isReserve || ::isUnitDefault(un)
+      isReserve = isReserve || isUnitDefault(un)
       rank = rank || un.rank
       let br = un.getBattleRating(ediff)
       minBR = !minBR ? br : min(minBR, br)
@@ -816,8 +820,8 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       ? ""
       : format(loc("events/rank"), get_roman_numeral(unit.rank))
 
-  let isReserve = ::isUnitDefault(unit)
-  let isSpare = crew && isInFlight ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
+  let isReserve = isUnitDefault(unit)
+  let isSpare = crew && isInFlight() ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
   let battleRatingStr = format("%.1f", unit.getBattleRating(ediff))
   let reserveToShowStr = (battleRatingStr == "1.0") ? reserveText :
     "".join([reserveText, loc("ui/parentheses/space", { text = battleRatingStr })])
@@ -836,10 +840,10 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   local unlocked = !::is_crew_locked_by_prev_battle(crew)
   if (unit) {
     unlocked = unlocked && (!country || ::is_crew_available_in_session(curSlotIdInCountry, needDbg))
-    unlocked = unlocked && (::isUnitAvailableForGM(unit, get_game_mode()) || ::is_in_flight())
-      && (!unit.disableFlyout || !::is_in_flight())
+    unlocked = unlocked && (::isUnitAvailableForGM(unit, get_game_mode()) || isInFlight())
+      && (!unit.disableFlyout || !isInFlight())
       && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
-    if (unlocked && !::SessionLobby.canChangeCrewUnits() && !::is_in_flight()
+    if (unlocked && !::SessionLobby.canChangeCrewUnits() && !isInFlight()
         && ::SessionLobby.getMaxRespawns() == 1)
       unlocked = ::SessionLobby.getMyCurUnit() == unit
   }
@@ -854,19 +858,6 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
         if (::is_crew_locked_by_prev_battle(crew))
           return false
   return true
-}
-
-::getBrokenSlotsCount <- function getBrokenSlotsCount(country) {
-  local count = 0
-  foreach (c in ::g_crews_list.get())
-    if (!country || country == c.country)
-      foreach (crew in c.crews)
-        if (("aircraft" in crew) && crew.aircraft != "") {
-          let hp = ::shop_get_aircraft_hp(crew.aircraft)
-          if (hp >= 0 && hp < 1)
-            count++
-        }
-  return count
 }
 
 ::get_crew_by_id <- function get_crew_by_id(id) {
@@ -965,7 +956,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
   ::select_crew_silent_no_check(countryId, idInCountry)
   broadcastEvent("CrewChanged")
-  ::g_squad_utils.updateMyCountryData(!::is_in_flight())
+  ::g_squad_utils.updateMyCountryData(!isInFlight())
 }
 
 ::getSelAircraftByCountry <- function getSelAircraftByCountry(country) {
@@ -993,7 +984,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   }
   else if (params?.availableUnits)
     res = unit.name in params.availableUnits
-  else if (::SessionLobby.isInRoom() && !::is_in_flight())
+  else if (isInSessionRoom.get() && !isInFlight())
     res = ::SessionLobby.isUnitAllowed(unit)
   else if (params?.roomCreationContext)
     res = params.roomCreationContext.isUnitAllowed(unit)
@@ -1092,7 +1083,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 ::checkUnlockedCountriesByAirs <- function checkUnlockedCountriesByAirs() { //starter packs
   local haveUnlocked = false
   foreach (air in getAllUnits())
-    if (!::isUnitDefault(air)
+    if (!isUnitDefault(air)
         && ::isUnitUsable(air)
         && !::isCountryAvailable(air.shopCountry)) {
       ::unlockCountry(air.shopCountry)

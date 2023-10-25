@@ -507,6 +507,28 @@ let function distanceToStr(val) {
     return this.prevHintParams.len() != 0
   }
 
+  function findDmPartAnimationInBlk(partId, blk) {
+    if (blk == null)
+      return null
+    for (local i = 0; i < blk.blockCount(); i++) {
+      let xrayDmPartBlk = blk.getBlock(i)
+      if (xrayDmPartBlk?.animation && startsWith(partId, xrayDmPartBlk?.name))
+        return xrayDmPartBlk.animation
+    }
+    return null
+  }
+
+  function getDmPartAnimationSrc(partId) {
+    let foundUnitAnim = this.findDmPartAnimationInBlk(partId, this.unitBlk?.viewer_xray_animations)
+    if (foundUnitAnim)
+      return foundUnitAnim
+
+    let gameParamsXrayKey = this.unit.isAir() ? "armorPartNamesAir" : "armorPartNamesGround"
+    let gameParamsXrayBlk = ::dgs_get_game_params()[gameParamsXrayKey].viewer_xray
+
+    return this.findDmPartAnimationInBlk(partId, gameParamsXrayBlk)
+  }
+
   function updateHint(params) {
     if (!this.active) {
       if (this.hasPrevHint()) {
@@ -557,8 +579,8 @@ let function distanceToStr(val) {
       info = this.xrayDescriptionCache[cacheId]
     else {
       info = this.getPartTooltipInfo(nameId, params)
-      info.title = ::stringReplace(info.title, " ", ::nbsp)
-      info.desc  = ::stringReplace(info.desc,  " ", ::nbsp)
+      info.title = ::stringReplace(info.title, " ", nbsp)
+      info.desc  = ::stringReplace(info.desc,  " ", nbsp)
 
       if (isUseCache)
         this.xrayDescriptionCache[cacheId] <- info
@@ -569,11 +591,13 @@ let function distanceToStr(val) {
     let descObj = obj.findObject("dmviewer_desc")
     descObj.setValue(info.desc)
 
+    let handler = handlersManager.getActiveBaseHandler()
+    showObjById("dmviewer_anim", !!info.animation, handler.scene)["movie-load"] = info.animation
+
     let needShowExtHint = info.extDesc != ""
     let extHintObj = obj.findObject("dmviewer_ext_hint")
     extHintObj.show(needShowExtHint)
     if (needShowExtHint) {
-      let handler = handlersManager.getActiveBaseHandler()
       handler.guiScene.applyPendingChanges(false)
       extHintObj.width = max(extHintObj.getSize()[0], descObj.getSize()[0])
       obj.findObject("dmviewer_ext_hint_desc").setValue(info.extDesc)
@@ -649,6 +673,7 @@ let function distanceToStr(val) {
       extDesc     = ""
       extIcon     = ""
       extShortcut = ""
+      animation   = null
     }
 
     let isHuman = nameId == "steel_tankman"
@@ -663,6 +688,7 @@ let function distanceToStr(val) {
         break
       case DM_VIEWER_XRAY:
         res.desc = this.getDescriptionInXrayMode(params)
+        res.animation = this.getDmPartAnimationSrc(params.name)
         res.__update(this.getExtendedHintInfo(params))
         break
     }
@@ -807,24 +833,24 @@ let function distanceToStr(val) {
     }
     else if (thickness) {
       let thicknessStr = thickness.tostring()
-      desc.append(loc("armor_class/thickness") + ::nbsp +
-        colorize("activeTextColor", thicknessStr) + ::nbsp + loc("measureUnits/mm"))
+      desc.append(loc("armor_class/thickness") + nbsp +
+        colorize("activeTextColor", thicknessStr) + nbsp + loc("measureUnits/mm"))
     }
 
     let normalAngleValue = getTblValue("normal_angle", params, null)
     if (normalAngleValue != null)
-      desc.append(loc("armor_class/normal_angle") + ::nbsp +
-        (normalAngleValue + 0.5).tointeger() + ::nbsp + loc("measureUnits/deg"))
+      desc.append(loc("armor_class/normal_angle") + nbsp +
+        (normalAngleValue + 0.5).tointeger() + nbsp + loc("measureUnits/deg"))
 
     let angleValue = getTblValue("angle", params, null)
     if (angleValue != null)
-      desc.append(loc("armor_class/impact_angle") + ::nbsp + round(angleValue) + ::nbsp + loc("measureUnits/deg"))
+      desc.append(loc("armor_class/impact_angle") + nbsp + round(angleValue) + nbsp + loc("measureUnits/deg"))
 
     if (effectiveThickness) {
       if (solid) {
-        desc.append(loc("armor_class/armor_dimensions_at_point") + ::nbsp +
+        desc.append(loc("armor_class/armor_dimensions_at_point") + nbsp +
           colorize("activeTextColor", round(effectiveThickness)) +
-          ::nbsp + loc("measureUnits/mm"))
+          nbsp + loc("measureUnits/mm"))
 
         if ((this.armorClassToSteel?[params.name] ?? 0) != 0) {
           let equivSteelMm = round(effectiveThickness * this.armorClassToSteel[params.name])
@@ -836,9 +862,9 @@ let function distanceToStr(val) {
         let effectiveThicknessClamped = min(effectiveThickness,
           min((this.relativeArmorThreshold * thickness).tointeger(), this.absoluteArmorThreshold))
 
-        desc.append(loc("armor_class/effective_thickness") + ::nbsp +
+        desc.append(loc("armor_class/effective_thickness") + nbsp +
           (effectiveThicknessClamped < effectiveThickness ? ">" : "") +
-          round(effectiveThicknessClamped) + ::nbsp + loc("measureUnits/mm"))
+          round(effectiveThicknessClamped) + nbsp + loc("measureUnits/mm"))
       }
     }
 
@@ -1690,7 +1716,7 @@ let function distanceToStr(val) {
             weaponPartName = weapon.breechDP
             break
           }
-        // No break!
+        ;; // warning disable: -missed-break
 
       case "mg": // warning disable: -missed-break
       case "gun":
@@ -1793,7 +1819,7 @@ let function distanceToStr(val) {
       case "ex_era_turret":                   // tank Explosive reactive armor
         let info = this.getModernArmorParamsByDmPartName(partName)
 
-        let strUnits = ::nbsp + loc("measureUnits/mm")
+        let strUnits = nbsp + loc("measureUnits/mm")
         let strBullet = loc("ui/bullet")
         let strColon  = loc("ui/colon")
 

@@ -4,9 +4,14 @@ let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
+let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+
+const USE_DELAY_EXPLOSION_DEFAULT = true
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
-  && ::canResearchUnit(unit)
+  && canResearchUnit(unit)
   && unit.isSquadronVehicle()
   && !unit.getOpenCost().isZero()
 
@@ -51,7 +56,7 @@ let function getBitStatus(unit, params = {}) {
   let researched     = unit.isResearched()
 
   let isVehicleInResearch = unit.isInResearch() && !forceNotInResearch
-  let canResearch         = ::canResearchUnit(unit)
+  let canResearch         = canResearchUnit(unit)
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
@@ -60,7 +65,7 @@ let function getBitStatus(unit, params = {}) {
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 
   local bitStatus = 0
-  if (!isLocalState || ::is_in_flight())
+  if (!isLocalState || isInFlight())
     bitStatus = bit_unit_status.owned
   else if (unit.isBroken())
     bitStatus = bit_unit_status.broken
@@ -175,6 +180,27 @@ let function hasCountermeasures(unit) {
     || isAvailablePrimaryWeapon(unit, "flares") || isAvailablePrimaryWeapon(unit, "chaffs")
 }
 
+let function hasBombDelayExplosion(unit) {
+  if (!unit?.isAir() && !unit?.isHelicopter())
+    return false
+
+  let curPreset = getCurrentPreset(unit)
+  if (!curPreset?.bomb)
+    return false
+
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  let weapons = getPresetWeapons(unitBlk, curPreset)
+  let weaponCache = {}
+
+  foreach(weapon in weapons) {
+    let params = getWeaponBlkParams(weapon.blk, weaponCache)
+    if ((params?.weaponBlk.bomb.useDelayExplosion ?? USE_DELAY_EXPLOSION_DEFAULT))
+      return true
+  }
+
+  return false
+}
+
 let function bombNbr(unit) {
   if (unit == null)
     return -1
@@ -193,4 +219,5 @@ return {
   isUnitHaveSecondaryWeapons
   isRequireUnlockForUnit
   getCurrentPreset
+  hasBombDelayExplosion
 }

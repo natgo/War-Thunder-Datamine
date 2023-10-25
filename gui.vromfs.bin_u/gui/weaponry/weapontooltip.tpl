@@ -51,14 +51,13 @@ tdiv {
   tdiv {
     margin-top:t='1@blockInterval'
     movie {
-      size:t='1@modificationAnimationWidth , 1@modificationAnimationHeight'
+      size:t='1@tooltipAnimationWidth , 1@tooltipAnimationHeight'
       movie-load:t='<<modificationAnimation>>'
       movie-autoStart:t='yes'
       movie-loop:t='yes'
     }
   }
   <</modificationAnimation>>
-
   tooltipDesc {
     pos:t='0, @blockInterval'
     position:t='relative'
@@ -151,6 +150,7 @@ tdiv {
     pos:t='pw-w, @blockInterval'
     position:t='relative'
     text:t='<<expText>>'
+    <<^addDesc>>margin-top:t='18@sf/@pf'<</addDesc>>
   }
   <</expText>>
   <<#showPrice>>
@@ -159,6 +159,7 @@ tdiv {
     smallFont:t='yes'
     pos:t='pw-w, @blockInterval'
     position:t='relative'
+    <<^addDesc>>margin-top:t='18@sf/@pf'<</addDesc>>
     textareaNoTab{
       text:t='<<?ugm/price>><<#noDiscountPrice>><<?ugm/withDiscount>><</noDiscountPrice>><<?ui/colon>>'
     }

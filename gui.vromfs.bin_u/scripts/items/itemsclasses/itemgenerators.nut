@@ -14,6 +14,7 @@ let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let collection = {}
 
@@ -71,6 +72,7 @@ local ItemGenerator = class {
       let allowableComponents = this.getAllowableRecipeComponents()
       let showRecipeAsProduct = this.tags?.showRecipeAsProduct
       let shouldSkipMsgBox = !!this.tags?.shouldSkipMsgBox
+      let needSaveMarkRecipe = this.tags?.needSaveMarkRecipe ?? true
       this._exchangeRecipes = parsedRecipes.map(@(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
@@ -81,11 +83,13 @@ local ItemGenerator = class {
          allowableComponents
          showRecipeAsProduct
          shouldSkipMsgBox
+         needSaveMarkRecipe
       }))
 
       // Adding additional recipes
       local hasAdditionalRecipes = false
-      foreach (itemBlk in workshop.getItemAdditionalRecipesById(this.id)) {
+      let itemBlk = workshop.getItemAdditionalRecipesById(this.id)?[0]
+      if (itemBlk != null) {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
           foreach (itemdefId in itemBlk % paramName) {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
@@ -102,14 +106,14 @@ local ItemGenerator = class {
               allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
               showRecipeAsProduct = gen?.tags?.showRecipeAsProduct
               shouldSkipMsgBox = !!gen?.tags?.shouldSkipMsgBox
+              needSaveMarkRecipe = gen?.tags.needSaveMarkRecipe ?? true
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }
-        break
       }
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
-        set_rnd_seed(::my_user_id_int64 + this.id)
+        set_rnd_seed(userIdInt64.value + this.id)
         this._exchangeRecipes = u.shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++

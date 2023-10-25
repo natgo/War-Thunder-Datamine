@@ -56,8 +56,9 @@ let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsListByType, getPlaneBySkinId
-} = require("%scripts/customization/decorCache.nut")
+let { getCachedDataByType, getDecorator, getDecoratorById,
+  getCachedDecoratorsListByType} = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { set_option } = require("%scripts/options/optionsExt.nut")
@@ -66,8 +67,11 @@ let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -466,7 +470,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     else if (sheet == "UnlockDecal") {
       this.showSheetDiv("decals", true)
 
-      let decorCache = getCachedDataByType(::g_decorator_type.DECALS)
+      let decorCache = getCachedDataByType(decoratorTypes.DECALS)
       let view = { items = [] }
       foreach (categoryId in decorCache.categories) {
         let groups = decorCache.catToGroupNames[categoryId]
@@ -680,7 +684,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     else
       progressObj.show(false)
 
-    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg))
+    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg , { showSingleStreakCondText = true }))
     infoObj.findObject("decalMultDecs").setValue(getUnlockMultDescByCfg(cfg))
     infoObj.findObject("decalConds").setValue(getUnlockCondsDescByCfg(cfg))
     infoObj.findObject("decalPrice").setValue(this.getDecalObtainInfo(decor))
@@ -720,7 +724,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       return null
 
     let decalId = listObj.getChild(idx).id
-    return getDecorator(decalId, ::g_decorator_type.DECALS)
+    return getDecorator(decalId, decoratorTypes.DECALS)
   }
 
   function onPageChange(_obj) {
@@ -815,7 +819,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function recacheSkins() {
     this.skinsCache = {}
-    foreach (skinName, decorator in getCachedDecoratorsListByType(::g_decorator_type.SKINS)) {
+    foreach (skinName, decorator in getCachedDecoratorsListByType(decoratorTypes.SKINS)) {
       let unit = getAircraftByName(getPlaneBySkinId(skinName))
       if (!unit)
         continue
@@ -827,7 +831,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
         continue
 
       let unitType = getEsUnitType(unit)
-      let unitCountry = ::getUnitCountry(unit)
+      let unitCountry = getUnitCountry(unit)
 
       if (! (unitCountry in this.skinsCache))
         this.skinsCache[unitCountry] <- {}
@@ -1082,7 +1086,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function getDecalsMarkup(categoryId, groupId) {
-    let decorCache = getCachedDataByType(::g_decorator_type.DECALS)
+    let decorCache = getCachedDataByType(decoratorTypes.DECALS)
     let decorators = decorCache.catToGroups?[categoryId][groupId]
     if (!decorators || decorators.len() == 0)
       return ""
@@ -1231,15 +1235,15 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       unitName = unitNameLoc
       skinName = decorator.getName()
 
-      image = config?.image ?? ::g_decorator_type.SKINS.getImage(decorator)
-      ratio = config?.imgRatio ?? ::g_decorator_type.SKINS.getRatio(decorator)
+      image = config?.image ?? decoratorTypes.SKINS.getImage(decorator)
+      ratio = config?.imgRatio ?? decoratorTypes.SKINS.getRatio(decorator)
       status = decorator.isUnlocked() ? "unlocked" : "locked"
 
       skinDesc = this.getSkinDesc(decorator)
       unlockProgress = progressData?.value
       hasProgress = progressData?.show
       skinPrice = decorator.getCostText()
-      mainCond = getUnlockMainCondDescByCfg(config)
+      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
       multDesc = getUnlockMultDescByCfg(config)
       conds = getUnlockCondsDescByCfg(config)
       conditions = this.getSubUnlocksView(config)
@@ -1305,20 +1309,15 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       return
 
     let cost = getUnlockCost(unlockId)
-    this.msgBox("question_buy_unlock",
-      ::warningIfGold(
-        loc("onlineShop/needMoneyQuestion",
-          { purchase = colorize("unlockHeaderColor", getUnlockNameText(-1, unlockId)),
-            cost = cost.getTextAccordingToBalance()
-          }),
-        cost),
-      [
-        ["ok", @() buyUnlock(unlockId,
-            Callback(@() this.updateUnlockBlock(unlockId), this),
-            Callback(@() this.onUnlockGroupSelect(null), this))
-        ],
-        ["cancel", @() null]
-      ], "cancel")
+
+    let title = ::warningIfGold(
+      loc("onlineShop/needMoneyQuestion", { purchase = colorize("unlockHeaderColor",
+        getUnlockNameText(-1, unlockId)),
+        cost = cost.getTextAccordingToBalance()
+      }), cost)
+    purchaseConfirmation("question_buy_unlock", title, @() buyUnlock(unlockId,
+      Callback(@() this.updateUnlockBlock(unlockId), this),
+      Callback(@() this.onUnlockGroupSelect(null), this)))
   }
 
   function updateUnlockBlock(unlockData) {
@@ -1462,7 +1461,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       image = ::get_image_for_unlockable_medal(name, true)
       unlockProgress = progressData.value
       hasProgress = progressData.show
-      mainCond = getUnlockMainCondDescByCfg(config)
+      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
       multDesc = getUnlockMultDescByCfg(config)
       conds = getUnlockCondsDescByCfg(config)
       rewardText = rewardText != "" ? rewardText : null
@@ -1610,7 +1609,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
-    if ("uid" in stats && stats.uid != ::my_user_id_str)
+    if ("uid" in stats && stats.uid != userIdStr.value)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
     this.fillClanInfo(::get_profile_info())
     this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)

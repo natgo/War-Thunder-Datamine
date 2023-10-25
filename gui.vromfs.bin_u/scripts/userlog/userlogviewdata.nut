@@ -32,6 +32,8 @@ let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText,
 } = require("%scripts/unlocks/battleTasks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -66,8 +68,8 @@ let function getDecoratorUnlock(resourceId, resourceType) {
   let unlock = ::create_default_unlock_data()
   local decoratorType = null
   unlock.id = resourceId
-  decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN) {
+  decoratorType = getTypeByResourceType(resourceType)
+  if (decoratorType != decoratorTypes.UNKNOWN) {
     unlock.name = decoratorType.getLocName(unlock.id, true)
     unlock.desc = decoratorType.getLocDesc(unlock.id)
     unlock.image = decoratorType.userlogPurchaseIcon
@@ -223,7 +225,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if ("aircrafts" in logObj) {
       foreach (air in logObj.aircrafts)
         if (air.value < 1.0)
-        damagedVehicles.append(air.name)
+          damagedVehicles.append(air.name)
     }
 
     if ("manuallySpentRepairCost" in logObj) {
@@ -625,7 +627,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc("userlog/" + logName,
-                         { skillPoints = ::getCrewSpText(getTblValue("skillPoints", logObj, 0)),
+                         { skillPoints = getCrewSpTextIfNotZero(getTblValue("skillPoints", logObj, 0)),
                            crewName = crewName,
                            unitName = airName
                          })
@@ -643,7 +645,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
             if (item.name in logObj[page.id]) {
               let numPoints = ::g_crew.getSkillCrewLevel(item, logObj[page.id][item.name])
               let skillName = loc($"crew/{item.name}")
-              desc = $"{desc}{desc != "" ? "\n" : ""}{::nbsp}{::nbsp}+{numPoints} {skillName}"
+              desc = $"{desc}{desc != "" ? "\n" : ""}{nbsp}{nbsp}+{numPoints} {skillName}"
               total += numPoints
             }
         }
@@ -763,10 +765,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (logObj.type == EULT_BUYING_RESOURCE) {
       resourceType = logObj.resourceType
       config = getDecoratorUnlock(logObj.resourceId, logObj.resourceType)
-      decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+      decoratorType = getTypeByResourceType(resourceType)
     }
     else if (logObj.type == EULT_BUYING_UNLOCK && logObj.unlockId.indexof("ship_flag_") != null) {
-      decoratorType = ::g_decorator_type.FLAGS
+      decoratorType = decoratorTypes.FLAGS
       config = getDecoratorUnlock(logObj.unlockId, decoratorType.resourceType)
       resourceType = decoratorType.resourceType
     }
@@ -1646,9 +1648,20 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.descriptionBlk <- ""
 
     let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
-    let blk = battleRewards.len()
+    let hasAdditionalInfo = battleRewards.findvalue(@(r) r?.battleRewardTooltipId != null) != null
+    let blk = hasAdditionalInfo
       ? handyman.renderCached("%gui/userLog/userLogBattleRewardsTable.tpl", {battleRewards})
       : ""
+
+    if (!hasAdditionalInfo && battleRewards.len() > 0) {
+      let rewardsStrs = battleRewards.map(function(r) {
+        let name = r.name
+        let rewards = ", ".join([r?.wp, r?.exp].filter(@(count) !!count))
+        return $"{name}: {colorize("@activeTextColor", rewards)}"
+      })
+      let rewardsShortDescr = "\n".join(rewardsStrs)
+      res.description = "".concat(rewardsShortDescr, "\n\n", res.description)
+    }
 
     res.descriptionBlk = "".concat(res.descriptionBlk,
       blk,

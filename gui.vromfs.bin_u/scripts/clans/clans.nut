@@ -15,13 +15,15 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { EPLX_CLAN, contactsPlayers, contactsByGroups } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact
+} = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -45,7 +47,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   squadronExp = 0
 
   function updateClanContacts() {
-    contactsByGroups[EPLX_CLAN] <- []
+    contactsByGroups[EPLX_CLAN] <- {}
     if (!::is_in_clan())
       return
 
@@ -57,8 +59,8 @@ registerPersistentData("ClansGlobals", getroottable(),
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
-      if (::my_user_id_str != block.uid)
-        contactsByGroups[EPLX_CLAN].append(contact)
+      if (userIdStr.value != block.uid)
+        addContact(contact, EPLX_CLAN)
     }
   }
 }
@@ -742,7 +744,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::handle_new_my_clan_data <- function handle_new_my_clan_data() {
   ::g_clans.parseSeenCandidates()
-  contactsByGroups[EPLX_CLAN] <- []
+  contactsByGroups[EPLX_CLAN] <- {}
   if ("members" in ::my_clan_info) {
     foreach (_mem, block in ::my_clan_info.members) {
       if (!(block.uid in contactsPlayers))
@@ -752,8 +754,8 @@ registerPersistentData("ClansGlobals", getroottable(),
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
-      if (::my_user_id_str != block.uid)
-        contactsByGroups[EPLX_CLAN].append(contact)
+      if (userIdStr.value != block.uid)
+        addContact(contact, EPLX_CLAN)
 
       ::clanUserTable[block.nick] <- ::my_clan_info.tag
     }
@@ -1140,7 +1142,7 @@ let function getSeasonName(blk) {
     let params = {
       place = placeTitleColored
       top = placeTitleColored
-      squadron = colorize("activeTextColor", this.clanTag + ::nbsp + this.clanName)
+      squadron = colorize("activeTextColor", this.clanTag + nbsp + this.clanName)
       season = colorize("activeTextColor", this.seasonName)
     }
     let winner = this.isWinner() ? "place" : "top"

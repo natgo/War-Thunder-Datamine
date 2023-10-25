@@ -7,6 +7,8 @@ let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { isUnitDefault } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -17,7 +19,7 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
     foreach (needReserveUnit in [ true, false ]) {
       foreach (u in getAllUnits())
         if (u.isVisibleInShop() && u.shopCountry == countryId
-            && (!needReserveUnit || ::isUnitDefault(u))
+            && (!needReserveUnit || isUnitDefault(u))
             && hangarDefaultUnits[countryId]?[u.esUnitType] == null)
           hangarDefaultUnits[countryId][u.esUnitType] <- u
       if (hangarDefaultUnits[countryId].len() == unitTypes.types.len() - 1)
@@ -47,7 +49,7 @@ let function getFallbackUnitForHangar(params) {
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 
-let showedUnit = persist("showedUnit", @() Watched(null))
+let showedUnit = mkWatched(persist, "showedUnit", null)
 
 let getShowedUnitName = @() showedUnit.value?.name ??
   (isFallbackUnitInHangar ? "" : hangar_get_current_unit_name())
@@ -67,7 +69,7 @@ showedUnit.subscribe(function(_v) {
 
 let function getPlayerCurUnit() {
   local unit = null
-  if (::is_in_flight())
+  if (isInFlight())
     unit = getAircraftByName(::get_player_unit_name())
   if (!unit || unit.name == "dummy_plane")
     unit = showedUnit.value ?? getAircraftByName(hangar_get_current_unit_name())

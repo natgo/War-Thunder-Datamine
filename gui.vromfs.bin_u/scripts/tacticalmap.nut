@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -13,6 +11,8 @@ let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft
   is_aircraft_player, set_tactical_screen_player, get_player_group } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { isInFlight } = require("gameplayBinding")
 
   ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false) {
     ::tactical_map_handler = handlersManager.loadHandler(gui_handlers.TacticalMap,
@@ -118,7 +118,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
     function updateTitle() {
       let gt = get_game_type()
-      local titleText = ::loc_current_mission_name()
+      local titleText = locCurrentMissionName()
       if (gt & GT_VERSUS)
         titleText = loc($"multiplayer/{get_cur_game_mode_name()}Mode")
 
@@ -358,7 +358,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
     function doClose() {
       let closeFn = base.goBack
       this.guiScene.performDelayed(this, function() {
-        if (::is_in_flight()) {
+        if (isInFlight()) {
           ::close_ingame_gui()
           if (this.isSceneActive())
             closeFn()

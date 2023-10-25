@@ -15,6 +15,7 @@ let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
 let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
+let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 
 local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -45,6 +46,8 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     this.fillGamercard()
     this.reinitScreen()
+
+    this.updateCustomLangInfo()
   }
 
   function reinitScreen(_params = null) {
@@ -194,6 +197,16 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
       this.shopWeak.setUnitType(unitType)
   }
 
+  function updateCustomLangInfo() {
+    let isShowInfo = !topMenuShopActive.value && isUsedCustomLocalization()
+    let infoObj = this.showSceneBtn("custom_lang_info", isShowInfo)
+    if (!isShowInfo)
+      return
+
+    infoObj.tooltip = getLocalization("mainmenu/custom_lang_info/tooltip")
+    infoObj.setValue(getLocalization("mainmenu/custom_lang_info"))
+  }
+
   function shopWndSwitch(unitType = null) {
     if (!this.isValid())
       return
@@ -220,6 +233,7 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
     if (this.shopWeak && this.shopWeak.getCurrentEdiff() != ::get_current_ediff())
       this.shopWeak.updateSlotbarDifficulty()
 
+    this.updateCustomLangInfo()
     broadcastEvent("ShopWndSwitched")
   }
 
@@ -423,6 +437,42 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
       }
       { obj = topMenuShopActive.value || ::g_squad_manager.isInSquad() ? null : "btn_squadPlus"
         msgId = "hint_play_with_friends"
+      }
+      { obj = "air_info_dmviewer_armor"
+        msgId = "hint_dmviewer_armor"
+      }
+      { obj = "dmviewer_show_external_dm"
+        msgId = "hint_dmviewer_show_external_dm"
+      }
+      { obj = "air_info_dmviewer_xray"
+        msgId = "hint_dmviewer_xray"
+      }
+      { obj = "dmviewer_protection_analysis_btn"
+        msgId = "hint_dmviewer_protection_analysis_btn"
+      }
+      { obj = "dmviewer_show_extra_xray"
+        msgId = "hint_dmviewer_show_extra_xray"
+      }
+      { obj = "dmviewer_show_extended_hints"
+        msgId = "hint_dmviewer_show_extended_hints"
+      }
+      { obj = "gc_BattlePassProgress"
+        msgId = "hint_battlepas"
+      }
+      { obj = "gc_free_exp"
+        msgId = "hint_gc_free_exp"
+      }
+      { obj = "btnAirInfoWeaponry"
+        msgId = "hint_btnAirInfoWeaponry"
+      }
+      { obj = "topmenu_community_btn"
+        msgId = "hint_community_btn"
+      }
+      { obj = "topmenu_pvp_btn"
+        msgId = "hint_topmenu_pvp_btn"
+      }
+      { obj = "topmenu_menu_btn"
+        msgId = "hint_topmenu_menu_btn"
       }
     ]
 

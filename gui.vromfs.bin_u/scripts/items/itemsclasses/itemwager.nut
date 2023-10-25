@@ -15,6 +15,7 @@ let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlo
 let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   getFullUnlockCondsDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::items_classes.Wager <- class extends ::BaseItem {
   static iType = itemType.WAGER
@@ -304,7 +305,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
   function getAvailableStakeText() {
     if (this.curWager >= 0)
-      return loc("items/wager/name") + loc("ui/colon") + ::getPriceAccordingToPlayersCurrency(this.curWager, 0)
+      return loc("items/wager/name") + loc("ui/colon") + Cost(this.curWager).getTextAccordingToBalance()
     return loc("items/wager/notAvailable")
   }
 
@@ -496,7 +497,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     if (!this.uids || !this.uids.len())
       return false
 
-    if (this.getWagerCost(wagerValue) > ::get_gui_balance()) {
+    if (this.getWagerCost(wagerValue) > get_gui_balance()) {
       this.showNotEnoughMoneyMsgBox(cb)
       return false
     }

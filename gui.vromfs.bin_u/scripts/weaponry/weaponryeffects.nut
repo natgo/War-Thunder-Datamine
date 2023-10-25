@@ -15,7 +15,6 @@ const BAD_COLOR = "@badTextColor"
 const NEUTRAL_COLOR = "@activeTextColor"
 
 const MEASURE_UNIT_SPEED = 0
-const MEASURE_UNIT_ALT = 1
 const MEASURE_UNIT_CLIMB_SPEED = 3
 
 
@@ -318,7 +317,7 @@ effectTypeConstructor)
 
 /**************************************** FULL DESC GENERATION ******************************************************/
 
-let startTab = ::nbsp + ::nbsp + ::nbsp + ::nbsp
+let startTab = nbsp + nbsp + nbsp + nbsp
 local getEffectsStackFunc = function(unit, effectsConfig, modeId) {
   return function(res, eType) {
     let text = eType.getText(unit, effectsConfig, modeId)

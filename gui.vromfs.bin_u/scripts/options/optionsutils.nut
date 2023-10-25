@@ -12,7 +12,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
 } = require("%scripts/options/optionsExtNames.nut")
 
-let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
+let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
 
 let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
@@ -34,7 +34,7 @@ let createDefaultOption = function() {
     hint = null  //"guiHints/" + descr.id
     value = null
     controlType = optionControlType.LIST
-
+    hasWarningIcon = false
     context = null
     optionCb = null
     items = null
@@ -136,7 +136,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
     even = !even
   }
 
-  if (defSat >= 0.000001) //create white (in case it's not default)
+  if ((defSat ?? 0) >= 0.000001) //create white (in case it's not default)
     addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.9)
 
   //now black

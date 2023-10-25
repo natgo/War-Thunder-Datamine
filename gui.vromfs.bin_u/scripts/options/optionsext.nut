@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 from "%scripts/options/optionsExtNames.nut" import *
+
+let { getCurrentLanguage } = require("dagor.localize")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -92,9 +94,15 @@ let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, sa
 } = require("%scripts/clientState/localProfile.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
-let { getClustersList, getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { isEnabledCustomLocalization, setCustomLocalization,
+  getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isMeAllowedToBeAddedToContacts, setAbilityToBeAddedToContacts } = require("%scripts/contacts/contactsState.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -124,16 +132,6 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 ::crosshair_icons <- []
 ::crosshair_colors <- []
 ::thermovision_colors <- []
-
-::KG_TO_TONS <- 0.001
-
-::ttv_video_sizes <- [
-  [640, 368],
-  [720, 480],
-  [864, 480],
-  [1280, 720],
-  [1920, 1088],
-]
 
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
@@ -348,9 +346,10 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
 
 ::create_option_row_multiselect <- function create_option_row_multiselect(params) {
   let option = params?.option
-  if (!checkArgument(option?.id, option?.items, "array") ||
-    !checkArgument(option?.id, option?.value, "integer"))
-      return ""
+  if (option == null
+      || !checkArgument(option?.id, option?.items, "array")
+      || !checkArgument(option?.id, option?.value, "integer"))
+    return ""
 
   let view = {
     listClass = params?.listClass ?? "options"
@@ -468,7 +467,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.trParams <- "iconType:t='small';"
-      let info = ::g_language.getGameLocalizationInfo()
+      let info = getGameLocalizationInfo()
       for (local i = 0; i < info.len(); i++) {
         let lang = info[i]
         descr.values.append(lang.id)
@@ -477,7 +476,18 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           image = lang.icon
         })
       }
-      descr.value = u.find_in_array(descr.values, ::get_current_language())
+      descr.value = u.find_in_array(descr.values, getCurrentLanguage())
+      break
+
+    case USEROPT_CUSTOM_LANGUAGE:
+      descr.id = "customLang"
+      descr.title = getLocalization("options/customLang")
+      descr.hint = getLocalization("guiHints/customLang")
+      descr.hasWarningIcon = hasWarningIcon()
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.needRestartClient = true
+      descr.value = isEnabledCustomLocalization()
       break
 
     case USEROPT_SPEECH_TYPE:
@@ -1465,7 +1475,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         "overcast", "poor", "blind", /*"shower"*/ "rain", "thunder"]
       descr.items = descr.values.map(getWeatherLocName)
       defaultValue = "cloudy"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("weather", null)
       break
 
@@ -1475,7 +1485,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                       "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
       descr.items = descr.values.map(::get_mission_time_text)
       defaultValue = "Day"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("environment", null)
       break
 
@@ -1497,7 +1507,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = false
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("disableAirfields", false)
       break
 
@@ -1506,7 +1516,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("spawnAiTankOnTankMaps", true)
       break
 
@@ -1522,7 +1532,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = false
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("dedicatedReplay", false)
       break
 
@@ -1562,7 +1572,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "switchbox"
       defaultValue = false
       descr.optionCb = "onOptionBotsAllowed"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("isBotsAllowed", null)
       break
 
@@ -1571,7 +1581,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("useTankBots", null)
       break
 
@@ -1580,7 +1590,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("useShipBots", null)
       break
 
@@ -1589,7 +1599,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("keepDead", null)
       break
 
@@ -1676,7 +1686,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append(i)
       }
       defaultValue = -1
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("maxRespawns", null)
       break
 
@@ -1685,7 +1695,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = false
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("allowEmptyTeams", null)
       break
 
@@ -1693,7 +1703,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "allow_jip"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getPublicParam("allowJIP", null)
       break
 
@@ -2442,7 +2452,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       defaultValue = "arcade";
 
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("difficulty", null)
       break
 
@@ -2570,7 +2580,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = misCountries.ALL
       descr.optionCb = "onMissionCountriesType"
 
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getPublicParam("countriesType", null)
       break
 
@@ -2614,7 +2624,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append(country)
       }
 
-      if (::SessionLobby.isInRoom()) {
+      if (isInSessionRoom.get()) {
         let cList = ::SessionLobby.getPublicParam(descr.sideTag, null)
         if (cList)
           prevValue = ::get_bit_value_by_array(cList, shopCountriesList)
@@ -2728,7 +2738,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
         descr.items.append(descr.values[i].tostring())
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("raceLaps", null)
       break
 
@@ -2739,7 +2749,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
         descr.items.append(descr.values[i].tostring())
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("raceWinners", null)
       break
 
@@ -2747,7 +2757,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "race_can_shoot"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom()) {
+      if (isInSessionRoom.get()) {
         let cannotShoot = ::SessionLobby.getMissionParam("raceForceCannotShoot", null)
         if (cannotShoot != null)
           prevValue = !cannotShoot
@@ -3051,7 +3061,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "optional_takeoff"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("optionalTakeOff", null)
       break
 
@@ -3069,14 +3079,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           prevValue = get_unit_option(::cur_aircraft_name, USEROPT_LOAD_FUEL_AMOUNT)
           maxFuel = ::get_aircraft_max_fuel(::cur_aircraft_name)
           let difOpt = ::get_option(USEROPT_DIFFICULTY)
-          local difficulty = ::SessionLobby.isInRoom() ? ::SessionLobby.getMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
+          local difficulty = isInSessionRoom.get() ? ::SessionLobby.getMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
           if (difficulty == "custom")
             difficulty = ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()).name
           let modOpt = ::get_option(USEROPT_MODIFICATIONS)
           let useModifications = get_game_mode() == GM_TEST_FLIGHT || get_game_mode() == GM_BUILDER ? modOpt.values[modOpt.value] : true
           fuelConsumptionPerHour = ::get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
 
-          if (fuelConsumptionPerHour > 0 && ::is_in_flight()) {
+          if (fuelConsumptionPerHour > 0 && isInFlight()) {
             let fixedPercent = ::g_mis_custom_state.getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
             if (fixedPercent > 0) {
               isFuelFixed = true
@@ -3165,7 +3175,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "limitedFuel"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("isLimitedFuel", false)
       break
 
@@ -3173,7 +3183,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "limitedAmmo"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("isLimitedAmmo", false)
       break
 
@@ -3239,35 +3249,39 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
       break
 
-    case USEROPT_CLUSTER:
-    case USEROPT_RANDB_CLUSTER:
+    case USEROPT_CLUSTERS:
+    case USEROPT_RANDB_CLUSTERS:
       descr.id = "cluster"
-      descr.controlType = optionId == USEROPT_RANDB_CLUSTER
+      descr.controlType = optionId == USEROPT_RANDB_CLUSTERS
         ? optionControlType.BIT_LIST
         : optionControlType.LIST
 
       if (getClustersList().len() > 0) {
         descr.items = getClustersList().map(@(c) {
-          text = getClusterLocName(c.name)
+          text = getClusterShortName(c.name)
           name = c.name
           image = c.isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tooltip = c.isUnstable ? loc("multiplayer/cluster_connection_unstable") : null
           isUnstable = c.isUnstable
           isDefault = c.isDefault
           isAuto = false
+          isVisible = c.name != "SA"
         }).append({
           text = loc("options/auto")
           name = "auto"
           image = null
           tooltip = loc("options/auto/tooltip", {
-            clusters = ", ".join(getClustersList().map(@(c) getClusterLocName(c.name)))
+            clusters = ", ".join(getClustersList().map(@(c) getClusterShortName(c.name)))
           })
           isUnstable = false
           isDefault = false
           isAuto = true
+          isVisible = true
         })
+        if (optionId == USEROPT_CLUSTERS)
+          descr.items = descr.items.filter(@(i) i.isVisible)
         descr.values = descr.items.map(@(i) i.name)
-        defaultValue = optionId == USEROPT_CLUSTER
+        defaultValue = optionId == USEROPT_CLUSTERS
           ? "auto"
           : ";".join(descr.items.filter(@(i) i.isAuto || i.isDefault).map(@(i) i.name))
       }
@@ -3288,11 +3302,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
 
       prevValue = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_MP_DOMINATION)
-      if (optionId == USEROPT_CLUSTER) {
-        if (::SessionLobby.isInRoom())
+      if (optionId == USEROPT_CLUSTERS) {
+        if (isInSessionRoom.get())
           prevValue = ::SessionLobby.getPublicParam("cluster", null)
       }
-      else if (optionId == USEROPT_RANDB_CLUSTER) {
+      else if (optionId == USEROPT_RANDB_CLUSTERS) {
         descr.value = 0
         if (u.isString(prevValue)) {
           local selectedValues = split_by_chars(prevValue, ";")
@@ -3948,6 +3962,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = true
       descr.defVal <- defaultValue
       descr.optionCb <- "onChangeDisplayRealNick"
+      if (!havePremium.get()) {
+        descr.hint = "".concat(
+          loc("guiHints/display_my_real_nick"),
+          "\n",
+          colorize("warningTextColor", loc("mainmenu/onlyWithPremium"))
+        )
+        descr.trParams <- "disabledColor:t='yes';"
+      }
       break
     case USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS:
       descr.id = "display_real_nicks_participants"
@@ -3968,7 +3990,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "allow_added_to_contacts"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_allow_to_be_added_to_contacts()
+      descr.value = isMeAllowedToBeAddedToContacts.get()
       defaultValue = true
       descr.defVal <- defaultValue
       break
@@ -4311,7 +4333,10 @@ let function set_option(optionId, value, descr = null) {
   switch (optionId) {
     // global settings:
     case USEROPT_LANGUAGE:
-      ::g_language.setGameLocalization(descr.values[value], false, true)
+      setGameLocalization(descr.values[value], false, true)
+      break
+    case USEROPT_CUSTOM_LANGUAGE:
+      setCustomLocalization(value)
       break
     case USEROPT_VIEWTYPE:
       ::set_option_view_type(value)
@@ -5318,17 +5343,19 @@ let function set_option(optionId, value, descr = null) {
       ::set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
       break
 
-    case USEROPT_CLUSTER:
+    case USEROPT_CLUSTERS:
       if (value >= 0 && value < descr.values.len())
         ::set_gui_option_in_mode(optionId, descr.values[value], OPTIONS_MODE_MP_DOMINATION)
       break
-    case USEROPT_RANDB_CLUSTER:
+    case USEROPT_RANDB_CLUSTERS:
       if (value >= 0 && value <= (1 << descr.values.len()) - 1) {
         let idx = descr.values.findindex(@(v) v == "auto")
         let isAuto = idx != null ? is_bit_set(value, idx) : false
-        let clusters = descr.values.filter(@(_, i) isAuto
+        local clusters = descr.values.filter(@(_, i) isAuto
           ? descr.items[i].isDefault || descr.items[i].isAuto
-          : is_bit_set(value, i))
+          : descr.items[i].isVisible && is_bit_set(value, i))
+        if (clusters.len() == 0 && !isAuto) //all selected cluster may not visible when unselect Auto cluster
+          clusters = descr.values.filter(@(_, i) descr.items[i].isVisible && !descr.items[i].isAuto)
         let newVal = ";".join(clusters)
         ::set_gui_option_in_mode(optionId, newVal, OPTIONS_MODE_MP_DOMINATION)
         broadcastEvent("ClusterChange")
@@ -5462,10 +5489,8 @@ let function set_option(optionId, value, descr = null) {
     case USEROPT_SHOW_SOCIAL_NOTIFICATIONS:
       set_gui_option(optionId, value)
       break
-
     case USEROPT_ALLOW_ADDED_TO_CONTACTS:
-      ::set_allow_to_be_added_to_contacts(value)
-      ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+      setAbilityToBeAddedToContacts(value)
       break
     case USEROPT_ALLOW_ADDED_TO_LEADERBOARDS:
       ::set_allow_to_be_added_to_lb(value)
@@ -5636,12 +5661,20 @@ let function set_option(optionId, value, descr = null) {
             "value_" + optionData.id, optionData.getValueLocText(optionData.value))
 
         let optionTitleStyle = isHeader ? "optionBlockHeader" : "optiontext"
+        let title = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
+          "'; text:t ='", tdText, "'; }")
+
+        local rawParam = ""
+        if(optionData.hasWarningIcon)
+          rawParam = " ".concat("warningDiv {", "warningLangIcon{}", title, "}")
+        else
+          rawParam = title
+
         cell.append({ params = {
           cellType = "left"
           width = wLeft
           autoScrollText = "yes"
-          rawParam = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
-            "'; text:t ='", tdText, "'; }")
+          rawParam = rawParam
         } })
       }
 

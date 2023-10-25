@@ -14,7 +14,8 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -59,7 +60,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    this.country = ::getUnitCountry(this.unit)
+    this.country = getUnitCountry(this.unit)
     this.checkAvailableCrew()
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -231,7 +232,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     if (cost.gold > 0)
       return
 
-    this.takeCrewIdInCountry = cost <= ::get_gui_balance() ? ::get_crew_count(this.country) : this.takeCrewIdInCountry
+    this.takeCrewIdInCountry = cost <= get_gui_balance() ? ::get_crew_count(this.country) : this.takeCrewIdInCountry
   }
 
   function getCurrentEdiff() {

@@ -2,11 +2,29 @@ root {
   bgrStyle:t='fullScreenWnd'
   blur {}
   blur_foreground {}
+  background-color:t='@fullScreenBgrColor'
+
+  img {
+    id:t='backgroundImg'
+    size:t='sw, 752w/1584'
+    max-width:t='(280/1920sw $min 0.26sh)1920/280'
+    position:t='absolute'
+    pos:t='0.5pw-0.5w, 0.5(ph+(280/1920sw $min 0.26sh)-h)'
+    background-image:t='#ui/images/cat_fix'
+    background-repeat:t='aspect-ratio'
+    display:t='hide'
+    tdiv {
+      size:t='pw, ph'
+      background-color:t='#7205090D'
+    }
+  }
 
   img {
     position:t='absolute'
-    size:t='sw, 0.145sw'
+    size:t='sw, 280/1920sw'
+    max-height:t='0.26sh'
     background-image:t='#ui/images/steam_rate_bg?P1'
+    background-repeat:t='aspect-ratio'
 
     tdiv {
       width:t='0.75@rh' //by size of frame 
@@ -19,43 +37,29 @@ root {
         background-svg-size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
         background-repeat:t='aspect-ratio'
       }
-      tdiv {
-        width:t='fw'
-        pos:t='0, 50%ph-50%h'
-        position:t='relative'
-
-        textarea {
-          pos:t='pw-w, 0'
-          position:t='relative'
-          text:t='War Thunder'
-          bigBoldFont:t='yes'
-          overlayTextColor:t='active'
-        }
-      }
     }
   }
 
-  frame {
-    id:t='wnd_frame'
-    size:t='@rw, @rh'
-    pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+  tdiv {
+    width:t='@rw'
+    pos:t='0.5pw-0.5w, @bh'
     position:t='absolute'
-    class:t='wndNav'
-    fullScreenSize:t='yes'
-
-    frame_header { Button_close {} }
+    Button_close { _on_click:t = 'goBack' }
   }
 
   tdiv {
-    size:t='0.75sh, 0.5625*sh'
+    size:t='0.75sh,  0.5625*sh'
     pos:t='0.5sw-0.5w, 0.5sh-0.5h'
     position:t='absolute'
     flow:t='vertical'
 
     titleTextArea {
-      pos:t='50%pw-50%w, 50%ph-50%h'
+      id:t='rate_text'
+      left:t='0.5pw-0.5w'
+      top:t='0.7ph-0.5h'
       position:t='absolute'
       width:t='pw'
+      shadeStyle:t='shadowed'
       text:t='#msgbox/steam/rate_review'
     }
 
@@ -74,7 +78,7 @@ root {
       
       navRight {
         Button_text {
-          text:t='#msgbox/goToSteam'
+          text:t='#write_review'
           on_click:t='onApply'
           visualStyle:t='steam'
           focusBtnName:t='A'

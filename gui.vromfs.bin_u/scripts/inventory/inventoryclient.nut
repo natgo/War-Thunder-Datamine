@@ -19,6 +19,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
+let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -179,7 +180,7 @@ let function _validate(data, name) {
             if (isMissing)
               keysMissing[key] <- true
             if (isWrongType)
-              keysWrongType[key] <- type(val) + "," + val
+              keysWrongType[key] <- $"{type(val)},{val}"
 
             if (shouldInvalidate)
               isItemValid = false
@@ -456,12 +457,12 @@ let class InventoryClient {
     log("Request itemdefs " + itemdefidsString)
 
     this.lastItemdefsRequestTime = get_time_msec()
-    let steamLanguage = ::g_language.getCurrentSteamLanguage()
+    let steamLanguage = getCurrentSteamLanguage()
     this.requestWithSignCheck("GetItemDefsClient", { itemdefids = itemdefidsString, language = steamLanguage }, null,
       function(result) {
         this.lastItemdefsRequestTime = -1
         let itemdef_json = this.getResultData(result, "itemdef_json");
-        if (!itemdef_json || steamLanguage != ::g_language.getCurrentSteamLanguage()) {
+        if (!itemdef_json || steamLanguage != getCurrentSteamLanguage()) {
           requestData.fireCb()
           this.requestItemDefsImpl()
           return
@@ -618,27 +619,27 @@ let class InventoryClient {
       shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
     }
 
-    if (!shouldCheckInventory)
-      return cb(newItems)
+    if (!shouldCheckInventory) {
+      cb?(newItems)
+      return
+    }
 
     if (shouldUpdateItemdefs) {
       this.requestItemDefs(function() {
-        if (cb) {
-          for (local i = newItems.len() - 1; i >= 0; --i) {
-            if (type(newItems[i].itemdef) != "table") {
-              newItems.remove(i)
-            }
+        if (!cb)
+          return
+
+        for (local i = newItems.len() - 1; i >= 0; --i)
+          if (type(newItems[i].itemdef) != "table") {
+            newItems.remove(i)
           }
 
-          cb(newItems)
-        }
+        cb(newItems)
       })
     }
     else {
       this.notifyInventoryUpdate(hasInventoryChanges)
-      if (cb) {
-        cb(newItems)
-      }
+      cb?(newItems)
     }
   }
 

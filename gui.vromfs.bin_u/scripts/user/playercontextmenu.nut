@@ -7,7 +7,6 @@ let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat,
   isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
@@ -17,6 +16,9 @@ let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 //-----------------------------
 // params keys:
@@ -57,7 +59,7 @@ let notifyPlayerAboutRestriction = function(contact, isInvite = false) {
     return
   }
 
-  if (contact.isBlockedMe)
+  if (contact.isBlockedMe())
     return
 
   if (!isCrossNetworkMessageAllowed(contact.name))
@@ -367,13 +369,13 @@ let getActions = function(contact, params) {
   if (isMPLobby)
     actions.append({
       text = loc("mainmenu/btnKick")
-      show = !isMe && ::SessionLobby.isRoomOwner && !::SessionLobby.isEventRoom
+      show = !isMe && isMeSessionLobbyRoomOwner.get() && !isInSessionLobbyEventRoom.get()
       action = @() ::SessionLobby.kickPlayer(::SessionLobby.getMemberByName(name))
     })
 //---- </MP Lobby> ------------------
 
 //---- <In Battle> ------------------
-  if (::is_in_flight())
+  if (isInFlight())
     actions.append({
       text = loc(localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/enable" : "mpRadio/disable")
       show = !isMe && !isBlock
@@ -495,19 +497,26 @@ let getActions = function(contact, params) {
   return buttons
 }
 
-let showMenu = function(v_contact, handler, params = {}) {
-  let contact = v_contact || verifyContact(params)
-  let showMenu = callee()
-  if (contact && contact.needCheckXboxId())
-    return contact.getXboxId(@() showMenu(contact, handler, params))
+let function showMenuImpl(contact, handler, params) {
+  let menu = getActions(contact, params)
+  ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
+}
 
-  if (!contact && params?.playerName)
-    return ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu(c, handler, params))
+let function showMenu(v_contact, handler, params = {}) {
+  let contact = v_contact ?? verifyContact(params)
+  if (!contact && params?.playerName) {
+    let showMenu_ = callee()
+    ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu_(c, handler, params))
+    return
+  }
 
-  updateContactsStatusByContacts([contact], Callback(function() {
-    let menu = getActions(contact, params)
-    ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
-  }, this))
+  if (!contact)
+    return
+
+  if (contact.needCheckXboxId())
+    return contact.updateXboxIdAndDo(@() showMenuImpl(contact, handler, params))
+
+  showMenuImpl(contact, handler, params)
 }
 
 return {

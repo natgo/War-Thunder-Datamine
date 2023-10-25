@@ -1,8 +1,8 @@
 {
   "maxChannels": 128,
   "maxSoftwareChannels": 128,
-  "maxVorbisCodecs": 64,
-  "maxFADPCMCodecs": 64,
+  "maxVorbisCodecs": 128,
+  "maxFADPCMCodecs": 128,
   "vol0virtualvol": 0.001,
   "sampleRate": 48000,
   "fmodEnableSpatialSound": false,
@@ -209,6 +209,14 @@
           "preload": false
         },
         "tanks_effects.assets": {
+          "async": true,
+          "preload": false
+        },
+        "tanks_effects_radio": {
+          "async": true,
+          "preload": false
+        },
+        "tanks_effects_radio.assets": {
           "async": true,
           "preload": false
         },
@@ -518,14 +526,11 @@
       "name": [
         "sfx",
         "gui",
-        "sounds/fx/ambient",
         "sounds/fx/cutscenes",
         "sounds/fx/everywhere",
         "sounds/fx/miscellaneous_inside",
         "sounds/fx/taken_hits_inside",
-        "sounds/fx/underwater",
         "sounds/fx/unit_destroy",
-        "sounds/fx/water_surface",
         "sounds/outside/fx/ai_hits",
         "sounds/outside/fx/ambient",
         "sounds/outside/fx/bomb_whistle",
@@ -639,6 +644,7 @@
     "pathAITanks": "ground/effects/ai",
     "pathShips": "naval/effects",
     "pathAIShips": "naval/effects/ai",
+    "pathEvents": "event",
     "pathWalkers": "naval/effects",
     "eventBulletHitGround": "bullethit_ground",
     "eventBulletHitGroundDist": 200.0,
@@ -19636,6 +19642,7 @@
         "apds_fs_tungsten_l10_l15_tank": "loadBulletAPDS",
         "apds_fs_long_l30_tank": "loadBulletSubCaliber",
         "atgm_tank": "loadBulletMissile",
+        "atgm_ke_tank": "loadBulletMissile",
         "rocket_tank": "loadBulletMissile"
       }
     },
@@ -20422,7 +20429,7 @@
           "event": "08_state_ship/voice_message_commander_abandon_ship",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 1230.0
+          "minSpeechInterval": 1240.0
         },
         "shipAbandonedLifeBoat": {
           "event": "08_state_ship/voice_message_commander_abandon_ship_lifeboat",

@@ -22,8 +22,10 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
 let { performPromoAction } = require("%scripts/promo/promo.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { convertBlk, copyParamsToTable } = require("%sqstd/datablock.nut")
+let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -54,15 +56,20 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
     this.updateButtons()
     this.prepareRewardsData()
     this.updateRewards()
+    this.updateTotalAmount()
   }
 
   function updateDiscount() {
-    let { discountValue = 0, fullCostGold = 0 } = this.offerBlk
-    if (fullCostGold > 0)
-      this.scene.findObject("exclusive_price_value_text").setValue(
-        Cost(0, fullCostGold).getUncoloredText())
+    let { discountValue = 0 } = this.offerBlk
+    this.scene.findObject("exclusive_price_value_text").setValue(this.costGold.tostring())
     if (discountValue > 0)
       this.scene.findObject("discount_value_text").setValue($"{discountValue.tostring()}%")
+  }
+
+  function updateTotalAmount() {
+    let { fullCostGold = 0 } = this.offerBlk
+    if (fullCostGold > 0)
+      this.scene.findObject("total_amount_value").setValue(Cost().setGold(fullCostGold).tostring())
   }
 
   function updateImages() {
@@ -82,11 +89,11 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
 
   function prepareRewardsData() {
     this.groups = []
+    let discount = this.offerBlk?.discountValue ?? 0
     foreach(config in (this.offerBlk % "i")) {
       local firstInBlock = false
 
-      let localConfig = DataBlock()
-      localConfig.setFrom(config)
+      let localConfig = copyParamsToTable(config)
       let button = ::PrizesView.getPrizeActionButtonsView(localConfig, { shopDesc = true })
       local offerType = ::trophyReward.getType(localConfig)
       offerType = offerType != "resourceType" ? offerType : localConfig.resourceType
@@ -146,7 +153,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
           })
         itemData.unitFullName <- getUnitName(unit, false)
         itemData.image <- unitPlate
-        itemData.countryIco <- ::get_unit_country_icon(unit, false)
+        itemData.countryIco <- getUnitCountryIcon(unit, false)
         let fonticon = getUnitRoleIcon(unit)
         let typeText = getFullUnitRoleText(unit)
         itemData.unitType <- colorize(::getUnitClassColor(unit), $"{typeText} {fonticon}")
@@ -158,6 +165,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
         group.units.append(itemData)
       }
       itemData.cost <- this.getCost(offerType, localConfig)
+      itemData.discountCost <- Cost().setGold(itemData.cost.gold).multiply(1 - 1.0 * discount / 100)
     }
   }
 
@@ -173,7 +181,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
     else if(offerType == "unlock")
       return getUnlockCost(localConfig.unlock).multiply(localConfig.count)
     else
-      return ::g_decorator_type.getTypeByResourceType(localConfig.resourceType)
+      return getTypeByResourceType(localConfig.resourceType)
         .getCost(localConfig.resource)
         .multiply(localConfig.count)
     return Cost()
@@ -226,15 +234,10 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
           cost = this.costGold.getTextAccordingToBalance()
         }),
         this.costGold)
-    this.msgBox("purchase_ask", msgText,
-      [
-        ["yes", function() {
-          if (::check_balance_msgBox(this.costGold))
-            this.onBuyImpl()
-        }],
-        ["no", @() null ]
-      ], "yes", { cancel_fn = @() null }
-    )
+    purchaseConfirmation("purchase_ask", msgText, Callback(function() {
+      if (::check_balance_msgBox(this.costGold))
+        this.onBuyImpl()
+    }, this))
   }
 
   function onTimer(_obj, _dt) {
