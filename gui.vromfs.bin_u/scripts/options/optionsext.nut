@@ -94,7 +94,9 @@ let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
-let { getClustersList, getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { isEnabledCustomLocalization, setCustomLocalization,
+  getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -124,16 +126,6 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 ::crosshair_icons <- []
 ::crosshair_colors <- []
 ::thermovision_colors <- []
-
-::KG_TO_TONS <- 0.001
-
-::ttv_video_sizes <- [
-  [640, 368],
-  [720, 480],
-  [864, 480],
-  [1280, 720],
-  [1920, 1088],
-]
 
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
@@ -348,9 +340,10 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
 
 ::create_option_row_multiselect <- function create_option_row_multiselect(params) {
   let option = params?.option
-  if (!checkArgument(option?.id, option?.items, "array") ||
-    !checkArgument(option?.id, option?.value, "integer"))
-      return ""
+  if (option == null
+      || !checkArgument(option?.id, option?.items, "array")
+      || !checkArgument(option?.id, option?.value, "integer"))
+    return ""
 
   let view = {
     listClass = params?.listClass ?? "options"
@@ -478,6 +471,17 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         })
       }
       descr.value = u.find_in_array(descr.values, ::get_current_language())
+      break
+
+    case USEROPT_CUSTOM_LANGUAGE:
+      descr.id = "customLang"
+      descr.title = getLocalization("options/customLang")
+      descr.hint = getLocalization("guiHints/customLang")
+      descr.hasWarningIcon = hasWarningIcon()
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.needRestartClient = true
+      descr.value = isEnabledCustomLocalization()
       break
 
     case USEROPT_SPEECH_TYPE:
@@ -3248,7 +3252,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       if (getClustersList().len() > 0) {
         descr.items = getClustersList().map(@(c) {
-          text = getClusterLocName(c.name)
+          text = getClusterShortName(c.name)
           name = c.name
           image = c.isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tooltip = c.isUnstable ? loc("multiplayer/cluster_connection_unstable") : null
@@ -3260,7 +3264,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           name = "auto"
           image = null
           tooltip = loc("options/auto/tooltip", {
-            clusters = ", ".join(getClustersList().map(@(c) getClusterLocName(c.name)))
+            clusters = ", ".join(getClustersList().map(@(c) getClusterShortName(c.name)))
           })
           isUnstable = false
           isDefault = false
@@ -4312,6 +4316,9 @@ let function set_option(optionId, value, descr = null) {
     // global settings:
     case USEROPT_LANGUAGE:
       ::g_language.setGameLocalization(descr.values[value], false, true)
+      break
+    case USEROPT_CUSTOM_LANGUAGE:
+      setCustomLocalization(value)
       break
     case USEROPT_VIEWTYPE:
       ::set_option_view_type(value)
@@ -5636,12 +5643,20 @@ let function set_option(optionId, value, descr = null) {
             "value_" + optionData.id, optionData.getValueLocText(optionData.value))
 
         let optionTitleStyle = isHeader ? "optionBlockHeader" : "optiontext"
+        let title = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
+          "'; text:t ='", tdText, "'; }")
+
+        local rawParam = ""
+        if(optionData.hasWarningIcon)
+          rawParam = " ".concat("warningDiv {", "warningLangIcon{}", title, "}")
+        else
+          rawParam = title
+
         cell.append({ params = {
           cellType = "left"
           width = wLeft
           autoScrollText = "yes"
-          rawParam = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
-            "'; text:t ='", tdText, "'; }")
+          rawParam = rawParam
         } })
       }
 

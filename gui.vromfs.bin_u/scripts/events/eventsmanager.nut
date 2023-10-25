@@ -40,7 +40,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
-let { getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -69,7 +70,7 @@ let eventNameText = {
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-::Events <- class {
+let Events = class {
   __game_events        = {}
   lastUpdate           = 0
   chapters             = null
@@ -996,16 +997,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getBrTextByRules(rules) {
-    if (rules)
-      foreach (rule in rules) {
-        let mranks = rule.mranks
-        let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
-        let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
-        let brText = "".concat(format("%.1f", minBR),
-          ((minBR != maxBR) ? "".concat(" - ", format("%.1f", maxBR)) : ""))
-        return loc("ui/tier", { text = brText })
-      }
-    return ""
+    let rule = rules?[0]
+    if (rule == null)
+      return ""
+
+    let mranks = rule.mranks
+    let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
+    let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
+    let brText = "".concat(format("%.1f", minBR),
+      ((minBR != maxBR) ? "".concat(" - ", format("%.1f", maxBR)) : ""))
+    return loc("ui/tier", { text = brText })
   }
 
   function isUnitAllowedForEvent(event, unit) {
@@ -2193,7 +2194,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function haveEventAccessByCost(event) {
-    return ::get_gui_balance() >= this.getEventBattleCost(event)
+    return get_gui_balance() >= this.getEventBattleCost(event)
   }
 
   function hasEventTicket(event) {
@@ -2347,7 +2348,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   function descFormat(name, value) {
     if (u.isEmpty(value))
       return ""
-    return name + loc("ui/colon") + colorize("@activeTextColor", value)
+    return "".concat(name, loc("ui/colon"), colorize("@activeTextColor", value))
   }
 
   function getEventRewardText(event) {
@@ -2375,7 +2376,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     if (mroom)
       textsList.append(this.descFormat(loc("options/cluster"),
-        getClusterLocName(::SessionLobby.getClusterName(mroom))))
+        getClusterShortName(::SessionLobby.getClusterName(mroom))))
 
     let isTesting = ("event_access" in event) ? isInArray("AccessTest", event.event_access) : false
     if (isTesting)
@@ -2600,7 +2601,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 }
 
-::events = ::Events()
+::events = Events()
 
 seenEvents.setListGetter(@() ::events.getVisibleEventsList())
 

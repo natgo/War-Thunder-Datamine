@@ -52,7 +52,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
     foreach (idx, preset in this.presets) {
       local title = preset.title
       if (idx == this.activePreset)
-        title += ::nbsp + loc("shop/current")
+        title += nbsp + loc("shop/current")
 
       view.items.append({
         itemTag = preset.enabled ? "mission_item_unlocked" : "mission_item_locked"
@@ -300,7 +300,8 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
     this.reinit(getTblValue("showPreset", params, -1))
   }
 
-  function onEventModalWndDestroy(_params) {
+  function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
       this.restoreFocusDelayed()
   }

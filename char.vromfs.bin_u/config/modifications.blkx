@@ -1710,6 +1710,18 @@
       "caliber": 7.62,
       "deactivationIsAllowed": false
     },
+    "fn_60_30_new_gun": {
+      "image": "#ui/gameuiskin#weapon",
+      "tier": 2,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 7.62,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "fn_60_30_new_gun"
+      }
+    },
     "50cal_universal": {
       "reqModification": "bmg50_belt_pack",
       "group": "50cal",
@@ -7658,6 +7670,14 @@
         "additiveBulletMod": "90mm_it_HE"
       }
     },
+    "90mm_it_he_time_fuze": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "90mm_HE",
+      "effects": {
+        "additiveBulletMod": "90mm_it_he_time_fuze"
+      }
+    },
     "90mm_Gr_Perforante_APCBC": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "90mm_Gr_Perforante_APCBC_ammo_pack",
@@ -11635,6 +11655,14 @@
         "additiveBulletMod": "130mm_starstreak_aam"
       }
     },
+    "162mm_losat_atgm": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "152mm_AP",
+      "effects": {
+        "additiveBulletMod": "162mm_losat_atgm"
+      }
+    },
     "152mm_mim_146_aam": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -14259,6 +14287,11 @@
       "deactivationIsAllowed": false
     },
     "halker_rc": {
+      "image": "#ui/gameuiskin#pilon_rocket",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "type_r80_sura": {
       "image": "#ui/gameuiskin#pilon_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -17064,6 +17097,28 @@
     },
     "200mm_jp_type0_aa_distant_fuse_navy_he_ammo_pack": {
       "image": "#ui/gameuiskin#he_frag_dist_fuse_ship",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "200mm_jp_type3_navy_common": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "200mm_he",
+      "effects": {
+        "additiveBulletMod": "200mm_jp_type3_navy_common"
+      }
+    },
+    "200mm_jp_type3_navy_apc": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "200mm_jp_type3_navy_apc_ammo_pack",
+      "group": "200mm_ap",
+      "effects": {
+        "additiveBulletMod": "200mm_jp_type3_navy_apc"
+      }
+    },
+    "200mm_jp_type3_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
       "tier": 1,
       "modClass": "firepower",
       "deactivationIsAllowed": false

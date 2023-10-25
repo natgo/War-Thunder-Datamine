@@ -28,6 +28,7 @@ let { getDecorator, buildLiveDecoratorFromResource
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let emptyBlk = DataBlock()
 
@@ -91,6 +92,8 @@ local ItemExternal = class extends ::BaseItem {
   locIdsList = null
   substitutionItemData = []
   allowToBuyAmount = -1
+
+  isAllowWideSize = true
 
   constructor(itemDefDesc, itemDesc = null, _slotData = null) {
     base.constructor(emptyBlk)
@@ -239,7 +242,7 @@ local ItemExternal = class extends ::BaseItem {
 
   function getIcon(_addItemName = true) {
     return this.isDisguised ? LayersIcon.getIconData("disguised_item")
-      : LayersIcon.getIconData(null, this.getLottieImage() ?? this.itemDef.icon_url)
+      : LayersIcon.getCustomSizeIconData(this.getLottieImage() ?? this.itemDef.icon_url, "pw, ph")
   }
 
   function getBigIcon() {
@@ -248,7 +251,7 @@ local ItemExternal = class extends ::BaseItem {
 
     let image = this.getLottieImage("1@itemIconBlockWidth")
       ?? (!u.isEmpty(this.itemDef.icon_url_large) ? this.itemDef.icon_url_large : this.itemDef.icon_url)
-    return LayersIcon.getIconData(null, image)
+    return LayersIcon.getCustomSizeIconData(image, "pw, ph")
   }
 
   getOpeningCaption = @() loc(this.getLocIdsList().openingRewardTitle)
@@ -361,7 +364,7 @@ local ItemExternal = class extends ::BaseItem {
       { name = this.getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? colorize("badTextColor",
-              ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", ::nbsp))
+              ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", nbsp))
           : ""
       })
     return loc("currency/gc/sign/colored", "") + " " +
@@ -371,7 +374,7 @@ local ItemExternal = class extends ::BaseItem {
   function getResourceDesc() {
     if (!this.metaBlk || !this.metaBlk?.resource || !this.metaBlk?.resourceType)
       return ""
-    let decoratorType = ::g_decorator_type.getTypeByResourceType(this.metaBlk.resourceType)
+    let decoratorType = getTypeByResourceType(this.metaBlk.resourceType)
     let decorator = getDecorator(this.metaBlk.resource, decoratorType)
     if (!decorator)
       return ""
@@ -764,6 +767,7 @@ local ItemExternal = class extends ::BaseItem {
   }
 
   getMyRecipes = @() ItemGenerators.get(this.id)?.getRecipes() ?? []
+  getGenerator = @() ItemGenerators.get(this.id)
 
   function getVisibleRecipes() {
     let gen = ItemGenerators.get(this.id)
@@ -908,8 +912,8 @@ local ItemExternal = class extends ::BaseItem {
         this.onItemCraft()
       return colorize(this.craftColor, loc(this.craftFinishedLocId))
     }
-    return colorize(this.craftColor, loc("icon/hourglass") + ::nbsp +
-      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp))
+    return colorize(this.craftColor, loc("icon/hourglass") + nbsp +
+      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", nbsp))
   }
 
   function getCraftTimeText() {
@@ -1001,7 +1005,7 @@ local ItemExternal = class extends ::BaseItem {
      if (!locKey)
        return ""
 
-     return delimiter + loc("confirmationMsg/" + locKey)
+     return "".concat(delimiter, loc($"confirmationMsg/{locKey}"))
   }
 
   getCustomMissionBlk = function() {
@@ -1155,6 +1159,7 @@ local ItemExternal = class extends ::BaseItem {
   getExpireType = @() null
   showAlwaysAsEnabledAndUnlocked = @() this.itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
   showAsEmptyItem = @() (this.getSubstitutionItem() ?? this).itemDef?.tags.showAsEmptyItem
+  showDescInRewardWndOnly = @() this.itemDef?.tags.showDescInRewardWndOnly ?? false
 
   function getCountriesWithBuyRestrict() {
     let countryDenyPurchase = this.itemDef?.tags.countryDenyPurchase ?? ""

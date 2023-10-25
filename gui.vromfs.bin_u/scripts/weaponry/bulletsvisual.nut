@@ -222,7 +222,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     if (verAngles != null)
       addProp(props, loc("sonicDamage/verAngles"),
-        format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
+        format("%+d%s/%+d%s", verAngles.x, degText, verAngles.y, degText))
     descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props })
   }
 
@@ -577,6 +577,12 @@ let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 
 
+
+
+
+
+
+
 let function addBulletsParamToDesc(descTbl, unit, item) {
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return
@@ -622,6 +628,22 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
     useDefaultBullet, false)
 
   let bulletsData = buildBulletsData(bullet_parameters, bulletsSet)
+
+  if(bulletsSet?.guiArmorpower != null) {
+    let res = []
+    foreach(value in bulletsSet.guiArmorpower) {
+      let armorPiercing = { [0] = value.x, [30] = value.y, [60] = value.z}
+      res.append({ armorPiercingDist = value.w, armorPiercing })
+    }
+    res.sort(@(v1, v2) v1.armorPiercingDist <=> v2.armorPiercingDist)
+    bulletsData.armorPiercingDist.clear()
+    bulletsData.armorPiercing.clear()
+    res.each(function(v) {
+      bulletsData.armorPiercingDist.append(v.armorPiercingDist)
+      bulletsData.armorPiercing.append(v.armorPiercing)
+    })
+  }
+
   //
 
 

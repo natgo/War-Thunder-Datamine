@@ -17,7 +17,8 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
@@ -77,7 +78,7 @@ let function getUnlockBeginDateText(unlock) {
   if (isBlk)
     timeCond = loadCondition(timeCond, unlock)
   return (timeCond?.beginTime != null)
-    ? buildDateStrShort(timeCond.beginTime).replace(" ", ::nbsp)
+    ? buildDateStrShort(timeCond.beginTime).replace(" ", nbsp)
     : ""
 }
 
@@ -808,7 +809,7 @@ let function getUnlockMultDesc(condition) {
     let mulLocParam = isMultipliersByDiff
       ? loc($"clan/short{param}")
       : loc($"missions/{getDiffNameByInt(param)}_short")
-    mulText = $"{mulText}{mulLocParam}{::nbsp}(x{num})"
+    mulText = $"{mulText}{mulLocParam}{nbsp}(x{num})"
   }
 
   let mulRanks = []
@@ -824,7 +825,7 @@ let function getUnlockMultDesc(condition) {
         ? get_roman_numeral(rank)
         : getRangeString(get_roman_numeral(lastAddedRank + 1), get_roman_numeral(rank))
 
-      mulRanks.append($"{rankText}{::nbsp}(x{curRankMul})")
+      mulRanks.append($"{rankText}{nbsp}(x{curRankMul})")
       lastAddedRank = rank
     }
   }

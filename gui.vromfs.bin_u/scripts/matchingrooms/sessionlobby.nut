@@ -46,7 +46,7 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
   roomStartSession, kickMember, setRoomAttributes, setMemberAttributes, requestLeaveRoom,
   requestJoinRoom, requestDestroyRoom, requestCreateRoom, isMyUserId
 } = require("%scripts/matching/serviceNotifications/mrooms.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo, getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
@@ -87,8 +87,6 @@ const NET_SERVER_QUIT_FROM_GAME = 0x82220003
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
-
-::INVITE_LIFE_TIME    <- 3600000
 
 ::LAST_SESSION_DEBUG_INFO <- ""
 
@@ -734,7 +732,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let misData = this.getMissionData(room)
   if ("name" in misData) {
     let missionMetaInfo = getUrlOrFileMissionMetaInfo(misData.name)
-    return ::get_combine_loc_name_mission(missionMetaInfo ? missionMetaInfo : misData)
+    return getCombineLocNameMission(missionMetaInfo ? missionMetaInfo : misData)
   }
   return ""
 }

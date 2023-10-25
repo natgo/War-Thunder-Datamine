@@ -20,7 +20,6 @@ let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menu
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby
 } = require("%scripts/user/matchingFeature.nut")
 let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
@@ -982,11 +981,15 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function onEventCb(event, taskId, db) {
 //    if (event == GCHAT_EVENT_TASK_RESPONSE || event == GCHAT_EVENT_TASK_ERROR)
-    foreach (idx, t in this.chatTasks)
+    let ctasks = this.chatTasks
+    let l = ctasks.len()
+    for (local idx=l-1; idx>=0; --idx) {
+      let t = ctasks[idx]
       if (t.task == taskId) {
         t.handler.call(this, event, db, t)
-        this.chatTasks.remove(idx)
+        ctasks.remove(idx)
       }
+    }
     if (event == GCHAT_EVENT_MESSAGE) {
       if (isChatEnabled())
         this.onMessage(db)
@@ -1296,8 +1299,6 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       important, !::g_chat.isRoomSquad(roomId))
     if (!mBlock)
       return
-
-    updateContactsStatusByContacts([::getContact(mBlock.uid, mBlock.from, mBlock.clanTag)])
 
     if (::g_chat.rooms.len() == 0) {
       if (important) {

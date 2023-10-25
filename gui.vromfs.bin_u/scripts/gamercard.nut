@@ -61,16 +61,14 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
             obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
           let titleObj = getObj($"{prefix}prestige_title")
           if (titleObj) {
-            let prestigeTitle = (val > 0)
-                                  ? loc($"rank/prestige{val}")
-                                  : ""
+            let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
             titleObj.setValue(prestigeTitle)
           }
           break
         case "exp":
           let expTable = ::get_cur_exp_table("", cfg)
           obj.setValue(expTable
-            ? ::nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+            ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
             : "")
           obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
           break
