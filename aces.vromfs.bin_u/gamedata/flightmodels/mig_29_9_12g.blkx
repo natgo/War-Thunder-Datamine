@@ -59,9 +59,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "su_k_36_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2028,6 +2025,7 @@
   "Sound": {
     "Engine": "engine05_rd33_WEP",
     "gun": "gun_default",
+    "voiceWarningSystem": "betty",
     "nozzleMoveSfx": "nozzle_moving_2",
     "nozzleAngleThreshold": 0.3
   },
@@ -2171,11 +2169,7 @@
       "flaps_fixed": false,
       "speed": [
         0.0,
-        555.555
-      ],
-      "speed_01": [
-        0.0,
-        555.555
+        514.444
       ],
       "mach": [
         0.0,
@@ -2195,7 +2189,7 @@
       ],
       "g_meter": [
         -2.0,
-        11.0
+        12.0
       ],
       "altitude_10k": [
         0.0,
@@ -2209,19 +2203,15 @@
         0.0,
         1000.0
       ],
-      "altitude1_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude2_10k": [
-        0.0,
-        100000.0
-      ],
-      "radio_altitude": [
+      "altitude1_min": [
         0.0,
         1000.0
       ],
-      "altitude_koef": 1.0,
+      "radio_altitude": [
+        0.0,
+        3333.0
+      ],
+      "altitude_koef": 3.28,
       "bank": [
         -8.0,
         8.0
@@ -2288,15 +2278,15 @@
       ],
       "fuel": [
         0.0,
-        7500.0
+        5500.0
       ],
       "fuel1": [
         0.0,
-        7500.0
+        5500.0
       ],
       "fuel2": [
         0.0,
-        7500.0
+        5500.0
       ],
       "weapon_lock_lamp_flags1": 6,
       "weapon_lock_lamp_flags2": 8
@@ -2389,16 +2379,12 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_29_9_12g_default.blk"
       },
       {
-        "name": "mig_29_9_12g_r60mk_default",
-        "blk": "gameData/FlightModels/weaponPresets/mig_29_9_12g_r60mk_default.blk"
+        "name": "mig_29_9_12g_r73_default",
+        "blk": "gameData/FlightModels/weaponPresets/mig_29_9_12g_r73_default.blk"
       },
       {
         "name": "mig_29_9_12g_r73e",
         "blk": "gameData/FlightModels/weaponPresets/mig_29_9_12g_r73e.blk"
-      },
-      {
-        "name": "mig_29_9_12g_r60mk",
-        "blk": "gameData/FlightModels/weaponPresets/mig_29_9_12g_r60mk.blk"
       },
       {
         "name": "mig_29_9_12g_r27t1",
@@ -2558,61 +2544,27 @@
         "index": 1,
         "tier": 9,
         "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "default_r60mk",
-            "ShowNodes": {
-              "node": "apu_60_001"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk_default.blk",
-              "emitter": "r_60_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "missile_type_c_air_to_air",
+          "name": "r73_default",
+          "ShowNodes": {
+            "node": "apu_73_001"
           },
-          {
-            "iconType": "missile_type_c_air_to_air",
-            "name": "r73",
-            "reqModification": "mig_29_r_73e",
-            "ShowNodes": {
-              "node": "apu_73_001"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
-              "emitter": "r_73_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
+            "emitter": "r_73_001",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 2,
         "tier": 8,
         "order": 3,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "r60mk",
-            "reqModification": "mig_23mf_r_60mk",
-            "ShowNodes": {
-              "node": "apu_60_002"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk.blk",
-              "emitter": "r_60_002",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_type_c_air_to_air",
             "name": "r73",
@@ -2871,22 +2823,6 @@
         "tier": 7,
         "order": 5,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "r60mk",
-            "reqModification": "mig_23mf_r_60mk",
-            "ShowNodes": {
-              "node": "apu_60_003"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk.blk",
-              "emitter": "r_60_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_type_c_air_to_air",
             "name": "r73",
@@ -3287,22 +3223,6 @@
         "order": 6,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "r60mk",
-            "reqModification": "mig_23mf_r_60mk",
-            "ShowNodes": {
-              "node": "apu_60_004"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk.blk",
-              "emitter": "r_60_004",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_type_c_air_to_air",
             "name": "r73",
             "reqModification": "mig_29_r_73e",
@@ -3676,22 +3596,6 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "r60mk",
-            "reqModification": "mig_23mf_r_60mk",
-            "ShowNodes": {
-              "node": "apu_60_005"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk.blk",
-              "emitter": "r_60_005",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_type_c_air_to_air",
             "name": "r73",
             "reqModification": "mig_29_r_73e",
@@ -3948,39 +3852,21 @@
         "index": 7,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "default_r60mk",
-            "ShowNodes": {
-              "node": "apu_60_006"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60mk_default.blk",
-              "emitter": "r_60_006",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "missile_type_c_air_to_air",
+          "name": "r73_default",
+          "ShowNodes": {
+            "node": "apu_73_006"
           },
-          {
-            "iconType": "missile_type_c_air_to_air",
-            "name": "r73",
-            "reqModification": "mig_29_r_73e",
-            "ShowNodes": {
-              "node": "apu_73_006"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
-              "emitter": "r_73_006",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
+            "emitter": "r_73_006",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       }
     ]
   },
@@ -4270,13 +4156,8 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "mig_23mf_r_60mk": {
-      "reqModification": "mig_29_r_27r1",
-      "modClass": "weapon",
-      "tier": 2
-    },
     "mig_29_r_73e": {
-      "reqModification": "mig_23mf_r_60mk",
+      "reqModification": "mig_29_r_27r1",
       "modClass": "weapon",
       "tier": 3
     },
