@@ -23,6 +23,9 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { hasNightGameModes } = require("%scripts/events/eventInfo.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
 
 const MIN_MRANK_FOR_NIGHT_BATTLES = 27
 
@@ -55,6 +58,7 @@ let class NightBattlesOptionsWnd extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     this.updateUnlocksList()
     this.scene.findObject("optionslist").setMouseCursorOnObject()
+    markSeenNightBattle()
   }
 
   function getOptionById(id) {
@@ -225,6 +229,12 @@ let class NightBattlesOptionsWnd extends gui_handlers.BaseGuiHandlerWT {
 
 gui_handlers.NightBattlesOptionsWnd <- NightBattlesOptionsWnd
 
-return {
-  open = @(params = {}) handlersManager.loadHandler(NightBattlesOptionsWnd, params)
+function openNightBattles(modeId = null) {
+  let curEvent = modeId != null
+    ? ::game_mode_manager.getGameModeById(modeId)?.getEvent()
+    : ::game_mode_manager.getCurrentGameMode()?.getEvent()
+  if (hasNightGameModes(curEvent))
+    checkSquadUnreadyAndDo(@() handlersManager.loadHandler(NightBattlesOptionsWnd, { curEvent }))
 }
+
+return openNightBattles

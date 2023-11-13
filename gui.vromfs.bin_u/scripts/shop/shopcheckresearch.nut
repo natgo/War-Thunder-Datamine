@@ -301,9 +301,11 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
     }
   }
 
+  canSpendExp = @(unit) unit != null && !isUnitGroup(unit) && !unit?.isFakeUnit
+    && canResearchUnit(unit) && !unit.isSquadronVehicle()
+
   function updateSpendExpBtn(unit) {
-    let showSpendBtn = !isUnitGroup(unit) && !unit?.isFakeUnit
-                         && canResearchUnit(unit) && !unit.isSquadronVehicle()
+    let showSpendBtn = this.canSpendExp(unit)
     local coloredText = ""
     if (showSpendBtn) {
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
@@ -419,13 +421,17 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   }
 
   function onTryCloseShop() {
-    if (!this.hasNextResearch()) {
+    if (!this.hasNextResearch() && this.canSpendExp(this.getCurAircraft(true, true))) {
       this.onSpendExcessExp()
       return
     }
 
     this.selectRequiredUnit()
     let unit = this.getCurAircraft(true, true)
+    if (unit == null) {
+      this.onCloseShop()
+      return
+    }
     let unitName = getUnitName(unit.name)
     let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
     let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
