@@ -1,23 +1,15 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::showClanRequests <- function showClanRequests(candidatesData, clanId, owner) {
-  ::gui_start_modal_wnd(gui_handlers.clanRequestsModal,
-    {
-      candidatesData = candidatesData,
-      owner = owner
-      clanId = clanId
-    });
-    ::g_clans.markClanCandidatesAsViewed()
-}
-
-gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;
@@ -106,7 +98,7 @@ gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     tblObj.setValue(1) //after header
     this.guiScene.setUpdatesEnabled(true, true);
-    ::move_mouse_on_child_by_value(tblObj)
+    move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.rowTexts.len() - 1) / this.rowsPerPage).tointeger())
@@ -125,7 +117,7 @@ gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
-    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || ::clan_get_admin_editor_mode()))
+    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || clan_get_admin_editor_mode()))
     this.showSceneBtn("btn_reject", !showConsoleButtons.value && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights))
     this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
   }
@@ -192,7 +184,7 @@ gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function afterModalDestroy() {
     if (this.memListModified) {
-      if (::clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
+      if (clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
         this.owner.reinitClanWindow()
       //else
       //  ::requestMyClanData(true)
@@ -206,4 +198,18 @@ gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
     let candidate = u.search(this.candidatesList, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
+}
+
+function openClanRequestsWnd(candidatesData, clanId, owner) {
+  loadHandler(gui_handlers.clanRequestsModal,
+    {
+      candidatesData = candidatesData,
+      owner = owner
+      clanId = clanId
+    })
+  ::g_clans.markClanCandidatesAsViewed()
+}
+
+return {
+  openClanRequestsWnd
 }

@@ -23,12 +23,55 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK
+  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
+
+let shipTriggerGroupIcon = {
+  [TRIGGER_GROUP_PRIMARY]         = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_SECONDARY]       = "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_MACHINE_GUN]     = "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_EXTRA_GUN_1]     = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_EXTRA_GUN_2]     = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_EXTRA_GUN_3]     = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
+  [TRIGGER_GROUP_EXTRA_GUN_4]     = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
+}
+
+let forceWeaponConfigByTriggerGroup = {
+  [TRIGGER_GROUP_PRIMARY] = {
+    locId = "hotkeys/ID_FIRE_GM"
+    getShortcut = @(hudUnitType) hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN" : "ID_FIRE_GM"
+  },
+  [TRIGGER_GROUP_SECONDARY] = {
+    locId = "hotkeys/ID_FIRE_GM_SECONDARY_GUN"
+    getShortcut = @(hudUnitType) hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN_SECONDARY_GUN"
+      : "ID_FIRE_GM_SECONDARY_GUN"
+  },
+  [TRIGGER_GROUP_MACHINE_GUN] = {
+    locId = "hotkeys/ID_FIRE_GM_MACHINE_GUN"
+    getShortcut = @(hudUnitType) hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN_MACHINE_GUN"
+      : "ID_FIRE_GM_MACHINE_GUN"
+  },
+}
+
+let aiGunnersIcon = {
+  [AI_GUNNERS_DISABLED]            = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg",
+  [AI_GUNNERS_ALL_TARGETS]         = "#ui/gameuiskin#ship_gunner_state_fire_at_will.svg",
+  [AI_GUNNERS_AIR_TARGETS]         = "#ui/gameuiskin#ship_gunner_state_air_targets.svg",
+  [AI_GUNNERS_GROUND_TARGETS]      = "#ui/gameuiskin#ship_gunner_state_naval_targets.svg",
+  [AI_GUNNERS_SHELL]               = "#ui/gameuiskin#bomb_mark",
+}
+
+let autoTurretIcon = {
+  [AI_GUNNERS_DISABLED]            = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg",
+  [AI_GUNNERS_ALL_TARGETS]         = "#ui/gameuiskin#autogun_state_fire_at_will",
+  [AI_GUNNERS_AIR_TARGETS]         = "#ui/gameuiskin#autogun_state_air_targets",
+  [AI_GUNNERS_GROUND_TARGETS]      = "#ui/gameuiskin#ship_gunner_state_naval_targets.svg",
+  [AI_GUNNERS_SHELL]               = "#ui/gameuiskin#autogun_state_rocket_targets",
+}
 
 ::g_hud_action_bar_type <- {
   types = []
@@ -236,6 +279,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   MINE = {
     code = EII_MINE
+    canSwitchAutomaticMode = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
     _name = "mine"
     _icon = "#ui/gameuiskin#naval_mine"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_WEAPON_MINE"
@@ -597,23 +641,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
           : null
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let currentTrigger = actionItem?.userHandle ?? TRIGGER_GROUP_PRIMARY
-      switch (currentTrigger) {
-        case TRIGGER_GROUP_PRIMARY:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_SECONDARY:
-          return "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_MACHINE_GUN:
-          return "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_EXTRA_GUN_1:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_EXTRA_GUN_2:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_EXTRA_GUN_3:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
-        case TRIGGER_GROUP_EXTRA_GUN_4:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
-      }
-      return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+      return shipTriggerGroupIcon?[currentTrigger] ?? shipTriggerGroupIcon[TRIGGER_GROUP_PRIMARY]
     }
   }
 
@@ -622,27 +650,12 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForSelectWeaponMenu = @() false
     getTitle = function(actionItem, _killStreakTag = null) {
       let forceTrigger = actionItem?.userHandle ?? -1
-      switch (forceTrigger) {
-        case TRIGGER_GROUP_PRIMARY:
-          return loc("hotkeys/ID_FIRE_GM")
-        case TRIGGER_GROUP_SECONDARY:
-          return loc("hotkeys/ID_FIRE_GM_SECONDARY_GUN")
-        case TRIGGER_GROUP_MACHINE_GUN:
-          return loc("hotkeys/ID_FIRE_GM_MACHINE_GUN")
-      }
-      return null
+      let { locId = null } = forceWeaponConfigByTriggerGroup?[forceTrigger]
+      return locId != null ? loc(locId) : null
     }
     getShortcut = function(actionItem, hudUnitType = null) {
       let forceTrigger = actionItem?.userHandle ?? -1
-      switch (forceTrigger) {
-        case TRIGGER_GROUP_PRIMARY:
-          return hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN" : "ID_FIRE_GM"
-        case TRIGGER_GROUP_SECONDARY:
-          return hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN_SECONDARY_GUN" : "ID_FIRE_GM_SECONDARY_GUN"
-        case TRIGGER_GROUP_MACHINE_GUN:
-          return hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_FIRE_HUMAN_MACHINE_GUN" : "ID_FIRE_GM_MACHINE_GUN"
-      }
-      return null
+      return forceWeaponConfigByTriggerGroup?[forceTrigger].getShortcut(hudUnitType)
     }
   }
 
@@ -652,19 +665,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TOGGLE_GUNNERS"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      switch (actionItem?.userHandle ?? AI_GUNNERS_DISABLED) {
-        case AI_GUNNERS_DISABLED:
-          return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
-        case AI_GUNNERS_ALL_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_fire_at_will.svg"
-        case AI_GUNNERS_AIR_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_air_targets.svg"
-        case AI_GUNNERS_GROUND_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_naval_targets.svg"
-        case AI_GUNNERS_SHELL:
-          return "#ui/gameuiskin#bomb_mark"
-      }
-      return this._icon
+      return aiGunnersIcon?[actionItem?.userHandle ?? AI_GUNNERS_DISABLED] ?? this._icon
     }
   }
 
@@ -676,19 +677,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AUTOTURRET_TARGETS"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      switch (actionItem?.userHandle ?? AI_GUNNERS_DISABLED) {
-        case AI_GUNNERS_DISABLED:
-          return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
-        case AI_GUNNERS_ALL_TARGETS:
-          return "#ui/gameuiskin#autogun_state_fire_at_will"
-        case AI_GUNNERS_AIR_TARGETS:
-          return "#ui/gameuiskin#autogun_state_air_targets"
-        case AI_GUNNERS_GROUND_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_naval_targets.svg"
-        case AI_GUNNERS_SHELL:
-          return "#ui/gameuiskin#autogun_state_rocket_targets"
-      }
-      return this._icon
+      return autoTurretIcon?[actionItem?.userHandle ?? AI_GUNNERS_DISABLED] ?? this._icon
     }
   }
 
@@ -933,14 +922,22 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   }
 
   NIGHT_VISION = {
-    code = EII_NIGHT_VISION,
+    code = EII_NIGHT_VISION
     _name = "night_vision"
-    _icon = "#ui/gameuiskin#supportPlane_night_vision"
     _title = loc("hotkeys/ID_PLANE_NIGHT_VISION")
     isForWheelMenu = @() true
+
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let iconData = getActionDataByType(this.code, "getIconType")
+      let iconType = iconData?.iconType ?? "night_vision";
+      return iconType == "thermal_sight" ? "#ui/gameuiskin#thermal_sight"
+        : "#ui/gameuiskin#supportPlane_night_vision"
+    }
+
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_HUMAN_NIGHT_VISION"
         : hudUnitType == HUD_UNIT_TYPE.HELICOPTER ? "ID_HELI_GUNNER_NIGHT_VISION"
+        : hudUnitType == HUD_UNIT_TYPE.TANK ? "ID_TANK_NIGHT_VISION"
         : "ID_PLANE_NIGHT_VISION"
   }
 
@@ -984,7 +981,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#hover_mode_los"
     _title = loc("hotkeys/ID_WEAPON_LEAD_TANK")
     isForWheelMenu = @() true
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_WEAPON_LEAD_TANK"
+    getShortcut = function(_actionItem, _killStreakTag = null) {
+      let ownerUnit = getOwnerUnit()
+      return ownerUnit?.isShipOrBoat() ? "ID_WEAPON_LEAD_SHIP" : "ID_WEAPON_LEAD_TANK"
+    }
     function getIcon(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let guidanceModePacked = actionItem?.userHandle ?? 0
       let guidanceModesSetIdx = guidanceModePacked / 10
@@ -1146,6 +1146,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
  }
+
+  SELECT_SPECIAL_WEAPON = {
+    code = EII_SELECT_SPECIAL_WEAPON
+    _name = "select_special_weapon"
+    _icon = "#ui/gameuiskin#rocket"
+    _title = loc("hotkeys/ID_SELECT_GM_GUN_SPECIAL")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SELECT_GM_GUN_SPECIAL"
+  }
 
 })
 

@@ -1,13 +1,13 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import abort_all_downloads, abort_download, download_blk
 from "%scripts/dagui_library.nut" import *
+
+let { validate_custom_mission } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.LoadingUrlMissionModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 3
@@ -61,7 +61,7 @@ gui_handlers.LoadingUrlMissionModal <- class extends gui_handlers.BaseGuiHandler
                                           this.onProgress(dltotal, dlnow)
                                         }, this)
 
-    this.requestId = ::download_blk(this.urlMission.url, 0,
+    this.requestId = download_blk(this.urlMission.url, 0,
       @(success, blk) requestCallback(success, blk),
       @(dltotal, dlnow) progressCallback(dltotal, dlnow))
   }
@@ -97,7 +97,7 @@ gui_handlers.LoadingUrlMissionModal <- class extends gui_handlers.BaseGuiHandler
     local errorText = loc("wait/ugm_download_failed")
     if (success) {
       ::upgrade_url_mission(blk)
-      errorText = ::validate_custom_mission(blk)
+      errorText = validate_custom_mission(blk)
       this.requestSuccess = u.isEmpty(errorText)
       success = this.requestSuccess
       if (!success)
@@ -126,12 +126,12 @@ gui_handlers.LoadingUrlMissionModal <- class extends gui_handlers.BaseGuiHandler
 
   function onCancel() {
     this.isCancel = true
-    ::abort_download(this.requestId)
+    abort_download(this.requestId)
     this.showSceneBtn(this.buttonCancelId, false)
   }
 
   function onEventSignOut() {
-    ::abort_all_downloads()
+    abort_all_downloads()
   }
 
   function afterModalDestroy() {

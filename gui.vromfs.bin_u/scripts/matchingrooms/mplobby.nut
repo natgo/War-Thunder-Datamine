@@ -1,7 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -21,6 +24,7 @@ let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessio
   isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -56,10 +60,10 @@ let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
   }
 
   ::g_missions_manager.isRemoteMission = false
-  handlersManager.loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
+  loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
 }
 
-gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = mpLobbyBlkPath.value
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "multiplayer/lobby"
@@ -246,7 +250,7 @@ gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
       spectatorObj.setValue((desc != "") ? (loc("multiplayer/state") + loc("ui/colon") + desc) : "")
     }
 
-    let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team : ::get_mp_local_team()
+    let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team : get_mp_local_team()
     mainObj.playerTeam = myTeam == Team.A ? "a" : (myTeam == Team.B ? "b" : "")
 
     let teamObj = mainObj.findObject("player_team")
@@ -301,10 +305,10 @@ gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
         getEdiffFunc = Callback(this.getCurrentEdiff, this)
         status = getUnitItemStatusText(bit_unit_status.owned)
       }
-      local data = ::build_aircraft_item(airName, air, params)
+      local data = buildUnitSlot(airName, air, params)
       data = "rankUpList { id:t='curAircraft_place'; holdTooltipChildren:t='yes'; {0} }".subst(data)
       this.guiScene.appendWithBlk(airObj, data, this)
-      ::fill_unit_item_timers(airObj.findObject(airName), air)
+      fillUnitSlotTimers(airObj.findObject(airName), air)
     }
   }
 
@@ -570,7 +574,7 @@ gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onVehiclesInfo(_obj) {
-    ::gui_start_modal_wnd(gui_handlers.VehiclesWindow, {
+    loadHandler(gui_handlers.VehiclesWindow, {
       teamDataByTeamName = ::SessionLobby.getSessionInfo()
       roomSpecialRules = ::SessionLobby.getRoomSpecialRules()
     })

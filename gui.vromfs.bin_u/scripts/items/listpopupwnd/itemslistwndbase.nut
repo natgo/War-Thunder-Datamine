@@ -3,10 +3,11 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
+let ItemsListWndBase = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
@@ -15,10 +16,14 @@ gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
   align = ALIGN.BOTTOM
 
   curItem = null
+  showAmount = true
 
   function getSceneTplView() {
+    let showAmount = this.showAmount
     return {
-      items = handyman.renderCached("%gui/items/item.tpl", { items = this.itemsList.map(@(i) i.getViewData()) })
+      items = handyman.renderCached("%gui/items/item.tpl", {
+        items = this.itemsList.map(@(i) i.getViewData({ showAmount }))
+      })
       columns = stdMath.calc_golden_ratio_columns(this.itemsList.len())
 
       align = this.align
@@ -32,8 +37,11 @@ gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateWndAlign()
     this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this, function() {
       if (this.scene.isValid())
-        ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+        move_mouse_on_child_by_value(this.scene.findObject("items_list"))
     }))
+
+    if (this.itemsList.findindex(@(i) i.hasTimer()) != null)
+      this.scene.findObject("update_timer")?.setUserData(this)
   }
 
   function updateWndAlign() {
@@ -44,6 +52,25 @@ gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
   function setCurItem(item) {
     this.curItem = item
     this.scene.findObject("header_text").setValue(this.curItem.getName())
+    this.scene.findObject("buttonActivate").enable(!this.curItem.isExpired())
+  }
+
+  function onTimer(_obj, _dt) {
+    let listObj = this.scene.findObject("items_list")
+    if (!listObj?.isValid())
+      return
+
+    for (local i = 0; i < this.itemsList.len(); ++i) {
+      let item = this.itemsList[i]
+      if (!item.hasTimer())
+        continue
+
+      let itemObj = listObj.getChild(i)
+      let timeTxtObj = itemObj.findObject("expire_time")
+      timeTxtObj.setValue(item.getTimeLeftText())
+    }
+
+    this.scene.findObject("buttonActivate").enable(!this.curItem.isExpired())
   }
 
   function onItemSelect(obj) {
@@ -56,6 +83,12 @@ gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
   function onButtonMax() {}
 
   function afterModalDestroy() {
-    ::move_mouse_on_obj(this.alignObj)
+    move_mouse_on_obj(this.alignObj)
   }
+}
+
+gui_handlers.ItemsListWndBase <- ItemsListWndBase
+
+return {
+  ItemsListWndBase
 }

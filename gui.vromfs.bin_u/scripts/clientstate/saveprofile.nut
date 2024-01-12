@@ -1,6 +1,8 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import save_profile, periodic_task_unregister, save_common_local_settings, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ceil } = require("math")
@@ -16,7 +18,7 @@ local isSaveDelayed = false
 let lg = @(txt) log($"SAVE_PROFILE: {txt}")
 
 let function clearSaveTask() {
-  ::periodic_task_unregister(saveTask.value)
+  periodic_task_unregister(saveTask.value)
   saveTask.value = -1
 }
 if (saveTask.value != -1)
@@ -33,14 +35,14 @@ let function startSaveTimer(timeout) {
   lg($"Schedule profile save after {timeout / 1000} sec")
   nextAllowedSaveTime = timeToUpdate
   let isProfileReceived = ::g_login.isProfileReceived()
-  saveTask.value = ::periodic_task_register({},
+  saveTask.value = periodic_task_register({},
     function(_) {
       clearSaveTask()
       if (isProfileReceived != ::g_login.isProfileReceived()) {
         lg($"Ignore profile save because of logged in status changed")
         return
       }
-      if (::is_in_loading_screen()) {
+      if (is_in_loading_screen()) {
         lg($"Delay profile save because of in loading")
         isSaveDelayed = true
         return
@@ -48,9 +50,9 @@ let function startSaveTimer(timeout) {
 
       lg($"Save profile")
       if (isProfileReceived)
-        ::save_profile(false)
+        save_profile(false)
       else
-        ::save_common_local_settings()
+        save_common_local_settings()
     },
     ceil(0.001 * timeout).tointeger())
 }

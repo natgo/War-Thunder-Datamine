@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -8,12 +8,11 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { FRP_INITIAL } = require("frp")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { refreshUserstatUnlocks, isUserstatMissingData
-} = require("%scripts/userstat/userstat.nut")
+let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
@@ -23,9 +22,11 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, buyUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -90,7 +91,7 @@ addListenersWithoutEnv({
 
 seenBattlePassShop.setListGetter(@() seenBattlePassShopRows.value)
 
-local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -184,7 +185,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
 
     let valueToSelect = rowsView.findindex(@(r) !r.isDisabled) ?? -1
     let tblObj = this.scene.findObject("items_list")
-    this.guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, valueToSelect))
+    this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, valueToSelect))
   }
 
   hasOpenedPassUnlock = @(goodsConfig) (goodsConfig.passExchangeItem != null && !canExchangeItem(goodsConfig.passExchangeItem))
@@ -207,7 +208,6 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
     if (battlePassUnlock != null)
       buyUnlock(battlePassUnlock, function() {
         tryBuyAdditionalTrophy()
-        refreshUserstatUnlocks()
         broadcastEvent("BattlePassPurchased")
       })
     else
@@ -244,13 +244,13 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
           cost = goodsConfig.cost.getTextAccordingToBalance() }),
       goodsConfig.cost)
     let callbackYes = Callback(function() {
-      if (::check_balance_msgBox(goodsConfig.cost)) {
+      if (checkBalanceMsgBox(goodsConfig.cost)) {
         this.buyGood(goodsConfig)
         if (goodsConfig.hasBattlePassUnlock)
           this.disableBattlePassRows()
       }
     }, this)
-    let onCancel = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
+    let onCancel = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
     purchaseConfirmation("purchase_ask", msgText, callbackYes, onCancel)
   }
 
@@ -263,7 +263,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 
   function getGoodsConfig(goodsConfig) {

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
@@ -17,7 +18,6 @@ require("mainmenu/autoStartBattleHandler.nut")
 
 foreach (fn in [
   "%scripts/money.nut"
-
   "%scripts/ranks.nut"
   "%scripts/difficulty.nut"
   "%scripts/teams.nut"
@@ -34,7 +34,6 @@ foreach (fn in [
   "%scripts/wndLib/multiSelectMenu.nut"
   "%scripts/showImage.nut"
   "%scripts/chooseImage.nut"
-  "%scripts/wndLib/commentModal.nut"
   "%scripts/wndLib/infoWnd.nut"
   "%scripts/wndLib/skipableMsgBox.nut"
   "%scripts/wndWidgets/navigationPanel.nut"
@@ -65,7 +64,6 @@ foreach (fn in [
   "%scripts/events/eventsManager.nut"
   "%scripts/events/eventsHandler.nut"
   "%scripts/events/eventRoomsHandler.nut"
-  "%scripts/events/eventsLeaderboards.nut"
   "%scripts/events/eventRewardsWnd.nut"
   "%scripts/events/rewardProgressManager.nut"
   "%scripts/events/eventDescription.nut"
@@ -80,14 +78,12 @@ foreach (fn in [
   "%scripts/instantAction.nut"
   "%scripts/promo/promoViewUtils.nut"
   "%scripts/unlocks/battleTasks.nut"
-  "%scripts/mainmenu/topMenuSections.nut"
   "%scripts/mainmenu/topMenuSectionsConfigs.nut"
   "%scripts/mainmenu/topMenuButtonsHandler.nut"
   "%scripts/mainmenu/guiStartMainmenu.nut"
   "%scripts/credits.nut"
 
   "%scripts/slotbar/crewsList.nut"
-  "%scripts/slotbar/slotbar.nut"
   "%scripts/weaponry/weaponryPresetsRepair.nut"
   "%scripts/slotbar/slotbarWidget.nut"
   "%scripts/slotbar/selectCrew.nut"
@@ -196,7 +192,6 @@ foreach (fn in [
   "%scripts/onlineShop/onlineShopModel.nut"
   "%scripts/onlineShop/onlineShop.nut"
   "%scripts/onlineShop/reqPurchaseWnd.nut"
-  "%scripts/paymentHandler.nut"
 
   "%scripts/shop/shop.nut"
   "%scripts/shop/shopCheckResearch.nut"
@@ -216,8 +211,6 @@ foreach (fn in [
 
   "%scripts/matchingRooms/sessionLobby.nut"
   "%scripts/matchingRooms/mRoomsList.nut"
-  "%scripts/matchingRooms/mRoomInfo.nut"
-  "%scripts/matchingRooms/mRoomInfoManager.nut"
   "%scripts/matchingRooms/sessionsListHandler.nut"
   "%scripts/mplayerParamType.nut"
   "%scripts/matchingRooms/mRoomPlayersListWidget.nut"
@@ -225,7 +218,6 @@ foreach (fn in [
   "%scripts/matchingRooms/mRoomMembersWnd.nut"
 
   "%scripts/flightMenu/flightMenu.nut"
-  "%scripts/misCustomRules/missionCustomState.nut"
   "%scripts/statistics/mpStatistics.nut"
   "%scripts/statistics/mpStatisticsModal.nut"
   "%scripts/respawn/misLoadingState.nut"
@@ -245,19 +237,12 @@ foreach (fn in [
   "%scripts/clans/clanSeasons.nut"
   "%scripts/clans/clanTagDecorator.nut"
   "%scripts/clans/modify/modifyClanModalHandler.nut"
-  "%scripts/clans/modify/createClanModalHandler.nut"
-  "%scripts/clans/modify/editClanModalhandler.nut"
-  "%scripts/clans/modify/upgradeClanModalHandler.nut"
   "%scripts/clans/clanChangeMembershipReqWnd.nut"
   "%scripts/clans/clanPageModal.nut"
   "%scripts/clans/clansModalHandler.nut"
   "%scripts/clans/clanChangeRoleModal.nut"
-  "%scripts/clans/clanBlacklistModal.nut"
   "%scripts/clans/clanActivityModal.nut"
   "%scripts/clans/clanAverageActivityModal.nut"
-  "%scripts/clans/clanRequestsModal.nut"
-  "%scripts/clans/clanLogModal.nut"
-  "%scripts/clans/clanSeasonInfoModal.nut"
   "%scripts/clans/clanSquadsModal.nut"
   "%scripts/clans/clanSquadInfoWnd.nut"
 
@@ -339,7 +324,6 @@ foreach (fn in [
   "%scripts/warbonds/warbondsView.nut"
   "%scripts/warbonds/warbondShop.nut"
 
-  "%scripts/statsd/missionStats.nut"
   "%scripts/utils/popupMessages.nut"
   "%scripts/fileDialog/fileDialog.nut"
   "%scripts/fileDialog/saveDataDialog.nut"
@@ -365,13 +349,19 @@ require("%scripts/login/loginContacts.nut")
 require("%scripts/mainmenu/onMainMenuReturn.nut")
 require("%scripts/unlocks/regionalUnlocksPromo.nut")
 require("%scripts/user/suggestionEmailRegistrationPromo.nut")
+require("%scripts/statsd/missionStats.nut")
+require("%scripts/misCustomRules/ruleSharedPool.nut")
+require("%scripts/misCustomRules/ruleEnduringConfrontation.nut")
+require("%scripts/misCustomRules/ruleNumSpawnsByUnitType.nut")
+require("%scripts/misCustomRules/ruleUnitsDeck.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")
 require("%scripts/debugTools/dbgClans.nut")
 require("%scripts/debugTools/dbgHudObjects.nut")
 require("%scripts/debugTools/dbgVoiceChat.nut")
+require("%scripts/debugTools/dbgDumpTools.nut")
+require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 
-
-if (::g_login.isAuthorized() || ::disable_network()) //load scripts from packs only after login
+if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
   loadIfExist("%scripts/worldWar/worldWar.nut")

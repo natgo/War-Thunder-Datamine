@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import send_error_log, use_embedded_browser, steam_is_running
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -9,6 +10,9 @@ let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
+let samsung = require("samsung")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -63,7 +67,7 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
     if (authData.yuplayResult == YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
     else
-      ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
+      send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
         false, AUTH_ERROR_LOG_COLLECTION)
   }
 
@@ -102,7 +106,7 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
   let hasFeat = urlType.isOnlineShop
                      ? hasFeature("EmbeddedBrowserOnlineShop")
                      : hasFeature("EmbeddedBrowser")
-  if (!forceExternal && ::use_embedded_browser() && !::steam_is_running() && hasFeat) {
+  if (!forceExternal && ::use_embedded_browser() && !steam_is_running() && hasFeat) {
     // Embedded browser
     ::open_browser_modal(url, urlConfig.urlTags, baseUrl)
     broadcastEvent("BrowserOpened", { url = url, external = false })
@@ -169,7 +173,18 @@ let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = fa
 
   sendBqEvent("CLIENT_POPUP_1", forceExternal ? "player_opens_external_browser" : "player_opens_browser", bigQueryInfoObject)
 
-  open(baseUrl, forceExternal, isAlreadyAuthenticated)
+  if(samsung.is_running()) {
+    handlersManager.loadHandler(gui_handlers.qrWindow, {
+      headerText = ""
+      qrCodesData = [
+        {url = baseUrl}
+      ]
+      needUrlWithQrRedirect = true
+      needShowUrlLink = false
+    })
+  }
+  else
+    open(baseUrl, forceExternal, isAlreadyAuthenticated)
 }
 
 ::open_url <- openUrl //use in native code

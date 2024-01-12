@@ -1,7 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
-::WwArmyOwner <- class {
+let WwArmyOwner = class {
   side         = null
   country      = null
   armyGroupIdx = null
@@ -15,7 +15,7 @@ from "%scripts/dagui_library.nut" import *
     if (!blk)
       return
 
-    this.side         = ::ww_side_name_to_val(getTblValue("side", blk, ""))
+    this.side         = ww_side_name_to_val(getTblValue("side", blk, ""))
     this.country      = getTblValue("country",      blk, "")
     this.armyGroupIdx = getTblValue("armyGroupIdx", blk, -1)
   }
@@ -36,3 +36,5 @@ from "%scripts/dagui_library.nut" import *
 
   function getSide() { return this.side }
 }
+
+return { WwArmyOwner }

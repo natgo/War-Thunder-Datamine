@@ -1,4 +1,7 @@
+from "%scripts/dagui_natives.nut" import ps4_get_region
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -39,7 +42,7 @@ let function loadAndProcessText(){
   return text_wordwrap_process(read_text_from_file(fileName))
 }
 
-gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
+gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
   isForView = true
@@ -54,7 +57,7 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
     textObj.setValue(loadAndProcessText())
     if (isPlatformSony) {
       local regionTextRootMainPart = "scee"
-      if (::ps4_get_region() == SCE_REGION_SCEA)
+      if (ps4_get_region() == SCE_REGION_SCEA)
         regionTextRootMainPart = "scea"
 
       local eulaText = textObj.getValue()

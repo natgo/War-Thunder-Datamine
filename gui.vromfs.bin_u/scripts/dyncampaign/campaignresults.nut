@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_session_warpoints
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -14,7 +15,7 @@ let DataBlock = require("DataBlock")
 
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
-gui_handlers.CampaignResults <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/debriefingCamp.blk"
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]
@@ -27,7 +28,7 @@ gui_handlers.CampaignResults <- class extends gui_handlers.BaseGuiHandlerWT {
         (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("missions/dynamic_success") : loc("missions/dynamic_fail")
       );
 
-    let wpdata = ::get_session_warpoints()
+    let wpdata = get_session_warpoints()
 
     this.guiScene["info-dc-wins"].setValue(wpdata.dcWins.tostring())
     this.guiScene["info-dc-fails"].setValue(wpdata.dcFails.tostring())

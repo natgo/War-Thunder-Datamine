@@ -1,7 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadState
 
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -191,8 +193,7 @@ let create = function(sType, saveSessionIdCb) {
       if (!err && !isEmpty(sessionId)) {
         dumpSessionData(sessionId, sType, pushContextId, pendingSessions.value[sType])
       }
-      if (sType in pendingSessions.value)
-        pendingSessions.mutate(@(v) delete v[sType])
+      pendingSessions.mutate(@(v) v?.$rawdelete(sType))
     }, this)
   )
 }
@@ -205,8 +206,7 @@ let destroy = function(sType) {
       psnsm.destroy(
         sId,
         Callback(function(_r, _err) {
-          if (sId in createdSessionData.value)
-            createdSessionData.mutate(@(v) delete v[sId])
+          createdSessionData.mutate(@(v) v?.$rawdelete(sId))
         }, this)
       )
     }
@@ -250,22 +250,20 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
       let parsedData = decodeBase64LikeToArray(sessionData?.customData1 ?? "")
       if (!parsedData.len())
         continue
-
-      switch (parsedData.sType) {
-        case PSN_SESSION_TYPE.SKIRMISH:
-          dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          let contact = ::getContact(parsedData.inviterUid)
-          ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
-          break
-        case PSN_SESSION_TYPE.SQUAD:
-          dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          let { squadId } = parsedData
-          let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
-          if (invite != null)
-            invite.accept()
-          else
-            ::g_squad_manager.joinToSquad(squadId)
-          break
+      let pdsType = parsedData.sType
+      if ( pdsType == PSN_SESSION_TYPE.SKIRMISH) {
+        dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
+        let contact = ::getContact(parsedData.inviterUid)
+        ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
+      }
+      else if ( pdsType == PSN_SESSION_TYPE.SQUAD) {
+        dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
+        let { squadId } = parsedData
+        let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
+        if (invite != null)
+          invite.accept()
+        else
+          ::g_squad_manager.joinToSquad(squadId)
       }
     }
   }))
@@ -279,7 +277,7 @@ let proceedInvite = function(p) {
   if (isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
 
-  if (!::g_login.isLoggedIn() || ::is_in_loading_screen()) {
+  if (!::g_login.isLoggedIn() || is_in_loading_screen()) {
     log("[PSGI:PI] delaying PSN invite until logged in and loaded")
     postponeInvite(p)
     return
@@ -291,7 +289,7 @@ let proceedInvite = function(p) {
     return
   }
 
-  if (!::isInMenu()) {
+  if (!isInMenu()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
     get_cur_gui_scene().performDelayed({}, function() {
@@ -311,11 +309,9 @@ subscribe("psnEventGameIntentJoinSession", proceedInvite)
 
 addListenersWithoutEnv({
   SquadStatusChanged = function(_p) {
-    switch (::g_squad_manager.state) {
-      case squadState.IN_SQUAD:
-        if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
-          break
-
+    let {state} = ::g_squad_manager
+    if (state == squadState.IN_SQUAD) {
+      if (PSN_SESSION_TYPE.SQUAD not in pendingSessions.value) {
         let sessionId = ::g_squad_manager.getPsnSessionId()
         let isLeader = ::g_squad_manager.isSquadLeader()
         let isInPsnSession = sessionId in createdSessionData.value
@@ -342,11 +338,10 @@ addListenersWithoutEnv({
             }
           )
         }
-        break
-
-      case squadState.LEAVING:
-        destroy(PSN_SESSION_TYPE.SQUAD)
-        break
+      }
+    }
+    else if (state == squadState.LEAVING) {
+      destroy(PSN_SESSION_TYPE.SQUAD)
     }
   }
   SquadSizeChanged = function(_p) {

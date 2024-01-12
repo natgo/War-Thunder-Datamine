@@ -3,15 +3,16 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
 let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
-let handlerClass = class extends gui_handlers.clanVehiclesModal {
+let handlerClass = class (gui_handlers.clanVehiclesModal) {
   sceneTplName  = "%gui/clans/clanFlushExpInfoModal.tpl"
   maxSlotCountY = 2
   userlog = null
@@ -39,7 +40,7 @@ let handlerClass = class extends gui_handlers.clanVehiclesModal {
     if (unit == null)
       return ""
     return format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
-      ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit)))
+      buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit)))
   }
 
   function updateFlushExpUnit() {
@@ -84,5 +85,5 @@ gui_handlers.clanFlushExpInfoModal <- handlerClass
 
 return {
   SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID
-  showClanFlushExpInfo = @(p) handlersManager.loadHandler(handlerClass, p)
+  showClanFlushExpInfo = @(p) loadHandler(handlerClass, p)
 }

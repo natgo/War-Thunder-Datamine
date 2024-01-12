@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 
-gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
+gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
 

@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import save_profile, set_control_helpers_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hasXInputDevice } = require("controls")
@@ -13,15 +14,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
   if (!hasFeature("ControlsDeviceChoice"))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
+  loadHandler(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
 }
 
-gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlTypeChoice.blk"
 
@@ -51,7 +53,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onIconChoosen(option) {
     set_option(USEROPT_PILOT, option.idx)
-    ::save_profile(false)
+    save_profile(false)
     this.updateProfileIcon()
   }
 
@@ -103,7 +105,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
   set_option(USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
-  ::set_control_helpers_mode(mode); //instant
+  set_control_helpers_mode(mode); //instant
 }
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id) {
@@ -115,7 +117,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
     // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
     ct_preset = "keyboard"
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
-    ::save_profile(false)
+    save_profile(false)
     return
   }
   else if (ct_id == "ct_xinput") {
@@ -160,7 +162,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
       ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
-  ::save_profile(false)
+  save_profile(false)
 
   setGuiOptionsMode(mainOptionsMode)
 }

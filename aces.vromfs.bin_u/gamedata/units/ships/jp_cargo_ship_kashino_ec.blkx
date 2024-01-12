@@ -27,23 +27,6 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakFxTimeout": [
-    1.0,
-    5.0
-  ],
-  "shipFuelLeakLifetime": [
-    30.0,
-    10.0,
-    8.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    5.0,
-    3.5
-  ],
-  "fuelLeakTimeAfterExtinguish": 30.0,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1801,6 +1784,25 @@
     "TrackSoundNameCockpit": "tracks_ctr_interior",
     "TrackSoundNameAi": "tracks_ai_light"
   },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakFxTimeout": [
+      1.0,
+      5.0
+    ],
+    "fuelLeakLifetime": [
+      30.0,
+      10.0,
+      8.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      5.0,
+      3.5
+    ],
+    "fuelLeakTimeAfterExtinguish": 30.0
+  },
   "unitFx": {
     "event": [
       {
@@ -2040,70 +2042,6 @@
           {
             "name": "ship_smoke_massive",
             "emitter": "emtr_smoke_dmg_02"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_01"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_02"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_03"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_04"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_05"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_06"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_07"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_08"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_09"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_10"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_11"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_12"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_13"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_14"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_15"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_16"
           },
           {
             "name": "ship_fire_massive",
@@ -4270,6 +4208,78 @@
       "nameLocId": "ship_flag_northern_ireland_01/name",
       "texture": "flag_northern_ireland_01_c*"
     },
+    "ship_flag_pirate_01": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_01",
+      "nameLocId": "ship_flag_pirate_01/name",
+      "texture": "flag_pirate_01_c*"
+    },
+    "ship_flag_pirate_02": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_02",
+      "nameLocId": "ship_flag_pirate_02/name",
+      "texture": "flag_pirate_02_c*"
+    },
+    "ship_flag_pirate_03": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_03",
+      "nameLocId": "ship_flag_pirate_03/name",
+      "texture": "flag_pirate_03_c*"
+    },
+    "ship_flag_pirate_04": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_04",
+      "nameLocId": "ship_flag_pirate_04/name",
+      "texture": "flag_pirate_04_c*"
+    },
+    "ship_flag_pirate_05": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_05",
+      "nameLocId": "ship_flag_pirate_05/name",
+      "texture": "flag_pirate_05_c*"
+    },
+    "ship_flag_pirate_06": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_06",
+      "nameLocId": "ship_flag_pirate_06/name",
+      "texture": "flag_pirate_06_c*"
+    },
+    "ship_flag_pirate_07": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_07",
+      "nameLocId": "ship_flag_pirate_07/name",
+      "texture": "flag_pirate_07_c*"
+    },
+    "ship_flag_pirate_08": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_08",
+      "nameLocId": "ship_flag_pirate_08/name",
+      "texture": "flag_pirate_08_c*"
+    },
+    "ship_flag_pirate_09": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_09",
+      "nameLocId": "ship_flag_pirate_09/name",
+      "texture": "flag_pirate_09_c*"
+    },
+    "ship_flag_pirate_10": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_10",
+      "nameLocId": "ship_flag_pirate_10/name",
+      "texture": "flag_pirate_10_c*"
+    },
+    "ship_flag_pirate_11": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_11",
+      "nameLocId": "ship_flag_pirate_11/name",
+      "texture": "flag_pirate_11_c*"
+    },
+    "ship_flag_pirate_12": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_12",
+      "nameLocId": "ship_flag_pirate_12/name",
+      "texture": "flag_pirate_12_c*"
+    },
     "ship_flag_cardsuit_01": {
       "category": "other",
       "unlockId": "ship_flag_cardsuit_01",
@@ -4293,78 +4303,6 @@
       "unlockId": "ship_flag_cardsuit_04",
       "nameLocId": "ship_flag_cardsuit_04/name",
       "texture": "flag_cardsuit_04_c*"
-    },
-    "ship_flag_pirate_01": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_01",
-      "nameLocId": "ship_flag_pirate_01/name",
-      "texture": "flag_pirate_01_c*"
-    },
-    "ship_flag_pirate_02": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_02",
-      "nameLocId": "ship_flag_pirate_02/name",
-      "texture": "flag_pirate_02_c*"
-    },
-    "ship_flag_pirate_03": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_03",
-      "nameLocId": "ship_flag_pirate_03/name",
-      "texture": "flag_pirate_03_c*"
-    },
-    "ship_flag_pirate_04": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_04",
-      "nameLocId": "ship_flag_pirate_04/name",
-      "texture": "flag_pirate_04_c*"
-    },
-    "ship_flag_pirate_05": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_05",
-      "nameLocId": "ship_flag_pirate_05/name",
-      "texture": "flag_pirate_05_c*"
-    },
-    "ship_flag_pirate_06": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_06",
-      "nameLocId": "ship_flag_pirate_06/name",
-      "texture": "flag_pirate_06_c*"
-    },
-    "ship_flag_pirate_07": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_07",
-      "nameLocId": "ship_flag_pirate_07/name",
-      "texture": "flag_pirate_07_c*"
-    },
-    "ship_flag_pirate_08": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_08",
-      "nameLocId": "ship_flag_pirate_08/name",
-      "texture": "flag_pirate_08_c*"
-    },
-    "ship_flag_pirate_09": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_09",
-      "nameLocId": "ship_flag_pirate_09/name",
-      "texture": "flag_pirate_09_c*"
-    },
-    "ship_flag_pirate_10": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_10",
-      "nameLocId": "ship_flag_pirate_10/name",
-      "texture": "flag_pirate_10_c*"
-    },
-    "ship_flag_pirate_11": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_11",
-      "nameLocId": "ship_flag_pirate_11/name",
-      "texture": "flag_pirate_11_c*"
-    },
-    "ship_flag_pirate_12": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_12",
-      "nameLocId": "ship_flag_pirate_12/name",
-      "texture": "flag_pirate_12_c*"
     },
     "ship_flag_racing_01": {
       "category": "other",
@@ -4399,6 +4337,20 @@
       "nameLocId": "ship_flag_duke_01/name",
       "descLocId": "ship_flag_duke_01/desc",
       "texture": "flag_duke_01_c*"
+    },
+    "ship_flag_christmas_01": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_01",
+      "nameLocId": "ship_flag_christmas_01/name",
+      "descLocId": "ship_flag_christmas_01/desc",
+      "texture": "flag_christmas_01_c*"
+    },
+    "ship_flag_christmas_02": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_02",
+      "nameLocId": "ship_flag_christmas_02/name",
+      "descLocId": "ship_flag_christmas_02/desc",
+      "texture": "flag_christmas_02_c*"
     }
   },
   "commonWeapons": {

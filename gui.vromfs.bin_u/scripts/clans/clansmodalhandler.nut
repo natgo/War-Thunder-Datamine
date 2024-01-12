@@ -1,15 +1,16 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_current_season_info, clan_get_my_clan_tag, ps4_is_ugc_enabled, ps4_show_ugc_restriction, clan_get_requested_clan_id, clan_get_my_clan_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isDataBlock, isFunction } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock, isFunction } = require("%sqstd/underscore.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, convertBlk } = require("%sqstd/datablock.nut")
 let { clearBorderSymbols, cutPrefix } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
 } = require("%scripts/clans/clanTablesConfig.nut")
@@ -17,11 +18,13 @@ let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { floor } = require("%sqstd/math.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { charRequestBlk } = require("%scripts/tasker.nut")
+let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
+let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
+let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -42,7 +45,7 @@ local leaderboardFilterArray = [
   }
 ]
 
-gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
+gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/clans/ClansModal.blk"
   pages          = ["clans_search", "clans_leaderboards", "my_clan"]
@@ -81,9 +84,9 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     this.tooltips  = {}
 
     if (this.startPage == "")
-      this.startPage = (::clan_get_my_clan_id() == "-1") ? "clans_search" : "my_clan"
+      this.startPage = (clan_get_my_clan_id() == "-1") ? "clans_search" : "my_clan"
 
-    this.curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
+    this.curWwCategory = lbCategoryTypes.EVENTS_PERSONAL_ELO
     this.initSearchBox()
     this.initLbTable()
     this.initLeaderboardFilter()
@@ -239,9 +242,9 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
     if (!::my_clan_info) {
       local requestSent = false
-      if (::clan_get_requested_clan_id() != "-1" && ::clan_get_my_clan_name() != "") {
+      if (::clan_get_requested_clan_id() != "-1" && clan_get_my_clan_name() != "") {
         requestSent = true
-        this.curPageObj.findObject("req_clan_name").setValue(::clan_get_my_clan_tag() + " " + ::clan_get_my_clan_name())
+        this.curPageObj.findObject("req_clan_name").setValue(::clan_get_my_clan_tag() + " " + clan_get_my_clan_name())
       }
       this.curPageObj.findObject("reques_to_clan_sent").show(requestSent)
       this.curPageObj.findObject("how_to_get_membership").show(!requestSent)
@@ -279,7 +282,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
   function requestClanLBPosition(fieldName, seasonOrdinalNumber, onSuccessCb = null, onErrorCb = null) {
     let requestBlk = DataBlock()
-    requestBlk["clanId"] <- ::clan_get_my_clan_id()
+    requestBlk["clanId"] <- clan_get_my_clan_id()
     requestBlk["seasonOrdinalNumber"] <- seasonOrdinalNumber
     requestBlk["sortField"] <- fieldName
     requestBlk["shortMode"] <- "on"
@@ -303,16 +306,16 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
   function requestClansLbData(updateMyClanRow = false, seasonOrdinalNumber = -1) {
     this.showEmptySearchResult(false)
-    if ((::clan_get_my_clan_id() == "-1" || this.curPage == "clans_search")
+    if ((clan_get_my_clan_id() == "-1" || this.curPage == "clans_search")
       && this.myClanLbData != null)
       this.myClanLbData = null
-    if (updateMyClanRow && ::clan_get_my_clan_id() != "-1") {
+    if (updateMyClanRow && clan_get_my_clan_id() != "-1") {
       let requestPage = this.curPage
       let cbSuccess = Callback( function(myClanRowBlk) {
                                       if (requestPage != this.curPage)
                                         return
 
-                                      let myClanId = ::clan_get_my_clan_id()
+                                      let myClanId = clan_get_my_clan_id()
                                       local found = false
                                       foreach (row in myClanRowBlk % "clan")
                                         if (row?._id == myClanId) {
@@ -549,7 +552,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if ("tooltip" in res) {
       if (!(rowName in this.tooltips))
         this.tooltips[rowName] <- {}
-      this.tooltips[rowName][item.id] <- res.rawdelete("tooltip")
+      this.tooltips[rowName][item.id] <- res.$rawdelete("tooltip")
     }
     return res
   }
@@ -574,7 +577,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
     if (this.isClanInfo && this.isWorldWarMode) {
       if (this.curWwCategory.id != obj.id) {
-        this.curWwCategory = ::g_lb_category.getTypeById(obj.id)
+        this.curWwCategory = getLbCategoryTypeById(obj.id)
         this.fillClanWwMemberList()
       }
       return
@@ -635,7 +638,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
       btn_clan_info      = this.curClanInfo != null
       btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.value
       btn_membership_req = this.curClanInfo != null && !::is_in_clan()
-        && (::clan_get_requested_clan_id() != this.curClanInfo.id)
+        && (clan_get_requested_clan_id() != this.curClanInfo.id)
     })
 
     let reqButton = this.curPageObj.findObject("btn_membership_req")
@@ -674,10 +677,10 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
   function onCreateClanWnd() {
     if (hasFeature("Clans")) {
-      if (!::ps4_is_ugc_enabled())
-        ::ps4_show_ugc_restriction()
+      if (!ps4_is_ugc_enabled())
+        ps4_show_ugc_restriction()
       else
-        ::gui_modal_new_clan()
+        openCreateClanWnd()
     }
     else
       this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
@@ -804,7 +807,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (!battleSeasonAvailable)
       return
 
-    let dateDuel = ::clan_get_current_season_info().rewardDay
+    let dateDuel = clan_get_current_season_info().rewardDay
     if (dateDuel <= 0) {
       objFrameBlock.show(false)
       return
@@ -818,10 +821,10 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (!blk)
       return
     let curMode = this.getCurDMode()
-    let topPlayersRewarded = get_blk_value_by_path(blk, "clanDuel/reward/topPlayersRewarded", 10)
+    let topPlayersRewarded = getBlkValueByPath(blk, "clanDuel/reward/topPlayersRewarded", 10)
     let diff = ::g_difficulty.getDifficultyByDiffCode(curMode)
     let rewardPath = "clanDuel/reward/" + diff.egdLowercaseName + "/era5"
-    let rewards = get_blk_value_by_path(blk, rewardPath)
+    let rewards = getBlkValueByPath(blk, rewardPath)
     if (!rewards)
       return
 
@@ -854,7 +857,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (!::g_clan_seasons.isEnabled() || !hasFeature("ClanSeasonAttributes"))
       return
     let diff = ::g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
-    ::show_clan_season_info(diff)
+    openClanSeasonInfoWnd(diff)
   }
 
   function onHelp() {

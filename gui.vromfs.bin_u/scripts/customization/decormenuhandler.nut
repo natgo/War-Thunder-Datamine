@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,7 +8,7 @@ let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCachedDataByType, getDecorator, getCachedOrderByType
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -19,7 +19,7 @@ let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/m
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
-let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
+let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/customization/decorWnd.blk"
 
@@ -138,7 +138,7 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
     listObj.setValue(-1)
     this.guiScene.applyPendingChanges(false)
     if (showConsoleButtons.value)
-      ::move_mouse_on_child(listObj, prevValue)
+      move_mouse_on_child(listObj, prevValue)
   }
 
   function selectCategory(categoryId, groupId) {
@@ -269,7 +269,7 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
     this.scrollDecalsCategory()
     this.guiScene.applyPendingChanges(false)
     let idx = contentListObj.getValue()
-    ::move_mouse_on_child(contentListObj, idx != -1 ? idx : 0)
+    move_mouse_on_child(contentListObj, idx != -1 ? idx : 0)
   }
 
   function savePath(categoryId, groupId = "") {
@@ -358,7 +358,7 @@ let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
     if (newValue < 0 || listObj.childrenCount() <= newValue)
       return false
 
-    ::move_mouse_on_child(listObj.getChild(newValue), 0)
+    move_mouse_on_child(listObj.getChild(newValue), 0)
     return true
   }
 

@@ -1,10 +1,12 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import check_login_pass
 from "%scripts/dagui_library.nut" import *
 
+let { set_disable_autorelogin_once } = require("loginState.nut")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
@@ -20,7 +22,7 @@ local authDataByTypes = {
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 
-gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
+gui_handlers.twoStepModal <- class (BaseGuiHandler) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/login/twoStepModal.tpl"
   loginScene           = null
@@ -45,7 +47,7 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
 
   function initScreen() {
     this.reinitCurTimeTimer()
-    ::select_editbox(this.getObj("loginbox_code"))
+    select_editbox(this.getObj("loginbox_code"))
   }
 
   function reinitCurTimeTimer() {
@@ -60,10 +62,10 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
   }
 
   function onSubmit(_obj) {
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
-    let result = ::check_login_pass(
+    let result = check_login_pass(
       getObjValue(this.loginScene, "loginbox_username", ""),
       getObjValue(this.loginScene, "loginbox_password", ""), "",
       getObjValue(this.scene, "loginbox_code", ""),
@@ -88,22 +90,20 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
   }
 
   function proceedAuth(result) {
-    switch (result) {
-      case YU2_OK:
-        this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
-        break
+    if (YU2_OK == result) {
+      this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
+    }
 
-      case YU2_2STEP_AUTH:
-      case YU2_WRONG_2STEP_CODE:
-        this.showErrorMsg()
-        break
+    else if ( result == YU2_2STEP_AUTH || result == YU2_WRONG_2STEP_CODE) {
+      this.showErrorMsg()
+     }
 
-      default:
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["exit", exitGame],
-          ["tryAgain", null]
-        ], "tryAgain", { cancel_fn = function() {} })
+    else {
+      ::error_message_box("yn1/connect_error", result,
+      [
+        ["exit", exitGame],
+        ["tryAgain", null]
+      ], "tryAgain", { cancel_fn = function() {} })
     }
   }
 }

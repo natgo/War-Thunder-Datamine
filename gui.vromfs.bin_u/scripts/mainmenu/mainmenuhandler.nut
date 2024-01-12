@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -12,17 +14,17 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime, getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
+let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
-let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { getCrewByAir, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 
-gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
+gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
   unitInfoPanel = null
@@ -32,7 +34,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
 
   //custom functions
   function initScreen() {
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
 
     if (::g_login.isAuthorized())
       base.initScreen()
@@ -51,7 +53,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
       debug_dump_stack()
       ::SessionLobby.leaveRoom()
     }
-    ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
+    stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
   }
 
   function onStart() {
@@ -67,7 +69,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   }
 
   function showOnlineInfo() {
-    if (isVietnameseVersion() || topMenuHandler.value == null)
+    if (topMenuHandler.value == null)
       return
 
     let text = loc("mainmenu/online_info", {
@@ -134,7 +136,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   function updateLowQualityModelWarning() {
     let lowQuality = !::is_loaded_model_high_quality()
     this.showSceneBtn("low-quality-model-warning", lowQuality)
-    if (lowQuality && this.isSceneActive() && ::isInMenu())
+    if (lowQuality && this.isSceneActive() && isInMenu())
       ::check_package_and_ask_download_once("pkg_main", "air_in_hangar")
   }
 
@@ -201,7 +203,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
 
     local wasShown = false
     SecondsUpdater(lockObj, function(obj, _params) {
-      let crew = unit != null ? ::getCrewByAir(unit) : null
+      let crew = unit != null ? getCrewByAir(unit) : null
       let unlockTime = crew != null ? getCrewUnlockTime(crew) : 0
       obj.show(unlockTime > 0)
       if (unlockTime <= 0) {
@@ -217,8 +219,8 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
       obj.findObject("time").setValue(timeStr)
 
       let showButtons = hasFeature("EarlyExitCrewUnlock")
-      let crewCost = ::shop_get_unlock_crew_cost(crew.id)
-      let crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
+      let crewCost = shop_get_unlock_crew_cost(crew.id)
+      let crewCostGold = shop_get_unlock_crew_cost_gold(crew.id)
       if (showButtons) {
         placePriceTextToButton(obj, "btn_unlock_crew", loc("mainmenu/btn_crew_unlock"), crewCost, 0)
         placePriceTextToButton(obj, "btn_unlock_crew_gold", loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)

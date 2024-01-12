@@ -1,5 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
+from "%scripts/squads/squadsConsts.nut" import squadMemberState
+from "%scripts/chat/chatConsts.nut" import voiceChatStats
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -12,6 +17,7 @@ let { get_option_voicechat } = require("chat")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { wwGetOperationId } = require("worldwar")
+let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -21,7 +27,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   return handlersManager.loadCustomHandler(gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
 }
 
-gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/squads/squadWidget.tpl"
@@ -125,7 +131,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
 
     let plusButtonObj = this.showSceneBtn("btn_squadPlus", canInvite)
     if (plusButtonObj && canInvite)
-      plusButtonObj.enable(::ps4_is_ugc_enabled() && ::ps4_is_chat_enabled())
+      plusButtonObj.enable(::ps4_is_ugc_enabled() && ps4_is_chat_enabled())
 
     this.showSceneBtn("wait_icon", isInTransition)
 
@@ -196,7 +202,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
   }
 
   function onSquadMemberMenu(obj) {
-    ::g_squad_utils.showMemberMenu(obj)
+    showSquadMemberMenu(obj)
   }
 
   function updateVisibleNewApplications() {

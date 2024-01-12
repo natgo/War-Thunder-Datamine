@@ -1,6 +1,5 @@
-//checked for plus_string
-
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -18,7 +17,7 @@ register_command(
 
 const PRESETS_COUNT = 3
 
-gui_handlers.DamageControlWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName         = "%gui/damageControl/damageControl.tpl"
   unit                 = null
@@ -113,19 +112,12 @@ gui_handlers.DamageControlWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getIconByAction(action) {
     local res = ""
-    switch (action) {
-      case "e":
-        res = "manual_ship_extinguisher"
-        break
-
-      case "u":
-        res = "unwatering"
-        break
-
-      case "r":
-        res = "ship_tool_kit"
-        break
-    }
+    if (action == "e" )
+      res = "manual_ship_extinguisher"
+    else if ( action == "u")
+      res = "unwatering"
+    else if ( action == "r")
+      res = "ship_tool_kit"
     return "#ui/gameuiskin#{0}".subst(res)
   }
 

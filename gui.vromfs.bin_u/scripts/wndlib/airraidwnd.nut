@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import start_dynamic_lut_texture
 from "%scripts/dagui_library.nut" import *
 
 
@@ -19,7 +20,7 @@ const TIME_TO_POINT_CAMERA_TO_EVENT = 1000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT = 5000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT_END = 10000
 
-local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
+local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/wndLib/airRaidTimerScene.blk"
 
   countdownStartedTime = 0
@@ -59,7 +60,7 @@ local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
         this.showSceneBtn("window", false)
 
         set_nuclear_explosion_sound_active()
-        ::start_dynamic_lut_texture("nuclear_explosion")
+        start_dynamic_lut_texture("nuclear_explosion")
 
         set_seen_nuclear_event(true)
 

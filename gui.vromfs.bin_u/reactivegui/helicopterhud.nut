@@ -7,6 +7,7 @@ let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
   HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, HudParamColor } = require("airState.nut")
+let { IsRadarVisible, IsRadar2Visible} = require("radarState.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
 let { paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed, turretAngles, agmLaunchZone,
@@ -19,6 +20,7 @@ let leftPanel = require("airHudLeftPanel.nut")
 let missileSalvoTimer = require("missileSalvoTimer.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
+let radarHud = require("%rGui/radar.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -33,6 +35,13 @@ let radarSize = sh(28)
 let radarPosWatched = Computed(@() [bw.value, bh.value])
 let twsSize = sh(20)
 let twsPosComputed = Computed(@() [bw.value + 0.965 * rw.value - twsSize, bh.value + 0.5 * rh.value])
+
+let helicopterPilotParamsTablePos = Computed(@() [bw.value, bw.value])
+
+let helicopterPilotParamsTable = paramsTable(MainMask, SecondaryMask,
+  paramsTableWidthHeli, paramsTableHeightHeli,
+  helicopterPilotParamsTablePos,
+  hdpx(5))
 
 let helicopterArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
@@ -118,8 +127,7 @@ let function pilotHud() {
     watch = IsPilotHudVisible
     children = IsPilotHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), HudColor.value)
-      helicopterParamsTable(HudColor)
+      helicopterPilotParamsTable(HudColor)
     ]
     : null
   }
@@ -138,7 +146,7 @@ let function helicopterArbiterHud() {
 
 let function mkHelicopterIndicators() {
   return @() {
-    watch = [IsMfdEnabled, HudColor]
+    watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible]
     children = [
       helicopterMainHud()
       helicopterSightHud()
@@ -149,6 +157,7 @@ let function mkHelicopterIndicators() {
       !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched, radarSize) : null
       compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)])
       bombSightComponent(sh(10.0), sh(10.0), HudColor)
+      IsRadarVisible.value || IsRadar2Visible.value ? radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor) : null
     ]
   }
 }

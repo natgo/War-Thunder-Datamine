@@ -1,6 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_hud_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, hud_is_in_cutscene
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
+let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isDmgIndicatorVisible } = require("gameplayBinding")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
@@ -12,23 +16,23 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible, getHudUnitType } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
-let { mpTankHudBlkPath } = require("%scripts/hud/hudBlkPath.nut")
-let { isDmgIndicatorVisible, isShowTankMinimap } = require("gameplayBinding")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getActionBarItems, getOwnerUnitName, getActionBarUnitName } = require("hudActionBar")
+let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
 let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
+let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
   USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
-let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let maybeOfferControlsHelp = require("%scripts/hud/maybeOfferControlsHelp.nut")
+let { HudAir } = require("%scripts/hud/hudAir.nut")
+let { HudTank } = require("%scripts/hud/hudTank.nut")
+let { HudShip } = require("%scripts/hud/hudShip.nut")
+let { HudHeli } = require("%scripts/hud/hudHeli.nut")
+let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -36,23 +40,21 @@ let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 let getUnmappedControlsWarningTime = @() get_game_mode() == GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
-local controlsHelpShownBits = 0
-let function maybeOfferControlsHelp() {
-  let unit = getPlayerCurUnit()
-  if (![ "combat_track_a", "combat_track_h", "combat_tank_a", "combat_tank_h",
-      "mlrs_tank_a", "mlrs_tank_h", "acoustic_heavy_tank_a", "destroyer_heavy_tank_h",
-      "dragonfly_a", "dragonfly_h" ].contains(unit?.name))
-    return
-  let utBit = unit?.unitType.bit ?? 0
-  if ((controlsHelpShownBits & utBit) != 0)
-    return
-  controlsHelpShownBits = controlsHelpShownBits | utBit
-  ::g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", {})
-}
-
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
 
-gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
+function getCurActionBar() {
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  return handler?.currentHud.actionBar
+}
+
+subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
+subscribe("getActionBarState", function(_) {
+  let actionBar = getCurActionBar()
+  if (actionBar != null)
+    send("setActionBarState", actionBar.getState())
+})
+
+gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -62,17 +64,12 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   ucNoWinkTime      = 0.0
   ucPrevList        = []
   spectatorMode     = false
-
   hudType    = HUD_TYPE.NONE
   isXinput   = false
   currentHud = null
-
   isLowQualityWarningVisible = false
-
   curTacticalMapObj = null
-
   afkTimeToKick = null
-
   curHudVisMode = null
   curChatData = null
   isReinitDelayed = false
@@ -118,8 +115,8 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::g_streaks.clear()
     this.initSubscribes()
 
-    ::set_hud_width_limit(safeAreaHud.getSafearea()[0])
-    ::set_option_hud_screen_safe_area(safeAreaHud.getValue())
+    set_hud_width_limit(safeAreaHud.getSafearea()[0])
+    set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
@@ -159,7 +156,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
         | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       : CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (showConsoleButtons.value && ::is_cursor_visible_in_gui())
+    if (showConsoleButtons.value && is_cursor_visible_in_gui())
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
@@ -214,7 +211,6 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::g_hud_event_manager.subscribe("LiveStatsVisibilityToggled",
         @(_ed) this.warnLowQualityModelCheck(),
         this)
-
     ::g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
       @(_eventData) this.updateMissionProgressPlace(), this)
   }
@@ -245,17 +241,17 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)
-      this.currentHud = handlersManager.loadHandler(::HudCutscene, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
       this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
-      this.currentHud = handlersManager.loadHandler(::HudAir, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
-      this.currentHud = handlersManager.loadHandler(::HudTank, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
-      this.currentHud = handlersManager.loadHandler(::HudShip, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
-      this.currentHud = handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
     else //newHudType == HUD_TYPE.NONE
       this.currentHud = null
 
@@ -265,6 +261,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.onHudSwitched()
     broadcastEvent("HudTypeSwitched")
+    maybeOfferControlsHelp()
     return true
   }
 
@@ -309,13 +306,13 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
 
   //get means determine in this case, but "determine" is too long for function name
   function getHudType() {
-    if (::hud_is_in_cutscene())
+    if (hud_is_in_cutscene())
       return HUD_TYPE.CUTSCENE
     if (this.spectatorMode)
       return HUD_TYPE.SPECTATOR
     if (is_benchmark_game_mode())
       return HUD_TYPE.BENCHMARK
-    if (::is_freecam_enabled())
+    if (is_freecam_enabled())
       return HUD_TYPE.FREECAM
     //!!!FIX ME Need remove this check, but client is crashed in hud for dummy plane in ship autotest
     if (getActionBarUnitName() == "dummy_plane")
@@ -330,7 +327,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     this.curHudVisMode = visMode
 
     let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
-      ::is_tank_damage_indicator_visible()
+      is_tank_damage_indicator_visible()
 
     let objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
@@ -363,7 +360,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function unmappedControlsCheck() {
-    if (this.spectatorMode || !::is_hud_visible())
+    if (this.spectatorMode || !is_hud_visible())
       return
 
     let unmapped = ::getUnmappedControlsForCurrentMission()
@@ -420,10 +417,10 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function warnLowQualityModelCheck() {
-    if (this.spectatorMode || !::is_hud_visible())
+    if (this.spectatorMode || !is_hud_visible())
       return
 
-    let isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
+    let isShow = !is_hero_highquality() && !::g_hud_live_stats.isVisible()
     if (isShow == this.isLowQualityWarningVisible)
       return
 
@@ -503,8 +500,8 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.updateAFKTimeKick()
-    let showAlertText = ::get_in_battle_time_to_kick_show_alert() >= this.afkTimeToKick
-    let showTimerText = ::get_in_battle_time_to_kick_show_timer() >= this.afkTimeToKick
+    let showAlertText = get_in_battle_time_to_kick_show_alert() >= this.afkTimeToKick
+    let showTimerText = get_in_battle_time_to_kick_show_timer() >= this.afkTimeToKick
     let showMessage = this.afkTimeToKick >= 0 && (showTimerText || showAlertText)
     timeToKickAlertObj.show(showMessage)
     if (!showMessage)
@@ -561,187 +558,6 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     this.currentHud?.updateDmgIndicatorState()
   }
 }
-
-::HudCutscene <- class extends gui_handlers.BaseUnitHud {
-  sceneBlkName = "%gui/hud/hudCutscene.blk"
-}
-
-::HudAir <- class extends gui_handlers.BaseUnitHud {
-  sceneBlkName = "%gui/hud/hudAir.blk"
-
-  function initScreen() {
-    base.initScreen()
-    ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_AIRCRAFT)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
-
-    this.updateTacticalMapVisibility()
-    this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
-    this.updatePosHudMultiplayerScore()
-
-    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(_ed) { this.updateDmgIndicatorSize() },
-      this)
-  }
-
-  function reinitScreen(_params = {}) {
-    ::g_hud_display_timers.reinit()
-    this.updateTacticalMapVisibility()
-    this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
-    this.actionBar.reinit()
-  }
-
-  function updateTacticalMapVisibility() {
-    let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 // Race mission
-      || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
-      || (hasFeature("uavMiniMap") && (getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
-    let isVisible = shouldShowMapForAircraft && !is_replay_playing()
-      && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
-    this.showSceneBtn("hud_air_tactical_map", isVisible)
-  }
-
-  function updateDmgIndicatorSize() {
-    let obj = this.scene.findObject("xray_render_dmg_indicator")
-    if (obj?.isValid())
-      send("updateDmgIndicatorStates", { size = obj.getSize() })
-  }
-
-  function updateShowHintsNest() {
-    this.showSceneBtn("actionbar_hints_nest", false)
-  }
-}
-
-::HudTank <- class extends gui_handlers.BaseUnitHud {
-  sceneBlkName = mpTankHudBlkPath.value
-
-  function initScreen() {
-    base.initScreen()
-    ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_TANK)
-    initIconedHints(this.scene, ES_UNIT_TYPE_TANK)
-    ::g_hud_tank_debuffs.init(this.scene)
-    ::g_hud_crew_state.init(this.scene)
-    showHudTankMovementStates(this.scene)
-    ::hudEnemyDamage.init(this.scene)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
-    this.updateShowHintsNest()
-    this.updatePosHudMultiplayerScore()
-
-    ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
-      @(_eventData) this.updateDamageIndicatorBackground(),
-      this)
-    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(_ed) { this.updateDmgIndicatorState() },
-      this)
-  }
-
-  function reinitScreen(_params = {}) {
-    this.actionBar.reinit()
-    ::hudEnemyDamage.reinit()
-    ::g_hud_display_timers.reinit()
-    ::g_hud_tank_debuffs.reinit()
-    ::g_hud_crew_state.reinit()
-    this.updateShowHintsNest()
-    maybeOfferControlsHelp()
-  }
-
-  function updateDamageIndicatorBackground() {
-    let visMode = ::g_hud_vis_mode.getCurMode()
-    let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
-    showObjById("tank_background", isDmgPanelVisible, this.scene)
-  }
-
-  function updateShowHintsNest() {
-    this.showSceneBtn("actionbar_hints_nest", true)
-  }
-
-  function updateDmgIndicatorState() {
-    let obj = this.scene.findObject("hud_tank_damage_indicator")
-    if (obj?.isValid())
-      send("updateDmgIndicatorStates", {
-        size = obj.getSize()
-        pos = obj.getPos()
-      })
-  }
-}
-
-::HudHelicopter <- class extends gui_handlers.BaseUnitHud {
-  sceneBlkName = "%gui/hud/hudHelicopter.blk"
-
-  function initScreen() {
-    base.initScreen()
-    ::hudEnemyDamage.init(this.scene)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
-    this.updatePosHudMultiplayerScore()
-    this.updateTacticalMapVisibility()
-
-    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      @(_) this.updateDmgIndicatorState(), this)
-  }
-
-  function reinitScreen(_params = {}) {
-    this.actionBar.reinit()
-    this.updateTacticalMapVisibility()
-    ::hudEnemyDamage.reinit()
-    maybeOfferControlsHelp()
-    this.updateDmgIndicatorState()
-  }
-
-  function updateDmgIndicatorState() {
-    let obj = this.scene.findObject("xray_render_dmg_indicator")
-    if (obj?.isValid())
-      send("updateDmgIndicatorStates", {
-        size = obj.getSize()
-        pos = obj.getPos()
-      })
-  }
-
-  function updateTacticalMapVisibility() {
-    let shouldShowMapForHelicopter = isShowTankMinimap()
-    let isVisible = shouldShowMapForHelicopter && !is_replay_playing()
-      && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
-    this.showSceneBtn("hud_air_tactical_map", isVisible)
-  }
-}
-
-::HudShip <- class extends gui_handlers.BaseUnitHud {
-  sceneBlkName = "%gui/hud/hudShip.blk"
-  widgetsList = [
-    {
-      widgetId = DargWidgets.SHIP_OBSTACLE_RF
-      placeholderId = "ship_obstacle_rf"
-    }
-  ]
-
-  function initScreen() {
-    base.initScreen()
-    ::hudEnemyDamage.init(this.scene)
-    ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_SHIP)
-    ::hud_request_hud_ship_debuffs_state()
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
-    this.updatePosHudMultiplayerScore()
-  }
-
-  function reinitScreen(_params = {}) {
-    this.actionBar.reinit()
-    ::hudEnemyDamage.reinit()
-    ::g_hud_display_timers.reinit()
-    ::hud_request_hud_ship_debuffs_state()
-  }
-}
-
-function getCurActionBar() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
-  return handler?.currentHud.actionBar
-}
-
-subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
-subscribe("getActionBarState", function(_) {
-  let actionBar = getCurActionBar()
-  if (actionBar != null)
-    send("setActionBarState", actionBar.getState())
-})
-
 
 ::gui_start_hud <- function gui_start_hud() {
   handlersManager.loadHandler(gui_handlers.Hud)

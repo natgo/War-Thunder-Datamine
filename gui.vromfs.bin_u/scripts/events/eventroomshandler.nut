@@ -1,12 +1,15 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -27,6 +30,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getMissionsComplete } = require("%scripts/myStats.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -52,7 +56,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
@@ -131,7 +135,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.selectedIdx != -1) {
       this.guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(this.roomsListObj)
+      move_mouse_on_child_by_value(this.roomsListObj)
     }
     else
       this.initTime = get_time_msec()
@@ -218,7 +222,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       economicName = getEventEconomicName(this.event)
       difficulty = this.event?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::EventJoinProcess(this.event, this.getCurRoom(),
@@ -339,7 +343,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.initTime != -1 && this.selectedIdx != -1) {
       if (get_time_msec() - this.initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
-        ::move_mouse_on_child_by_value(this.roomsListObj)
+        move_mouse_on_child_by_value(this.roomsListObj)
       this.initTime = -1
     }
   }
@@ -778,7 +782,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function goBackShortcut() { this.goBack() }

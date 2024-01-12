@@ -1,8 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { debug_dump_stack } = require("dagor.debug")
 let { split_by_chars, format } = require("string")
 let regexp2 = require("regexp2")
 let mapPreferences = require("mapPreferences")
@@ -75,7 +76,7 @@ let function getProfileBanData(curEvent) {
 }
 
 let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName") {
-  local missionLocName = loc("missions/" + missionId)
+  local missionLocName = loc($"missions/{missionId}")
   let locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
     missionLocName = isLevelBanMode ? loc(split_by_chars(locNameValue, "; ")?[1] ?? "") :
@@ -170,7 +171,7 @@ let function getMapsListImpl(curEvent) {
       assertMisNames.append(name)
       continue
     }
-    let level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
+    let level = missionToLevelTable?[name].level ?? map_to_location(missionInfo.level)
     let map = isLevelBanMode ? level : name
     let unrestrictedRanksRange = { minMRank = 0, maxMRank = getMaxEconomicRank() + 1.0 }
     let ranksRange = val?.enableIf ?? unrestrictedRanksRange
@@ -189,7 +190,7 @@ let function getMapsListImpl(curEvent) {
     }
 
     let image = "{0}_thumb*".subst(
-      ::get_level_texture(missionInfo.level, hasTankOrShip && regexp2(@"^av(n|g)").match(level))
+      get_level_texture(missionInfo.level, hasTankOrShip && regexp2(@"^av(n|g)").match(level))
         .slice(0, -1))
 
     let mapStateData = {
@@ -217,8 +218,8 @@ let function getMapsListImpl(curEvent) {
 
   if (assertMisNames.len() > 0) {
     let invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
-    script_net_assert_once("MapPreferencesParams:",
-      "".concat("Some missions have no level to show map preferences.",
+    debug_dump_stack()
+    logerr("".concat("MapPreferencesParams: Some missions have no level to show map preferences.",
       "Ask designers to check missions from invalidMissions callstack variable in matching configs"))
   }
 

@@ -1,20 +1,14 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_current_season_info
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_clan_rewards_blk } = require("blkGetters")
-
-global enum CLAN_SEASON_MEDAL_TYPE {
-  PLACE
-  TOP
-  RATING
-  UNKNOWN
-}
 
 ::g_clan_seasons <- {
   rewardsBlk = null //cache of get_clan_rewards_blk()
@@ -52,7 +46,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
 
   function getTopPlayersRewarded() {
     let blk = this.getRewardsBlk()
-    return get_blk_value_by_path(blk, "reward/topPlayersRewarded", 10)
+    return getBlkValueByPath(blk, "reward/topPlayersRewarded", 10)
   }
 
 
@@ -64,7 +58,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
     let path = $"{difficulty.egdLowercaseName}/era5"
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++)
-      if (get_blk_value_by_path(subRewards.getBlock(i), path))
+      if (getBlkValueByPath(subRewards.getBlock(i), path))
         return true
 
     return false
@@ -88,7 +82,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
-      let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let rewardsData = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
@@ -135,7 +129,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
     if (regalia == "")
       return prizes
     let blk = this.getRewardsBlk()
-    let pBlk = get_blk_value_by_path(blk, "reward/templates/" + regalia)
+    let pBlk = getBlkValueByPath(blk, "reward/templates/" + regalia)
     if (!pBlk)
       return prizes
     foreach (prizeType in [ "clanTag", "decal" ]) {
@@ -200,7 +194,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
-      let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let rewardsData = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
@@ -267,7 +261,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
 
     let rewardForRating = blk.reward % "rewardForRating"
     foreach (rewardBlock in rewardForRating) {
-      let regalia = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let regalia = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!regalia)
         continue
       let reward = clone rewardTemplate
@@ -287,7 +281,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
    * Retrun string with current season name.
    */
   function getSeasonName() {
-    let info = ::clan_get_current_season_info()
+    let info = clan_get_current_season_info()
     let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
     let num  = get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
     return loc("clan/battle_season/name", { year = year, num = num })
@@ -295,7 +289,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
 
 
   function getSeasonEndDate() {
-    return time.buildDateTimeStr(::clan_get_current_season_info()?.rewardDay, false, false)
+    return time.buildDateTimeStr(clan_get_current_season_info()?.rewardDay, false, false)
   }
 
 

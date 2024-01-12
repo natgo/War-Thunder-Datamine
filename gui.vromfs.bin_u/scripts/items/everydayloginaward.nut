@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
+
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -18,8 +21,11 @@ let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
+let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
-let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
+let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/everyDayLoginAward.blk"
   needVoiceChat = false
@@ -52,7 +58,12 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
     this.fillOpenedChest()
     this.initExpTexts()
 
-    ::move_mouse_on_obj(this.getObj("btn_nav_open"))
+    move_mouse_on_obj(this.getObj("btn_nav_open"))
+    let sendShortcuts = showConsoleButtons.value ? "{{INPUT_BUTTON GAMEPAD_R1}}" : ""
+    let tipHint = loc("dailyAward/playWTM", {sendShortcuts})
+    let textObjName = showConsoleButtons.value ? "wtm_text_console" : "wtm_text"
+
+    this.showSceneBtn(textObjName, true).setValue(tipHint)
   }
 
   function updateHeader() {
@@ -119,6 +130,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
                                 objId = "right_framing",
                                 param = "background-image",
                             })
+
   }
 
   function updateObjectByData(data, params = {}) {
@@ -207,10 +219,10 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
 
   function getRewardsArray(awardName) {
     let userlogConfig = []
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if (blk.id == this.userlog.id)
         break
@@ -395,9 +407,9 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let params = { hasActions = true }
-    let unitData = ::build_aircraft_item(curUnit.name, curUnit, params)
+    let unitData = buildUnitSlot(curUnit.name, curUnit, params)
     this.guiScene.replaceContentFromText(obj, unitData, unitData.len(), this)
-    ::fill_unit_item_timers(obj.findObject(curUnit.name), curUnit, params)
+    fillUnitSlotTimers(obj.findObject(curUnit.name), curUnit)
   }
 
   function checkRewardsArray() {
@@ -678,6 +690,20 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
     obj.findObject("text").setValue("".concat(loc("battlePass/seasonLoginStreak",
       { amount = value }), rangeExpText))
   }
+
+  function onWarThunderMobileLink() {
+    openQrWindow({
+      headerText = loc("war_thunder_mobile")
+      additionalInfoText = loc("dailyAward/qrCodeWTM")
+      qrCodesData = [
+        {url = "https://play.google.com/store/apps/details?id=com.gaijingames.wtm", text = loc("qrCode/GooglePlay")}
+        {url = "https://apps.apple.com/us/app/war-thunder-mobile/id1577525428", text = loc("qrCode/AppStore")}
+        {url = "https://wtmobile.com/", text = loc("qrCode/downloadApkFile")}
+      ]
+      needUrlWithQrRedirect = true
+    })
+  }
+
 }
 
 gui_handlers.EveryDayLoginAward <- EveryDayLoginAward
@@ -689,14 +715,14 @@ let function showEveryDayLoginAwardWnd(blk) {
   if (!hasFeature("everyDayLoginAward"))
     return
 
-  ::gui_start_modal_wnd(EveryDayLoginAward, { userlog = blk })
+  loadHandler(EveryDayLoginAward, { userlog = blk })
 }
 
 let function hasEveryDayLoginAward() {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = total - 1; i >= 0; --i) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (blk.type == EULT_CHARD_AWARD && blk.body?.rewardType == "EveryDayLoginAward")
       return !(blk?.disabled ?? false)
@@ -705,10 +731,10 @@ let function hasEveryDayLoginAward() {
 }
 
 let function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = total - 1; i > 0; i--) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (blk.type == EULT_CHARD_AWARD && blk.body?.rewardType == "EveryDayLoginAward") {
       if (numAwardsToSkip > 0) {

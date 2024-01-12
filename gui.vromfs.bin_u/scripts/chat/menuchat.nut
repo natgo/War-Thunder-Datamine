@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_pds_next_time, ps4_is_ugc_enabled, gchat_unescape_target, sync_handler_simulate_signal, gchat_list_rooms, gchat_is_connecting, get_pds_code_limit, set_char_cb, gchat_is_enabled, update_objects_under_windows_state, gchat_is_connected, ps4_show_ugc_restriction, gchat_chat_private_message, gchat_chat_message, gchat_join_room, gchat_raw_command, gchat_escape_target, send_pds_presence_check_in, get_pds_code_suggestion, gchat_list_names
 from "%scripts/dagui_library.nut" import *
+from "%scripts/chat/chatConsts.nut" import voiceChatStats
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,7 +10,8 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox, handlersManager, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
@@ -39,6 +43,15 @@ let { userName } = require("%scripts/user/myUser.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
+
+enum chatErrorName {
+  NO_SUCH_NICK_CHANNEL    = "401"
+  NO_SUCH_CHANNEL         = "403"
+  CANT_SEND_MESSAGE       = "404"
+  ALREADY_ON_CHANNEL      = "443"
+  CANNOT_JOIN_CHANNEL_NO_INVITATION = "473"
+  CANNOT_JOIN_THE_CHANNEL = "475"
+}
 
 ::menu_chat_handler <- null
 ::menu_chat_sizes <- null
@@ -113,7 +126,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 }
 ::global_chat_rooms_list = ::getGlobalRoomsList(true)
 
-::MenuChatHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::MenuChatHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   presenceDetectionTimer = 0
   static roomRegexp = regexp2("^#[^\\s]")
@@ -189,7 +202,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function selectEditbox(obj) {
     if (this.checkScene() && checkObj(obj) && obj.isVisible() && obj.isEnabled())
-      ::select_editbox(obj)
+      select_editbox(obj)
   }
 
   function selectChatInputEditbox() {
@@ -711,8 +724,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         return
       roomToDraw = this.curRoom
     }
-    else if (!::gchat_is_connected()) {
-      if (::gchat_is_connecting() || ::g_chat.rooms.len() == 0) {
+    else if (!gchat_is_connected()) {
+      if (gchat_is_connecting() || ::g_chat.rooms.len() == 0) {
         roomToDraw = newRoom("#___empty___")
         roomToDraw.addMessage(newMessage("", loc("chat/connecting")))
       }
@@ -771,14 +784,14 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.guiScene.performDelayed(this, function() {
         if (!this.isValid())
           return
-        ::update_objects_under_windows_state(this.guiScene)
+        update_objects_under_windows_state(this.guiScene)
         this.restoreFocus()
       })
     }
     else
       this.guiScene.performDelayed(this, function() {
         if (this.isValid())
-          ::update_objects_under_windows_state(this.guiScene)
+          update_objects_under_windows_state(this.guiScene)
       })
 
     this.onChatWindowMouseOver(this.scene)
@@ -791,7 +804,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (checkObj(inputObj) && inputObj.isVisible())
       this.selectEditbox(inputObj)
     else
-      ::move_mouse_on_child_by_value(this.scene.findObject("rooms_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("rooms_list"))
   }
 
   function loadRoomParams(roomName, joinParams) {
@@ -815,7 +828,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function rejoinDefaultRooms(initRooms = false) {
-    if (!::gchat_is_connected() || !::g_login.isProfileReceived())
+    if (!gchat_is_connected() || !::g_login.isProfileReceived())
       return
     if (this.roomsInited && !initRooms)
       return
@@ -839,7 +852,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
           if (!roomType.needSave()) //"needSave" has changed
             continue
 
-          ::gchat_raw_command(format("join %s%s",  it.roomName,  (it.joinParams == "" ? "" : " " + it.joinParams)))
+          gchat_raw_command(format("join %s%s",  it.roomName,  (it.joinParams == "" ? "" : " " + it.joinParams)))
           this.addChatJoinParams(it.roomName, it.joinParams)
         }
       }
@@ -855,7 +868,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     let chatRoomsBlk = DataBlock()
     foreach (room in ::g_chat.rooms)
       if (!room.hidden && room.type.needSave()) {
-        chatRoomsBlk["room" + saveIdx] = ::gchat_escape_target(room.id)
+        chatRoomsBlk["room" + saveIdx] = gchat_escape_target(room.id)
         if (room.joinParams != "")
           chatRoomsBlk["params" + saveIdx] = room.joinParams
         saveIdx++
@@ -940,12 +953,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function onPresenceDetectionCheckIn(code) {
-    if ((code >= 0) && (code < ::get_pds_code_limit())) {
+    if ((code >= 0) && (code < get_pds_code_limit())) {
 //      local taskId =
-      ::send_pds_presence_check_in(code)
+      send_pds_presence_check_in(code)
 //      if (taskId >= 0)
 //      {
-//        ::set_char_cb(this, slotOpCb)
+//        set_char_cb(this, slotOpCb)
 //        showTaskProgressBox(loc("charServer/send"))
 //        afterSlotOp = goBack
 //      }
@@ -953,19 +966,19 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function onPresenceDetectionTick() {
-    if (!::gchat_is_connected())
+    if (!gchat_is_connected())
       return
 
     if (!::is_myself_anyof_moderators())
       return
 
     if (this.presenceDetectionTimer <= 0) {
-      this.presenceDetectionTimer = ::get_pds_next_time()
+      this.presenceDetectionTimer = get_pds_next_time()
     }
 
     if (get_charserver_time_sec() > this.presenceDetectionTimer) {
       this.presenceDetectionTimer = 0
-      let msg = format(loc("chat/presenceCheck"), ::get_pds_code_suggestion().tostring())
+      let msg = format(loc("chat/presenceCheck"), get_pds_code_suggestion().tostring())
 
       this.addRoomMsg("", "", msg, false, false)
     }
@@ -1284,7 +1297,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (::g_chat.isRoomSquad(roomData.id))
           this.onSquadListMember(nick, false)
         else if ("isOwner" in user && user.isOwner == true)
-          ::gchat_list_names(::gchat_escape_target(roomData.id))
+          ::gchat_list_names(gchat_escape_target(roomData.id))
         roomData.users.remove(idx)
         if (this.curRoom == roomData)
           this.updateUsersList()
@@ -1451,7 +1464,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (isSystemMessage) {
           let nameLen = userName.value.len()
           if (message.len() >= nameLen && message.slice(0, nameLen) == userName.value)
-            ::sync_handler_simulate_signal("profile_reload")
+            sync_handler_simulate_signal("profile_reload")
         }
       }
       this.addRoomMsg(
@@ -1479,7 +1492,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (!this.roomRegexp.match(roomId)) { //private room
           this.addRoomMsg(this.lastActionRoom, "",
                      format(loc("chat/error/401/userNotConnected"),
-                            ::gchat_unescape_target(this.filterPlayerName(roomId))))
+                            gchat_unescape_target(this.filterPlayerName(roomId))))
           return
         }
       }
@@ -1554,16 +1567,16 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       roomData.canBeClosed = false
 
     if (roomData && roomData.joinParams != "")
-      return ::gchat_raw_command("join " + ::gchat_escape_target(id) + " " + roomData.joinParams)
+      return ::gchat_raw_command("join " + gchat_escape_target(id) + " " + roomData.joinParams)
 
     if (roomData && reconnect && roomData.joined) //reconnect only to joined rooms
       return
 
-    this.addChatJoinParams(::gchat_escape_target(id), password)
+    this.addChatJoinParams(gchat_escape_target(id), password)
     if (customScene && !roomData)
       this.addRoom(id, customScene, ownerHandler) //for correct reconnect
 
-    let task = ::gchat_join_room(::gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
+    let task = ::gchat_join_room(gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
     if (task != "")
       this.chatTasks.append({ task = task, handler = this.onJoinRoom, roomId = id,
                          onJoinFunc = onJoinFunc, customScene = customScene,
@@ -1597,7 +1610,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!r.type.isVisible())
       return null
 
-    r.joinParams = this.roomJoinParamsTable?[::gchat_escape_target(id)] ??  ""
+    r.joinParams = this.roomJoinParamsTable?[gchat_escape_target(id)] ??  ""
 
     if (r.type != ::g_chat_room_type.PRIVATE)
       this.guiScene.playSound("chat_join")
@@ -1705,7 +1718,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     }
 
     if (roomData.id.slice(0, 1) == "#" && roomData.joined)
-      ::gchat_raw_command("part " + ::gchat_escape_target(roomData.id))
+      ::gchat_raw_command("part " + gchat_escape_target(roomData.id))
 
     ::g_chat.rooms.remove(roomIdx)
     this.saveJoinedRooms()
@@ -1791,13 +1804,13 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
                 roomName = "#" + roomName
               let pass = spaceidx ? paramStr.slice(spaceidx + 1) : ""
 
-              this.addChatJoinParams(::gchat_escape_target(roomName), pass)
+              this.addChatJoinParams(gchat_escape_target(roomName), pass)
             }
             if (msg.len() > cmd.len() + 2)
               if (msg.slice(cmd.len() + 2, cmd.len() + 3) != "#")
-                ::gchat_raw_command(msg.slice(1, cmd.len() + 2) + "#" + ::gchat_escape_target(msg.slice(cmd.len() + 2)))
+                ::gchat_raw_command(msg.slice(1, cmd.len() + 2) + "#" + gchat_escape_target(msg.slice(cmd.len() + 2)))
               else
-                ::gchat_raw_command(msg.slice(1))
+                gchat_raw_command(msg.slice(1))
             return null
           }
           else if (cmd == "invite") {
@@ -1811,7 +1824,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
                 this.inviteToSquadRoom(msg.slice(cmd.len() + 2))
               }
               else
-                ::gchat_raw_command(msg.slice(1) + " " + ::gchat_escape_target(this.curRoom.id))
+                ::gchat_raw_command(msg.slice(1) + " " + gchat_escape_target(this.curRoom.id))
             }
             else
               this.addRoomMsg(this.curRoom.id, "", loc(::g_chat.CHAT_ERROR_NO_CHANNEL))
@@ -1841,7 +1854,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
           else if (cmd == "squad_ready" || cmd == "sready")
             ::g_squad_manager.setReadyFlag()
           else
-            ::gchat_raw_command(msg.slice(1))
+            gchat_raw_command(msg.slice(1))
           return null
         }
     return msg
@@ -1854,9 +1867,9 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.addRoomMsg(this.curRoom.id, "", loc("chat/cantWriteInSystem"))
     else {
       if (msg.len() > cmd.len() + 2)
-        ::gchat_raw_command(msg.slice(1, cmd.len() + 2) + ::gchat_escape_target(this.curRoom.id) + " " + msg.slice(cmd.len() + 2))
+        ::gchat_raw_command(msg.slice(1, cmd.len() + 2) + gchat_escape_target(this.curRoom.id) + " " + msg.slice(cmd.len() + 2))
       else
-        ::gchat_raw_command(msg.slice(1) + " " + ::gchat_escape_target(this.curRoom.id))
+        ::gchat_raw_command(msg.slice(1) + " " + gchat_escape_target(this.curRoom.id))
     }
   }
 
@@ -1866,7 +1879,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (this.curRoom.id == ::g_chat.getMySquadRoomId())
       return ::g_squad_manager.dismissFromSquadByName(playerName)
 
-    ::gchat_raw_command("kick " + ::gchat_escape_target(this.curRoom.id) + " " + ::gchat_escape_target(playerName))
+    ::gchat_raw_command("kick " + gchat_escape_target(this.curRoom.id) + " " + gchat_escape_target(playerName))
   }
 
   function squadMsg(msg) {
@@ -1882,7 +1895,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       if (room.type != ::g_chat_room_type.SQUAD || !room.joined)
         continue
 
-      ::gchat_raw_command("part " + ::gchat_escape_target(room.id))
+      ::gchat_raw_command("part " + gchat_escape_target(room.id))
       room.joined = false //becoase can be disconnected from chat, but this info is still important.
       room.canBeClosed = true
       this.silenceUsersByList(room.users)
@@ -1903,7 +1916,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function inviteToSquadRoom(playerName, delayed = false) {
-    if (!::gchat_is_connected())
+    if (!gchat_is_connected())
       return false
 
     if (!hasFeature("Squad")) {
@@ -1926,12 +1939,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       return false
 
     if (delayed) {
-      let dcmd = "xinvite " + ::gchat_escape_target(playerName) + " " + ::gchat_escape_target(::g_chat.getMySquadRoomId())
+      let dcmd = "xinvite " + gchat_escape_target(playerName) + " " + gchat_escape_target(::g_chat.getMySquadRoomId())
       log(dcmd)
-      ::gchat_raw_command(dcmd)
+      gchat_raw_command(dcmd)
     }
 
-    ::gchat_raw_command("invite " + ::gchat_escape_target(playerName) + " " + ::gchat_escape_target(::g_chat.getMySquadRoomId()))
+    ::gchat_raw_command("invite " + gchat_escape_target(playerName) + " " + gchat_escape_target(::g_chat.getMySquadRoomId()))
     return true
   }
 
@@ -2057,7 +2070,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (::g_chat.isSystemChatRoom(roomId))
           this.addRoomMsg(roomId, "", loc("chat/cantWriteInSystem"))
         else {
-          ::gchat_chat_message(::gchat_escape_target(roomId), msg)
+          ::gchat_chat_message(gchat_escape_target(roomId), msg)
           this.guiScene.playSound("chat_send")
         }
       }
@@ -2090,7 +2103,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!this.curRoom)
       return
 
-    if (!::gchat_chat_private_message(::gchat_escape_target(this.curRoom.id), ::gchat_escape_target(data.user), data.msg))
+    if (!::gchat_chat_private_message(gchat_escape_target(this.curRoom.id), gchat_escape_target(data.user), data.msg))
       return
 
     this.addRoomMsg(this.curRoom.id, userName.value, data.msg, true, true)
@@ -2346,8 +2359,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!this.checkScene())
       return
 
-    if (!::ps4_is_ugc_enabled()) {
-      ::ps4_show_ugc_restriction()
+    if (!ps4_is_ugc_enabled()) {
+      ps4_show_ugc_restriction()
       return
     }
 
@@ -2363,7 +2376,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     this.searchInProgress = true
     this.defaultRoomsInSearch = false
     this.searchRoomList = []
-    ::gchat_list_rooms(::gchat_escape_target(value))
+    ::gchat_list_rooms(gchat_escape_target(value))
     this.fillSearchList()
 
     this.last_search_time = get_time_msec()
@@ -2415,8 +2428,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (value in this.searchRoomList) {
       if (!isChatEnabled(true))
         return
-      if (!isInArray(this.searchRoomList[value], ::global_chat_rooms_list) && !::ps4_is_ugc_enabled()) {
-        ::ps4_show_ugc_restriction()
+      if (!isInArray(this.searchRoomList[value], ::global_chat_rooms_list) && !ps4_is_ugc_enabled()) {
+        ps4_show_ugc_restriction()
         return
       }
 
@@ -2486,7 +2499,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function onEventPlayerPenaltyStatusChanged(_params) {
-    this.checkAndPrintDevoiceMsg()
+    if (this.curRoom)
+      this.checkAndPrintDevoiceMsg()
   }
 
   function onEventNewSceneLoaded(_p) {
@@ -2614,7 +2628,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function onChatInputWrapRight() {
     if (this.checkScene())
-      ::move_mouse_on_obj(this.scene.findObject("btn_send"))
+      move_mouse_on_obj(this.scene.findObject("btn_send"))
   }
 
   scene = null
@@ -2678,7 +2692,7 @@ if (::g_login.isLoggedIn())
 ::switchMenuChatObjIfVisible <- function switchMenuChatObjIfVisible(obj) {
   if (::menu_chat_handler &&
       ::last_chat_scene_show &&
-      !(isPlatformSony && ::is_in_loading_screen()) //!!!HACK, till hover is not working on loading
+      !(isPlatformSony && is_in_loading_screen()) //!!!HACK, till hover is not working on loading
      )
     ::menu_chat_handler.switchScene(obj, true)
 }
@@ -2689,7 +2703,7 @@ if (::g_login.isLoggedIn())
 }
 
 ::openChatScene <- function openChatScene(ownerHandler = null) {
-  if (!::gchat_is_enabled() || !hasMenuChat.value) {
+  if (!gchat_is_enabled() || !hasMenuChat.value) {
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
     return false
   }

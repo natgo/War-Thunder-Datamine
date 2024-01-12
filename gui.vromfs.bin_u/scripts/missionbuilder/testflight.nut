@@ -1,11 +1,14 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import enable_bullets_modifications, get_option_torpedo_dive_depth_auto
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -23,21 +26,23 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
+let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
-::last_called_gui_testflight <- null
 
 ::gui_start_testflight <- function gui_start_testflight(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.TestFlight, params)
-  ::last_called_gui_testflight = handlersManager.getLastBaseHandlerStartParams()
+  loadHandler(gui_handlers.TestFlight, params)
+  set_last_called_gui_testflight(handlersManager.getLastBaseHandlerStartParams())
 }
 
-::mergeToBlk <- function mergeToBlk(sourceTable, blk) {  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
+function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
     blk[idx] = val
 }
 
-gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
@@ -67,7 +72,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     this.showSceneBtn("btn_select", true)
 
-    this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && ::isUnitInSlotbar(this.unit)
+    this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
@@ -92,13 +97,13 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     else {
       let unitNestObj = this.scene.findObject("unit_nest")
       if (checkObj(unitNestObj)) {
-        let airData = ::build_aircraft_item(this.unit.name, this.unit)
+        let airData = buildUnitSlot(this.unit.name, this.unit)
         this.guiScene.appendWithBlk(unitNestObj, airData, this)
-        ::fill_unit_item_timers(unitNestObj.findObject(this.unit.name), this.unit)
+        fillUnitSlotTimers(unitNestObj.findObject(this.unit.name), this.unit)
       }
     }
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_select"))
+    move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
   function updateLinkedOptions() {
@@ -142,13 +147,13 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
     let weaponryObj = this.scene.findObject("unit_weapons_selector")
     let isUnitUsable = this.unit.isUsable()
-    let isUnitSpecial = ::isUnitSpecial(this.unit)
+    let isUntSpecial = isUnitSpecial(this.unit)
 
-    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler, {
+    let handler = loadHandler(gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
-      isForcedAvailable = isUnitSpecial && !isUnitUsable
-      forceShowDefaultTorpedoes = !isUnitSpecial && !isUnitUsable
+      isForcedAvailable = isUntSpecial && !isUnitUsable
+      forceShowDefaultTorpedoes = !isUntSpecial && !isUnitUsable
     })
 
     this.weaponsSelectorWeak = handler.weakref()
@@ -280,10 +285,10 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
       if (this.needSlotbar) // There is a slotbar in this scene
         this.msgBox("not_available",
-          loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
+          loc(getCurSlotbarUnit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
-        ::gui_start_modal_wnd(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
+        loadHandler(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
       return
     }
 
@@ -352,7 +357,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)
 
-    ::mergeToBlk({
+    mergeToBlk({
         _gameMode = GM_TEST_FLIGHT
         name      = misName
         chapter   = "training"
@@ -361,7 +366,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
         environment = this.getSceneOptValue(USEROPT_TIME)
       }, misBlk)
 
-    ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
+    mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
 
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
@@ -393,7 +398,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
     this.updateBulletCountOptions(this.unit)
 
-    ::enable_bullets_modifications(::aircraft_for_weapons)
+    enable_bullets_modifications(::aircraft_for_weapons)
     ::enable_current_modifications(::aircraft_for_weapons)
 
     ::missionBuilderVehicleConfigForBlk = {
@@ -449,7 +454,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (checkObj(unitNestObj)) {
       let obj = unitNestObj.findObject("rank_text")
       if (checkObj(obj))
-        obj.setValue(::get_unit_rank_text(this.unit, null, true, this.getCurrentEdiff()))
+        obj.setValue(getUnitSlotRankText(this.unit, null, true, this.getCurrentEdiff()))
     }
   }
 
@@ -482,7 +487,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!this.needSlotbar)
       return
 
-    let crewUnit = ::get_cur_slotbar_unit()
+    let crewUnit = getCurSlotbarUnit()
     if (crewUnit == this.unit || crewUnit == null) {
       this.updateButtons()
       return
@@ -510,7 +515,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
       })
     }
 
-    ::enable_bullets_modifications(this.unit.name)
+    enable_bullets_modifications(this.unit.name)
     ::enable_current_modifications(this.unit.name)
   }
 
@@ -610,7 +615,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!option)
       return
 
-    this.showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
+    this.showOptionRow(option, !get_option_torpedo_dive_depth_auto()
       && this.unit.isShipOrBoat()
       && (getCurrentPreset(this.unit)?.torpedo ?? false))
   }

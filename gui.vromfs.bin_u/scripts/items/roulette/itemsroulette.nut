@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { pow } = require("math")
@@ -10,7 +10,7 @@ let { frnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
-let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/bhvBasic.nut")
+let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 /*
 ItemsRoulette API:
   resetData() - rewrite params for future usage;

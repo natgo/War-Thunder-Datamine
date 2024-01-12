@@ -1,11 +1,12 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_modification_level, calculate_mod_or_weapon_effect_with_level
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
-gui_handlers.ModUpgradeApplyWnd <- class extends gui_handlers.ItemsListWndBase {
+gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
 
   unit = null
@@ -31,8 +32,8 @@ gui_handlers.ModUpgradeApplyWnd <- class extends gui_handlers.ItemsListWndBase {
   function initScreen() {
     base.initScreen()
 
-    let newLevel = ::get_modification_level(this.unit.name, this.mod.name) + 1
-    ::calculate_mod_or_weapon_effect_with_level(this.unit.name, this.mod.name, newLevel, true, this,
+    let newLevel = get_modification_level(this.unit.name, this.mod.name) + 1
+    calculate_mod_or_weapon_effect_with_level(this.unit.name, this.mod.name, newLevel, true, this,
       function(effect, ...) {
         if (this.isValid())
           this.showEffects(effect)

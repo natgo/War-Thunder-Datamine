@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_units_list_with_autoset_modules, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_mp_local_team, copy_to_clipboard, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -34,6 +35,9 @@ let { get_current_mission_info_cached } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetOperationWinner } = require("worldwar")
+let { curMissionRulesInvalidate, getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
 let get_fake_mplayers_list = memoize(@() getroottable()?["_fake_mplayers_list"] ?? {})
@@ -63,8 +67,8 @@ let function debug_dump_debriefing_save(filename) {
     { id = "get_race_winners_count", value = getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
     { id = "get_race_best_lap_time", value = debriefingResult?.exp.ptmBestLap ?? -1 }
     { id = "get_race_lap_times", value = debriefingResult?.exp.ptmLapTimesArray ?? [] }
-    { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? ::get_mp_local_team() }
-    { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? ::get_player_army_for_hud() }
+    { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? get_mp_local_team() }
+    { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? get_player_army_for_hud() }
     { id = "_fake_sessionlobby_settings", value = ::SessionLobby.settings }
     { id = "_fake_sessionlobby_last_event_name", value = ::SessionLobby.getRoomEvent()?.name ?? "" }
     "LAST_SESSION_DEBUG_INFO"
@@ -106,7 +110,7 @@ let function debug_dump_debriefing_save(filename) {
     if (modId != "")
       mods.append([ unitId, modId ])
   }
-  foreach (tbl in ::shop_get_countries_list_with_autoset_units()) {
+  foreach (tbl in shop_get_countries_list_with_autoset_units()) {
     let unitId = getTblValue("unit", tbl, "")
     let unit = getAircraftByName(unitId)
     let args = [ getUnitCountry(unit), getEsUnitType(unit) ]
@@ -114,7 +118,7 @@ let function debug_dump_debriefing_save(filename) {
       list.append({ id = id, args = args })
     units.append([ unitId ])
   }
-  foreach (tbl in ::shop_get_units_list_with_autoset_modules())
+  foreach (tbl in shop_get_units_list_with_autoset_modules())
     mods.append([ getTblValue("name", tbl, ""), getTblValue("mod", tbl, "") ])
   foreach (args in units)
     foreach (id in [ "shop_is_player_has_unit", "shop_is_aircraft_purchased", "shop_unit_research_status",
@@ -172,8 +176,8 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   ::HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()
 
-  ::g_mis_custom_state.isCurRulesValid = false
-  ::g_mis_custom_state.getCurMissionRules(true)
+  curMissionRulesInvalidate()
+  getCurMissionRules(true)
 
   gatherDebriefingResult()
   ::gui_start_debriefingFull()
@@ -196,7 +200,7 @@ let function debug_dump_debriefing_batch_load() {
       return
     let filename = filesList.pop()
     console_print($"[{total - count + 1}/{total}] {filename}")
-    ::copy_to_clipboard(filename)
+    copy_to_clipboard(filename)
     debug_dump_debriefing_load(filename, loadNext)
   }
   loadNext()
@@ -269,7 +273,6 @@ let function debug_dump_respawn_save(filename) {
     "get_crew_info"
     "get_respawns_left"
     "stay_on_respawn_screen"
-    "dgs_get_game_params"
     "fetch_change_aircraft_on_start"
     "is_hud_visible"
     "is_menu_state"
@@ -297,8 +300,6 @@ let function debug_dump_respawn_save(filename) {
     "is_race_started"
     "get_race_checkpioints_count"
     "get_race_winners_count"
-    "last_ca_aircraft"
-    "used_planes"
     "g_mis_loading_state.curState"
     "HudBattleLog.battleLog"
   ]
@@ -306,7 +307,7 @@ let function debug_dump_respawn_save(filename) {
   foreach (id in ::SessionLobby[PERSISTENT_DATA_PARAMS])
     list.append("SessionLobby." + id)
 
-  foreach (crew in ::get_crews_list_by_country(::get_local_player_country())) {
+  foreach (crew in getCrewsListByCountry(get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (unit) {
       foreach (id in [ "get_slot_delay", "get_unit_wp_to_respawn",
@@ -326,9 +327,8 @@ let function debug_dump_respawn_save(filename) {
         list.append({ id = "shop_is_weapon_available", args = [ unit.name, weapon.name, true, false ] })
       }
     }
-    foreach (id in [ "is_spare_aircraft_in_slot", "get_slot_delay_by_slot", "get_num_used_unit_spawns" ])
+    foreach (id in [ "get_slot_delay_by_slot", "get_num_used_unit_spawns" ])
       list.append({ id = id, args = [ crew.idInCountry ] })
-    list.append({ id = "is_crew_available_in_session", args = [ crew.idInCountry, false ] })
   }
 
   dbg_dump.save(filename, list)
@@ -346,8 +346,8 @@ let function debug_dump_respawn_load(filename) {
     get_local_mplayer = @() get_fake_mplayers_list().filter(@(p) p.isLocal)?[0]
     request_aircraft_and_weapon = @(...) - 1
   }, false)
-  ::g_mis_custom_state.isCurRulesValid = false
-  ::g_mis_custom_state.getCurMissionRules()
+  curMissionRulesInvalidate()
+  getCurMissionRules()
   ::g_crews_list.crewsList = []
   initListLabelsSquad()
   require("%scripts/chat/mpChatModel.nut")?.setLog(getroottable()?._fake_mpchat_log)
@@ -361,9 +361,9 @@ let function debug_dump_respawn_load(filename) {
 
 let function debug_dump_userlogs_save(filename) {
   let userlogs = []
-  for (local i = 0; i < ::get_user_logs_count(); i++) {
+  for (local i = 0; i < get_user_logs_count(); i++) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     userlogs.append(blk)
   }
   dbg_dump.save(filename, [

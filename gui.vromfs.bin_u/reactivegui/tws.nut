@@ -375,12 +375,52 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
   if (!target.valid)
     return @() { }
 
+  let targetRange = 0.6 + target.rangeRel * 0.4
+
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
     (target.show ? 1.0 : 0.2))
 
+  local targetComponent = null
+  local targetType = null
+  if (target.groupId != null)
+    targetType = @()
+      styleText.__merge({
+        watch = [colorWatched, RwrForMfd, MfdFontScale]
+        rendObj = ROBJ_TEXT
+        pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
+        size = flex()
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        fontSize = RwrForMfd.value ? fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : hudFontHgt) : hudFontHgt
+        text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
+        color = isColorOrWhite(colorWatched.value)
+      })
+  else
+    targetComponent = @() {
+      watch = [colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = hdpx(1)
+      fillColor = Color(0, 0, 0, 0)
+      size = [pw(50), ph(50)]
+      pos = [pw(85 * targetRange), ph(85 * targetRange)]
+      commands = cmdsRwrTarget
+      transform = rwrTargetTransform
+      children = target.enemy ? null
+        : {
+            color = isColorOrWhite(colorWatched.value)
+            rendObj = ROBJ_VECTOR_CANVAS
+            lineWidth = hdpx(1)
+            size = flex()
+            commands = [[VECTOR_LINE, -20, -40, -20, 40]]
+          }
+      }
+
   local trackLine = null
   if (target.track || target.launch) {
+    let nearRadius = -140
+    let farRadius = target.groupId != null ? nearRadius + 50 * target.rangeRel : nearRadius + 70 * target.rangeRel
     trackLine = @() {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
@@ -389,7 +429,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       pos = [pw(100), ph(100)]
       lineWidth = hdpx(1)
       commands = [
-        [VECTOR_LINE_DASHED, -135, -135, -80, -80, hdpx(5), hdpx(3)]
+        [VECTOR_LINE_DASHED, nearRadius, nearRadius, farRadius, farRadius, hdpx(5), hdpx(3)]
       ]
     }
   }
@@ -406,61 +446,26 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       fillColor = Color(0, 0, 0, 0)
       opacity = targetOpacityRwr.value * sectorOpacityMult
       commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, -target.sector, target.sector]
+        [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
       ]
       transform = rwrTargetTransform
     }
   }
 
-  local targetComponent = null
-  local targetType = null
-  if (target.groupId != null)
-    targetType = @()
-      styleText.__merge({
-        watch = [colorWatched, RwrForMfd, MfdFontScale]
-        rendObj = ROBJ_TEXT
-        pos = [pw(target.x * 100.0), ph(target.y * 100.0)]
-        size = flex()
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : hudFontHgt) : hudFontHgt
-        text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
-        color = isColorOrWhite(colorWatched.value)
-      })
-  else
-    targetComponent = @() {
-      watch = [colorWatched]
-      color = isColorOrWhite(colorWatched.value)
-      rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
-      fillColor = Color(0, 0, 0, 0)
-      size = [pw(50), ph(50)]
-      pos = [pw(85), ph(85)]
-      commands = cmdsRwrTarget
-      transform = rwrTargetTransform
-      children = target.enemy ? null
-        : {
-            color = isColorOrWhite(colorWatched.value)
-            rendObj = ROBJ_VECTOR_CANVAS
-            lineWidth = hdpx(1)
-            size = flex()
-            commands = [[VECTOR_LINE, -20, -40, -20, 40]]
-          }
-      }
-
   local newTarget = null
   local age0 = target.age0
   let age0Rel = age0 * RwrNewTargetHoldTimeInv.value
   if (RwrNewTargetHoldTimeInv.value < 10.0 && age0Rel < 1.0) {
+    let newTargetRadius = 20.0 / targetRange
     newTarget = @() {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = hdpx(1)
       fillColor = Color(0, 0, 0, 0)
-      size = [pw(100), ph(100)]
+      size = [pw(100 * targetRange), ph(100 * targetRange)]
       pos = [pw(0), ph(0)]
-      commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, 20, 20] ]
+      commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, newTargetRadius, newTargetRadius] ]
       transform = rwrTargetTransform
     }
   }

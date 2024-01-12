@@ -1,15 +1,16 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_bind_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 ::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
-  ::gui_start_modal_wnd(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
+  loadHandler(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
 }
 
-gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -20,7 +21,7 @@ gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandle
   btn = []
 
   function initScreen() {
-    ::set_bind_mode(true);
+    set_bind_mode(true);
     this.guiScene.sleepKeyRepeat(true);
     this.isListenButton = true;
     this.scene.select();
@@ -91,7 +92,7 @@ gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandle
 
   function goBack() {
     this.guiScene.sleepKeyRepeat(false);
-    ::set_bind_mode(false);
+    set_bind_mode(false);
     this.isListenButton = false;
     base.goBack();
   }

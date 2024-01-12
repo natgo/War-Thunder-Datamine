@@ -1,11 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSelectedChild, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
@@ -38,7 +39,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       }
 
 */
-gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
+gui_handlers.ActionsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"
@@ -108,7 +109,7 @@ gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
 
         let selIdx = this.params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         this.guiScene.applyPendingChanges(false)
-        ::move_mouse_on_child(nest, max(selIdx, 0))
+        move_mouse_on_child(nest, max(selIdx, 0))
         this.updatePosition() // after calling move_mouse_on_child the position can change, cause there is scrollToView() call
       })
   }
@@ -174,7 +175,7 @@ gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
 
   function onBtnClose() {
     if (this.scene.isValid())
-      ::move_mouse_on_obj(this.scene.getParent())
+      move_mouse_on_obj(this.scene.getParent())
     this.close()
   }
 

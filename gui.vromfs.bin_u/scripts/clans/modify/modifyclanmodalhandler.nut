@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -13,7 +14,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ModifyClanModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanModifyWindow.blk"
 
@@ -226,7 +227,7 @@ gui_handlers.ModifyClanModalHandler <- class extends gui_handlers.BaseGuiHandler
       err += loc("clan/error/empty_tag") + "\n"
 
     let tagLengthLimit = this.newClanType.getTagLengthLimit()
-    if (!edit && tagLengthLimit > 0 && ::utf8_strlen(this.newClanTag) > tagLengthLimit)
+    if (!edit && tagLengthLimit > 0 && utf8_strlen(this.newClanTag) > tagLengthLimit)
       err += loc("clan/error/tag_length", { maxLength = tagLengthLimit }) + "\n"
 
     if ((!edit && this.newClanName.len() <= 0) || this.newClanName.len() < 3)

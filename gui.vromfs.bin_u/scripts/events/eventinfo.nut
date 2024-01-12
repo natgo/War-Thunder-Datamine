@@ -1,8 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, GAME_EVENT_TYPE
+
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
+let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -83,7 +85,7 @@ function isEventVisibleByFeature(event) {
   let feature = getEventReqFeature(event)
   if (isEmpty(feature) || hasFeature(feature))
     return true
-  return hasFeature("OnlineShopPacks") && ::OnlineShopModel.getFeaturePurchaseData(feature).canBePurchased
+  return hasFeature("OnlineShopPacks") && getFeaturePurchaseData(feature).canBePurchased
 }
 
 //when @checkFeature return pack only if player has feature access to event.

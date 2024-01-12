@@ -1,8 +1,8 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 
 
-::WwObjectiveView <- class {
+let WwObjectiveView = class {
   id = ""
   oType = null
   staticBlk = null
@@ -17,7 +17,7 @@ from "%scripts/dagui_library.nut" import *
   constructor(v_staticBlk, v_dynamicBlk, v_side, v_isLastObjective = false) {
     this.staticBlk = v_staticBlk
     this.dynamicBlk = v_dynamicBlk
-    this.side = ::ww_side_val_to_name(v_side)
+    this.side = ww_side_val_to_name(v_side)
     this.oType = ::g_ww_objective_type.getTypeByTypeName(this.staticBlk.type)
     this.id = this.staticBlk.getBlockName()
     this.isLastObjective = v_isLastObjective
@@ -64,3 +64,5 @@ from "%scripts/dagui_library.nut" import *
     return this.zonesList.len()
   }
 }
+
+return { WwObjectiveView }

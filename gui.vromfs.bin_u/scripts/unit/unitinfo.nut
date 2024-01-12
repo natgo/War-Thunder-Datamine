@@ -1,5 +1,7 @@
+from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -31,7 +33,7 @@ function getUnitCountry(unit) {
 }
 
 function isUnitsEraUnlocked(unit) {
-  return ::is_era_available(getUnitCountry(unit), unit?.rank ?? -1, getEsUnitType(unit))
+  return is_era_available(getUnitCountry(unit), unit?.rank ?? -1, getEsUnitType(unit))
 }
 
 function getUnitName(unit, shopName = true) {
@@ -45,7 +47,7 @@ function getUnitName(unit, shopName = true) {
 function isUnitDefault(unit) {
   if (!("name" in unit))
     return false
-  return ::is_default_aircraft(unit.name)
+  return is_default_aircraft(unit.name)
 }
 
 function isUnitGift(unit) {
@@ -93,16 +95,51 @@ function canResearchUnit(unit) {
   if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
     return false
 
-  let status = ::shop_unit_research_status(unit.name)
+  let status = shop_unit_research_status(unit.name)
   return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
+}
+
+function canBuyUnit(unit) {
+  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
+    return false           // if vehicle could be bought in game, but it became a gift vehicle.
+
+  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+    return false
+
+  let status = shop_unit_research_status(unit.name)
+  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
 }
 
 let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
+let unitSensorsCache = {}
+
+let function isUnitWithSensorType(unit, sensorType) {
+  if (!unit)
+    return false
+  let unitName = unit.name
+  if (unitName in unitSensorsCache)
+    return unitSensorsCache[unitName]?[sensorType] ?? false
+
+  unitSensorsCache[unitName] <- {}
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  if (unitBlk?.sensors)
+    foreach (sensor in (unitBlk.sensors % "sensor")) {
+      let sensType = blkOptFromPath(sensor?.blk)?.type ?? ""
+      if (sensType != "")
+        unitSensorsCache[unitName][sensType] <- true
+    }
+  return unitSensorsCache[unitName]?[sensorType] ?? false
+}
+let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
+let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
+
 return {
-  bit_unit_status
+  bit_unit_status, canBuyUnit,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
   getUnitCountry, isUnitDefault, isUnitGift, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, canResearchUnit
-  isRequireUnlockForUnit
+  isUnitGroup, isGroupPart, canResearchUnit,
+  isRequireUnlockForUnit,
+  isUnitWithRadar,
+  isUnitWithRwr
 }

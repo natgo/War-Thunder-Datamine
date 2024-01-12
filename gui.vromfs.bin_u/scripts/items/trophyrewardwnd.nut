@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let time = require("%scripts/time.nut")
@@ -11,7 +13,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
 let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -22,6 +24,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_price_blk } = require("blkGetters")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 register_command(
   function () {
@@ -65,12 +69,12 @@ let function afterCloseTrophyWnd(configsTable) {
   let params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIcon", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
-    "reUseRecipeUid" ]) {
+    "reUseRecipeUid", "usedRecipeAmount" ]) {
     if (!(paramName in localConfigsTable))
       continue
 
     params[paramName] <- localConfigsTable[paramName]
-    localConfigsTable.rawdelete(paramName)
+    localConfigsTable.$rawdelete(paramName)
   }
 
   local tKey = localConfigsTable.findindex(@(_) true)
@@ -80,7 +84,7 @@ let function afterCloseTrophyWnd(configsTable) {
   if (configsArray.len() == 0)
     return
 
-  delete localConfigsTable[tKey]
+  localConfigsTable.$rawdelete(tKey)
   configsArray.sort(rewardsSortComparator)
 
   let itemId = configsArray?[0]?.itemDefId
@@ -110,10 +114,10 @@ let function afterCloseTrophyWnd(configsTable) {
   params.trophyItem <- trophyItem
   params.configsArray <- configsArray
   params.afterFunc <- @() afterCloseTrophyWnd(localConfigsTable)
-  ::gui_start_modal_wnd(gui_handlers.trophyRewardWnd, params)
+  loadHandler(gui_handlers.trophyRewardWnd, params)
 }
 
-gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
 
@@ -151,6 +155,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   rewardImageRatio = 1
   reUseRecipeUid = null
   reUseRecipe = null
+  usedRecipeAmount = 1
   isCrossPromo = false
   needShowExtendedDesc = false
 
@@ -195,8 +200,9 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
          || this.trophyItem.iType == itemType.CRAFT_PART)
 
     this.shrinkedConfigsArray = ::trophyReward.processUserlogData(this.configsArray)
-    if (this.reUseRecipeUid != null)
+    if (this.reUseRecipeUid != null) {
       this.reUseRecipe = findGenByReceptUid(this.reUseRecipeUid)?.getRecipeByUid?(this.reUseRecipeUid)
+    }
   }
 
   function setTitle() {
@@ -226,16 +232,16 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     : this.isCreation() ? this.trophyItem.getCreationCaption()
     : this.trophyItem.getOpeningCaption()
 
-  isRouletteStarted = @() initItemsRoulette(
-    this.trophyItem.id,
-    this.configsArray,
-    this.scene,
-    this,
-    function() {
-      this.openChest.call(this)
-      this.onOpenAnimFinish.call(this)
-    }
-  )
+  isRouletteStarted = @() this.usedRecipeAmount <= 1
+    && initItemsRoulette(
+        this.trophyItem.id,
+        this.configsArray,
+        this.scene,
+        this,
+        function() {
+          this.openChest.call(this)
+          this.onOpenAnimFinish.call(this)
+        })
 
   function startOpening() {
     if (this.isRouletteStarted())
@@ -459,7 +465,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btn_back", this.animFinished || (this.trophyItem?.isAllowSkipOpeningAnim() ?? false))
 
     let prizeActionBtnId = this.isHidePrizeActionBtn || !this.animFinished ? ""
-      : this.unit && this.unit.isUsable() && !::isUnitInSlotbar(this.unit) ? "btn_take_air"
+      : this.unit && this.unit.isUsable() && !isUnitInSlotbar(this.unit) ? "btn_take_air"
       : this.rewardItem?.canRunCustomMission() ? "btn_run_custom_mission"
       : this.canGoToItem() ? "btn_go_to_item"
       : this.decoratorUnit && canStartPreviewScene(false) ? "btn_use_decorator"
@@ -486,7 +492,11 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     btnObj = this.showSceneBtn("btn_re_use_item", canReUseItem)
     if (canReUseItem) {
       btnObj.inactiveColor = this.reUseRecipe.isUsable ? "no" : "yes"
-      btnObj.setValue(loc(this.trophyItem.getLocIdsList().reUseItemLocId))
+      let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
+      let reUseText = useAllowAmmount > 1
+        ? loc(this.trophyItem.getLocIdsList().reUseItemSeveralLocId, {count=useAllowAmmount})
+        : loc(this.trophyItem.getLocIdsList().reUseItemLocId)
+      btnObj.setValue(reUseText)
     }
   }
 
@@ -564,11 +574,13 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   function onReUseItem() {
     if (this.reUseRecipe == null)
       return
+    let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
     this.goBack()
-    this.guiScene.performDelayed(this, @() ExchangeRecipes.tryUse([this.reUseRecipe], this.trophyItem, {
-      shouldSkipMsgBox = this.reUseRecipe.isUsable
-      isHidePrizeActionBtn  = this.isHidePrizeActionBtn
-    }))
+    this.guiScene.performDelayed(this, @() tryUseRecipeSeveralTime(this.reUseRecipe, this.trophyItem,
+      useAllowAmmount, {
+        shouldSkipMsgBox = this.reUseRecipe.isUsable
+        isHidePrizeActionBtn  = this.isHidePrizeActionBtn
+      }))
   }
 
   canGoToItem = @() !!(this.rewardItem && sheets.getSheetDataByItem(this.rewardItem))

@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
+from "%scripts/chat/chatConsts.nut" import chatUpdateState
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { split_by_chars } = require("string")
@@ -54,7 +56,7 @@ let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/la
 
   this._requestedList.clear()
   this.lastRequestTime = get_time_msec()
-  ::gchat_raw_command(" ".join(cmdArr, true))
+  gchat_raw_command(" ".join(cmdArr, true))
 }
 
 ::g_chat_latest_threads.onNewThreadInfoToList <- function onNewThreadInfoToList(threadInfo) {

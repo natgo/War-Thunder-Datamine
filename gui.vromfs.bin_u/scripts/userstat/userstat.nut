@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import char_send_custom_action, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let userstat = require("userstat")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -11,6 +12,7 @@ let { json_to_string } = require("json")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
+let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -134,7 +136,7 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
   let blk = DataBlock()
   blk.addInt("appid", APP_ID)
 
-  let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
+  let taskId = char_send_custom_action("cln_userstat_grant_rewards",
     EATT_JSON_REQUEST, blk,
     json_to_string({ unlock = unlockName, stage }, false),
     -1)
@@ -159,7 +161,7 @@ let canUpdateUserstat = @() ::g_login.isLoggedIn() && !isInFlight()
 local validateTaskTimer = -1
 let function validateUserstatData(_dt = 0) {
   if (validateTaskTimer >= 0) {
-    ::periodic_task_unregister(validateTaskTimer)
+    periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1
   }
 
@@ -173,7 +175,7 @@ let function validateUserstatData(_dt = 0) {
   if (statsUpdatable.data.value.len() == 0)
     statsUpdatable.refresh()
 
-  validateTaskTimer = ::periodic_task_register(this,
+  validateTaskTimer = periodic_task_register(this,
     validateUserstatData, FREQUENCY_MISSING_STATS_UPDATE_SEC)
 }
 
@@ -182,13 +184,19 @@ isUserstatMissingData.subscribe(function(_v) {
 })
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_p) validateUserstatData()
-  BattleEnded    = @(_p) validateUserstatData()
+  ProfileUpdated  = @(_p) validateUserstatData()
+  BattleEnded     = @(_p) validateUserstatData()
+  ScriptsReloaded = @(_p) validateUserstatData()
 })
 
 let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data
 userstatCustomLeaderboardStats.subscribe(
   @(_) broadcastEvent("UserstatCustomLeaderboardStats"))
+
+mnSubscribe("userStat", function(ev) {
+  if (ev?.func == "changed")
+    unlocksUpdatable.forceRefresh()
+})
 
 return {
   userstatUnlocks

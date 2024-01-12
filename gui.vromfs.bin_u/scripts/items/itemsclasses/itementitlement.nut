@@ -1,12 +1,14 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription } = require("%scripts/onlineShop/entitlements.nut")
 
-::items_classes.Entitlement <- class extends ItemCouponBase {
+let Entitlement = class (ItemCouponBase) {
+  static name = "Entitlement"
   static iType = itemType.ENTITLEMENT
   static typeIcon = "#ui/gameuiskin#item_type_premium.svg"
 
@@ -29,3 +31,5 @@ let { getEntitlementConfig, getEntitlementName,
       : base.getIcon(addItemName)
   }
 }
+
+return {Entitlement}

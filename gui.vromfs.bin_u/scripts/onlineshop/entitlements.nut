@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import has_entitlement, steam_is_running, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -13,6 +14,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -72,7 +74,7 @@ let function getEntitlementConfig(name) {
 
   let res = { name = name }
 
-  let pblk = ::OnlineShopModel.getPriceBlk()
+  let pblk = getShopPriceBlk()
   if (pblk?[name] == null)
     return null
 
@@ -120,19 +122,20 @@ let function getEntitlementTimeText(ent) { // -return-different-types
   return ""
 }
 
-let function getEntitlementName(ent) {
+let function getEntitlementShortName(ent) {
   local name = ""
   if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent)) {
-    name = loc("charServer/entitlement/" + ent.group)
+    name = loc($"charServer/entitlement/{ent.group}")
     let amountStr = decimalFormat(getEntitlementAmount(ent))
     if (name.indexof("%d") != null)
-      name = ::stringReplace(name, "%d", amountStr)
-    else
-      name = loc("charServer/entitlement/" + ent.group, { amount = amountStr })
+      return ::stringReplace(name, "%d", amountStr)
+    return loc($"charServer/entitlement/{ent.group}", { amount = amountStr })
   }
-  else
-    name = loc("charServer/entitlement/" + getEntitlementLocId(ent))
+  return loc($"charServer/entitlement/{getEntitlementLocId(ent)}")
+}
 
+let function getEntitlementName(ent) {
+  local name = getEntitlementShortName(ent)
   let timeText = getEntitlementTimeText(ent)
   if (timeText != "")
     name += " " + timeText
@@ -140,7 +143,7 @@ let function getEntitlementName(ent) {
 }
 
 let function getFirstPurchaseAdditionalAmount(ent) {
-  if (!::has_entitlement(ent.name))
+  if (!has_entitlement(ent.name))
     return getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
@@ -159,7 +162,7 @@ let function getEntitlementPrice(ent) {
     if (priceText == "")
       return ""
 
-    let markup = ::steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
+    let markup = steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
     let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)
@@ -169,7 +172,7 @@ let function getEntitlementPrice(ent) {
       ent?.chapter == "eagles" ? totalPrice.tostring() : decimalFormat(totalPrice))
   }
   else if ("goldCost" in ent)
-    return Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
+    return Cost(0, get_entitlement_cost_gold(ent.name)).tostring()
   return ""
 }
 
@@ -179,7 +182,7 @@ let function getEntitlementPriceFloat(ent) {
   local cost = -1.0
   if (ent?.onlinePurchase) {
     local costText = ""
-    if (::steam_is_running())
+    if (steam_is_running())
       costText = loc($"price/steam/{ent.name}", "")
     if (costText == "")
       costText = loc($"price/{ent.name}", "")
@@ -226,7 +229,7 @@ let canBuyEntitlement = @(ent)
 
 let function getEntitlementBundles() {
   let bundles = {}
-  let eblk = ::OnlineShopModel.getPriceBlk()
+  let eblk = getShopPriceBlk()
   let numBlocks = eblk.blockCount()
   for (local i = 0; i < numBlocks; i++) {
     let ib = eblk.getBlock(i)
@@ -247,7 +250,7 @@ let function isBoughtEntitlement(ent) {
     return true
   }
   let realname = ent?.alias ?? ent.name
-  return (canBuyEntitlement(ent) && ::has_entitlement(realname))
+  return (canBuyEntitlement(ent) && has_entitlement(realname))
 }
 
 let function getEntitlementDescription(product, _productId) {
@@ -284,7 +287,7 @@ let function getEntitlementDescription(product, _productId) {
   if ("afterGiftsDesc" in product)
     resArr.append("\n{0}".subst(loc(product.afterGiftsDesc)))
 
-  if (product?.onlinePurchase && !isBoughtEntitlement(product) && ::steam_is_running())
+  if (product?.onlinePurchase && !isBoughtEntitlement(product) && steam_is_running())
     resArr.append(loc("charServer/web_purchase"))
 
   if (product?.chapter == "warpoints") {
@@ -297,11 +300,37 @@ let function getEntitlementDescription(product, _productId) {
   return "\n".join(resArr)
 }
 
+function getWarpointsGoldCost(amount) {
+  local entitlementGoldCost = 0
+  local entitlementWpAmount = 0
+  let eblk = getShopPriceBlk()
+  let numBlocks = eblk.blockCount()
+  for (local i = 0; i < numBlocks; i++) {
+    let ib = eblk.getBlock(i)
+    let { chapter = null, goldCost = 0, wpIncome = 0 } = ib
+    if (chapter != "warpoints" || wpIncome == 0 || goldCost == 0)
+      continue
+    if (amount < wpIncome)
+      break
+
+    entitlementWpAmount = wpIncome
+    entitlementGoldCost = goldCost
+    if (amount == wpIncome)
+      break
+  }
+  if (entitlementWpAmount == 0)
+    return Cost()
+  if (entitlementWpAmount == amount)
+    return Cost(0, entitlementGoldCost)
+
+  return Cost(0, (entitlementGoldCost.tofloat() * amount / entitlementWpAmount).tointeger())
+}
 return {
   getEntitlementConfig
   getEntitlementLocId
   getEntitlementAmount
   getEntitlementName
+  getEntitlementShortName
   getEntitlementTimeText
   getEntitlementPrice
   getEntitlementPriceFloat
@@ -312,4 +341,5 @@ return {
   getEntitlementLocParams
   canBuyEntitlement
   premiumAccountDescriptionArr
+  getWarpointsGoldCost
 }

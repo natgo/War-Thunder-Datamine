@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_clan_id, clan_validate_membership_requirements
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -19,7 +20,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
 let { addTask } = require("%scripts/tasker.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
-gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
   sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -185,7 +186,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
         return false;
     }
 
-    let validateResult = ::clan_validate_membership_requirements(newRequirements)
+    let validateResult = clan_validate_membership_requirements(newRequirements)
     if (validateResult == "")
       return true;
 
@@ -247,7 +248,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
       this.clanData.membershipRequirements = newRequirements;
       this.clanData.autoAcceptMembership = autoAccept;
 
-      if (::clan_get_admin_editor_mode() && this.owner && "reinitClanWindow" in this.owner)
+      if (clan_get_admin_editor_mode() && this.owner && "reinitClanWindow" in this.owner)
         this.owner.reinitClanWindow()
 
       broadcastEvent("ClanRquirementsChanged")
@@ -264,7 +265,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
   }
 
   function onEventClanInfoUpdate(_p) {
-    if (this.clanData.id != ::clan_get_my_clan_id())
+    if (this.clanData.id != clan_get_my_clan_id())
       return
 
     this.clanData = ::my_clan_info

@@ -1,5 +1,8 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_init_trophies, ps4_initial_check_settings, ps4_login
 from "%scripts/dagui_library.nut" import *
+
+let { get_disable_autorelogin_once } = require("loginState.nut")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -15,8 +18,9 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
@@ -33,7 +37,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
-    this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false) && haveAgreedEulaVersion
+    this.isAutologin = !get_disable_autorelogin_once() && haveAgreedEulaVersion
 
     let tipHint = stripTags(loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"}))
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
@@ -63,7 +67,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     this.updateButtons(false)
 
     this.guiScene.performDelayed(this, function() {
-      ::ps4_initial_check_settings()
+      ps4_initial_check_settings()
     })
 
     if (this.isAutologin)
@@ -92,19 +96,19 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     this.isPendingPackageCheck = false
 
     local loginStatus = 0
-    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0)) {
+    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (ps4_init_trophies() >= 0)) {
       statsd.send_counter("sq.game_start.request_login", 1, { login_type = "ps4" })
       log("PS4 Login: ps4_login")
       this.isLoggingIn = true
-      loginStatus = ::ps4_login();
+      loginStatus = ps4_login();
       if (loginStatus >= 0) {
         forceHideCursor(false)
-        let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        let cfgName = ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
-        ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
+        loadHandler(gui_handlers.UpdaterModal,
           {
             configPath = $"/app0/{targetPlatform}/{cfgName}"
-            onFinishCallback = ::ps4_load_after_login
+            onFinishCallback = ps4_load_after_login
           })
         return
       }

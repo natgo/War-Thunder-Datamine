@@ -37,23 +37,6 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakFxTimeout": [
-    1.0,
-    5.0
-  ],
-  "shipFuelLeakLifetime": [
-    30.0,
-    10.0,
-    8.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    5.0,
-    3.5
-  ],
-  "fuelLeakTimeAfterExtinguish": 30.0,
   "shipsDisableDeadCoverParts": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
@@ -2702,6 +2685,25 @@
       "blk": "gameData/units/ships/weaponPresets/ussr_aircraftcarrier_baku_default.blk"
     }
   },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakFxTimeout": [
+      1.0,
+      5.0
+    ],
+    "fuelLeakLifetime": [
+      30.0,
+      10.0,
+      8.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      5.0,
+      3.5
+    ],
+    "fuelLeakTimeAfterExtinguish": 30.0
+  },
   "unitFx": {
     "event": [
       {
@@ -2943,70 +2945,6 @@
             "emitter": "emtr_smoke_dmg_02"
           },
           {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_01"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_02"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_03"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_04"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_05"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_06"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_07"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_08"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_09"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_10"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_11"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_12"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_13"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_14"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_15"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_16"
-          },
-          {
             "name": "ship_fire_massive",
             "emitter": "emtr_fire_dmg_01",
             "isFireBurnMark": false
@@ -3022,7 +2960,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_02",
             "isFireBurnMark": false
           },
@@ -3032,7 +2970,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_04",
             "isFireBurnMark": false
           },
@@ -3042,7 +2980,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_06",
             "isFireBurnMark": false
           },
@@ -3052,7 +2990,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_08",
             "isFireBurnMark": false
           },
@@ -3062,7 +3000,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_10",
             "isFireBurnMark": false
           },
@@ -3072,7 +3010,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_12",
             "isFireBurnMark": false
           },
@@ -3082,7 +3020,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_14",
             "isFireBurnMark": false
           },
@@ -3092,7 +3030,7 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_16",
             "isFireBurnMark": false
           },

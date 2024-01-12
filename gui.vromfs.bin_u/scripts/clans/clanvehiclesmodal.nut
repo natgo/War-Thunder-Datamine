@@ -1,17 +1,18 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost, Balance } = require("%scripts/money.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canResearchUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 
-local handlerClass = class extends vehiclesModal.handlerClass {
+local handlerClass = class (vehiclesModal.handlerClass) {
   canQuitByGoBack       = false
 
   wndTitleLocId         = "clan/vehicles"
@@ -21,13 +22,13 @@ local handlerClass = class extends vehiclesModal.handlerClass {
   hasSpendExpProcess = false
 
   function initScreen() {
-    this.lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
+    this.lastSelectedUnit = getAircraftByName(clan_get_researching_unit())
     base.initScreen()
   }
 
   function getWndTitle() {
     local locId = "shop/distributeSquadronExp"
-    let flushExp = ::clan_get_exp()
+    let flushExp = clan_get_exp()
     if (flushExp <= 0 || this.needChosenResearchOfSquadron())
       locId = "mainmenu/nextResearchSquadronVehicle"
 
@@ -79,7 +80,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_buy_unit", false)
 
-    let canBuyIngame = ::canBuyUnit(this.lastSelectedUnit)
+    let canBuyIngame = canBuyUnit(this.lastSelectedUnit)
     let canBuyOnline = ::canBuyUnitOnline(this.lastSelectedUnit)
     let needShowBuyUnitBtn = canBuyIngame || canBuyOnline
     this.showSceneBtn("btn_buy_unit", needShowBuyUnitBtn)
@@ -95,7 +96,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_spend_exp", false)
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
+    let flushExp = min(clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
     let needShowSpendBtn = (flushExp > 0 || this.needChosenResearchOfSquadron())
       && this.lastSelectedUnit.isSquadronVehicle() && canResearchUnit(this.lastSelectedUnit)
 
@@ -131,7 +132,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
       return
     }
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
+    let flushExp = min(clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
     if (flushExp > 0) {
       unitActions.flushSquadronExp(unit, { afterDoneFunc })
       return
@@ -148,7 +149,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     onSpendExcessExp = Callback(this.onSpendExcessExp, this)
   }
 
-  needChosenResearchOfSquadron = @() ::clan_get_researching_unit() == ""
+  needChosenResearchOfSquadron = @() clan_get_researching_unit() == ""
 
   function onBuy() {
     unitActions.buy(this.lastSelectedUnit, "clan_vehicles")
@@ -157,10 +158,10 @@ local handlerClass = class extends vehiclesModal.handlerClass {
   function onEventFlushSquadronExp(params) {
     let unit = params?.unit
     let isAllResearched = isAllClanUnitsResearched()
-    if (!isAllResearched && ::clan_get_exp() > 0)
+    if (!isAllResearched && clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
 
-    if (unit && ::canBuyUnit(unit))
+    if (unit && canBuyUnit(unit))
       ::buyUnit(unit)
     this.goBack()
   }
@@ -182,5 +183,5 @@ local handlerClass = class extends vehiclesModal.handlerClass {
 gui_handlers.clanVehiclesModal <- handlerClass
 
 return {
-  open = @() handlersManager.loadHandler(handlerClass)
+  open = @() loadHandler(handlerClass)
 }

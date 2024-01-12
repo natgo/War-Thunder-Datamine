@@ -1,5 +1,8 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
@@ -15,7 +18,7 @@ dataParams = {
   table    = day && day > 0 ? "day" + day : "season"
   start    = 1  // start position lb request
   count    = 0  // count of records
-  category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
+  category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
   platformFilter = "" //"ps4" for ps4 only players
 }
 headersParams = {
@@ -81,7 +84,7 @@ let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
   blk.sortField = requestData.lbField
   blk.start = -1
   blk.count = -1
-  blk.clanId = ::clan_get_my_clan_id();
+  blk.clanId = clan_get_my_clan_id();
   blk.inverse = requestData.inverse
   blk.clan = requestData.forClans
   blk.version = 1

@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, steam_is_running, is_app_active, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -7,11 +11,12 @@ let { saveLocalSharedSettings, loadLocalAccountSettings, saveLocalByAccount, loa
 } = require("%scripts/clientState/localProfile.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
 } = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
@@ -53,8 +58,9 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock,
+let { isUnlockVisible, getUnlockCost, getUnlockRewardText, canDoUnlock,
   canOpenUnlockManually, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -76,6 +82,8 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { getStats } = require("%scripts/myStats.nut")
+
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -84,6 +92,12 @@ enum profileEvent {
 enum OwnUnitsType {
   ALL = "all",
   BOUGHT = "only_bought",
+}
+
+let profileSelectedFiltersCache = {
+  unit = []
+  rank = []
+  country = []
 }
 
 let selMedalIdx = {}
@@ -106,10 +120,10 @@ let function getUnlockFiltersList(uType, getCategoryFunc) {
 }
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.Profile, params)
+  loadHandler(gui_handlers.Profile, params)
 }
 
-gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
+gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
@@ -188,6 +202,10 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     if (!this.scene)
       return this.goBack()
 
+    this.countryStats = profileSelectedFiltersCache.country
+    this.unitStats = profileSelectedFiltersCache.unit
+    this.rankStats = profileSelectedFiltersCache.rank
+
     this.isOwnStats = true
     this.scene.findObject("profile_update").setUserData(this)
 
@@ -237,7 +255,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
     foreach (cb in getAllUnlocksWithBlkOrder()) {
       let unlockType = cb?.type ?? ""
-      let unlockTypeId = ::get_unlock_type(unlockType)
+      let unlockTypeId = get_unlock_type(unlockType)
 
       if (!this.unlockTypesToShow.contains(unlockTypeId) && !this.unlocksPages.contains(unlockTypeId))
         continue
@@ -377,10 +395,10 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     let canPreview = !canUse && decor.canPreview()
 
     showObjectsByTable(this.scene, {
-      btn_preview                    = ::isInMenu() && canPreview
-      btn_use_decorator              = ::isInMenu() && canUse
-      btn_store                      = ::isInMenu() && canFindInStore
-      btn_go_to_collection           = ::isInMenu() && isCollectionItem(decor)
+      btn_preview                    = isInMenu() && canPreview
+      btn_use_decorator              = isInMenu() && canUse
+      btn_store                      = isInMenu() && canFindInStore
+      btn_go_to_collection           = isInMenu() && isCollectionItem(decor)
       btn_marketplace_consume_coupon = canConsumeCoupon
       btn_marketplace_find_coupon    = canFindOnMarketplace
     })
@@ -389,18 +407,18 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
-    let needHideChangeAccountBtn = ::steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
+    let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
-      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
-      btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
+      btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
+      btn_changeName = isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
+      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
-        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened
+        !havePlayerTag("gjpass") && isInMenu() && isProfileOpened
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
       paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
-      btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
+      btn_SkinPreview = isInMenu() && sheet == "UnlockSkin"
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -889,7 +907,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     local data = ""
     local curIndex = 0
     let lowerCurPage = this.curPage.tolower()
-    let pageTypeId = ::get_unlock_type(lowerCurPage)
+    let pageTypeId = get_unlock_type(lowerCurPage)
     let itemSelectFunc = pageTypeId == UNLOCKABLE_MEDAL ? this.onMedalSelect : null
     let containerObjId = pageTypeId == UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
     this.unlocksTree = {}
@@ -1015,7 +1033,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     foreach (_idx, cb in getAllUnlocksWithBlkOrder()) {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
-      let unlockTypeId = ::get_unlock_type(unlockType)
+      let unlockTypeId = get_unlock_type(unlockType)
       let isForceVisibleInTree = cb?.isForceVisibleInTree ?? false
       if (unlockTypeId != pageTypeId
           && (!isUnlockTree || !isInArray(unlockTypeId, this.unlockTypesToShow))
@@ -1589,7 +1607,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function updateStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
 
@@ -1626,7 +1644,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   function onProfileStatsModeChange(obj) {
     if (!checkObj(this.scene))
       return
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats)
       return
 
@@ -1639,7 +1657,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function onUpdate(_obj, _dt) {
-    if (this.pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()) {
+    if (this.pending_logout && ::is_app_active() && !steam_is_overlay_active() && !::is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()
@@ -1651,7 +1669,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     local textLocId = "mainmenu/questionChangeName"
     local afterOkFunc = @() this.guiScene.performDelayed(this, function() { this.pending_logout = true })
 
-    if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
+    if (steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
       textLocId = "mainmenu/questionChangeNameSteam"
       afterOkFunc = @() null
     }
@@ -1695,7 +1713,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       return
 
     set_option(USEROPT_PILOT, option.idx)
-    ::save_profile(false)
+    save_profile(false)
 
     if (!checkObj(this.scene))
       return
@@ -1719,7 +1737,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function initAirStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
 
@@ -1727,7 +1745,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function fillAirStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!this.airStatsInited || !myStats || !myStats.userstat)
       return this.initAirStats()
 
@@ -1735,7 +1753,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   }
 
   function getPlayerStats() {
-    return ::my_stats.getStats()
+    return getStats()
   }
 
   function getCurUnlockList() {
@@ -1764,7 +1782,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function onGroupCancel(_obj) {
     if (showConsoleButtons.value && this.getCurSheet() == "UnlockSkin")
-      ::move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
     else
       this.goBack()
   }
@@ -1833,3 +1851,7 @@ local function openProfileFromPromo(params, sheet = null) {
 }
 
 addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))
+
+addListenersWithoutEnv({
+  SignOut = @(_p) profileSelectedFiltersCache.each(@(f) f.clear())
+})

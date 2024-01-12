@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, get_player_unit_name, on_voice_message_button, get_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -35,7 +36,7 @@ let voiceMessageNames = [
   { category = "report", name = "voice_message_reloading", blinkTime = 0, haveTarget = false, showPlace = false, useReloadTime = true },
   { category = "report", name = "voice_message_well_done", blinkTime = 0, haveTarget = false, showPlace = false },
   { category = "report", name = "voice_message_attacking_target", blinkTime = 10, haveTarget = true, showPlace = true, icon = "icon_attacking", iconBlinkTime = 6, iconTarget = "target" },
-  { category = "report", name = "voice_message_repairing", blinkTime = 0, haveTarget = false, showPlace = false, forTank = true, useRepairTime = true },
+  { category = "report", name = "voice_message_repairing", blinkTime = 0, haveTarget = false, showPlace = false, useRepairTime = true },
 
   { category = "request", name = "voice_message_request_target", blinkTime = 6, haveTarget = false, showPlace = true, forAircraft = true },
   { category = "request", name = "voice_message_request_air_support", blinkTime = 6, haveTarget = false, forTank = true, showPlace = true, useTargetIfExist=true, icon = "icon_attacking", iconBlinkTime = 6},
@@ -55,7 +56,7 @@ let voiceMessageNames = [
 let function initVoiceMessageList() {
   for (local i = 0; i < voiceMessageNames.len(); i++) {
     let line = voiceMessageNames[i];
-    ::add_voice_message(line);
+    add_voice_message(line);
   }
 }
 initVoiceMessageList()
@@ -116,7 +117,7 @@ let function getCantUseVoiceMessagesReason(isForSquad) {
   return ""
 }
 
-let onVoiceMessageAnswer = @(index) ::on_voice_message_button(index) //-1 means "close"
+let onVoiceMessageAnswer = @(index) on_voice_message_button(index) //-1 means "close"
 
 let function showVoiceMessageList(show, category, squad, targetName) {
   if (!show) {
@@ -132,7 +133,7 @@ let function showVoiceMessageList(show, category, squad, targetName) {
 
   let categories = []
   let menu = []
-  let heroIsTank = getAircraftByName(::get_player_unit_name())?.isTank() ?? false
+  let heroIsTank = getAircraftByName(get_player_unit_name())?.isTank() ?? false
   local shortcutTable = {}
 
   foreach (idx, record in voiceMessageNames) {
@@ -169,7 +170,7 @@ let function showVoiceMessageList(show, category, squad, targetName) {
       if (menu.len() == (LIMIT_SHOW_VOICE_MESSAGE_PETALS))
         break
 
-      let messageIndex = ::get_option_favorite_voice_message(i)
+      let messageIndex = get_option_favorite_voice_message(i)
       let record = getTblValue(messageIndex, voiceMessageNames)
       if (!record)
         continue
@@ -198,7 +199,7 @@ let function showVoiceMessageList(show, category, squad, targetName) {
 }
 ::show_voice_message_list <- showVoiceMessageList //used from native code
 
-let removeFavoriteVoiceMessage = @(index) ::set_option_favorite_voice_message(index, -1)
+let removeFavoriteVoiceMessage = @(index) set_option_favorite_voice_message(index, -1)
 
 let function resetFastVoiceMessages() {
   for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++)

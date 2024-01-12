@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair, is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode, get_user_alt_crosshairs
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
@@ -70,12 +71,12 @@ let getMainOptions = function() {
 
 
       [USEROPT_FONTS_CSS, "spinner"],
-      [USEROPT_GAMMA, "slider", !::is_hdr_enabled()],
+      [USEROPT_GAMMA, "slider", !is_hdr_enabled()],
       [USEROPT_AUTOLOGIN, "spinner", ! isInFlight() && !(isPlatformSony || isPlatformXboxOne)],
       [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !isInFlight()],
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
-      [USEROPT_POSTFX_SETTINGS, "button", !::is_compatibility_mode()],
-      [USEROPT_HDR_SETTINGS, "button", ::is_hdr_enabled()],
+      [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
+      [USEROPT_HDR_SETTINGS, "button", is_hdr_enabled()],
 
       ["options/header/commonBattleParameters"],
       [USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
@@ -86,13 +87,13 @@ let getMainOptions = function() {
       [USEROPT_AUTO_SQUAD, "spinner"],
       [USEROPT_QUEUE_JIP, "spinner"],
       [USEROPT_ORDER_AUTO_ACTIVATE, "spinner", hasFeature("OrderAutoActivate")],
-      [USEROPT_TANK_ALT_CROSSHAIR, "spinner", ::can_add_tank_alt_crosshair()
+      [USEROPT_TANK_ALT_CROSSHAIR, "spinner", can_add_tank_alt_crosshair()
                                                 && (hasFeature("TankAltCrosshair")
-                                                    || ::get_user_alt_crosshairs().len()
+                                                    || get_user_alt_crosshairs().len()
                                                    )],
 
       ["options/header/air"],
-      [USEROPT_HUE_AIRCRAFT_HUD, "spinner", hasFeature("reactivGuiForAircraft")],
+      [USEROPT_HUE_AIRCRAFT_HUD, "spinner"],
       [USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner",  hasFeature("reactivGuiForAircraft")],
       [USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner",  hasFeature("reactivGuiForAircraft")],
       [USEROPT_VIEWTYPE, "spinner", ! isInFlight()],
@@ -113,6 +114,7 @@ let getMainOptions = function() {
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
+      [USEROPT_RWR_SENSITIVITY, "slider"],
       [USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_USE_TWS_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
@@ -148,7 +150,7 @@ let getMainOptions = function() {
       [USEROPT_XRAY_DEATH, "spinner", hasFeature("XrayDeath")],
       [USEROPT_XRAY_KILL, "spinner", hasFeature("XrayKill")],
       [USEROPT_TANK_GUNNER_CAMERA_FROM_SIGHT, "spinner",
-        (!isInFlight() || !::is_tank_gunner_camera_from_sight_available())],
+        (!isInFlight() || !is_tank_gunner_camera_from_sight_available())],
       [USEROPT_SHOW_DESTROYED_PARTS, "spinner"],
       [USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN, "spinner"],
       [USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner"],
@@ -267,6 +269,7 @@ let getMainOptions = function() {
       [USEROPT_REPLAY_FOV, "slider", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
 
       ["options/header/userGeneratedContent"],
+      [USEROPT_SHOW_OTHERS_DECALS, "spinner"],
       [USEROPT_CONTENT_ALLOWED_PRESET_ARCADE,    "combobox", contentPreset.getContentPresets().len()],
       [USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, "combobox", contentPreset.getContentPresets().len()],
       [USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, "combobox",

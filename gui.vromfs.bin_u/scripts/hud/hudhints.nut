@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
@@ -17,9 +20,12 @@ let { get_mplayer_by_id } = require("mission")
 let { get_mission_difficulty } = require("guiMission")
 let { loadLocalAccountSettings, saveLocalAccountSettings} = require("%scripts/clientState/localProfile.nut")
 let { register_command } = require("console")
+let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
+const HINT_UID_LIMIT = 16384
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 local cachedHintsSeenData = null
@@ -28,11 +34,6 @@ enum MISSION_HINT_TYPE {
   STANDARD   = "standard"
   TUTORIAL   = "tutorialHint"
   BOTTOM     = "bottom"
-}
-
-global enum HINT_INTERVAL {
-  ALWAYS_VISIBLE = 0
-  HIDDEN = -1
 }
 
 ::g_hud_hints <- {
@@ -64,7 +65,7 @@ global enum HINT_INTERVAL {
 let getRawShortcutsArray = function(shortcuts) {
   if (!shortcuts)
     return []
-  local rawShortcutsArray = u.isArray(shortcuts) ? shortcuts : [shortcuts]
+  local rawShortcutsArray = u.isArray(shortcuts) ? clone shortcuts : [shortcuts]
   let shouldPickOne = ::g_hud_hints.shouldPickFirstValid(rawShortcutsArray)
   if (shouldPickOne) {
     let rawShortcut = ::g_hud_hints.pickFirstValidShortcut(rawShortcutsArray)
@@ -93,7 +94,18 @@ let getRawShortcutsArray = function(shortcuts) {
   }
 
   let expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
-  let shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
+  local shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
+
+  let shortcut = u.isArray(shortcuts) ? shortcuts[0] : shortcuts
+  let shortcutData = getShortcutById(shortcuts)
+  if (shortcut != "" && shortcutTag == "" && shortcutData != null && shortcutData.type != CONTROL_TYPE.AXIS
+    && !::g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
+  ) {
+    shortcutTag = loc("ui/quotes", { text = "".concat(
+      loc($"hotkeys/{shortcut}"),
+      loc("ui/parentheses/space", { text = loc("hotkeys/shortcut_not_assigned") })) })
+  }
+
   let locParams = this.getLocParams(data).__update({ shortcut = shortcutTag })
   local result = loc(this.getLocId(data), locParams)
 
@@ -297,9 +309,9 @@ let function getHintSeenData(uid) {
   local hintSeenData = cachedHintsSeenData?[hintIdString]
 
   if (hintSeenData == null) {
-    //::get_hint_seen_count used for compability with 2.29.0.X
+    //get_hint_seen_count used for compability with 2.29.0.X
     let hint = ::g_hud_hints.getByUid(uid)
-    let showedCount = hint ? ::get_hint_seen_count(hint.maskId) : 0
+    let showedCount = hint ? get_hint_seen_count(hint.maskId) : 0
     hintSeenData = {
       seenTime = get_charserver_time_sec()
       seenCount = showedCount
@@ -441,6 +453,7 @@ let function getHintByShowEvent(showEvent) {
   delayTime = 0.0
   isAllowedByDiff  = null
   totalCount = -1
+  totalCountByCondition = -1
   missionCount = -1
   mask = 0
   maskId = -1
@@ -453,7 +466,7 @@ let function getHintByShowEvent(showEvent) {
   isSingleInNest = false
   isVerticalAlignText = false
   isEnabled = @() (this.isShowedInVR || !is_stereo_mode())
-    && ::is_hint_enabled(this.mask)
+    && is_hint_enabled(this.mask)
     && this.isEnabledByDifficulty()
 
   getTimeInterval = function() {
@@ -787,6 +800,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   F1_CONTROLS_HINT_SCRIPTED = {
+    uid = 1
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/help_controls"
     noKeyLocId = "hints/help_controls/nokey"
@@ -794,6 +808,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:f1_controls_scripted:show"
     hideEvent = "helpOpened"
     lifeTime = 30.0
+    totalCountByCondition = 3
     disabledByUnitTags = ["type_robot"]
   }
 
@@ -2133,9 +2148,24 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnWatchedHeroChanged = true
   }
 
+  DISABLE_NIGHT_VISION_ON_DAYLIGHT = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/disable_night_vision_on_daylight"
+    showEvent = "hint:disable_night_vision_on_daylight:show"
+    hideEvent = "hint:disable_night_vision_on_daylight:hide"
+    getShortcuts = @(_data)
+      getHudUnitType() == HUD_UNIT_TYPE.TANK ? "ID_TANK_NIGHT_VISION"
+      : getHudUnitType() == HUD_UNIT_TYPE.HUMAN ? "ID_HUMAN_NIGHT_VISION"
+      : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_HELI_GUNNER_NIGHT_VISION"
+      : "ID_PLANE_NIGHT_VISION"
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
   HOW_TO_USE_BINOCULAR = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_binocular"
+    hideEvent = "hint:how_to_use_binocular_2"
     locId = "hints/how_to_use_binocular"
     lifeTime = 8.0
     shortcuts = "ID_CAMERA_BINOCULARS"
@@ -2155,11 +2185,12 @@ enums.addTypesByGlobalName("g_hud_hints", {
     ]
     isWrapInRowAllowed = true
     lifeTime = 8.0
-    delayTime = 2.5
+    delayTime = 0
   }
   HOW_TO_USE_RANGE_FINDER = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_range_finder"
+    hideEvent = "hint:how_to_use_range_finder_2"
     locId = "hints/how_to_use_range_finder"
     lifeTime = 8.0
     shortcuts = "ID_RANGEFINDER"
@@ -2177,6 +2208,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   HOW_TO_USE_LASER_RANGE_FINDER = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_laser_range_finder"
+    hideEvent = "hint:how_to_use_laser_range_finder_2"
     locId = "hints/how_to_use_laser_range_finder"
     lifeTime = 8.0
     shortcuts = "ID_RANGEFINDER"
@@ -2193,6 +2225,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   HOW_TO_TRACK_RADAR_TARGET_IN_TPS = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_track_radar_target_in_tps"
+    hideEvent = "hint:how_to_track_radar_target_in_optic"
     locId = "hints/how_to_track_radar_target_in_tps"
     lifeTime = 5.0
     shortcuts = "ID_TOGGLE_VIEW_GM"
@@ -2209,6 +2242,42 @@ enums.addTypesByGlobalName("g_hud_hints", {
     uid = 11236
     totalCount=3
     secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_ENGINE_SMOKE_SCREEN_SYSTEM = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_engine_smoke_screen_system"
+    hideEvent = "hint:how_to_engine_smoke_screen_system_2"
+    locId = "hints/how_to_engine_smoke_screen_system"
+    lifeTime = 7.0
+    shortcuts = "ID_SMOKE_SCREEN_GENERATOR"
+    uid = 11237
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_ENGINE_SMOKE_SCREEN_SYSTEM_2 = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_engine_smoke_screen_system_2"
+    locId = "hints/how_to_engine_smoke_screen_system_2"
+    lifeTime = 7.0
+    shortcuts = ""
+  }
+  HOW_TO_SMOKE_SCREEN_GRENADE = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_smoke_screen_grenade"
+    hideEvent = "hint:how_to_smoke_screen_grenade_2"
+    locId = "hints/how_to_smoke_screen_grenade"
+    lifeTime = 7.0
+    shortcuts = "ID_SMOKE_SCREEN"
+    uid = 11239
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_SMOKE_SCREEN_GRENADE_2 = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_smoke_screen_grenade_2"
+    locId = "hints/how_to_smoke_screen_grenade_2"
+    lifeTime = 7.0
+    shortcuts = ""
   }
 
   AUTO_EMERGENCY_SURFACING = {
@@ -2230,6 +2299,36 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
+
+
+  SACLOS_GUIDANCE_MODE_AUTO = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:saclos_guidance_mode_auto"
+    locId = "hints/saclos_guidance_mode_auto"
+    hideEvent = "hint:saclos_guidance_mode_direct"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+  SACLOS_GUIDANCE_MODE_DIRECT = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:saclos_guidance_mode_direct"
+    locId = "hints/saclos_guidance_mode_direct"
+    hideEvent = "hint:saclos_guidance_mode_lead"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+  SACLOS_GUIDANCE_MODE_LEAD = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:saclos_guidance_mode_lead"
+    locId = "hints/saclos_guidance_mode_lead"
+    hideEvent = "hint:saclos_guidance_mode_auto"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
 
   SUBMARINE_CANT_DIVE = {
     hintType = ::g_hud_hint_types.REPAIR
@@ -2304,6 +2403,9 @@ function() {
 
   if (this.maskId >= 0)
     this.mask = 1 << this.maskId
+
+  if (this.uid >= HINT_UID_LIMIT)
+    log($"Hints: uid = {this.uid} has exceeded the uid limit {HINT_UID_LIMIT}.")
 },
 "typeName")
 

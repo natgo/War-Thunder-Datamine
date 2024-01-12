@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import dd_mkpath
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,7 +8,7 @@ let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtil
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 // warning disable: -file:forbidden-function
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { getFullUnlockDesc, getUnlockCostText,
   getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -17,6 +18,7 @@ let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/un
 let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
@@ -77,7 +79,7 @@ let function gen_all_unlocks_desc(showCost = false) {
 }
 
 let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
-  let fullPath = format("%s/unlocks%s.blk", path, getCurrentLanguage())
+  let fullPath = format("%s/unlocks%s.blk", path, getLocalLanguage())
   dlog("GP: gen all unlocks description to " + fullPath)
 
   let res = DataBlock()
@@ -96,7 +98,7 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
     blk.desc = desc
     res[id] = blk
   }
-  ::dd_mkpath?(fullPath)
+  dd_mkpath?(fullPath)
   res.saveToTextFile(fullPath)
 }
 
@@ -130,7 +132,7 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
 
 let function exportUnlockInfo(params) {
   let info = getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
-  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getCurrentLanguage())
+  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getLocalLanguage())
   return "ok"
 }
 
@@ -140,7 +142,7 @@ let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, 
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
-  let curLang = getCurrentLanguage()
+  let curLang = getLocalLanguage()
   let info = getGameLocalizationInfo()
   _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
 }
@@ -170,7 +172,7 @@ let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   if (!unit)
     unit = u.search(getAllUnits(), @(un) un.isBought())
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler,
+  loadHandler(gui_handlers.ShowUnlockHandler,
     {
       config = {
          type = UNLOCKABLE_AIRCRAFT

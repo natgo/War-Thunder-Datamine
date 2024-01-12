@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -34,6 +37,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
 let { charRequestJson } = require("%scripts/tasker.nut")
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -43,7 +47,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 dagui_propid_add_name_id("countryId")
 dagui_propid_add_name_id("mapId")
 
-gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName   = "%gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "mainmenu/btnWorldwar"
@@ -660,7 +664,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     this.descHandlerWeak = null
     this.updateWindow()
-    ::move_mouse_on_child_by_value(this.scene.findObject("countries_container"))
+    move_mouse_on_child_by_value(this.scene.findObject("countries_container"))
   }
 
   function joinOperation(operation, country) {
@@ -856,7 +860,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
       selObj = this.mapsListObj
     }
     this.updateWindow()
-    ::move_mouse_on_child_by_value(selObj)
+    move_mouse_on_child_by_value(selObj)
   }
 
   function openVehiclesPresetModal() {
@@ -874,7 +878,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   }
 
   function openOperationsListByMap(map) {
-    ::gui_start_modal_wnd(gui_handlers.WwOperationsListModal,
+    loadHandler(gui_handlers.WwOperationsListModal,
       { map = map, isDescrOnly = !hasFeature("WWOperationsList") })
   }
 
@@ -1034,7 +1038,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     foreach (field in ["playerKills", "aiKills"])
     {
-      rowView = { text = ::g_lb_category.getTypeByField(field).visualKey }
+      rowView = { text = lbCategoryTypes.getTypeByField(field).visualKey }
       foreach (idx, country in statistics)
         rowView["side_" + idx] <- country?[field] ?? 0
       if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))

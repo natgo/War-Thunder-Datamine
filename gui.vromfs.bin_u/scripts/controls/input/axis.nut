@@ -1,11 +1,12 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
-::Input.Axis <- class extends ::Input.InputBase {
+::Input.Axis <- class (::Input.InputBase) {
   //from ::JoystickParams().getAxis()
   axisId = null
   //AXIS_MODIFIERS
@@ -55,7 +56,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
   }
 
   function getText() {
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     if (!device)
       return ""
 

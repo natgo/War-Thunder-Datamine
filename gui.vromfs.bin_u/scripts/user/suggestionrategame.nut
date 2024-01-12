@@ -1,5 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -15,10 +17,9 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-
 let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
-
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec } = require("%scripts/myStats.nut")
 
 let logP = log_with_prefix("[ShowRate] ")
 let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) //need this, because debriefing data destroys after debriefing modal is closed
@@ -38,6 +39,7 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackRateWnd"
     feature = "SteamRateGame"
     descLocId = "msgbox/steam/rate_review"
+    backgroundImg = "#ui/images/cat_fix"
   }
   SteamRateImprove = {
     wndTimeSaveId = "seen/afterImprovementRateWndTime"
@@ -130,14 +132,14 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   // Newbies
-  if (::my_stats.getPvpPlayed() < cfg.totalPvpBattlesMin) {
+  if (getPvpPlayed() < cfg.totalPvpBattlesMin) {
     logP("Break checks by battle stats, player is newbie")
     return
   }
 
   // Old players
-  if (!::my_stats.isStatsLoaded()
-    || (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) {
+  if (!isStatsLoaded()
+      || (getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) {
     logP("Break checks by old player, too long playing, or no stats loaded at all")
     return
   }
@@ -235,7 +237,7 @@ let function checkShowRateWnd() {
 addListenersWithoutEnv({
   UnitBought = function(p) {
     let unit = getAircraftByName(p?.unitName)
-    if (unit && ::isUnitSpecial(unit))
+    if (unit && isUnitSpecial(unit))
       havePurchasedSpecUnit(true)
   }
   EntitlementStoreItemPurchased = function(p) {

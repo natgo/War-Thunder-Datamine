@@ -1,7 +1,8 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import request_voice_message_list, is_last_voice_message_list_for_squad
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
@@ -19,7 +20,8 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasSecondaryWeapons, hasAiGunners, hasGunStabilizer,
   hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview,
-  hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask
+  hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
+  hasSpecialWeaponAdditionalSight
 } = require("vehicleModel")
 
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
@@ -84,10 +86,10 @@ let function voiceMessagesMenuFunc() {
     return null
   if (getCantUseVoiceMessagesReason(false) != "")
     return null
-  let shouldUseSquadMsg = ::is_last_voice_message_list_for_squad()
+  let shouldUseSquadMsg = is_last_voice_message_list_for_squad()
     && getCantUseVoiceMessagesReason(true) == ""
   return {
-    action = Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
+    action = Callback(@() request_voice_message_list(shouldUseSquadMsg,
       @() emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
     label  = loc(shouldUseSquadMsg
       ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"
@@ -539,7 +541,7 @@ let cfg = {
       { shortcut = [ "ID_SELECT_GM_GUN_MACHINEGUN" ], enable = hasWeaponMachinegun }
       { shortcut = [ "ID_SELECT_GM_GUN_RESET" ], enable = hasMultipleWeaponTriggers }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ" ], enable = @(_unitId) hasAlternativeShotFrequency() }
-      null
+      { shortcut = [ "ID_SELECT_GM_GUN_SPECIAL" ],  enable = @(_unitId) hasSpecialWeaponAdditionalSight() }
       null
       null
     ]

@@ -1,11 +1,12 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
-
 
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetOperationId } = require("worldwar")
+let { WwOperationModel } = require("model/wwOperationModel.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 ::g_operations <- {
   operationStatusById = {}
@@ -53,7 +54,7 @@ let { wwGetOperationId } = require("worldwar")
       foreach (wwArmy in wwArmyByGroup)
         if (wwArmy.getArmyGroupIdx() == groupIdx
           && !(wwArmy.getArmyFlags() & EAF_NO_AIR_LIMIT_ACCOUNTING)
-            && ::g_ww_unit_type.isAir(wwArmy.getUnitType())
+            && g_ww_unit_type.isAir(wwArmy.getUnitType())
               && wwArmy.getOverrideUnitType() == overrideUnitType)
           armyCount++
 
@@ -63,7 +64,7 @@ let { wwGetOperationId } = require("worldwar")
 ::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side) {
   let operationUnits = {}
   let blk = DataBlock()
-  ::ww_get_sides_info(blk)
+  ww_get_sides_info(blk)
 
   let sidesBlk = blk?["sides"]
   if (sidesBlk == null)
@@ -85,7 +86,7 @@ let { wwGetOperationId } = require("worldwar")
 ::g_operations.getCurrentOperation <- function getCurrentOperation() {
   let operationId = wwGetOperationId()
   if (!(operationId in this.operationStatusById))
-    this.operationStatusById[operationId] <- ::WwOperationModel()
+    this.operationStatusById[operationId] <- WwOperationModel()
 
   return this.operationStatusById[operationId]
 }

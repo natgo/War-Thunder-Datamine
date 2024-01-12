@@ -1,28 +1,28 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { fillUserNick, getFirstChosenUnitType,
+let { fillUserNick, getFirstChosenUnitType, unlockCountry, checkUnlockedCountriesByAirs,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -36,7 +36,7 @@ enum CChoiceState {
   handlersManager.loadHandler(gui_handlers.CountryChoiceHandler)
 }
 
-gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/countryChoice.blk"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -186,7 +186,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
     let listBoxObj = listObj.getChild(0)
     if (focusItemNum != null) {
       listBoxObj.setValue(focusItemNum)
-      ::move_mouse_on_child(listBoxObj, focusItemNum)
+      move_mouse_on_child(listBoxObj, focusItemNum)
     }
   }
 
@@ -283,12 +283,8 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
                               )
       script_net_assert_once("empty countries list", message)
     }
-    else if (!isInArray(this.selectedCountry, availCountries)) {
-      local rndC = rnd() % availCountries.len()
-      if (isVietnameseVersion())
-        rndC = find_in_array(availCountries, "country_ussr", rndC)
-      this.selectedCountry = availCountries[rndC]
-    }
+    else if (!isInArray(this.selectedCountry, availCountries))
+      this.selectedCountry = availCountries[rnd() % availCountries.len()]
 
     let selectId = find_in_array(this.countries, this.selectedCountry, 0)
     this.fillChoiceScene(data, selectId, "firstCountry")
@@ -414,7 +410,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
     blk.setInt("unitType", presetsData.selectedUnitType)
 
     foreach (country in shopCountriesList) {
-      ::unlockCountry(country, true, false) //now unlock all countries
+      unlockCountry(country, true, false) //now unlock all countries
       blk.unlock <- country
     }
 
@@ -425,7 +421,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
         blk.unlock <- this.selectedUnitType.firstChosenTypeUnlockName
 
     let taskCallback = Callback(onComplete, this)
-    let taskId = ::char_send_blk("cln_set_starting_info", blk)
+    let taskId = char_send_blk("cln_set_starting_info", blk)
     let taskOptions = {
       showProgressBox = true
       progressBoxDelayedButtons = 90
@@ -442,7 +438,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
         // batch char request.
         ::slotbarPresets.newbieInit(presetsData)
 
-        ::checkUnlockedCountriesByAirs()
+        checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")
         gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
       })

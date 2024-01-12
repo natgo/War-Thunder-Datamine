@@ -1,7 +1,8 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_uid
 from "%scripts/dagui_library.nut" import *
 let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
-  update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%xboxLib/voice.nut")
+  update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%scripts/xbox/voice.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
@@ -22,7 +23,7 @@ let function force_update_state_for_uid(uid) {
     let muted_by_game = ::isPlayerInContacts(uid, EPL_BLOCKLIST)
     let muted_result = muted_by_platform || muted_by_game
     log($"Mute state change for <{uid}>: {muted_by_platform} + {muted_by_game} -> {muted_result}")
-    ::gchat_voice_mute_peer_by_uid(muted_result, uid.tointeger())
+    gchat_voice_mute_peer_by_uid(muted_result, uid.tointeger())
   }
 }
 
@@ -56,7 +57,7 @@ let function on_external_ids_update(params) {
   if (!(reqUid in requestedIds))
     return
 
-  delete requestedIds[reqUid]
+  requestedIds.$rawdelete(reqUid)
   let xuid = params?.externalIds?.xboxId
   let isFriend = ::isPlayerInFriendsGroup(reqUid)
   add_voice_chat_member(reqUid, xuid, isFriend)

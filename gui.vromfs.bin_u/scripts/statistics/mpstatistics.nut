@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -23,13 +27,15 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getSkillBonusTooltipText, get_time_to_kick_show_timer, get_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
+let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
-local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
+local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                          | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
 
@@ -92,7 +98,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
       return
     let timeToKickValue = ::get_mp_kick_countdown()
     // Already in battle or it's too early to show the message.
-    if (timeToKickValue <= 0 || ::get_time_to_kick_show_timer() < timeToKickValue)
+    if (timeToKickValue <= 0 || get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
     else {
       let timeToKickText = time.secondsToString(timeToKickValue, true, true)
@@ -108,7 +114,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(timeToKickAlertObj))
       return
     let timeToKickValue = ::get_mp_kick_countdown()
-    if (timeToKickValue <= 0 || ::get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
+    if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
       timeToKickAlertObj.show(false)
     else {
       timeToKickAlertObj.show(true)
@@ -207,7 +213,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function setInfo() {
-    let timeLeft = ::get_multiplayer_time_left()
+    let timeLeft = get_multiplayer_time_left()
     if (timeLeft < 0) {
       this.setGameEndStat(-1)
       return
@@ -238,7 +244,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
     this.initStatsMissionParams()
 
     let playerTeam = this.getLocalTeam()
-    let friendlyTeam = ::get_player_army_for_hud()
+    let friendlyTeam = get_player_army_for_hud()
     let teamObj1 = this.scene.findObject("team1_info")
     let teamObj2 = this.scene.findObject("team2_info")
 
@@ -338,7 +344,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
         let show = rowHeaderData != ""
         this.guiScene.replaceContentFromText(tableObj, rowHeaderData, rowHeaderData.len(), this)
         tableObj.show(show)
-        tableObj.normalFont = ::is_low_width_screen() ? "yes" : "no"
+        tableObj.normalFont = is_low_width_screen() ? "yes" : "no"
       }
     }
 
@@ -357,7 +363,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function sortTable(table) {
-    table.sort(::mpstat_get_sort_func(this.gameType))
+    table.sort(mpstat_get_sort_func(this.gameType))
   }
 
   function onSkillBonusTooltip(obj) {
@@ -376,7 +382,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
     local tbl = null
 
-    objTbl.smallFont = ::is_low_width_screen() ? "yes" : "no"
+    objTbl.smallFont = is_low_width_screen() ? "yes" : "no"
 
     if (customTbl) {
       let idx = max(team - 1, -1)
@@ -544,44 +550,44 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
     let playerTeamIdx = clamp(playerTeam - 1, 0, 1)
     let teamTxt = ["", ""]
-    switch (this.gameType & (GT_MP_SCORE | GT_MP_TICKETS)) {
-      case GT_MP_SCORE:
-        if (!this.needPlayersTbl)
-          break
 
-        let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
+    let scoreType = this.gameType & (GT_MP_SCORE | GT_MP_TICKETS)
+    if (scoreType == GT_MP_SCORE) {
+      if (!this.needPlayersTbl)
+        return
+
+      let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
+      if (tbl.len() > playerTeamIdx) {
+        this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+        this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
+      }
+      if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
+        this.setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1 - playerTeamIdx].score))
+        this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
+      }
+      return
+    }
+
+    if (scoreType == GT_MP_TICKETS) {
+      if (this.needPlayersTbl) {
+        let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
+          loc("multiplayer/airfields") + loc("ui/colon") + "%d"
+
         if (tbl.len() > playerTeamIdx) {
-          this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+          this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
           this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
         }
         if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
-          this.setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1 - playerTeamIdx].score))
+          this.setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
           this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
         }
-        break
-
-      case GT_MP_TICKETS:
-        if (this.needPlayersTbl) {
-          let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
-                                loc("multiplayer/airfields") + loc("ui/colon") + "%d"
-
-          if (tbl.len() > playerTeamIdx) {
-            this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
-            this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
-          }
-          if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
-            this.setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
-            this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
-          }
-        }
-
-        break
+      }
     }
   }
 
   function updateStats(customTbl = null, customTblTeams = null, customFriendlyTeam = null) {
     local playerTeam   = this.getLocalTeam()
-    let friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
+    let friendlyTeam = customFriendlyTeam ?? get_player_army_for_hud()
     let tblObj1 = this.scene.findObject("table_kills_team1")
     let tblObj2 = this.scene.findObject("table_kills_team2")
 
@@ -605,10 +611,10 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
     if (playerTeam > 0)
       this.updateTeams(customTblTeams || get_mp_tbl_teams(), playerTeam, friendlyTeam)
 
-    if (this.checkRaceDataOnStart && ::is_race_started()) {
+    if (this.checkRaceDataOnStart && is_race_started()) {
       let chObj = this.scene.findObject("gc_race_checkpoints")
       if (checkObj(chObj)) {
-        let totalCheckpointsAmount = ::get_race_checkpioints_count()
+        let totalCheckpointsAmount = get_race_checkpioints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
           text = ::getCompoundedText(loc("multiplayer/totalCheckpoints") + loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
@@ -616,7 +622,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
         this.checkRaceDataOnStart = false
       }
 
-      this.numberOfWinningPlaces = ::get_race_winners_count()
+      this.numberOfWinningPlaces = get_race_winners_count()
     }
 
     ::update_team_css_label(this.scene.findObject("num_teams"), playerTeam)
@@ -971,7 +977,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
-      let mp_ffa_score_limit = ::get_mp_ffa_score_limit()
+      let mp_ffa_score_limit = get_mp_ffa_score_limit()
       if (!this.isTeamplay && mp_ffa_score_limit && checkObj(scoreLimitTextObj))
         scoreLimitTextObj.setValue(::getCompoundedText(loc("options/scoreLimit") + loc("ui/colon"),
                                    mp_ffa_score_limit,
@@ -1012,7 +1018,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
   getLocalTeam = @() ::get_local_team_for_mpstats()
   getOverrideCountryIconByTeam = @(team)
-    ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
+    getCurMissionRules().getOverrideCountryIconByTeam(team)
   getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
 
   setSceneMissionEnviroment = @() setMissionEnviroment(this.scene.findObject("mission_environment"))

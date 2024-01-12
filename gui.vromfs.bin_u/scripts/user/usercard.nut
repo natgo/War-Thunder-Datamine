@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -35,14 +38,16 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
     return
-  ::gui_start_modal_wnd(gui_handlers.UserCardHandler, { info = playerInfo })
+  loadHandler(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 
@@ -65,8 +70,11 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   statsMode = ""
   countryStats = null
   unitStats = null
+  rankStats = null
+  allRanksStats = null
   availableUTypes = null
   availableCountries = null
+  availableRanks = null
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
@@ -83,6 +91,11 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   isFilterVisible = false
 
   ribbonsRowLength = 3
+
+  filterTypes = {}
+  applyFilterTimer = null
+
+  nameStats = ""
 
   function initScreen() {
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
@@ -105,14 +118,14 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     local isMyPage = false
     if ("uid" in this.player) {
-      this.taskId = ::req_player_public_statinfo(this.player.uid)
+      this.taskId = req_player_public_statinfo(this.player.uid)
       if (userIdStr.value == this.player.uid)
         isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
     }
     else if ("id" in this.player) {
-      this.taskId = ::req_player_public_statinfo_by_player_id(this.player.id)
+      this.taskId = req_player_public_statinfo_by_player_id(this.player.id)
       let selfPlayerId = getTblValue("uid", get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == this.player.id)
         isMyPage = true
@@ -121,7 +134,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     else {
       this.searchPlayerByNick = true
-      this.taskId = ::find_nicks_by_prefix(this.player.name, 1, false)
+      this.taskId = find_nicks_by_prefix(this.player.name, 1, false)
     }
 
     if (isMyPage)
@@ -130,7 +143,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.taskId < 0)
       return this.notFoundPlayerMsg()
 
-    ::set_char_cb(this, this.slotOpCb)
+    set_char_cb(this, this.slotOpCb)
     this.afterSlotOp = this.tryFillUserStats
     this.afterSlotOpError = function(_result) { /* notFoundPlayerMsg() */ this.goBack() }
 
@@ -177,14 +190,14 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.searchPlayerByNick = false
 
     local searchRes = DataBlock()
-    searchRes = ::get_nicks_find_result_blk()
+    searchRes = get_nicks_find_result_blk()
     foreach (uid, nick in searchRes)
       if (nick == this.player.name) {
         this.player.uid <- uid
-        this.taskId = ::req_player_public_statinfo(this.player.uid)
+        this.taskId = req_player_public_statinfo(this.player.uid)
         if (this.taskId < 0)
           return this.notFoundPlayerMsg()
-        ::set_char_cb(this, this.slotOpCb)
+        set_char_cb(this, this.slotOpCb)
         return
       }
     return this.notFoundPlayerMsg()
@@ -198,7 +211,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return;
 
     let blk = DataBlock()
-    ::get_player_public_stats(blk)
+    get_player_public_stats(blk)
 
     if (!blk?.nick || blk.nick == "") { //!!FIX ME: Check incorrect user by no uid in answer.
       this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
@@ -482,7 +495,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      let locText = loc("title/" + id)
+      let locText = loc($"title/{id}")
       titles.append({
         name = id
         text = locText
@@ -588,6 +601,8 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.fillUnitListCheckBoxes()
     this.fillCountriesCheckBoxes()
+    this.fillRanksCheckBoxes()
+    this.nameStats = ""
 
     let nestObj = this.scene.findObject("filter_nest")
     openPopupFilter({
@@ -603,7 +618,8 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function fillUnitListCheckBoxes() {
     this.availableUTypes = {}
-    this.unitStats = []
+    if (!this.isOwnStats)
+      this.unitStats = []
 
     foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailable())
@@ -617,6 +633,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         text  = unitType.getArmyLocName()
       }
     }
+    this.filterTypes["unit"] <- { referenceArr = this.availableUTypes selectedArr = this.unitStats }
   }
 
   function fillCountriesCheckBoxes() {
@@ -629,24 +646,42 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         text  = loc(inst)
       }
 
-    if (!this.countryStats)
-      this.countryStats = [profileCountrySq.value]
+    if (!this.countryStats && !this.isOwnStats)
+      this.countryStats = []
+
+    this.filterTypes["country"] <- { referenceArr = this.availableCountries selectedArr = this.countryStats }
+  }
+
+  function fillRanksCheckBoxes() {
+    this.availableRanks = {}
+    if (!this.isOwnStats)
+      this.rankStats = []
+    this.allRanksStats = []
+    for (local i = 1; i <= ::max_country_rank; i++) {
+      this.availableRanks[i] <- {
+        id    = $"rank_{i}"
+        idx   = i
+        text  = $"{loc("shop/age")} {get_roman_numeral(i)}"
+      }
+      this.allRanksStats.append(i)
+    }
+
+    this.filterTypes["rank"] <- { referenceArr = this.availableRanks selectedArr = this.rankStats }
   }
 
   function getFiltersView() {
     let res = []
-    foreach (tName in ["country", "unit"]) {
-      let isUnitType = tName == "unit"
-      let selectedArr = this[$"{tName}Stats"]
-      let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
+    foreach (tName in ["country", "unit", "rank"]) {
+      let selectedArr = this.filterTypes[tName].selectedArr
+      let referenceArr = this.filterTypes[tName].referenceArr
       let view = { checkbox = [] }
       foreach (idx, inst in referenceArr)
         view.checkbox.append({
           id = inst.id
           idx = inst.idx
-          image = inst.image
+          image = inst?.image
           text = inst.text
-          value = !isUnitType && isInArray(idx, selectedArr)
+          value = isInArray(idx, selectedArr)
         })
 
       view.checkbox.sort(@(a, b) a.idx <=> b.idx)
@@ -657,9 +692,8 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onFilterCbChange(objId, tName, value) {
-    let selectedArr = this[$"{tName}Stats"]
-    let isUnitType = tName == "unit"
-    let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
+    let selectedArr = this.filterTypes[tName].selectedArr
+    let referenceArr = this.filterTypes[tName].referenceArr
     let isReset = objId == RESET_ID
 
     foreach (idx, inst in referenceArr) {
@@ -676,6 +710,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function fillAirStatsScene(airStats) {
+
     if (!checkObj(this.scene))
       return
 
@@ -684,6 +719,8 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let filterUnits = this.unitStats.len() > 0 ? this.unitStats
       : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
     let filterCountry = this.countryStats.len() > 0 ? this.countryStats : shopCountriesList
+    let filterRank = this.rankStats.len() > 0 ? this.rankStats : this.allRanksStats
+    let filterName = this.nameStats
 
     local checkList = []
     let typeName = "total"
@@ -692,15 +729,23 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       checkList = airStats[modeName][typeName]
     foreach (item in checkList) {
       let air = getAircraftByName(item.name)
+      let airLocName = air ? getUnitName(air, true) : ""
       let unitTypeShopId = ::get_army_id_by_es_unit_type(getEsUnitType(air))
       if (!isInArray(unitTypeShopId, filterUnits))
           continue
+
+      if (!isInArray(air.rank, filterRank))
+        continue
+
+      if(filterName != "" && ([airLocName, air.name].findindex(@(v) utf8ToLower(v).indexof(filterName) != null) == null))
+        continue
+
       if (!("country" in item)) {
         item.country <- air ? air.shopCountry : ""
         item.rank <- air ? air.rank : 0
       }
       if (! ("locName" in item))
-        item.locName <- air ? getUnitName(air, true) : ""
+        item.locName <- airLocName
       if (isInArray(item.country, filterCountry))
         this.airStatsList.append(item)
     }
@@ -799,7 +844,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           if ("tooltip" in cell) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
-            tooltips[rowName][item.id] <- cell.rawdelete("tooltip")
+            tooltips[rowName][item.id] <- cell.$rawdelete("tooltip")
           }
           rowData.append(cell)
         }
@@ -905,7 +950,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           if ("tooltip" in res) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
-            tooltips[rowName][lbCategory.id] <- res.rawdelete("tooltip")
+            tooltips[rowName][lbCategory.id] <- res.$rawdelete("tooltip")
           }
 
           rowData.append(res)
@@ -964,7 +1009,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let contact = ::getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
-    let canBan = isMe ? false : (::myself_can_devoice() || ::myself_can_ban())
+    let canBan = isMe ? false : (::myself_can_devoice() || myself_can_ban())
     let isFriend = contact?.isInFriendGroup() ?? false
     let isBlock = contact?.isInBlockGroup() ?? false
 
@@ -1060,5 +1105,24 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     openUrl(loc("url/achievements",
         { appId = APP_ID, name = encode_uri_component(this.player.name) }),
       false, false, "profile_page")
+  }
+
+  function onFilterCancel(filterObj) {
+    if (filterObj.getValue() != "")
+      filterObj.setValue("")
+    else
+      this.guiScene.performDelayed(this, this.goBack)
+  }
+
+  function applyFilter(obj) {
+    clearTimer(this.applyFilterTimer)
+    this.nameStats = utf8ToLower(obj.getValue())
+    if(this.nameStats == "") {
+      this.fillAirStats()
+      return
+    }
+
+    let applyCallback = Callback(@() this.fillAirStats(), this)
+    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
   }
 }

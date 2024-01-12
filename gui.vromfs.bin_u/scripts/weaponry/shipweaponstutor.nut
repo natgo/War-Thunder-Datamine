@@ -1,8 +1,12 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
 let { isModMounted } = require("%scripts/weaponry/modificationInfo.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { getPvpRespawnsOnUnitType, isStatsLoaded, isMeNewbieOnUnitType
+} = require("%scripts/myStats.nut")
 
 const MAX_WEAPONS_TUTOR_SHOWS = 2
 const MIN_RESPAWNS_REQUIRED = 8
@@ -41,9 +45,9 @@ let function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
   if (numShows >= MAX_WEAPONS_TUTOR_SHOWS)
     return
 
-  if (!::my_stats.isStatsLoaded()
-      || !::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
-      || (::my_stats.getPvpRespawnsOnUnitType(ES_UNIT_TYPE_SHIP) < MIN_RESPAWNS_REQUIRED))
+  if (!isStatsLoaded()
+      || !isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
+      || (getPvpRespawnsOnUnitType(ES_UNIT_TYPE_SHIP) < MIN_RESPAWNS_REQUIRED))
     return
 
   let hasReqMods = weaponsHandler.unit.modifications.findindex(

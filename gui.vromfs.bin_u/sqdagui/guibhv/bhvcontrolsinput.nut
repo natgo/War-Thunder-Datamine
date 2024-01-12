@@ -43,7 +43,7 @@ let ControlsInput = class {
   }
 
   function checkActive(obj) {
-    let isActive = ::is_app_active() && !::steam_is_overlay_active()
+    let isActive = is_app_active() && !steam_is_overlay_active()
     if (!isActive) {
       local hasChanges = false
       for (local i = 0; i < 3; i++) {
@@ -200,4 +200,7 @@ let ControlsInput = class {
     return RETCODE_HALT
   }
 }
+
+replace_script_gui_behaviour("ControlsInput", ControlsInput)
+
 return {ControlsInput}

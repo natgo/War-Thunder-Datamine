@@ -1,10 +1,13 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import browser_reload_page, browser_go, browser_get_current_url, browser_go_back
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let statsd = require("statsd")
@@ -28,11 +31,11 @@ let { addTask } = require("%scripts/tasker.nut")
 }
 
 ::is_builtin_browser_active <- function is_builtin_browser_active() {
-  return ::isHandlerInScene(gui_handlers.BrowserModalHandler)
+  return isHandlerInScene(gui_handlers.BrowserModalHandler)
 }
 
 ::open_browser_modal <- function open_browser_modal(url = "", tags = [], baseUrl = "") {
-  ::gui_start_modal_wnd(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
+  loadHandler(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
 }
 
 ::close_browser_modal <- function close_browser_modal() {
@@ -54,7 +57,7 @@ let { addTask } = require("%scripts/tasker.nut")
     handler.externalUrl = url;
 }
 
-gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
+gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/browser.blk"
   sceneNavBlkName = null
@@ -70,7 +73,7 @@ gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
     let browserObj = this.scene.findObject("browser_area")
     browserObj.url = this.url
     this.lastLoadedUrl = this.baseUrl
-    ::browser_go(this.url)
+    browser_go(this.url)
   }
 
   function browserCloseAndUpdateEntitlements() {
@@ -84,17 +87,17 @@ gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
   }
 
   function browserGoBack() {
-    ::browser_go_back()
+    browser_go_back()
   }
 
   function onBrowserBtnReload() {
-    ::browser_reload_page()
+    browser_reload_page()
   }
 
   function browserForceExternal() {
     local taggedUrl = this.isLoadingPage
       ? this.lastLoadedUrl
-      : ::browser_get_current_url()
+      : browser_get_current_url()
     if (!u.isEmpty(this.urlTags) && taggedUrl != "") {
       let tagsStr = " ".join(this.urlTags)
       if (!startsWith(taggedUrl, tagsStr))
@@ -115,61 +118,59 @@ gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
   }
 
   function onEventEmbeddedBrowser(params) {
-    switch (params.eventType) {
-      case BROWSER_EVENT_DOCUMENT_READY:
-        this.lastLoadedUrl = ::browser_get_current_url()
+    let evType = params.eventType
+    if (evType == BROWSER_EVENT_DOCUMENT_READY) {
+      this.lastLoadedUrl = browser_get_current_url()
+      this.toggleWaitAnimation(false)
+    }
+    else if (evType == BROWSER_EVENT_FAIL_LOADING_FRAME) {
+      if (params.isMainFrame) {
         this.toggleWaitAnimation(false)
-        break;
-      case BROWSER_EVENT_FAIL_LOADING_FRAME:
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(false)
-          let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
-            "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
-          let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
-          this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
-        }
-        break;
-      case BROWSER_EVENT_NEED_RESEND_FRAME:
-        this.toggleWaitAnimation(false)
+        let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
+          "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
+        let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
+        this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
+      }
+    }
+    else if (evType == BROWSER_EVENT_NEED_RESEND_FRAME) {
+      this.toggleWaitAnimation(false)
 
-        this.msgBox("error", loc("browser/error_should_resend_data"),
-            [["#mainmenu/btnBack", this.browserGoBack],
-             ["#mainmenu/btnRefresh",  function() { ::browser_go(params.url) }]],
-             "#mainmenu/btnBack")
-        break;
-      case BROWSER_EVENT_CANT_DOWNLOAD:
+      this.msgBox("error", loc("browser/error_should_resend_data"),
+          [["#mainmenu/btnBack", this.browserGoBack],
+           ["#mainmenu/btnRefresh",  function() { browser_go(params.url) }]],
+           "#mainmenu/btnBack")
+    }
+    else if (evType == BROWSER_EVENT_CANT_DOWNLOAD) {
+      this.toggleWaitAnimation(false)
+      showInfoMsgBox(loc("browser/error_cant_download"))
+    }
+    else if (evType == BROWSER_EVENT_BEGIN_LOADING_FRAME) {
+      if (params.isMainFrame) {
+        this.toggleWaitAnimation(true)
+        this.setTitle(params.title)
+      }
+    }
+    else if (evType == BROWSER_EVENT_FINISH_LOADING_FRAME) {
+      this.lastLoadedUrl = browser_get_current_url()
+      if (params.isMainFrame) {
         this.toggleWaitAnimation(false)
-        showInfoMsgBox(loc("browser/error_cant_download"))
-        break;
-      case BROWSER_EVENT_BEGIN_LOADING_FRAME:
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(true)
-          this.setTitle(params.title)
-        }
-        break;
-      case BROWSER_EVENT_FINISH_LOADING_FRAME:
-        this.lastLoadedUrl = ::browser_get_current_url()
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(false)
-          this.setTitle(params.title)
-        }
-        break;
-      case BROWSER_EVENT_BROWSER_CRASHED:
-        log("[BRWS] embedded browser crashed, forcing external")
-        statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
-        this.browserForceExternal()
-        this.goBack()
-        break;
-      default:
-        log("[BRWS] onEventEmbeddedBrowser: unknown event type "
-          + params.eventType);
-        break;
+        this.setTitle(params.title)
+      }
+    }
+    else if (evType == BROWSER_EVENT_BROWSER_CRASHED) {
+      log("[BRWS] embedded browser crashed, forcing external")
+      statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
+      this.browserForceExternal()
+      this.goBack()
+    }
+    else {
+      log("[BRWS] onEventEmbeddedBrowser: unknown event type", params.eventType)
     }
   }
 
   function onEventWebPollAuthResult(_param) {
     // WebPollAuthResult event may come before browser opens the page
-    let currentUrl = u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
+    let currentUrl = u.isEmpty(browser_get_current_url()) ? this.url : browser_get_current_url()
     if (u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
@@ -33,8 +34,6 @@ enum money_color {
   BAD      = 1,
   GOOD     = 2
 }
-
-::zero_money <- null //instance of Money, which equals zero.
 
 let __data_fields = ["gold", "wp", "frp", "rp", "sap"]
 
@@ -258,7 +257,7 @@ let Money = class {
   }
 }
 
-let Balance = class extends Money {
+let Balance = class (Money) {
   mType = money_type.balance
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
@@ -272,7 +271,7 @@ let Balance = class extends Money {
   function __get_sap_color_id()   { return __get_color_id_by_value(this.sap) }
 }
 
-let Cost = class extends Money {
+let Cost = class (Money) {
   mType = money_type.cost
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
@@ -280,19 +279,19 @@ let Cost = class extends Money {
   }
 
   function __get_wp_color_id() {
-    return ::get_cur_rank_info().wp >= this.wp ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().wp >= this.wp ? money_color.NEUTRAL : money_color.BAD
   }
 
   function __get_gold_color_id() {
-    return ::get_cur_rank_info().gold >= this.gold ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().gold >= this.gold ? money_color.NEUTRAL : money_color.BAD
   }
 
   function __get_frp_color_id() {
-    return ::get_cur_rank_info().exp >= this.frp ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().exp >= this.frp ? money_color.NEUTRAL : money_color.BAD
   }
 }
 
-::zero_money = Money(money_type.none)
+::zero_money <- Money(money_type.none)
 
 u.registerClass("Money", Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
 

@@ -1,10 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Warpoints <- class extends ItemCouponBase {
+let Warpoints = class (ItemCouponBase) {
   static iType = itemType.WARPOINTS
+  static name = "Warpoints"
   static typeIcon = "#ui/gameuiskin#item_type_warpoints.svg"
 
   getWarpoints         = @() this.metaBlk?.warpoints ?? 0
@@ -16,6 +17,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     let wp = this.getWarpoints()
     if (wp == 0)
       return null
-    return count * wp //prize already has type icon, so we no need 2 warpoints icons near amount number
+    return count > 1 ? $"{wp} x{count}" : $"{wp}"
   }
 }
+return {Warpoints}

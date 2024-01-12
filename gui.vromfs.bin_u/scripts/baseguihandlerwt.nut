@@ -1,15 +1,19 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, get_char_extended_error, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
+let { isRanksAllowed } = require("%scripts/ranks.nut")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, isInMenu, handlersManager, loadHandler, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
@@ -24,6 +28,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
 let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -39,7 +45,7 @@ let function moveToFirstEnabled(obj) {
     let child = obj.getChild(i)
     if (!child.isValid() || !child.isEnabled())
       continue
-    ::move_mouse_on_obj(child)
+    move_mouse_on_obj(child)
     break
   }
 }
@@ -58,7 +64,7 @@ let function getDropDownRootObj(obj) {
   return null
 }
 
-let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
+let BaseGuiHandlerWT = class (BaseGuiHandler) {
   canQuitByGoBack = true
 
   squadWidgetHandlerWeak = null
@@ -123,7 +129,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function initGcBackButton() {
-    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
+    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !is_in_loading_screen())
   }
 
   function initSquadWidget() {
@@ -219,9 +225,9 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function save(onlineSave = true) {
     let handler = this
     log("save")
-    if (::is_save_device_selected()) {
+    if (is_save_device_selected()) {
       local saveRes = SAVELOAD_OK;
-      saveRes = ::save_profile(onlineSave && ::is_online_available())
+      saveRes = ::save_profile(onlineSave && is_online_available())
 
       if (saveRes != SAVELOAD_OK) {
         log("saveRes = " + saveRes.tostring())
@@ -235,7 +241,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
           ["yes", function() {
               log("performDelayed save")
               handler.guiScene.performDelayed(handler, function() {
-                ::select_save_device(true)
+                select_save_device(true)
                 this.save(onlineSave)
                 handler.afterSave()
               })
@@ -256,7 +262,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
             log("performDelayed save")
             handler.guiScene.performDelayed(handler, function() {
-              ::select_save_device(true)
+              select_save_device(true)
               this.save(onlineSave)
             })
         }],
@@ -280,7 +286,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
     this.task.gm <- get_game_mode()
 
-    this.taskId = ::update_entitlements()
+    this.taskId = update_entitlements()
     if (::is_dev_version && this.taskId < 0)
       this.goForward(start_func)
     else {
@@ -289,7 +295,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
         progressBoxText = loc("charServer/checking")
       }
       let taskSuccessCallback = Callback(function () {
-          if (::checkAllowed.bindenv(this)(this.task))
+          if (isRanksAllowed.bindenv(this)(this.task))
             this.goForward(this.startFunc)
         }, this)
       addTask(this.taskId, taskOptions, taskSuccessCallback)
@@ -304,7 +310,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function goForwardIfOnline(start_func, skippable, start_without_forward = false) {
-    if (::is_online_available()) {
+    if (is_online_available()) {
       this.goForwardOrJustStart(start_func, start_without_forward)
       return
     }
@@ -349,7 +355,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
             if (handler)
               afterCloseShop.call(handler)
           }
-        ::OnlineShopModel.launchOnlineShop(handler, chapter, closeFunc, metric)
+        ::launchOnlineShop(handler, chapter, closeFunc, metric)
       }, false, true)
   }
 
@@ -383,7 +389,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onProfile(_obj) {
-    let canShowReward = ::isInMenu() && getManualUnlocks().len() >= 1
+    let canShowReward = isInMenu() && getManualUnlocks().len() >= 1
     let params = canShowReward ? {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getManualUnlocks()[0].id
@@ -392,7 +398,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onMyClanOpen() {
-    ::gui_modal_clans("my_clan")
+    loadHandler(gui_handlers.ClansModalHandler, { startPage = "my_clan" })
   }
 
   function onGC_chat(_obj) {
@@ -403,7 +409,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function switchChatWindow() {
-    if (::gchat_is_enabled() && hasMenuChat.value)
+    if (gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObj(::getChatDiv(this.scene))
   }
 
@@ -450,7 +456,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onTake(unit, params = {}) {
-    unitActions.take(unit, {
+    takeUnitInSlotbar(unit, {
         unitObj = unit?.name ? this.scene.findObject(unit.name) : null
         shouldCheckCrewsReady = this.shouldCheckCrewsReady
       }.__update(params))
@@ -467,10 +473,10 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
 
     local value = obj.getValue()
-    if (value == ::get_auto_refill(mode))
+    if (value == get_auto_refill(mode))
       return
-    ::set_auto_refill(mode, value)
-    addTask(::save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
+    set_auto_refill(mode, value)
+    addTask(save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
   }
 
@@ -517,7 +523,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   getParamsForActionsList = @() {}
   getUnitParamsFromObj = @(unitObj) {
     unit = getAircraftByName(unitObj?.unit_name)
-    crew = unitObj?.crew_id ? ::get_crew_by_id(unitObj.crew_id.tointeger()) : null
+    crew = unitObj?.crew_id ? getCrewById(unitObj.crew_id.tointeger()) : null
   }
 
   function openUnitActionsList(unitObj, ignoreSelect = false, ignoreHover = false) {
@@ -579,7 +585,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
         && ("get_char_extended_error" in getroottable()))
         if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
-          let notAllowedChars = ::get_char_extended_error()
+          let notAllowedChars = get_char_extended_error()
           text = format(text, notAllowedChars)
         }
 
@@ -673,13 +679,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onSupport()         { openUrl(loc("url/support")) }
   function onWiki()            { openUrl(loc("url/wiki")) }
 
-  function onSquadCreate(_obj) {
-    if (::g_squad_manager.isInSquad())
-      this.msgBox("already_in_squad", loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
-    else
-      ::chatInviteToSquad(null, this)
-  }
-
   function unstickLastDropDown(newObj = null, forceMove = "no") {
     if (checkObj(stickedDropDown) && (!newObj || !stickedDropDown.isEqual(newObj))) {
       setForceMove(stickedDropDown, forceMove)
@@ -711,7 +710,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function onHoverSizeMove(obj) {
     //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
-    if (!::is_mouse_last_time_used())
+    if (!is_mouse_last_time_used())
       return
     this.unstickLastDropDown(getDropDownRootObj(obj))
   }
@@ -740,7 +739,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     }
 
     this.curGCDropdown = id
-    ::move_mouse_on_obj(obj)
+    move_mouse_on_obj(obj)
     this.guiScene.playSound("menu_appear")
   }
 
@@ -756,7 +755,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
     }
 
-    if (::is_mouse_last_time_used() || !stickedDropDown?.isValid())
+    if (is_mouse_last_time_used() || !stickedDropDown?.isValid())
       return
     let rootObj = getDropDownRootObj(obj)
     if (!rootObj || !stickedDropDown.isEqual(rootObj))
@@ -766,11 +765,11 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
     moveToFirstEnabled(menuObj)
     local tempTask = -1
-    tempTask = ::periodic_task_register(this,
+    tempTask = periodic_task_register(this,
       function(_) {
         if (this.isValid() && stickedDropDown?.isValid() && rootObj?.isValid() && stickedDropDown.isEqual(rootObj))
           this.unstickLastDropDown()
-        ::periodic_task_unregister(tempTask)
+        periodic_task_unregister(tempTask)
       },
       1)
   }
@@ -784,7 +783,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       this.unstickLastDropDown()
   }
 
-  onBackDropdownMenu   = @(obj) ::move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
+  onBackDropdownMenu   = @(obj) move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
   getCurGCDropdownBtn  = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_btn") : null
   getCurGCDropdownMenu = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_focus") : null
 
@@ -863,7 +862,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     else
       this.restoreMainOptions()
 
-    if (::is_hud_visible())
+    if (is_hud_visible())
       this.onShowHud()
 
     base.onSceneActivate(show)
@@ -915,6 +914,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   onAltModActionCommon = @() null
   onModUnhover = @() null
   onModButtonNestUnhover = @() null
+  onGoToModTutorial = @() null
 
   function onShowMapRenderFilters() {}
 

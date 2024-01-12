@@ -14,13 +14,14 @@ let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { platformId }  = require("%sqstd/platform.nut")
-let { toPixels, showObjById, showObjectsByTable } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, showObjById, showObjectsByTable, ALIGN } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let nativeApi = require("%sqDagui/daguiNativeApi.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
 let { scene_msg_box, destroyMsgBox, showInfoMsgBox } = require("%sqDagui/framework/msgBox.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isStringFloat } = require("%sqstd/string.nut")
+let sharedEnums = require("wtSharedEnums")
 
 let getTblValue = @(key, tbl, defValue = null) key in tbl ? tbl[key] : defValue
 
@@ -102,7 +103,7 @@ let function get_roman_numeral(num) { // -return-different-types
 }
 
 
-return log.__merge(nativeApi, {
+return log.__merge(nativeApi, sharedEnums, {
   min
   max
   clamp
@@ -146,6 +147,8 @@ return log.__merge(nativeApi, {
 
   //some ugly stuff
   getAircraftByName
+
+  ALIGN
 })
 
 

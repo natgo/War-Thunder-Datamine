@@ -1,11 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, char_send_custom_action, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -32,7 +33,7 @@ let function isRewardVisible (medal, clanData) {
   return false
 }
 
-gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType            = handlerType.MODAL
   sceneTplName       = "%gui/rewards/clanRewardsModal.tpl"
   rewards            = null
@@ -46,7 +47,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
     this.maxClanBestRewards = get_warpoints_blk()?.maxClanBestRewards ?? this.maxClanBestRewards
     let blocksCount = this.rewards.len() > 3 ? 2 : 1
     let myClanRights = ::g_clans.getMyClanRights()
-    this.canEditBestRewards = this.clanId == ::clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
+    this.canEditBestRewards = this.clanId == clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
     return {
       width = blocksCount + "@unlockBlockWidth + " + (blocksCount - 1) + "@framePadding"
       isEditable = this.canEditBestRewards
@@ -64,7 +65,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     this.fillBestRewardsIds()
-    ::move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
+    move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
   }
 
   function fillBestRewardsIds() {
@@ -115,13 +116,13 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
     if (! this.canEditBestRewards || u.isEqual(this.bestIds, this.checkupIds))
       return
 
-    let taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
+    let taskId = char_send_custom_action("cln_set_clan_best_rewards",
       EATT_SIMPLE_OK,
       DataBlock(),
       json_to_string({ clanId = this.clanId, bestRewards = this.getBestRewardsConfig() }, false),
       -1)
     addTask(taskId, { showProgressBox = false })
-    ::sync_handler_simulate_signal("clan_info_reload")
+    sync_handler_simulate_signal("clan_info_reload")
   }
 
   function onActivate(obj) {

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -11,7 +10,7 @@ let { get_charserver_time_sec } = require("chard")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
-gui_handlers.WwHelpSlotbarGroupsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwHelpSlotbarGroupsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWndCustom.blk"
 

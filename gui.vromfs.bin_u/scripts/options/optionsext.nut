@@ -1,11 +1,17 @@
 //-file:plus-string
-
+from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, get_cur_rank_info, set_option_countermeasures_series, get_option_autopilot_on_bombview, apply_current_view_type, set_option_countermeasures_series_periods, set_activate_ground_active_counter_measures_on_spawn, get_option_subs_radio, get_option_ground_radar_target_cycling, get_commander_camera_in_views, get_option_voice_message_voice, set_option_bomb_activation_time, set_option_camera_invertY, get_option_gunVerticalTargeting, get_option_gun_target_dist, set_option_radar_target_cycling, get_activate_ground_radar_on_spawn, get_option_save_zoom_camera, set_internet_radio_options, set_option_save_zoom_camera, get_option_rocket_fuse_dist, set_option_use_oculus_to_aim_helicopter, get_option_showPilot, get_user_alt_crosshairs, save_online_single_job, get_dgs_tex_quality, set_option_use_perfect_rangefinder, set_option_activate_airborne_active_counter_measures_on_spawn, set_option_subs, get_option_hud_show_fuel, myself_can_devoice, set_option_autopilot_on_bombview, set_option_combine_pri_sec_triggers, get_option_grass_in_tank_vision, get_strobe_enemy, set_option_voice_message_voice, get_option_countermeasures_periods, get_option_hud_screenshot_logo, set_option_grass_in_tank_vision, set_option_indicatedSpeedType, get_option_camera_invertY, get_option_bombs_series, set_option_hud, get_bomb_activation_auto_time, get_option_ai_target_type, get_option_use_rectangular_radar_indicator, set_option_default_ai_target_type, set_option_gain, get_option_vibration, set_option_tank_gunner_camera_from_sight, get_option_xray_death, set_option_gamma, set_option_use_rectangular_radar_indicator, get_option_invertY, get_option_tank_gunner_camera_from_sight, get_option_indicatedSpeedType, ps4_headtrack_get_enable, get_hue, get_option_autorearm_on_airfield, get_option_gamma, get_options_torpedo_dive_depth, set_hud_crosshair_type, set_option_deflection, set_hud_crosshair_color, set_option_zoom_turret, get_option_radar_target_cycling, get_option_countermeasures_series, set_option_hud_indicators, get_option_view_type, set_option_xray_death, get_option_delayed_download_content, get_aircraft_fuel_consumption, set_option_activate_airborne_radar_on_spawn, get_option_gain, get_option_subs, set_option_speech_country_type, get_option_use_radar_hud_in_cockpit, get_option_tank_alt_crosshair, get_option_deflection, set_option_invertX, get_option_hud_show_ammo, set_option_bombs_series, get_internet_radio_stations, set_option_subs_radio, get_option_bomb_activation_type, set_profile_pilot, set_commander_camera_in_views, get_option_ai_gunner_time, set_hue, get_option_auto_pilot_on_gunner_view_helicopter, get_show_destroyed_parts, myself_can_ban, get_option_countermeasures_series_periods, get_option_aerobatics_smoke_color, get_allow_to_be_added_to_lb, get_current_view_type, set_option_autorearm_on_airfield, set_option_hud_screenshot_logo, set_option_view_type, ps4_headtrack_set_xscale, set_option_auto_pilot_on_gunner_view_helicopter, get_option_zoom_turret, set_option_horizontal_speed, set_option_showPilot, get_option_invertX, set_option_hud_show_fuel, get_option_use_oculus_to_aim_helicopter, set_option_bomb_activation_type, set_strobe_ally, set_option_ground_radar_target_cycling, set_option_tank_alt_crosshair, get_activate_ground_active_counter_measures_on_spawn, get_strobe_ally, set_option_aerobatics_smoke_color, get_option_use_perfect_rangefinder, get_hud_crosshair_type, get_option_hud_indicators, set_option_ai_target_type, set_option_rocket_fuse_dist, set_option_gunVerticalTargeting, get_option_horizontal_speed, set_option_controller_light, set_option_hud_color, get_hud_crosshair_color, get_option_controller_light, set_show_destroyed_parts, set_option_hud_show_temperature, get_option_depthcharge_activation_time, get_enable_laser_designatior_before_launch, set_option_xray_kill, set_option_unit_type, set_option_gun_target_dist, get_option_speech_country_type, get_option_xchg_sticks, get_option_bomb_activation_time, get_option_mouse_smooth, set_option_hud_show_ammo, get_option_hud_color, set_option_torpedo_dive_depth, set_option_mouse_smooth, set_allow_to_be_added_to_lb, get_option_xray_kill, get_internet_radio_path, get_option_hud_show_temperature, get_option_autosave_replays, ps4_headtrack_set_enable, set_strobe_enemy, set_option_autosave_replays, get_option_aerobatics_smoke_type, get_internet_radio_options, get_option_hud, get_option_activate_airborne_active_counter_measures_on_spawn, get_option_indicators_mode, set_option_aerobatics_smoke_type, ps4_headtrack_get_yscale, set_option_delayed_download_content, ps4_headtrack_set_yscale, is_unlocked, set_option_ai_gunner_time, set_option_countermeasures_periods, set_option_vibration, set_option_xchg_sticks, get_aircraft_max_fuel, ps4_headtrack_get_xscale, get_option_activate_airborne_radar_on_spawn, set_option_indicators_mode, set_option_invertY, get_option_torpedo_dive_depth
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 from "%scripts/options/optionsExtNames.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
+from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT
+from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR
+from "%scripts/options/optionsConsts.nut" import TANK_ALT_CROSSHAIR_ADD_NEW
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/mainConsts.nut" import SEEN
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -54,11 +60,13 @@ let { has_forced_crosshair } = require("crosshair")
 let { getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnitSpecial, get_mission_mode, getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let {
   get_option_radar_aim_elevation_control,
   set_option_radar_aim_elevation_control,
+  get_option_rwr_sensitivity = @() 100,
+  set_option_rwr_sensitivity = @(_value) null,
   get_option_seeker_auto_stabilization,
   set_option_seeker_auto_stabilization,
   get_gyro_sight_deflection,
@@ -72,15 +80,14 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 let { debug_dump_stack } = require("dagor.debug")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
-let { dynamicGetZones, getDynamicLayoutsBlk } = require("dynamicMission")
+let { dynamicGetZones } = require("dynamicMission")
 let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   get_option_chat_filter, set_option_chat_filter,
   set_option_auto_show_chat, get_option_voicechat,
   set_option_voicechat, get_option_chat_messages_filter,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
-let { get_meta_missions_info, get_mp_session_info,
-  get_mission_set_difficulty_int } = require("guiMission")
+let { get_mp_session_info, get_mission_set_difficulty_int } = require("guiMission")
 let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -89,13 +96,13 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 let { setLastSkin, getAutoSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName
+let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName, getGameModeMaps
 } = require("%scripts/missions/missionsUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
-let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
+let { get_game_params_blk, get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEnabledCustomLocalization, setCustomLocalization,
   getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
@@ -103,32 +110,21 @@ let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isMeAllowedToBeAddedToContacts, setAbilityToBeAddedToContacts } = require("%scripts/contacts/contactsState.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 
-::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
+const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
 
 const BOMB_ACT_TIME = 0
 const BOMB_ACT_ASSAULT = 1
 
-global enum misCountries {
-  ALL
-  BY_MISSION
-  SYMMETRIC
-  CUSTOM
-}
-
 setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-::game_mode_maps <- []
-::dynamic_layouts <- []
 ::aircraft_for_weapons <- null
 ::cur_aircraft_name <- null
 ::bullets_locId_by_caliber <- []
 ::modifications_locId_by_caliber <- []
-::game_movies_in <- {}
-::game_movies_out <- {}
-::game_movies_in_ach <- {}
-::game_movies_out_ach <- {}
 ::crosshair_icons <- []
 ::crosshair_colors <- []
 ::thermovision_colors <- []
@@ -152,7 +148,6 @@ let clanRequirementsRankDescId = {
 
 registerPersistentData("OptionsExtGlobals", getroottable(),
   [
-    "game_mode_maps", "dynamic_layouts",
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",
     "crosshair_icons", "crosshair_colors", "thermovision_colors"
   ])
@@ -169,72 +164,6 @@ registerPersistentData("OptionsExtGlobals", getroottable(),
 }
 
 local isWaitMeasureEvent = false
-
-::get_game_mode_maps <- function get_game_mode_maps() {
-  if (::game_mode_maps.len())
-    return ::game_mode_maps
-
-  for (local modeNo = 0; modeNo < GM_COUNT; ++modeNo) {
-    let mi = get_meta_missions_info(modeNo)
-
-    let modeMap = {}
-    modeMap.items <- []
-    modeMap.values <- []
-    modeMap.coop <- []
-
-    for (local i = 0; i < mi.len(); ++i) {
-      let blkMap = mi[i]
-      let chapterName = blkMap.getStr("chapter", "")
-
-      let misId = blkMap.getStr("name", "")
-      modeMap.values.append(misId)
-      modeMap.items.append("#missions/" + misId)
-      modeMap.coop.append(blkMap.getBool("gt_cooperative", false))
-
-      let videoIn = blkMap.getStr("video_in", "")
-      if (videoIn.len()) {
-        ::game_movies_in[chapterName + "/" + misId] <- videoIn
-        log("[VIDEO] " + videoIn + " [IN] " + chapterName + "/" + misId);
-      }
-
-      let videoOut = blkMap.getStr("video_out", "");
-      if (videoOut.len()) {
-        ::game_movies_out[chapterName + "/" + misId] <- videoOut
-        log("[VIDEO] " + videoOut + " [OUT] " + chapterName + "/" + misId);
-      }
-
-      let videoInAch = blkMap.getStr("achievement_after_video_in", "");
-      if (videoInAch.len()) {
-        ::game_movies_in_ach[chapterName + "/" + misId] <- videoInAch
-        log("[VIDEO TROPHY] " + videoInAch + " [IN] " + chapterName + "/" + misId);
-      }
-
-      let videoOutAch = blkMap.getStr("achievement_after_video_out", "");
-      if (videoOutAch.len()) {
-        ::game_movies_out_ach[chapterName + "/" + misId] <- videoOutAch
-        log("[VIDEO TROPHY] " + videoOutAch + " [OUT] " + chapterName + "/" + misId);
-      }
-    }
-    ::game_mode_maps.append(modeMap)
-  }
-
-  return ::game_mode_maps
-}
-
-::get_dynamic_layouts <- function get_dynamic_layouts() {
-  if (::dynamic_layouts.len())
-    return ::dynamic_layouts
-
-  let dblk = getDynamicLayoutsBlk()
-  for (local i = 0; i < dblk.blockCount(); i++) {
-    let info = {}
-    info.mis_file <- dblk.getBlock(i).getStr("mis_file", "")
-    info.name <- dblk.getBlock(i).getStr("name", "")
-    ::dynamic_layouts.append(info)
-  }
-
-  return ::dynamic_layouts
-}
 
 ::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType = null, optionTag = null, params = null) {
   if (!checkArgument(id, items, "array"))
@@ -269,7 +198,7 @@ local isWaitMeasureEvent = false
 
     if (type(item?.image) == "string") {
       opt.images <- [{ image = item.image }]
-      opt.rawdelete("image")
+      opt.$rawdelete("image")
     }
 
     opt.enabled <- opt?.enabled ?? true
@@ -380,7 +309,7 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
   return handyman.renderCached(("%gui/options/optionMultiselect.tpl"), view)
 }
 
-::create_option_vlistbox <- function create_option_vlistbox(id, items, value, cb, isFull) {
+function create_option_vlistbox(id, items, value, cb, isFull) {
   if (!checkArgument(id, items, "array"))
     return ""
 
@@ -468,7 +397,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           image = lang.icon
         })
       }
-      descr.value = u.find_in_array(descr.values, getCurrentLanguage())
+      descr.value = u.find_in_array(descr.values, getLocalLanguage())
       break
 
     case USEROPT_CUSTOM_LANGUAGE:
@@ -486,7 +415,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "speech_country_type"
       descr.items = ["#options/speech_country_auto", "#options/speech_country_player", "#options/speech_country_unit"]
       descr.values = [0, 1, 2]
-      descr.value = u.find_in_array(descr.values, ::get_option_speech_country_type())
+      descr.value = u.find_in_array(descr.values, get_option_speech_country_type())
       break
 
     case USEROPT_MOUSE_USAGE:
@@ -574,45 +503,45 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         "#options/commander_in_gunner_views",
         "#options/commander_in_binocular_views" ]
       descr.values = [0, 1, 2]
-      descr.value = ::get_commander_camera_in_views()
+      descr.value = get_commander_camera_in_views()
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
     case USEROPT_VIEWTYPE:
       descr.id = "viewtype"
       descr.items = ["#options/viewTps", "#options/viewCockpit", "#options/viewVirtual"]
-      descr.value = ::get_option_view_type()
+      descr.value = get_option_view_type()
       break
     case USEROPT_GUN_TARGET_DISTANCE:
       descr.id = "gun_target_dist"
       descr.items = ["#options/no", "50", "100", "150", "200", "250", "300", "400", "500", "600", "700", "800"]
       descr.values = [-1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800]
-      descr.value = u.find_in_array(descr.values, ::get_option_gun_target_dist())
+      descr.value = u.find_in_array(descr.values, get_option_gun_target_dist())
       defaultValue = 300
       break
 
     case USEROPT_BOMB_ACTIVATION_TIME:
-      let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(::get_mission_mode()).diffCode
+      let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(get_mission_mode()).diffCode
       let bombActivationType = loadLocalAccountSettings($"useropt/bomb_activation_type/{diffCode}",
-        ::get_option_bomb_activation_type())
+        get_option_bomb_activation_type())
       let isBombActivationAssault = bombActivationType == BOMB_ACT_ASSAULT
-      let assaultFuseTime = ::get_bomb_activation_auto_time()
+      let assaultFuseTime = get_bomb_activation_auto_time()
       let bombActivationTime = max(loadLocalAccountSettings(
         $"useropt/bomb_activation_time/{diffCode}",
-          ::get_option_bomb_activation_time()), assaultFuseTime)
+          get_option_bomb_activation_time()), assaultFuseTime)
 
       descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
-      descr.values = [::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
+      descr.values = [BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
       let activationTimeArray = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
       let nearestFuseValue = ::find_nearest(assaultFuseTime, activationTimeArray)
       if (nearestFuseValue >= 0)
         descr.values.extend(activationTimeArray.slice(nearestFuseValue))
 
-      descr.value = ::find_nearest(isBombActivationAssault ? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
+      descr.value = ::find_nearest(isBombActivationAssault ? BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++) {
-        let assaultFuse = descr.values[i] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
+        let assaultFuse = descr.values[i] == BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
         let text = assaultFuse ? "#options/bomb_activation_type/assault"
           : time.secondsToString(descr.values[i], true, true, 1)
         let tooltipLoc = assaultFuse ? "guiHints/bomb_activation_type/assault" : "guiHints/bomb_activation_type/timer"
@@ -623,9 +552,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         })
       }
       let curValue = isBombActivationAssault ? assaultFuseTime : descr.values[descr.value]
-      if (::get_option_bomb_activation_time() != curValue) {
-        ::set_option_bomb_activation_type(isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME)
-        ::set_option_bomb_activation_time(curValue)
+      if (get_option_bomb_activation_time() != curValue) {
+        set_option_bomb_activation_type(isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME)
+        set_option_bomb_activation_time(curValue)
       }
       break
 
@@ -654,7 +583,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         tooltip = loc("guiHints/bomb_series_all")
       })
 
-      descr.value = u.find_in_array(descr.values, ::get_option_bombs_series())
+      descr.value = u.find_in_array(descr.values, get_option_bombs_series())
       defaultValue = bombSeries[0]
       break
 
@@ -670,7 +599,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           tooltip = loc(tooltipLoc, { sec = descr.values[i] })
           })
        }
-       descr.value = u.find_in_array(descr.values, ::get_option_countermeasures_periods())
+       descr.value = u.find_in_array(descr.values, get_option_countermeasures_periods())
        defaultValue = 0.1
        break
 
@@ -687,7 +616,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           tooltip = loc(tooltipLoc, { sec = descr.values[i] })
           })
        }
-       descr.value = u.find_in_array(descr.values, ::get_option_countermeasures_series_periods())
+       descr.value = u.find_in_array(descr.values, get_option_countermeasures_series_periods())
        defaultValue = 1
        break
 
@@ -704,7 +633,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           })
        }
 
-       descr.value = u.find_in_array(descr.values, ::get_option_countermeasures_series())
+       descr.value = u.find_in_array(descr.values, get_option_countermeasures_series())
        defaultValue = 1
        break
 
@@ -716,14 +645,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.items.append(time.secondsToString(i, true, true))
         descr.values.append(i)
       }
-      descr.value = u.find_in_array(descr.values, ::get_option_depthcharge_activation_time())
+      descr.value = u.find_in_array(descr.values, get_option_depthcharge_activation_time())
       break
 
     case USEROPT_USE_PERFECT_RANGEFINDER:
       descr.id = "use_perfect_rangefinder"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_use_perfect_rangefinder()
+      descr.value = get_option_use_perfect_rangefinder()
       break
 
     case USEROPT_ROCKET_FUSE_DIST:
@@ -733,13 +662,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (::aircraft_for_weapons)
         descr.value = u.find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, USEROPT_ROCKET_FUSE_DIST), null)
       if (!is_numeric(descr.value))
-        descr.value = u.find_in_array(descr.values, ::get_option_rocket_fuse_dist(), null)
+        descr.value = u.find_in_array(descr.values, get_option_rocket_fuse_dist(), null)
       defaultValue = 0
       break
 
     case USEROPT_TORPEDO_DIVE_DEPTH:
       descr.id = "torpedo_dive_depth"
-      let items = ::get_options_torpedo_dive_depth()
+      let items = get_options_torpedo_dive_depth()
       descr.items = []
       descr.values = []
       foreach (val in items) {
@@ -749,7 +678,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (::aircraft_for_weapons)
         descr.value = u.find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, USEROPT_TORPEDO_DIVE_DEPTH), null)
       if (!is_numeric(descr.value))
-        descr.value = u.find_in_array(descr.values, ::get_option_torpedo_dive_depth(), null)
+        descr.value = u.find_in_array(descr.values, get_option_torpedo_dive_depth(), null)
       defaultValue = 0
       break
 
@@ -761,13 +690,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       descr.unlocks <- []
 
-      let localSmokeType = ::get_option_aerobatics_smoke_type()
+      let localSmokeType = get_option_aerobatics_smoke_type()
       foreach (inst in aeroSmokesList.value) {
         let { id, unlockId = "", locId = "" } = inst
         if ((id == TRICOLOR_INDEX) && !hasFeature("AerobaticTricolorSmoke")) //not triple color
           continue
 
-        if (unlockId != "" && !(getUnlockById(unlockId) && ::is_unlocked(-1, unlockId)))
+        if (unlockId != "" && !(getUnlockById(unlockId) && is_unlocked(-1, unlockId)))
           continue
 
         descr.items.append(loc(locId))
@@ -792,14 +721,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                        "#options/aerobaticsSmokeColor7"];
 
         descr.values = [1, 2, 3, 4, 5, 6, 7];
-        descr.value = u.find_in_array(descr.values, ::get_option_aerobatics_smoke_color(optIndex));
+        descr.value = u.find_in_array(descr.values, get_option_aerobatics_smoke_color(optIndex));
       }
       break;
 
     case USEROPT_INGAME_VIEWTYPE:
       descr.id = "ingame_viewtype"
       descr.items = ["#options/viewTps", "#options/viewCockpit", "#options/viewVirtual"]
-      descr.value = ::get_current_view_type()
+      descr.value = get_current_view_type()
       break
     case USEROPT_GAME_HUD:
       descr.id = "hud"
@@ -815,7 +744,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append(visType.hudGm)
       }
 
-      descr.value = u.find_in_array(descr.values, ::get_option_hud())
+      descr.value = u.find_in_array(descr.values, get_option_hud())
       break
 
     case USEROPT_FONTS_CSS:
@@ -874,14 +803,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "invertY"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_Y) != 0
       break
 
     case USEROPT_INVERTX:
       descr.id = "invertX"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertX() == 0 ? 0 : 1
+      descr.value = get_option_invertX() == 0 ? 0 : 1
       break
 
     case USEROPT_JOYFX:
@@ -896,56 +825,56 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case USEROPT_INVERT_THROTTLE:
       descr.id = "invertT"
       descr.items = ["#options/no", "#options/yes"]
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_THROTTLE) == 0 ? 0 : 1
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_THROTTLE) == 0 ? 0 : 1
       break
 
     case USEROPT_GUNNER_INVERTY:
       descr.id = "invertY_gunner"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_GUNNER_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_GUNNER_Y) != 0
       break
 
     case USEROPT_INVERTY_TANK:
       descr.id = "invertY_tank"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_TANK_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_TANK_Y) != 0
       break
 
     case USEROPT_INVERTY_SHIP:
       descr.id = "invertY_ship"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_SHIP_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_SHIP_Y) != 0
       break
 
     case USEROPT_INVERTY_HELICOPTER:
       descr.id = "invertY_helicopter"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_HELICOPTER_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_HELICOPTER_Y) != 0
       break
 
     case USEROPT_INVERTY_HELICOPTER_GUNNER:
       descr.id = "invertY_helicopter_gunner"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_HELICOPTER_GUNNER_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_HELICOPTER_GUNNER_Y) != 0
       break
 
     case USEROPT_INVERTY_SUBMARINE:
       descr.id = "invertY_submarine"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y) != 0
       break
 
     case USEROPT_INVERTY_SPECTATOR:
       descr.id = "invertY_spectator"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_SPECTATOR_Y) != 0
+      descr.value = get_option_invertY(AxisInvertOption.INVERT_SPECTATOR_Y) != 0
       break
 
     case USEROPT_AUTOMATIC_TRANSMISSION_TANK:
@@ -975,7 +904,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "switchbox"
       defaultValue = true
 
-      let blk = ::dgs_get_game_params()
+      let blk = get_game_params_blk()
       let minCaliber  = blk?.shipsShootingTracking?.minCaliber ?? 0.1
       let minDrawDist = blk?.shipsShootingTracking?.minDrawDist ?? 3500
       descr.hint = loc("guiHints/bulletFallIndicatorShip", {
@@ -997,7 +926,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "switchbox"
       defaultValue = true
 
-      let blk = ::dgs_get_game_params()
+      let blk = get_game_params_blk()
       let minCaliber  = blk?.shipsShootingTracking?.minCaliber ?? 0.1
       let minDrawDist = blk?.shipsShootingTracking?.minDrawDist ?? 3500
       descr.hint = loc("guiHints/bulletFallSoundShip", {
@@ -1073,7 +1002,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "indicatedSpeed"
       descr.items = ["#options/speed_tas", "#options/speed_ias", "#options/speed_tas_ias"]
       descr.values = [0, 1, 2]
-      descr.value = ::get_option_indicatedSpeedType()
+      descr.value = get_option_indicatedSpeedType()
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -1081,62 +1010,62 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "invertCameraY"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_camera_invertY() ? 1 : 0
+      descr.value = get_option_camera_invertY() ? 1 : 0
       break
 
     case USEROPT_ZOOM_FOR_TURRET:
       descr.id = "zoomForTurret"
       descr.items = ["#options/no", "#options/yes"]
-      descr.value = ::get_option_zoom_turret()
+      descr.value = get_option_zoom_turret()
       break
 
     case USEROPT_XCHG_STICKS:
       descr.id = "xchangeSticks"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = !!::get_option_xchg_sticks(0)
+      descr.value = !!get_option_xchg_sticks(0)
       break
 
     case USEROPT_AUTOSAVE_REPLAYS:
       descr.id = "autosave_replays"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_autosave_replays()
+      descr.value = get_option_autosave_replays()
       break
 
     case USEROPT_XRAY_DEATH:
       descr.id = "xray_death"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_xray_death()
+      descr.value = get_option_xray_death()
       break
 
     case USEROPT_XRAY_KILL:
       descr.id = "xray_kill"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_xray_kill()
+      descr.value = get_option_xray_kill()
       break
 
     case USEROPT_USE_CONTROLLER_LIGHT:
       descr.id = "controller_light"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_controller_light()
+      descr.value = get_option_controller_light()
       break
 
     case USEROPT_SUBTITLES:
       descr.id = "subtitles"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_subs() > 0
+      descr.value = get_option_subs() > 0
       break
 
     case USEROPT_SUBTITLES_RADIO:
       descr.id = "subtitles_radio"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_subs_radio() > 0
+      descr.value = get_option_subs_radio() > 0
       break
 
     case USEROPT_PTT:
@@ -1214,7 +1143,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "voice_message_voice"
       descr.items = ["#options/voice_message_voice1", "#options/voice_message_voice2",
        "#options/voice_message_voice3", "#options/voice_message_voice4"]
-      descr.value = ::get_option_voice_message_voice() - 1 //1-based
+      descr.value = get_option_voice_message_voice() - 1 //1-based
       break
 
     case USEROPT_MEASUREUNITS_SPEED:
@@ -1235,14 +1164,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "vibration"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_vibration()
+      descr.value = get_option_vibration()
       break
 
     case USEROPT_GRASS_IN_TANK_VISION:
       descr.id = "grass_in_tank_vision"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_grass_in_tank_vision()
+      descr.value = get_option_grass_in_tank_vision()
       break
 
     case USEROPT_AILERONS_MULTIPLIER:
@@ -1324,12 +1253,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "mouse_smooth"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_mouse_smooth() != 0
+      descr.value = get_option_mouse_smooth() != 0
       break
 
     case USEROPT_FORCE_GAIN:
       descr.id = "multiplier_force_gain"
-      descr.value = (::get_option_gain() * 50).tointeger()
+      descr.value = (get_option_gain() * 50).tointeger()
       break
 
     case USEROPT_CAMERA_SHAKE_MULTIPLIER:
@@ -1346,7 +1275,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case USEROPT_GAMMA:
       descr.id = "video_gamma"
-      descr.value = (::get_option_gamma() * 100).tointeger()
+      descr.value = (get_option_gamma() * 100).tointeger()
       descr.optionCb = "onGammaChange"
       break
 
@@ -1634,11 +1563,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case USEROPT_BAN_PENALTY:
       descr.id = "ban_penalty"
       descr.values = []
-      if (::myself_can_devoice()) {
+      if (myself_can_devoice()) {
         descr.values.append("DEVOICE")
         descr.values.append("SILENT_DEVOICE")
       }
-      if (::myself_can_ban())
+      if (myself_can_ban())
         descr.values.append("BAN")
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
@@ -1646,7 +1575,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
     case USEROPT_BAN_TIME:
       descr.id = "ban_time"
-      descr.values = ::myself_can_ban() ? [1, 2, 4, 7, 14] : [1]
+      descr.values = myself_can_ban() ? [1, 2, 4, 7, 14] : [1]
       descr.items = []
       let dayVal = time.daysToSeconds(1)
       for (local i = 0; i < descr.values.len(); i++) {
@@ -1791,8 +1720,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "show_pilot"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_showPilot() != 0
-      if (::get_dgs_tex_quality() > 0)
+      descr.value = get_option_showPilot() != 0
+      if (get_dgs_tex_quality() > 0)
         descr.enabled <- false
       break
 
@@ -1800,7 +1729,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "gun_vertical_targeting"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_gunVerticalTargeting() != 0
+      descr.value = get_option_gunVerticalTargeting() != 0
       break
 
     case USEROPT_AUTOLOGIN:
@@ -1832,7 +1761,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "crosshair_deflection"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_deflection()
+      descr.value = get_option_deflection()
       break
 
     case USEROPT_GYRO_SIGHT_DEFLECTION:
@@ -1842,18 +1771,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = get_gyro_sight_deflection()
       break
 
-    case USEROPT_CROSSHAIR_SPEED:
-      descr.id = "crosshair_speed"
-      descr.items = ["#options/no", "#options/yes"]
-      descr.values = [false, true]
-      descr.value = ::get_option_crosshair_speed() ? 1 : 0
-      break
-
     case USEROPT_SHOW_INDICATORS:
       descr.id = "show_indicators"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = (::get_option_indicators_mode() & HUD_INDICATORS_SHOW) != 0
+      descr.value = (get_option_indicators_mode() & HUD_INDICATORS_SHOW) != 0
       break
 
     case USEROPT_REPLAY_ALL_INDICATORS:
@@ -1946,14 +1868,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "hud_screenshot_logo"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_hud_screenshot_logo()
+      descr.value = get_option_hud_screenshot_logo()
       break
 
     case USEROPT_SAVE_ZOOM_CAMERA:
       descr.id = "save_zoom_camera"
       descr.items = ["#options/zoom/dont_save", "#options/zoom/save_only_tps", "#options/zoom/save"]
       descr.values = [0, 1, 2]
-      descr.value = ::get_option_save_zoom_camera() ?? 0
+      descr.value = get_option_save_zoom_camera() ?? 0
       defaultValue = 0
       break
 
@@ -1967,7 +1889,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.insert(1, 1)
       }
 
-      descr.value = u.find_in_array(descr.values, ::get_option_hud_show_fuel(), 0)
+      descr.value = u.find_in_array(descr.values, get_option_hud_show_fuel(), 0)
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -1981,7 +1903,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.insert(1, 1)
       }
 
-      descr.value = u.find_in_array(descr.values, ::get_option_hud_show_ammo(), 0)
+      descr.value = u.find_in_array(descr.values, get_option_hud_show_ammo(), 0)
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -2002,7 +1924,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.insert(1, 1)
       }
 
-      descr.value = u.find_in_array(descr.values, ::get_option_hud_show_temperature(), 0)
+      descr.value = u.find_in_array(descr.values, get_option_hud_show_temperature(), 0)
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -2026,7 +1948,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "autopilot_on_bombview"
       descr.items = ["#options/no", "#options/inmouseaim", "#options/always"]
       descr.values = [0, 1, 2]
-      descr.value = ::get_option_autopilot_on_bombview();
+      descr.value = get_option_autopilot_on_bombview();
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -2034,14 +1956,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "autorearm_on_airfield"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_autorearm_on_airfield()
+      descr.value = get_option_autorearm_on_airfield()
       break
 
     case USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH:
       descr.id = "enable_laser_designatior_before_launch"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_enable_laser_designatior_before_launch()
+      descr.value = get_enable_laser_designatior_before_launch()
       break;
 
     case USEROPT_AUTO_AIMLOCK_ON_SHOOT:
@@ -2062,21 +1984,21 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "activate_airborne_radar_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_activate_airborne_radar_on_spawn()
+      descr.value = get_option_activate_airborne_radar_on_spawn()
       break
 
     case USEROPT_USE_RECTANGULAR_RADAR_INDICATOR:
       descr.id = "use_rectangular_radar_indicator"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_use_rectangular_radar_indicator()
+      descr.value = get_option_use_rectangular_radar_indicator()
       break
 
     case USEROPT_RADAR_TARGET_CYCLING:
       descr.id = "radar_target_cycling"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_radar_target_cycling()
+      descr.value = get_option_radar_target_cycling()
       break
 
     case USEROPT_RADAR_AIM_ELEVATION_CONTROL:
@@ -2084,6 +2006,17 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = get_option_radar_aim_elevation_control()
+      break
+
+    case USEROPT_RWR_SENSITIVITY:
+      descr.id = "rwr_sensitivity_control"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 100
+      descr.step <- 1
+      descr.value = get_option_rwr_sensitivity()
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
       break
 
     case USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
@@ -2104,7 +2037,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "use_radar_hud_in_cockpit"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_use_radar_hud_in_cockpit()
+      descr.value = get_option_use_radar_hud_in_cockpit()
       break
 
     case USEROPT_USE_TWS_HUD_IN_COCKPIT:
@@ -2118,28 +2051,28 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "activate_airborne_active_counter_measures_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_activate_airborne_active_counter_measures_on_spawn()
+      descr.value = get_option_activate_airborne_active_counter_measures_on_spawn()
       break
 
     case USEROPT_SAVE_AI_TARGET_TYPE:
       descr.id = "save_ai_target_type"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_ai_target_type()
+      descr.value = get_option_ai_target_type()
       break
 
     case USEROPT_DEFAULT_AI_TARGET_TYPE:
       descr.id = "default_ai_target_type"
       descr.items = ["#options/ai_gunner_disabled", "#options/ai_gunner_all", "#options/ai_gunner_air", "#options/ai_gunner_ground"]
       descr.values = [0, 1, 2, 3]
-      descr.value = ::get_option_default_ai_target_type()
+      descr.value = get_option_default_ai_target_type()
       break
 
     case USEROPT_SHOW_INDICATORS_TYPE:
       descr.id = "show_indicators_type"
       descr.items = ["#options/selected", "#options/centered", "#options/all"]
       descr.values = [0, 1, 2]
-      let val = ::get_option_indicators_mode();
+      let val = get_option_indicators_mode();
       descr.value = (val & HUD_INDICATORS_SELECT) ? 0 : ((val & HUD_INDICATORS_CENTER) ? 1 : 2);
       break
 
@@ -2148,7 +2081,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/show_indicators_nick_all", "#options/show_indicators_nick_squad", "#options/show_indicators_nick_none"]
       descr.values = [HUD_INDICATORS_TEXT_NICK_ALL, HUD_INDICATORS_TEXT_NICK_SQUAD, 0]
       defaultValue = HUD_INDICATORS_TEXT_NICK_ALL
-      let val = ::get_option_indicators_mode() & (HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD)
+      let val = get_option_indicators_mode() & (HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD)
       descr.value = descr.values.indexof(val)
       break
 
@@ -2156,21 +2089,21 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "show_indicators_title"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = (::get_option_indicators_mode() & HUD_INDICATORS_TEXT_TITLE) != 0
+      descr.value = (get_option_indicators_mode() & HUD_INDICATORS_TEXT_TITLE) != 0
       break
 
     case USEROPT_SHOW_INDICATORS_AIRCRAFT:
       descr.id = "show_indicators_aircraft"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = (::get_option_indicators_mode() & HUD_INDICATORS_TEXT_AIRCRAFT) != 0
+      descr.value = (get_option_indicators_mode() & HUD_INDICATORS_TEXT_AIRCRAFT) != 0
       break
 
     case USEROPT_SHOW_INDICATORS_DIST:
       descr.id = "show_indicators_dist"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = (::get_option_indicators_mode() & HUD_INDICATORS_TEXT_DIST) != 0
+      descr.value = (get_option_indicators_mode() & HUD_INDICATORS_TEXT_DIST) != 0
       break
 
     case USEROPT_HELPERS_MODE:
@@ -2226,7 +2159,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         "#hud_presets/preset7",
         "#hud_presets/preset9"
       ]
-      descr.value = ::get_option_hud_color()
+      descr.value = get_option_hud_color()
       break
 
     case USEROPT_HUD_INDICATORS:
@@ -2236,7 +2169,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         "#hud_indicators_presets/preset2",
       ]
       if ("get_option_hud_indicators" in getroottable())
-        descr.value = ::get_option_hud_indicators()
+        descr.value = get_option_hud_indicators()
       else
         descr.value = 0;
       break
@@ -2244,7 +2177,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case USEROPT_AI_GUNNER_TIME:
       descr.id = "ai_gunner_time"
       descr.items = ["#options/disabled", "4", "8", "12", "16"]
-      descr.value = ::get_option_ai_gunner_time()
+      descr.value = get_option_ai_gunner_time()
       break
 
     case USEROPT_BULLETS0:
@@ -2280,7 +2213,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case USEROPT_MODIFICATIONS:
       let unit = getAircraftByName(::aircraft_for_weapons)
-      let showFullList = unit?.isBought() || !::isUnitSpecial(unit)
+      let showFullList = unit?.isBought() || !isUnitSpecial(unit)
       descr.id = "enable_modifications"
       descr.items = showFullList
         ? ["#options/reference_aircraft", "#options/modified_aircraft"]
@@ -2346,6 +2279,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
       break
 
+    case USEROPT_SHOW_OTHERS_DECALS:
+      descr.id = "show_others_decals"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
+      break
+
     case USEROPT_CONTENT_ALLOWED_PRESET_ARCADE:
     case USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC:
     case USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR:
@@ -2385,7 +2325,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "delayed_download_content"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_delayed_download_content()
+      descr.value = get_option_delayed_download_content()
       break
 
     case USEROPT_REPLAY_SNAPSHOT_ENABLED:
@@ -2443,7 +2383,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.diffCode.append(diff.diffCode)
       }
 
-      if (get_game_mode() != GM_TRAINING) {
+      if (get_game_mode() != GM_TRAINING && context?.gm != GM_TRAINING) {
         descr.items.append("#difficulty3")
         descr.values.append("custom")
         descr.diffCode.append(DIFFICULTY_CUSTOM)
@@ -2983,7 +2923,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let modeNo = get_game_mode()
       descr.values = []
       descr.items = []
-      let gameModeMaps = ::get_game_mode_maps()
+      let gameModeMaps = getGameModeMaps()
       if (modeNo >= 0 && modeNo < gameModeMaps.len()) {
         for (local i = 0; i < gameModeMaps[modeNo].items.len(); i++) {
           if ((modeNo == GM_SINGLE_MISSION) || (modeNo == GM_EVENT))
@@ -3076,17 +3016,17 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         local isFuelFixed = false
         if (::cur_aircraft_name) {
           prevValue = get_unit_option(::cur_aircraft_name, USEROPT_LOAD_FUEL_AMOUNT)
-          maxFuel = ::get_aircraft_max_fuel(::cur_aircraft_name)
+          maxFuel = get_aircraft_max_fuel(::cur_aircraft_name)
           let difOpt = ::get_option(USEROPT_DIFFICULTY)
           local difficulty = isInSessionRoom.get() ? ::SessionLobby.getMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
           if (difficulty == "custom")
             difficulty = ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()).name
           let modOpt = ::get_option(USEROPT_MODIFICATIONS)
           let useModifications = get_game_mode() == GM_TEST_FLIGHT || get_game_mode() == GM_BUILDER ? modOpt.values[modOpt.value] : true
-          fuelConsumptionPerHour = ::get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
+          fuelConsumptionPerHour = get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
 
           if (fuelConsumptionPerHour > 0 && isInFlight()) {
-            let fixedPercent = ::g_mis_custom_state.getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
+            let fixedPercent = getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
             if (fixedPercent > 0) {
               isFuelFixed = true
               minutes = [fixedPercent * maxFuel / time.minutesToSeconds(fuelConsumptionPerHour)]
@@ -3229,7 +3169,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             continue
 
           let country = (nc < 0) ? "country_0" : shopCountriesList[nc]
-          let enabled = (country == "country_0" || ::isCountryAvailable(country))
+          let enabled = (country == "country_0" || isCountryAvailable(country))
                           && (!event || ::events.isCountryAvailable(event, country))
           descr.items.append({
             text = "#" + country
@@ -3331,7 +3271,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.trParams <- "iconType:t='pilot';"
-      let curPilotImgId = ::get_cur_rank_info().pilotId
+      let curPilotImgId = get_cur_rank_info().pilotId
       let icons = avatars.getIcons()
       let marketplaceItemdefIds = []
       for (local nc = 0; nc < icons.len(); nc++) {
@@ -3370,7 +3310,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.trParams <- "iconType:t='crosshair';"
-      let c = ::get_hud_crosshair_type()
+      let c = get_hud_crosshair_type()
       for (local nc = 0; nc < ::crosshair_icons.len(); nc++) {
         descr.items.append({
           image = "#ui/gameuiskin#" + ::crosshair_icons[nc]
@@ -3385,7 +3325,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "crosshairColor"
       descr.items = []
       descr.values = []
-      let c = ::get_hud_crosshair_color()
+      let c = get_hud_crosshair_color()
       for (local nc = 0; nc < ::crosshair_colors.len(); nc++) {
         descr.values.append(nc)
         let config = ::crosshair_colors[nc]
@@ -3614,16 +3554,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "internet_radio_active";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_internet_radio_options()?.active ?? false
+      descr.value = get_internet_radio_options()?.active ?? false
       descr.optionCb = "update_internet_radio";
       break;
     case USEROPT_INTERNET_RADIO_STATION:
       descr.id = "internet_radio_station";
       descr.items = []
-      descr.values = ::get_internet_radio_stations();
+      descr.values = get_internet_radio_stations();
       for (local i = 0; i < descr.values.len(); i++) {
         let str = "InternetRadio/" + descr.values[i];
-        let url_radio = ::get_internet_radio_path(descr.values[i])
+        let url_radio = get_internet_radio_path(descr.values[i])
         if (loc(str, "") == "")
           descr.items.append({
             text = descr.values[i],
@@ -3639,7 +3579,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append("")
         descr.items.append("#options/no_internet_radio_stations")
       }
-      descr.value = u.find_in_array(descr.values, ::get_internet_radio_options()?.station ?? "", 0)
+      descr.value = u.find_in_array(descr.values, get_internet_radio_options()?.station ?? "", 0)
       descr.optionCb = "update_internet_radio";
       break;
 
@@ -3647,65 +3587,65 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "headtrack_enable"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::ps4_headtrack_get_enable()
+      descr.value = ps4_headtrack_get_enable()
       descr.optionCb = "onHeadtrackEnableChange"
       break
 
     case USEROPT_HEADTRACK_SCALE_X:
       descr.id = "headtrack_scale_x"
       descr.controlType = optionControlType.SLIDER
-      descr.value = clamp(::ps4_headtrack_get_xscale(), 5, 200)
+      descr.value = clamp(ps4_headtrack_get_xscale(), 5, 200)
       descr.min <- 5
       descr.max <- 200
       break
     case USEROPT_HEADTRACK_SCALE_Y:
       descr.id = "headtrack_scale_y"
       descr.controlType = optionControlType.SLIDER
-      descr.value = clamp(::ps4_headtrack_get_yscale(), 5, 200)
+      descr.value = clamp(ps4_headtrack_get_yscale(), 5, 200)
       descr.min <- 5
       descr.max <- 200
       break
 
     case USEROPT_HUE_ALLY:
-      fillHueOption(descr, "color_picker_hue_ally", ::get_hue(TARGET_HUE_ALLY), 226)
+      fillHueOption(descr, "color_picker_hue_ally", get_hue(TARGET_HUE_ALLY), 226)
       break
 
     case USEROPT_HUE_ENEMY:
-      fillHueOption(descr, "color_picker_hue_enemy", ::get_hue(TARGET_HUE_ENEMY), 3)
+      fillHueOption(descr, "color_picker_hue_enemy", get_hue(TARGET_HUE_ENEMY), 3)
       break
 
     case USEROPT_STROBE_ALLY:
       descr.id = "strobe_ally"
       descr.items = ["#options/no", "#options/one_smooth_flash", "#options/two_smooth_flashes", "#options/two_sharp_flashes"]
       descr.values = [0, 1, 2, 3]
-      descr.value = ::get_strobe_ally();
+      descr.value = get_strobe_ally();
       break
 
     case USEROPT_STROBE_ENEMY:
       descr.id = "strobe_enemy"
       descr.items = ["#options/no", "#options/one_smooth_flash", "#options/two_smooth_flashes", "#options/two_sharp_flashes"]
       descr.values = [0, 1, 2, 3]
-      descr.value = ::get_strobe_enemy();
+      descr.value = get_strobe_enemy();
       break
 
     case USEROPT_HUE_SQUAD:
-      fillHueOption(descr, "color_picker_hue_squad", ::get_hue(TARGET_HUE_SQUAD), 472)
+      fillHueOption(descr, "color_picker_hue_squad", get_hue(TARGET_HUE_SQUAD), 472)
       break
 
     case USEROPT_HUE_SPECTATOR_ALLY:
-      fillHueOption(descr, "color_picker_hue_spectator_ally", ::get_hue(TARGET_HUE_SPECTATOR_ALLY), 112)
+      fillHueOption(descr, "color_picker_hue_spectator_ally", get_hue(TARGET_HUE_SPECTATOR_ALLY), 112)
       break
 
     case USEROPT_HUE_SPECTATOR_ENEMY:
-      fillHueOption(descr, "color_picker_hue_spectator_enemy", ::get_hue(TARGET_HUE_SPECTATOR_ENEMY), 292)
+      fillHueOption(descr, "color_picker_hue_spectator_enemy", get_hue(TARGET_HUE_SPECTATOR_ENEMY), 292)
       break
 
     case USEROPT_HUE_RELOAD:
-      fillHueOption(descr, "color_picker_hue_reload", ::get_hue(TARGET_HUE_RELOAD), 3)
+      fillHueOption(descr, "color_picker_hue_reload", get_hue(TARGET_HUE_RELOAD), 3)
       break
 
     case USEROPT_HUE_RELOAD_DONE:
-      fillHueOption(descr, "color_picker_hue_reload_done", ::get_hue(TARGET_HUE_RELOAD_DONE), 472)
+      fillHueOption(descr, "color_picker_hue_reload_done", get_hue(TARGET_HUE_RELOAD_DONE), 472)
       break
 
     case USEROPT_AIR_DAMAGE_DISPLAY:
@@ -3724,7 +3664,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case USEROPT_HUE_AIRCRAFT_PARAM_HUD:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_param_hud",
-        10, 0.0, 0.9, ::get_hue(TARGET_HUE_AIRCRAFT_PARAM_HUD))
+        10, 0.0, 0.9, get_hue(TARGET_HUE_AIRCRAFT_PARAM_HUD))
       break;
 
     case USEROPT_HUE_AIRCRAFT_HUD_ALERT:
@@ -3733,38 +3673,38 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case USEROPT_HUE_AIRCRAFT_HUD:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_hud",
-        122, 1.0, 1.0, ::get_hue(TARGET_HUE_AIRCRAFT_HUD))
+        122, 1.0, 1.0, get_hue(TARGET_HUE_AIRCRAFT_HUD))
       break;
 
     case USEROPT_HUE_HELICOPTER_CROSSHAIR:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_crosshair",
-        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_CROSSHAIR))
+        122, 1.0, 1.0, get_hue(TARGET_HUE_HELICOPTER_CROSSHAIR))
       break;
 
     case USEROPT_HUE_HELICOPTER_HUD:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
-        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_HUD))
+        122, 1.0, 1.0, get_hue(TARGET_HUE_HELICOPTER_HUD))
       break;
 
     case USEROPT_HUE_HELICOPTER_PARAM_HUD:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_param_hud",
-        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_PARAM_HUD))
+        122, 1.0, 1.0, get_hue(TARGET_HUE_HELICOPTER_PARAM_HUD))
       break;
 
     case USEROPT_HUE_HELICOPTER_HUD_ALERT:
       if (hasFeature("reactivGuiForAircraft"))
         fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", getAlertHelicopterHues())
       else
-        fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", ::get_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH), 0)
+        fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", get_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH), 0)
       break;
 
     case USEROPT_HUE_ARBITER_HUD:
       fillHueSaturationBrightnessOption(descr, "color_picker_hue_arbiter_hud",
-        64, 0.0, 1.0, ::get_hue(TARGET_HUE_ARBITER_HUD)) // white default
+        64, 0.0, 1.0, get_hue(TARGET_HUE_ARBITER_HUD)) // white default
       break;
 
     case USEROPT_HUE_HELICOPTER_MFD:
-      fillHueOption(descr, "color_picker_hue_helicopter_mfd", ::get_hue(TARGET_HUE_HELICOPTER_MFD), 112, 1.0, 1.0)
+      fillHueOption(descr, "color_picker_hue_helicopter_mfd", get_hue(TARGET_HUE_HELICOPTER_MFD), 112, 1.0, 1.0)
       break;
 
     case USEROPT_HUE_TANK_THERMOVISION:
@@ -3775,21 +3715,21 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "horizontalSpeed"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_horizontal_speed() != 0
+      descr.value = get_option_horizontal_speed() != 0
       break
 
     case USEROPT_HELICOPTER_HELMET_AIM:
       descr.id = "helicopterHelmetAim"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_use_oculus_to_aim_helicopter() != 0
+      descr.value = get_option_use_oculus_to_aim_helicopter() != 0
       break
 
     case USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW:
       descr.id = "helicopter_autopilot_on_gunnerview"
       descr.items = ["#options/no", "#options/inmouseaim", "#options/always", "#options/always_damping"]
       descr.values = [0, 1, 2, 3]
-      descr.value = ::get_option_auto_pilot_on_gunner_view_helicopter();
+      descr.value = get_option_auto_pilot_on_gunner_view_helicopter();
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
@@ -3797,28 +3737,28 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "show_destroyed_parts"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_show_destroyed_parts()
+      descr.value = get_show_destroyed_parts()
       break
 
     case USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN:
       descr.id = "activate_ground_radar_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_activate_ground_radar_on_spawn()
+      descr.value = get_activate_ground_radar_on_spawn()
       break
 
     case USEROPT_GROUND_RADAR_TARGET_CYCLING:
       descr.id = "ground_radar_target_cycling"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_ground_radar_target_cycling()
+      descr.value = get_option_ground_radar_target_cycling()
       break
 
     case USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
       descr.id = "activate_ground_active_counter_measures_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_activate_ground_active_counter_measures_on_spawn()
+      descr.value = get_activate_ground_active_counter_measures_on_spawn()
       break
 
     case USEROPT_FPS_CAMERA_PHYSICS:
@@ -3895,7 +3835,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "tank_gunner_camera_from_sight"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_tank_gunner_camera_from_sight()
+      descr.value = get_option_tank_gunner_camera_from_sight()
       defaultValue = false
       break
     case USEROPT_TANK_ALT_CROSSHAIR:
@@ -3910,7 +3850,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append("");
       }
 
-      let presets = ::get_user_alt_crosshairs()
+      let presets = get_user_alt_crosshairs()
       for (local i = 0; i < presets.len(); i++) {
         descr.items.append(presets[i]);
         descr.values.append(presets[i]);
@@ -3922,7 +3862,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
 
       let unit = getPlayerCurUnit()
-      descr.value = unit ? u.find_in_array(descr.values, ::get_option_tank_alt_crosshair(unit.name), 0) : 0
+      descr.value = unit ? u.find_in_array(descr.values, get_option_tank_alt_crosshair(unit.name), 0) : 0
       break
     case USEROPT_GAMEPAD_CURSOR_CONTROLLER:
       descr.id = "gamepad_cursor_controller"
@@ -3998,7 +3938,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "allow_added_to_leaderboards"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_allow_to_be_added_to_lb()
+      descr.value = get_allow_to_be_added_to_lb()
       defaultValue = true
       descr.defVal <- defaultValue
       break
@@ -4338,28 +4278,28 @@ let function set_option(optionId, value, descr = null) {
       setCustomLocalization(value)
       break
     case USEROPT_VIEWTYPE:
-      ::set_option_view_type(value)
+      set_option_view_type(value)
       break
     case USEROPT_SPEECH_TYPE:
       let curOption = ::get_option(USEROPT_SPEECH_TYPE)
-      ::set_option_speech_country_type(descr.values[value])
+      set_option_speech_country_type(descr.values[value])
       checkUnitSpeechLangPackWatch(curOption.value != value && value == SPEECH_COUNTRY_UNIT_VALUE)
       break
     case USEROPT_GUN_TARGET_DISTANCE:
-      ::set_option_gun_target_dist(descr.values[value])
+      set_option_gun_target_dist(descr.values[value])
       break
     case USEROPT_BOMB_ACTIVATION_TIME:
-      let isBombActivationAssault = descr.values[value] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
+      let isBombActivationAssault = descr.values[value] == BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
       let bombActivationDelay = isBombActivationAssault ?
-        ::get_bomb_activation_auto_time() : descr.values[value]
+        get_bomb_activation_auto_time() : descr.values[value]
       let bombActivationType = isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME
-      ::set_option_bomb_activation_type(bombActivationType)
-      ::set_option_bomb_activation_time(bombActivationDelay)
+      set_option_bomb_activation_type(bombActivationType)
+      set_option_bomb_activation_time(bombActivationDelay)
       saveLocalAccountSettings($"useropt/bomb_activation_time/{descr.diffCode}", bombActivationDelay)
       saveLocalAccountSettings($"useropt/bomb_activation_type/{descr.diffCode}", bombActivationType)
       break
     case USEROPT_BOMB_SERIES:
-      ::set_option_bombs_series(descr.values[value])
+      set_option_bombs_series(descr.values[value])
       break
     case USEROPT_LOAD_FUEL_AMOUNT:
       set_gui_option(optionId, descr.values[value])
@@ -4367,32 +4307,32 @@ let function set_option(optionId, value, descr = null) {
        set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
       break
     case USEROPT_DEPTHCHARGE_ACTIVATION_TIME:
-      ::set_option_depthcharge_activation_time(descr.values[value])
+      set_option_depthcharge_activation_time(descr.values[value])
       break
     case USEROPT_COUNTERMEASURES_PERIODS:
-      ::set_option_countermeasures_periods(descr.values[value])
+      set_option_countermeasures_periods(descr.values[value])
       break
     case USEROPT_COUNTERMEASURES_SERIES_PERIODS:
-      ::set_option_countermeasures_series_periods(descr.values[value])
+      set_option_countermeasures_series_periods(descr.values[value])
       break
     case USEROPT_COUNTERMEASURES_SERIES:
-      ::set_option_countermeasures_series(descr.values[value])
+      set_option_countermeasures_series(descr.values[value])
       break
     case USEROPT_USE_PERFECT_RANGEFINDER:
-      ::set_option_use_perfect_rangefinder(value ? 1 : 0)
+      set_option_use_perfect_rangefinder(value ? 1 : 0)
       break
     case USEROPT_ROCKET_FUSE_DIST:
-      ::set_option_rocket_fuse_dist(descr.values[value])
+      set_option_rocket_fuse_dist(descr.values[value])
       if (::aircraft_for_weapons)
         set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
       break
     case USEROPT_TORPEDO_DIVE_DEPTH:
-      ::set_option_torpedo_dive_depth(descr.values[value])
+      set_option_torpedo_dive_depth(descr.values[value])
       if (::aircraft_for_weapons)
         set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
       break
     case USEROPT_AEROBATICS_SMOKE_TYPE:
-      ::set_option_aerobatics_smoke_type(descr.values[value])
+      set_option_aerobatics_smoke_type(descr.values[value])
       break
 
     case USEROPT_AEROBATICS_SMOKE_LEFT_COLOR:
@@ -4402,42 +4342,42 @@ let function set_option(optionId, value, descr = null) {
           [USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR],
           optionId)
 
-        ::set_option_aerobatics_smoke_color(optIndex, descr.values[value]);
+        set_option_aerobatics_smoke_color(optIndex, descr.values[value]);
       }
       break;
 
     case USEROPT_INGAME_VIEWTYPE:
-      ::apply_current_view_type(value)
+      apply_current_view_type(value)
       break
     case USEROPT_INVERTY:
-      ::set_option_invertY(AxisInvertOption.INVERT_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTX:
-      ::set_option_invertX(value ? 1 : 0)
+      set_option_invertX(value ? 1 : 0)
       break
     case USEROPT_GUNNER_INVERTY:
-      ::set_option_invertY(AxisInvertOption.INVERT_GUNNER_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_GUNNER_Y, value ? 1 : 0)
       break
     case USEROPT_INVERT_THROTTLE:
-      ::set_option_invertY(AxisInvertOption.INVERT_THROTTLE, value)
+      set_option_invertY(AxisInvertOption.INVERT_THROTTLE, value)
       break
     case USEROPT_INVERTY_TANK:
-      ::set_option_invertY(AxisInvertOption.INVERT_TANK_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_TANK_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTY_SHIP:
-      ::set_option_invertY(AxisInvertOption.INVERT_SHIP_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_SHIP_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTY_HELICOPTER:
-      ::set_option_invertY(AxisInvertOption.INVERT_HELICOPTER_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_HELICOPTER_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTY_HELICOPTER_GUNNER:
-      ::set_option_invertY(AxisInvertOption.INVERT_HELICOPTER_GUNNER_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_HELICOPTER_GUNNER_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTY_SUBMARINE:
-      ::set_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y, value ? 1 : 0)
       break
     case USEROPT_INVERTY_SPECTATOR:
-      ::set_option_invertY(AxisInvertOption.INVERT_SPECTATOR_Y, value ? 1 : 0)
+      set_option_invertY(AxisInvertOption.INVERT_SPECTATOR_Y, value ? 1 : 0)
       break
 
     ///_INSERT_OPTIONS_HERE_
@@ -4446,11 +4386,11 @@ let function set_option(optionId, value, descr = null) {
     //  break
 
     case USEROPT_FORCE_GAIN:
-      ::set_option_gain(value / 50.0)
+      set_option_gain(value / 50.0)
       break
 
     case USEROPT_INDICATED_SPEED_TYPE:
-      ::set_option_indicatedSpeedType(descr.values[value])
+      set_option_indicatedSpeedType(descr.values[value])
       break
 
     case USEROPT_AUTO_SHOW_CHAT:
@@ -4467,48 +4407,48 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_SHOW_PILOT:
-      ::set_option_showPilot(value ? 1 : 0)
+      set_option_showPilot(value ? 1 : 0)
       break
 
     case USEROPT_GUN_VERTICAL_TARGETING:
-      ::set_option_gunVerticalTargeting(value ? 1 : 0)
+      set_option_gunVerticalTargeting(value ? 1 : 0)
       break
 
     case USEROPT_INVERTCAMERAY:
-      ::set_option_camera_invertY(value ? 1 : 0)
+      set_option_camera_invertY(value ? 1 : 0)
       break
 
     case USEROPT_ZOOM_FOR_TURRET:
       log("USEROPT_ZOOM_FOR_TURRET" + value.tostring())
-      ::set_option_zoom_turret(value)
+      set_option_zoom_turret(value)
       break
 
     case USEROPT_XCHG_STICKS:
-      ::set_option_xchg_sticks(0, value ? 1 : 0)
+      set_option_xchg_sticks(0, value ? 1 : 0)
       break
 
     case USEROPT_AUTOSAVE_REPLAYS:
-      ::set_option_autosave_replays(value)
+      set_option_autosave_replays(value)
       break
 
     case USEROPT_XRAY_DEATH:
-      ::set_option_xray_death(value)
+      set_option_xray_death(value)
       break
 
     case USEROPT_XRAY_KILL:
-      ::set_option_xray_kill(value)
+      set_option_xray_kill(value)
       break
 
     case USEROPT_USE_CONTROLLER_LIGHT:
-      ::set_option_controller_light(value)
+      set_option_controller_light(value)
       break
 
     case USEROPT_SUBTITLES:
-      ::set_option_subs(value ? 2 : 0)
+      set_option_subs(value ? 2 : 0)
       break
 
     case USEROPT_SUBTITLES_RADIO:
-      ::set_option_subs_radio(value ? 2 : 0)
+      set_option_subs_radio(value ? 2 : 0)
       break
 
     case USEROPT_PTT:
@@ -4529,20 +4469,20 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_VOICE_MESSAGE_VOICE:
-      ::set_option_voice_message_voice(value + 1) //1-based
+      set_option_voice_message_voice(value + 1) //1-based
       break
 
     case USEROPT_HUD_COLOR:
-      ::set_option_hud_color(value)
+      set_option_hud_color(value)
       break
 
     case USEROPT_HUD_INDICATORS:
       if ("set_option_hud_indicators" in getroottable())
-        ::set_option_hud_indicators(value)
+        set_option_hud_indicators(value)
       break
 
     case USEROPT_DELAYED_DOWNLOAD_CONTENT:
-      ::set_option_delayed_download_content(value)
+      set_option_delayed_download_content(value)
       saveLocalAccountSettings("delayDownloadContent", value)
       break
 
@@ -4555,7 +4495,7 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_AI_GUNNER_TIME:
-      ::set_option_ai_gunner_time(value)
+      set_option_ai_gunner_time(value)
       break
 
     case USEROPT_MEASUREUNITS_SPEED:
@@ -4580,7 +4520,7 @@ let function set_option(optionId, value, descr = null) {
         else if (optionId == USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO)
           unitType = 6
 
-        ::set_option_unit_type(unitType, descr.values[value])
+        set_option_unit_type(unitType, descr.values[value])
 
         if (isWaitMeasureEvent)
           break
@@ -4593,15 +4533,15 @@ let function set_option(optionId, value, descr = null) {
       }
       break
     case USEROPT_VIBRATION:
-      ::set_option_vibration(value ? 1 : 0)
+      set_option_vibration(value ? 1 : 0)
       break
 
     case USEROPT_GRASS_IN_TANK_VISION:
-      ::set_option_grass_in_tank_vision(value ? 1 : 0)
+      set_option_grass_in_tank_vision(value ? 1 : 0)
       break
 
     case USEROPT_GAME_HUD:
-      ::set_option_hud(descr.values[value])
+      set_option_hud(descr.values[value])
       break
 
     case USEROPT_CAMERA_SHAKE_MULTIPLIER:
@@ -4613,7 +4553,7 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_GAMMA:
-      ::set_option_gamma(value / 100.0, true)
+      set_option_gamma(value / 100.0, true)
       break
 
     // volumes:
@@ -4674,7 +4614,7 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_MOUSE_SMOOTH:
-      ::set_option_mouse_smooth(value ? 1 : 0)
+      set_option_mouse_smooth(value ? 1 : 0)
       break
 
     case USEROPT_VOLUME_MASTER:
@@ -4732,49 +4672,45 @@ let function set_option(optionId, value, descr = null) {
       switchProfileCountry(descr.values[value])
       break
     case USEROPT_PILOT:
-      ::set_profile_pilot(descr.values[value])
+      set_profile_pilot(descr.values[value])
       break
 
     case USEROPT_CROSSHAIR_TYPE:
-      ::set_hud_crosshair_type(descr.values[value])
+      set_hud_crosshair_type(descr.values[value])
       break
 
     case USEROPT_CROSSHAIR_COLOR:
       let curVal = descr.values[value]
-      ::set_hud_crosshair_color(curVal)
+      set_hud_crosshair_color(curVal)
       let color = color4ToInt(::crosshair_colors[curVal].color)
       crosshairColorOpt(color)
       break
 
     case USEROPT_CROSSHAIR_DEFLECTION:
-      ::set_option_deflection(value)
+      set_option_deflection(value)
       break
 
     case USEROPT_GYRO_SIGHT_DEFLECTION:
       set_gyro_sight_deflection(value)
       break
 
-    case USEROPT_CROSSHAIR_SPEED:
-      ::set_option_crosshair_speed(descr.values[value])
-      break
-
     case USEROPT_SHOW_INDICATORS:
       if (value)
-        ::set_option_indicators_mode(::get_option_indicators_mode() | HUD_INDICATORS_SHOW);
+        ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_SHOW);
       else
-        ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_SHOW);
+        ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_SHOW);
       break
     case USEROPT_HUD_SCREENSHOT_LOGO:
-      ::set_option_hud_screenshot_logo(value)
+      set_option_hud_screenshot_logo(value)
       break
     case USEROPT_HUD_SHOW_FUEL:
-      ::set_option_hud_show_fuel(descr.values[value])
+      set_option_hud_show_fuel(descr.values[value])
       break
     case USEROPT_HUD_SHOW_AMMO:
-      ::set_option_hud_show_ammo(descr.values[value])
+      set_option_hud_show_ammo(descr.values[value])
       break
     case USEROPT_HUD_SHOW_TEMPERATURE:
-      ::set_option_hud_show_temperature(descr.values[value])
+      set_option_hud_show_temperature(descr.values[value])
       break
     case USEROPT_MENU_SCREEN_SAFE_AREA:
       if (value >= 0 && value < descr.values.len()) {
@@ -4789,43 +4725,46 @@ let function set_option(optionId, value, descr = null) {
       }
       break;
     case USEROPT_AUTOPILOT_ON_BOMBVIEW:
-      ::set_option_autopilot_on_bombview(descr.values[value])
+      set_option_autopilot_on_bombview(descr.values[value])
       break;
     case USEROPT_AUTOREARM_ON_AIRFIELD:
-      ::set_option_autorearm_on_airfield(value)
+      set_option_autorearm_on_airfield(value)
       break;
     case USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH:
-      ::set_enable_laser_designatior_before_launch(value)
+      set_enable_laser_designatior_before_launch(value)
       break;
     case USEROPT_AUTO_SEEKER_STABILIZATION:
       set_option_seeker_auto_stabilization(value)
       break
     case USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN:
-      ::set_option_activate_airborne_radar_on_spawn(value)
+      set_option_activate_airborne_radar_on_spawn(value)
       break;
     case USEROPT_USE_RECTANGULAR_RADAR_INDICATOR:
-      ::set_option_use_rectangular_radar_indicator(value)
+      set_option_use_rectangular_radar_indicator(value)
       break;
     case USEROPT_RADAR_TARGET_CYCLING:
-      ::set_option_radar_target_cycling(value)
+      set_option_radar_target_cycling(value)
       break;
     case USEROPT_RADAR_AIM_ELEVATION_CONTROL:
       set_option_radar_aim_elevation_control(value)
       break;
+    case USEROPT_RWR_SENSITIVITY:
+      set_option_rwr_sensitivity(value)
+      break;
     case USEROPT_USE_RADAR_HUD_IN_COCKPIT:
-      ::set_option_use_radar_hud_in_cockpit(value)
+      set_option_use_radar_hud_in_cockpit(value)
       break;
     case USEROPT_USE_TWS_HUD_IN_COCKPIT:
       set_option_use_tws_hud_in_cockpit(value)
       break;
     case USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
-      ::set_option_activate_airborne_active_counter_measures_on_spawn(value)
+      set_option_activate_airborne_active_counter_measures_on_spawn(value)
       break;
     case USEROPT_SAVE_AI_TARGET_TYPE:
-      ::set_option_ai_target_type(value ? 1 : 0)
+      set_option_ai_target_type(value ? 1 : 0)
       break;
     case USEROPT_DEFAULT_AI_TARGET_TYPE:
-      ::set_option_default_ai_target_type(value)
+      set_option_default_ai_target_type(value)
       break;
     case USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
       set_gui_option(optionId, value)
@@ -4834,40 +4773,40 @@ let function set_option(optionId, value, descr = null) {
       set_gui_option(optionId, value)
       break;
     case USEROPT_SHOW_INDICATORS_TYPE:
-      local val = ::get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL);
+      local val = get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL);
       if (descr.values[value] == 0)
         val = val | HUD_INDICATORS_SELECT;
       if (descr.values[value] == 1)
         val = val | HUD_INDICATORS_CENTER;
       if (descr.values[value] == 2)
         val = val | HUD_INDICATORS_ALL;
-      ::set_option_indicators_mode(val);
+      set_option_indicators_mode(val);
       break
     case USEROPT_SHOW_INDICATORS_NICK:
-      local val = ::get_option_indicators_mode() & ~(HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD);
+      local val = get_option_indicators_mode() & ~(HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD);
       val = val | descr.values[value];
-      ::set_option_indicators_mode(val);
+      set_option_indicators_mode(val);
       break
     case USEROPT_SHOW_INDICATORS_TITLE:
       if (value)
-        ::set_option_indicators_mode(::get_option_indicators_mode() | HUD_INDICATORS_TEXT_TITLE);
+        ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_TITLE);
       else
-        ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_TITLE);
+        ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_TITLE);
       break
     case USEROPT_SHOW_INDICATORS_AIRCRAFT:
       if (value)
-        ::set_option_indicators_mode(::get_option_indicators_mode() | HUD_INDICATORS_TEXT_AIRCRAFT);
+        ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_AIRCRAFT);
       else
-        ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_AIRCRAFT);
+        ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_AIRCRAFT);
       break
     case USEROPT_SHOW_INDICATORS_DIST:
       if (value)
-        ::set_option_indicators_mode(::get_option_indicators_mode() | HUD_INDICATORS_TEXT_DIST);
+        ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_DIST);
       else
-        ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_DIST);
+        ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_DIST);
       break
     case USEROPT_SAVE_ZOOM_CAMERA:
-      ::set_option_save_zoom_camera(value)
+      set_option_save_zoom_camera(value)
       break;
 
     case USEROPT_SKIN:
@@ -4905,46 +4844,46 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_HUE_SQUAD:
-      ::set_hue(TARGET_HUE_SQUAD, descr.values[value]);
+      set_hue(TARGET_HUE_SQUAD, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_ALLY:
-      ::set_hue(TARGET_HUE_ALLY, descr.values[value]);
+      set_hue(TARGET_HUE_ALLY, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_ENEMY:
-      ::set_hue(TARGET_HUE_ENEMY, descr.values[value]);
+      set_hue(TARGET_HUE_ENEMY, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_SPECTATOR_ALLY:
-      ::set_hue(TARGET_HUE_SPECTATOR_ALLY, descr.values[value]);
+      set_hue(TARGET_HUE_SPECTATOR_ALLY, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_SPECTATOR_ENEMY:
-      ::set_hue(TARGET_HUE_SPECTATOR_ENEMY, descr.values[value]);
+      set_hue(TARGET_HUE_SPECTATOR_ENEMY, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_RELOAD:
-      ::set_hue(TARGET_HUE_RELOAD, descr.values[value]);
+      set_hue(TARGET_HUE_RELOAD, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_HUE_RELOAD_DONE:
-      ::set_hue(TARGET_HUE_RELOAD_DONE, descr.values[value]);
+      set_hue(TARGET_HUE_RELOAD_DONE, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case USEROPT_STROBE_ALLY:
-      ::set_strobe_ally(descr.values[value]);
+      set_strobe_ally(descr.values[value]);
       break
 
     case USEROPT_STROBE_ENEMY:
-      ::set_strobe_enemy(descr.values[value]);
+      set_strobe_enemy(descr.values[value]);
       break
 
     case USEROPT_AIR_DAMAGE_DISPLAY:
@@ -4992,27 +4931,27 @@ let function set_option(optionId, value, descr = null) {
       break;
 
     case USEROPT_HORIZONTAL_SPEED:
-      ::set_option_horizontal_speed(value ? 1 : 0)
+      set_option_horizontal_speed(value ? 1 : 0)
       break
 
     case USEROPT_HELICOPTER_HELMET_AIM:
-      ::set_option_use_oculus_to_aim_helicopter(value ? 1 : 0)
+      set_option_use_oculus_to_aim_helicopter(value ? 1 : 0)
       break
 
     case USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW:
-      ::set_option_auto_pilot_on_gunner_view_helicopter(value)
+      set_option_auto_pilot_on_gunner_view_helicopter(value)
     break
 
     case USEROPT_HUE_HELICOPTER_HUD_ALERT:
       if (hasFeature("reactivGuiForAircraft"))
         setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
       else
-        ::set_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
+        set_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case USEROPT_HUE_HELICOPTER_MFD:
-      ::set_hue(TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
+      set_hue(TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
@@ -5119,7 +5058,7 @@ let function set_option(optionId, value, descr = null) {
       break
 
      case USEROPT_COMMANDER_CAMERA_IN_VIEWS:
-      ::set_commander_camera_in_views(value)
+      set_commander_camera_in_views(value)
       break
 
     case USEROPT_TAKEOFF_MODE:
@@ -5308,6 +5247,7 @@ let function set_option(optionId, value, descr = null) {
     case USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
     case USEROPT_HUD_VISIBLE_CHAT_PLACE:
     case USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES:
+    case USEROPT_SHOW_OTHERS_DECALS:
       if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")
           break
@@ -5381,16 +5321,16 @@ let function set_option(optionId, value, descr = null) {
       break;
 
     case USEROPT_INTERNET_RADIO_ACTIVE:
-      let internet_radio_options = ::get_internet_radio_options()
+      let internet_radio_options = get_internet_radio_options()
       internet_radio_options["active"] = value
-      ::set_internet_radio_options(internet_radio_options)
+      set_internet_radio_options(internet_radio_options)
       break
     case USEROPT_INTERNET_RADIO_STATION:
       let station = descr.values[value]
       if (station != "") {
-        let internet_radio_options = ::get_internet_radio_options();
+        let internet_radio_options = get_internet_radio_options();
         internet_radio_options["station"] = station
-        ::set_internet_radio_options(internet_radio_options);
+        set_internet_radio_options(internet_radio_options);
       }
       break
 
@@ -5408,14 +5348,14 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_HEADTRACK_ENABLE:
-      ::ps4_headtrack_set_enable(value)
+      ps4_headtrack_set_enable(value)
       break
 
     case USEROPT_HEADTRACK_SCALE_X:
-      ::ps4_headtrack_set_xscale(value)
+      ps4_headtrack_set_xscale(value)
       break
     case USEROPT_HEADTRACK_SCALE_Y:
-      ::ps4_headtrack_set_yscale(value)
+      ps4_headtrack_set_yscale(value)
       break
     case USEROPT_MISSION_NAME_POSTFIX:
       if (::current_campaign_mission != null) {
@@ -5433,19 +5373,19 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_SHOW_DESTROYED_PARTS:
-      ::set_show_destroyed_parts(value)
+      set_show_destroyed_parts(value)
       break
 
     case USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN:
-      ::set_activate_ground_radar_on_spawn(value)
+      set_activate_ground_radar_on_spawn(value)
       break
 
     case USEROPT_GROUND_RADAR_TARGET_CYCLING:
-      ::set_option_ground_radar_target_cycling(value)
+      set_option_ground_radar_target_cycling(value)
       break
 
     case USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
-      ::set_activate_ground_active_counter_measures_on_spawn(value)
+      set_activate_ground_active_counter_measures_on_spawn(value)
       break
 
     case USEROPT_FPS_CAMERA_PHYSICS:
@@ -5467,16 +5407,16 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_TANK_GUNNER_CAMERA_FROM_SIGHT:
-      ::set_option_tank_gunner_camera_from_sight(value)
+      set_option_tank_gunner_camera_from_sight(value)
       break
     case USEROPT_TANK_ALT_CROSSHAIR:
       let unit = getPlayerCurUnit()
       let val = descr.values[value]
       if (unit && val != TANK_ALT_CROSSHAIR_ADD_NEW)
-        ::set_option_tank_alt_crosshair(unit.name, val)
+        set_option_tank_alt_crosshair(unit.name, val)
       break
     case USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS:
-      ::set_option_combine_pri_sec_triggers(value)
+      set_option_combine_pri_sec_triggers(value)
       set_gui_option(optionId, value)
       break
     case USEROPT_GAMEPAD_CURSOR_CONTROLLER:
@@ -5507,8 +5447,8 @@ let function set_option(optionId, value, descr = null) {
       setAbilityToBeAddedToContacts(value)
       break
     case USEROPT_ALLOW_ADDED_TO_LEADERBOARDS:
-      ::set_allow_to_be_added_to_lb(value)
-      ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+      set_allow_to_be_added_to_lb(value)
+      save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
       break
 
     case USEROPT_QUEUE_EVENT_CUSTOM_MODE:
@@ -5649,7 +5589,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
         break
 
       case "vlist":
-        elemTxt = ::create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
+        elemTxt = create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
         isVlist = true
         break
 

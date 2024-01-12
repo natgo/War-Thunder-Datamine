@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -26,7 +27,7 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 
 dagui_propid_add_name_id("userInputType")
 
-local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
 
@@ -88,7 +89,7 @@ local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
     select_mission(this.tutorialMission, true)
     ::current_campaign_mission = this.tutorialMission.name
     this.guiScene.performDelayed(this, function() { this.goForward(::gui_start_flight); })
-    ::save_profile(false)
+    save_profile(false)
   }
 
   function onClose(obj = null) {

@@ -693,7 +693,10 @@
           "event": "targetInSight",
           "actions": {
             "detectTarget": {
-              "rangeMult": 1.0
+              "rangeMult": [
+                1.0,
+                1.0
+              ]
             }
           }
         }
@@ -706,7 +709,10 @@
           "event": "update",
           "actions": {
             "detectTarget": {
-              "rangeMult": 1.0
+              "rangeMult": [
+                1.0,
+                1.0
+              ]
             }
           }
         },
@@ -714,15 +720,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

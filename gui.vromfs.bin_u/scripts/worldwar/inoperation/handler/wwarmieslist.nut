@@ -1,12 +1,14 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_update_hover_army_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+
+gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList.tpl"
   sceneBlkName = null
@@ -191,13 +193,13 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onHoverArmyItem(obj) {
-    ::ww_update_hover_army_name(obj.armyName)
-    ::ww_event("HoverArmyItem", { armyName = obj.armyName })
+    ww_update_hover_army_name(obj.armyName)
+    wwEvent("HoverArmyItem", { armyName = obj.armyName })
   }
 
   function onHoverLostArmyItem(_obj) {
-    ::ww_update_hover_army_name("")
-    ::ww_event("HoverLostArmyItem", { armyName = null })
+    ww_update_hover_army_name("")
+    wwEvent("HoverLostArmyItem", { armyName = null })
   }
 
   function onClickArmy(obj) {
@@ -209,10 +211,10 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!wwArmy)
       return
 
-    ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
+    wwEvent("ShowLogArmy", { wwArmy = wwArmy })
 
     let mapObj = this.guiScene["worldwar_map"]
-    ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, obj.armyName)
+    worldWarMapControls.selectArmy.call(worldWarMapControls, mapObj, obj.armyName)
     this.guiScene.playSound("ww_unit_select")
   }
 
@@ -256,7 +258,7 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventWWMapArmySelected(_params) {
-    let selectedArmyNames = ::ww_get_selected_armies_names()
+    let selectedArmyNames = ww_get_selected_armies_names()
     if (u.isEmpty(selectedArmyNames))
       return
 

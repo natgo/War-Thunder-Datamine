@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -17,7 +18,7 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON
 } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -36,6 +37,21 @@ local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
 let notAvailableColdownParams = { degree = 0, incFactor = 0 }
 
+let closeCurWheelmenu = @() ::close_cur_wheelmenu()
+
+function activateShortcutActionBarAction(action) {
+  let { shortcutIdx } = action
+  if (shortcutIdx != -1) {
+    activateActionBarAction(action.shortcutIdx)
+    return
+  }
+  let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
+  if (shortcut == null)
+    return
+  toggleShortcut(shortcut)
+  closeCurWheelmenu()
+}
+
 let function needFullUpdate(item, prevItem, hudUnitType) {
   return item.id != prevItem.id
     || (item.type != prevItem.type
@@ -45,6 +61,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
        && item?.modificationName != prevItem?.modificationName)
     || ((item.type == EII_ROCKET) && item?.bulletName != prevItem?.bulletName)
+    || ((item.type == EII_SELECT_SPECIAL_WEAPON) && item?.bulletName != prevItem?.bulletName)
 }
 
 const ACTION_ID_PREFIX = "action_bar_item_"
@@ -220,7 +237,7 @@ let class ActionBar {
     }
 
     foreach (idx, item in this.actionItems) {
-      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - ::get_usefull_total_time()
+      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
     }
@@ -282,7 +299,7 @@ let class ActionBar {
       enable           = isReady ? "yes" : "no"
       wheelmenuEnabled = isReady || actionBarType.canSwitchAutomaticMode()
       shortcutText     = shortcutText
-      isLongScText     = ::utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
+      isLongScText     = utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
       mainShortcutId   = shortcutId
       cancelShortcutId = shortcutId
       isXinput         = showShortcut && isXinput
@@ -300,15 +317,11 @@ let class ActionBar {
     let unit = this.getActionBarUnit()
     let modifName = getActionItemModificationName(item, unit)
     if (modifName) {
-      viewItem.bullets <- handyman.renderNested(loadTemplateText("%gui/weaponry/bullets.tpl"),
-        function (_text) {
-          // if fake bullets are not generated yet, generate them
-          if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
-            getBulletsSetData(unit, ::fakeBullets_prefix, {})
-          let data = getBulletsSetData(unit, modifName)
-          return getBulletsIconView(data)
-        }
-      )
+      // if fake bullets are not generated yet, generate them
+      if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
+        getBulletsSetData(unit, ::fakeBullets_prefix, {})
+      let data = getBulletsSetData(unit, modifName)
+      viewItem.bullets <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
       viewItem.tooltipDelayed <- !this.canControl
     }
@@ -323,13 +336,15 @@ let class ActionBar {
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
+    else if (actionBarType.isForWheelMenu())
+      viewItem.name <- actionBarType.getTitle(item)
 
     return viewItem
   }
 
   function getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime, isReverse = false) {
     let res = { degree = 360, incFactor = 0 }
-    let cooldownDuration = cooldownEndTime - ::get_usefull_total_time()
+    let cooldownDuration = cooldownEndTime - get_usefull_total_time()
     if (cooldownDuration <= 0)
       return res
 
@@ -435,7 +450,7 @@ let class ActionBar {
       let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)
         : notAvailableColdownParams
 
-      let cooldownTimeout = cooldownEndTime - ::get_usefull_total_time()
+      let cooldownTimeout = cooldownEndTime - get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(id, cooldownTimeout)
 
@@ -520,7 +535,7 @@ let class ActionBar {
   function activateStreak(streakId) {
     let action = this.killStreaksActionsOrdered?[streakId]
     if (action)
-      return activateActionBarAction(action.shortcutIdx)
+      return activateShortcutActionBarAction(action)
 
     if (streakId >= 0) { //something goes wrong; -1 is valid situation = player does not choose smthng
       debugTableData(this.killStreaksActionsOrdered)
@@ -551,7 +566,7 @@ let class ActionBar {
       return
 
     if (!open) {
-      ::close_cur_wheelmenu()
+      closeCurWheelmenu()
       return
     }
 
@@ -564,8 +579,8 @@ let class ActionBar {
 
     if (this.killStreaksActions.len() == 1) {
       this.guiScene.performDelayed(this, function() {
-        activateActionBarAction(this.killStreaksActions[0].shortcutIdx)
-        ::close_cur_wheelmenu()
+        activateShortcutActionBarAction(this.killStreaksActions[0])
+        closeCurWheelmenu()
       })
       return
     }
@@ -645,7 +660,7 @@ let class ActionBar {
     if (open)
       this.fillSelectWaponWheel()
     else
-      ::close_cur_wheelmenu()
+      closeCurWheelmenu()
   }
 
   function fillSelectWaponWheel() {

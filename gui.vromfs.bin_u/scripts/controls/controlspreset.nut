@@ -1,12 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%scripts/controls/controlsPresets.nut")
 let DataBlock  = require("DataBlock")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let { copyParamsToTable, eachBlock, eachParam, blkFromPath } = require("%sqstd/datablock.nut")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -463,7 +463,7 @@ let function isSameMapping(lhs, rhs) {
       let hotkey = this.getHotkey(hotkeyName)
       let otherHotkey = basePreset.getHotkey(hotkeyName)
       if (u.isEqual(hotkey, otherHotkey))
-        delete this.hotkeys[hotkeyName]
+        this.hotkeys.$rawdelete(hotkeyName)
     }
 
     let axesNames = u.keys(basePreset.axes)
@@ -478,16 +478,16 @@ let function isSameMapping(lhs, rhs) {
       let axisAttributeNames = u.keys(axis)
       foreach (attr in axisAttributeNames)
         if (attr in otherAxis && axis[attr] == otherAxis[attr])
-          delete axis[attr]
+          axis.$rawdelete(attr)
       if (axis.len() == 0)
-        delete this.axes[axisName]
+        this.axes.$rawdelete(axisName)
       if ("axisId" in otherAxis && otherAxis["axisId"] >= 0)
         usedAxesIds.append(otherAxis["axisId"])
     }
 
     foreach (paramName, otherParam in basePreset.params)
       if (paramName in this.params && u.isEqual(this.params[paramName], otherParam))
-        delete this.params[paramName]
+        this.params.$rawdelete(paramName)
   }
 
 
@@ -642,7 +642,7 @@ let function isSameMapping(lhs, rhs) {
 
       if (u.isDataBlock(blkMouseAxes))
         foreach (idx, axisId in blkMouseAxes % "axis")
-          mouseAxes[idx] = u.isInteger(axisId) ? ::get_axis_name(axisId) : ""
+          mouseAxes[idx] = u.isInteger(axisId) ? get_axis_name(axisId) : ""
 
       foreach (idx, axisName in mouseAxes)
         if (u.isString(axisName) && axisName.len() > 0)
@@ -846,7 +846,7 @@ let function isSameMapping(lhs, rhs) {
 
     local name = null
     local connected = false
-    let defaultJoystick = ::joystick_get_default() // C++ function
+    let defaultJoystick = joystick_get_default() // C++ function
     if (defaultJoystick)
       name = defaultJoystick.getAxisName(axisId)
 

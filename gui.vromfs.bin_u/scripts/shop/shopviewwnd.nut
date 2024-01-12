@@ -5,12 +5,12 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
+gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -45,7 +45,7 @@ gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
     this.needHighlight = false
 
     if (showConsoleButtons.value)
-      ::move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
     else
       this.highlightUnitsInTree([this.curAirName])
   }

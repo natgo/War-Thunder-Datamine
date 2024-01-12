@@ -1,7 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
-
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
@@ -17,7 +18,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
 let knownTournamentInvites = []
 
-let TournamentBattle = class extends BaseInvite {
+let TournamentBattle = class (BaseInvite) {
   //custom class params, not exist in base invite
   battleId = ""
   inviteTime = -1
@@ -71,14 +72,14 @@ let TournamentBattle = class extends BaseInvite {
   function disableCurInviteUserlog() {
     local needSave = false
 
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if ((blk.type == EULT_INVITE_TO_TOURNAMENT) &&
            (getTblValue("battleId", blk.body, "")  == this.battleId) &&
-           (::disable_user_log_entry(i)))
+           (disable_user_log_entry(i)))
         needSave = true
     }
     return needSave
@@ -96,7 +97,7 @@ let TournamentBattle = class extends BaseInvite {
   }
 
   function haveRestrictions() {
-    return !::isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
+    return !isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
   }
 
   function getRestrictionText() {
@@ -117,7 +118,7 @@ let TournamentBattle = class extends BaseInvite {
     if (this.isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    if (!::isInMenu())
+    if (!isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
@@ -145,7 +146,7 @@ let TournamentBattle = class extends BaseInvite {
 
 ::g_invites.registerInviteUserlogHandler(EULT_INVITE_TO_TOURNAMENT, function(blk, idx) {
   if (!hasFeature("Tournaments")) {
-    ::disable_user_log_entry(idx)
+    disable_user_log_entry(idx)
     return false
   }
 

@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_max_unit_rank
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
@@ -260,7 +263,7 @@ let WarbondAward = class {
     if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > ::max_country_rank)
       return true
 
-    return this.reqMaxUnitRank <= ::get_max_unit_rank()
+    return this.reqMaxUnitRank <= get_max_unit_rank()
   }
 
   function getMedalsCountNum() {

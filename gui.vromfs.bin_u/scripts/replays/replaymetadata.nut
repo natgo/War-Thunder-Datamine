@@ -1,5 +1,8 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
@@ -62,7 +65,7 @@ let buildReplayMpTable = function(replayPath) {
     res.append(mplayer)
   }
 
-  res.sort(::mpstat_get_sort_func(gameType))
+  res.sort(mpstat_get_sort_func(gameType))
   return res
 }
 

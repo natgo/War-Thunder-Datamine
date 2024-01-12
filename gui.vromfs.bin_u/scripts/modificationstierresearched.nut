@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,6 +13,7 @@ let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/u
 
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config) {
   foreach (param, value in config) {
@@ -27,10 +31,10 @@ let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
     tier = config?.tier ?? []
     expReward = Cost().setRp(config?.expToInvUnit ?? 0)
   }
-  ::gui_start_modal_wnd(gui_handlers.ModificationsTierResearched, wndParams)
+  loadHandler(gui_handlers.ModificationsTierResearched, wndParams)
 }
 
-gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -49,7 +53,7 @@ gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHa
     if (u.isArray(this.unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
       this.unitInResearch = this.unitInResearch[0] //but this is a really reare case, maybe no need to care about
 
-    let isLastResearchedModule = ::shop_get_researchable_module_name(this.unit.name) == ""
+    let isLastResearchedModule = shop_get_researchable_module_name(this.unit.name) == ""
     local locTextId = "modifications/full_tier_researched"
     if (isLastResearchedModule)
       locTextId = "modifications/full_unit_researched"

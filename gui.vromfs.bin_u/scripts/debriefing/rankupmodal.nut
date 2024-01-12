@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -7,10 +9,12 @@ let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 let delayedRankUpWnd = []
 
-gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/rankUpWindow.blk";
 
@@ -50,7 +54,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
             local air = getAircraftByName(airBlk.getBlockName());
             if (air) {
               if (this.isShowUnit(air, showAsUnlock)) {
-                airRow += ::build_aircraft_item(air.name, air);
+                airRow += buildUnitSlot(air.name, air);
                 unitItems.append({ id = air.name, unit = air })
               }
             }
@@ -59,7 +63,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
                 let gAirBlk = airBlk.getBlock(group);
                 air = getAircraftByName(gAirBlk.getBlockName());
                 if (this.isShowUnit(air, showAsUnlock)) {
-                  airRow += ::build_aircraft_item(air.name, air);
+                  airRow += buildUnitSlot(air.name, air);
                   unitItems.append({ id = air.name, unit = air })
                 }
               }
@@ -87,7 +91,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
       this.scene.findObject("availableNewAirText").setValue(loc("debriefing/new_aircrafts_available"))
       this.guiScene.replaceContentFromText(aircraftTableObj, airRow, airRow.len(), this);
       foreach (unitItem in unitItems)
-        ::fill_unit_item_timers(aircraftTableObj.findObject(unitItem.id), unitItem.unit, unitItem.params)
+        fillUnitSlotTimers(aircraftTableObj.findObject(unitItem.id), unitItem.unit)
     }
 
     this.updateNextAwardInfo()
@@ -124,7 +128,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function afterModalDestroy() {
     if (delayedRankUpWnd.len() > 0) {
-      ::gui_start_modal_wnd(gui_handlers.RankUpModal, delayedRankUpWnd[0])
+      loadHandler(gui_handlers.RankUpModal, delayedRankUpWnd[0])
       delayedRankUpWnd.remove(0)
     }
     else
@@ -142,10 +146,10 @@ let function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
   for (local i = old_rank + 1; i <= new_rank; i++)
     gained_ranks.append(i);
   let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
-  if (::isHandlerInScene(gui_handlers.RankUpModal))
+  if (isHandlerInScene(gui_handlers.RankUpModal))
     delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
   else
-    ::gui_start_modal_wnd(gui_handlers.RankUpModal, config)
+    loadHandler(gui_handlers.RankUpModal, config)
   updatePlayerRankByCountry(country, new_rank)
   return true
 }

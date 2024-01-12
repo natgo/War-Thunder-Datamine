@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -14,7 +14,8 @@ let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/obje
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
@@ -34,7 +35,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
                                 })
 }
 
-gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
 
@@ -77,7 +78,7 @@ gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.contentObj = this.scene.findObject("images_list")
     this.fillPage()
-    ::move_mouse_on_child(this.contentObj, 0)
+    move_mouse_on_child(this.contentObj, 0)
 
     this.showSceneBtn("btn_select", showConsoleButtons.value)
   }

@@ -1,8 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -15,14 +18,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 
-::show_clan_season_info <- function show_clan_season_info(difficulty) {
-  ::gui_start_modal_wnd(
-    gui_handlers.clanSeasonInfoModal,
-    { difficulty = difficulty }
-  )
-}
-
-gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -60,19 +56,17 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
     foreach (reward in rewards) {
       local title = ""
       local medal = ""
-      switch (reward.rType) {
-        case CLAN_SEASON_MEDAL_TYPE.PLACE:
-          title = loc("clan/season_award/place/place" + reward.place)
-          medal = "place" + reward.place
-          break
-        case CLAN_SEASON_MEDAL_TYPE.TOP:
-          title = loc("clan/season_award/place/top", { top = reward.place })
-          medal = "top" + reward.place
-          break
-        case CLAN_SEASON_MEDAL_TYPE.RATING:
-          title = loc("clan/season_award/rating", { ratingValue = reward.rating })
-          medal = reward.rating + "rating"
-          break
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.PLACE) {
+        title = loc($"clan/season_award/place/place{reward.place}")
+        medal = "place" + reward.place
+      }
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.TOP) {
+        title = loc("clan/season_award/place/top", { top = reward.place })
+        medal = "top" + reward.place
+      }
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.RATING) {
+        title = loc("clan/season_award/rating", { ratingValue = reward.rating })
+        medal = reward.rating + "rating"
       }
       let medalIconMarkup = LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
@@ -101,7 +95,7 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
         let collection = []
 
         if (prizeType == "clanTag") {
-          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
+          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(clan_get_my_clan_tag())
           let tagTxt = u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
           let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
@@ -183,7 +177,7 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
       this.selectedIndex = this.rewardsListObj.childrenCount() - 1
 
     this.rewardsListObj.setValue(this.selectedIndex)
-    ::move_mouse_on_child(this.rewardsListObj, this.selectedIndex)
+    move_mouse_on_child(this.rewardsListObj, this.selectedIndex)
   }
 
   function onItemSelect(obj) {
@@ -200,4 +194,11 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function onBtnMoreInfo(_obj) {
   }
+}
+
+let openClanSeasonInfoWnd = @(difficulty) loadHandler(
+  gui_handlers.clanSeasonInfoModal, { difficulty })
+
+return {
+  openClanSeasonInfoWnd
 }

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, is_system_ui_active, d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, has_entitlement, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -5,19 +6,24 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
   add_custom_mission_list_full, get_meta_mission_info_by_gm_and_name,
-  get_current_mission_desc } = require("guiMission")
+  get_current_mission_desc, get_meta_missions_info } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isStringInteger, isStringFloat, toUpper } = require("%sqstd/string.nut")
+let { getDynamicLayoutsBlk } = require("dynamicMission")
 
 const COOP_MAX_PLAYERS = 4
+const DYNAMIC_REQ_COUNTRY_RANK = 1
+
+let dynamicLayouts = persist("dynamicLayouts", @() [])
+let gameModeMaps = persist("gameModeMaps", @() [])
 
 ::enable_coop_in_QMB <- false
 ::enable_coop_in_SingleMissions <- false
@@ -27,14 +33,6 @@ registerPersistentData("MissionsUtilsGlobals", getroottable(),
   [
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
-
-global enum MIS_PROGRESS { //value received from get_mission_progress
-  COMPLETED_ARCADE    = 0
-  COMPLETED_REALISTIC = 1
-  COMPLETED_SIMULATOR = 2
-  UNLOCKED            = 3 //unlocked but not completed
-  LOCKED              = 4
-}
 
 let needCheckForVictory = Watched(false)
 
@@ -47,7 +45,7 @@ let getWeatherLocName = @(weather)
   loc(customWeatherLocIds?[weather] ?? $"options/weather{weather}")
 
 let function isMissionComplete(chapterName, missionName) { //different by mp_modes
-  let progress = ::get_mission_progress($"{chapterName}/{missionName}")
+  let progress = get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
 
@@ -77,7 +75,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
 }
 
 ::get_game_mode_loc_name <- function get_game_mode_loc_name(gm) {
-  return loc(format("multiplayer/%sMode", ::get_game_mode_name(gm)))
+  return loc(format("multiplayer/%sMode", get_game_mode_name(gm)))
 }
 
 ::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk) {
@@ -125,7 +123,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
 ::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType) {
   // Searching by units of Single missions
   let unitsBlk = fullMissionBlk?.units
-  let playerBlk = fullMissionBlk && get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
+  let playerBlk = fullMissionBlk && getBlkValueByPath(fullMissionBlk, "mission_settings/player")
   let wings = playerBlk ? (playerBlk % "wing") : []
   let unitsCache = {}
   if (unitsBlk && wings.len())
@@ -171,7 +169,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
         continue
       }
 
-      ::add_last_played(mission?.chapter, mission?.id, GM_CAMPAIGN, false)
+      add_last_played(mission?.chapter, mission?.id, GM_CAMPAIGN, false)
       break
     }
 
@@ -191,7 +189,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
 
 ::add_mission_list_full <- function add_mission_list_full(gm_builder, add, dynlist) {
   add_custom_mission_list_full(gm_builder, add, dynlist)
-  ::game_mode_maps.clear()
+  gameModeMaps.clear()
 }
 
 let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
@@ -214,9 +212,9 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
   ::gui_start_mislist(true, GM_CAMPAIGN)
 
-  if (needCheckForVictory.value && ! ::is_system_ui_active()) {
+  if (needCheckForVictory.value && ! is_system_ui_active()) {
     needCheckForVictory(false)
-    ::play_movie("video/victory", false, true, true)
+    play_movie("video/victory", false, true, true)
   }
 }
 
@@ -254,7 +252,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 ::is_any_campaign_available <- function is_any_campaign_available() {
   let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
   foreach (item in mbc)
-    if (::has_entitlement(item.name) || hasFeature(item.name))
+    if (has_entitlement(item.name) || hasFeature(item.name))
       return true
   return false
 }
@@ -263,13 +261,9 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   let res = []
   let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
   foreach (item in mbc)
-    if (!::has_entitlement(item.name) && !hasFeature(item.name))
+    if (!has_entitlement(item.name) && !hasFeature(item.name))
       res.append(item.name)
   return res
-}
-
-::purchase_any_campaign <- function purchase_any_campaign() {
-  ::OnlineShopModel.openBrowserForFirstFoundEntitlement(::get_not_purchased_campaigns())
 }
 
 ::gui_start_singleplayer_from_coop <- function gui_start_singleplayer_from_coop() {
@@ -289,7 +283,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   params.canSwitchMisListType <- gm == GM_SKIRMISH
 
   let showAllCampaigns = gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION
-  ::current_campaign_id = showAllCampaigns ? null : ::get_game_mode_name(gm)
+  ::current_campaign_id = showAllCampaigns ? null : get_game_mode_name(gm)
   params.showAllCampaigns <- showAllCampaigns
 
   if (!isModal) {
@@ -305,8 +299,8 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
 ::gui_start_benchmark <- function gui_start_benchmark() {
   if (isPlatformSony) {
-    ::ps4_vsync_enabled = ::d3d_get_vsync_enabled()
-    ::d3d_enable_vsync(false)
+    ::ps4_vsync_enabled = d3d_get_vsync_enabled?() ?? false
+    d3d_enable_vsync?(false)
   }
   ::gui_start_mislist(true, GM_BENCHMARK)
 }
@@ -359,7 +353,7 @@ let function getCombineLocNameMission(missionInfo) {
 let function locCurrentMissionName(needComment = true) {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
 
@@ -384,7 +378,7 @@ let function locCurrentMissionName(needComment = true) {
 ::loc_current_mission_desc <- function loc_current_mission_desc() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
   let locDecsByTeamParamName = $"locDescTeam{teamId}"
 
   local locDesc = ""
@@ -436,7 +430,54 @@ let function setMissionEnviroment(obj) {
   obj.setValue(loc("ui/colon").concat(loc("sm_conditions"), loc("ui/comma").join(cond, true)))
 }
 
+function getGameModeMaps() {
+  if (gameModeMaps.len())
+    return gameModeMaps
+
+  for (local modeNo = 0; modeNo < GM_COUNT; ++modeNo) {
+    let mi = get_meta_missions_info(modeNo)
+
+    let modeMap = {
+      items = []
+      values = []
+      coop = []
+    }
+    for (local i = 0; i < mi.len(); ++i) {
+      let blkMap = mi[i]
+      let misId = blkMap.getStr("name", "")
+      modeMap.values.append(misId)
+      modeMap.items.append($"#missions/{misId}")
+      modeMap.coop.append(blkMap.getBool("gt_cooperative", false))
+    }
+    gameModeMaps.append(modeMap)
+  }
+
+  return gameModeMaps
+}
+
+function getDynamicLayouts() {
+  if (dynamicLayouts.len())
+    return dynamicLayouts
+
+  let dblk = getDynamicLayoutsBlk()
+  for (local i = 0; i < dblk.blockCount(); i++) {
+    let info = {
+      mis_file = dblk.getBlock(i).getStr("mis_file", "")
+      name = dblk.getBlock(i).getStr("name", "")
+    }
+    dynamicLayouts.append(info)
+  }
+
+  return dynamicLayouts
+}
+
+function clearMapsCache() {
+  gameModeMaps.clear()
+  dynamicLayouts.clear()
+}
+
 return {
+  DYNAMIC_REQ_COUNTRY_RANK
   needCheckForVictory
   getUrlOrFileMissionMetaInfo
   isMissionComplete
@@ -445,4 +486,7 @@ return {
   getMissionTimeText
   getWeatherLocName
   setMissionEnviroment
+  getGameModeMaps
+  getDynamicLayouts
+  clearMapsCache
 }

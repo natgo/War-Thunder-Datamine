@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import script_net_assert
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_version_str } = require("app")
@@ -16,9 +18,8 @@ let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
-let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
-let { buttonsListWatch } = require("%scripts/mainmenu/topMenuButtons.nut")
+let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
@@ -34,33 +35,10 @@ let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-
-let template = {
-  id = ""
-  text = @() ""
-  tooltip = @() ""
-  image = @() null
-  link = null
-  isLink = @() false
-  isFeatured = @() false
-  needDiscountIcon = false
-  unseenIcon = null
-  onClickFunc = @(_obj, _handler = null) null
-  onChangeValueFunc = @(_value) null
-  isHidden = @(_handler = null) false
-  isVisualDisabled = @() false
-  isInactiveInQueue = false
-  elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
-  isButton = @() this.elementType == TOP_MENU_ELEMENT_TYPE.BUTTON
-  isDelayed = true
-  checkbox = @() this.elementType == TOP_MENU_ELEMENT_TYPE.CHECKBOX //param name only because of checkbox.tpl
-  isLineSeparator = @() this.elementType == TOP_MENU_ELEMENT_TYPE.LINE_SEPARATOR
-  isEmptyButton = @() this.elementType == TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON
-  funcName = @() this.isButton() ? "onClick" : this.checkbox() ? "onChangeCheckboxValue" : null
-}
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 let list = {
-  UNKNOWN = {}
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
     onClickFunc = function(_obj, handler) {
@@ -174,15 +152,6 @@ let list = {
     isHidden = @(...) !hasFeature("UserMissions")
     isInactiveInQueue = true
   }
-  OPTIONS = {
-    text = @() "#mainmenu/btnGameplay"
-    onClickFunc = @(_obj, _handler) openOptionsWnd()
-  }
-  CONTROLS = {
-    text = @() "#mainmenu/btnControls"
-    onClickFunc = @(...) ::gui_start_controls()
-    isHidden = @(...) !hasFeature("ControlsAdvancedSettings")
-  }
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"
     onClickFunc = @(_obj, handler) handler.goForwardIfOnline(::gui_modal_leaderboards, false, true)
@@ -190,7 +159,8 @@ let list = {
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans") ? ::gui_modal_clans() : ::show_not_available_msg_box()
+    onClickFunc = @(...) hasFeature("Clans") ? loadHandler(gui_handlers.ClansModalHandler)
+      : ::show_not_available_msg_box()
     isHidden = @(...) !hasFeature("Clans")
   }
   REPLAY = {
@@ -206,7 +176,7 @@ let list = {
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"
     onClickFunc = @(...) openChangelog()
-    isHidden = @(...) !hasFeature("Changelog") || !::isInMenu()
+    isHidden = @(...) !hasFeature("Changelog") || !isInMenu()
   }
   EXIT = {
     text = @() "#mainmenu/btnExit"
@@ -263,7 +233,7 @@ let list = {
     link = "#url/tss"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || ::is_me_newbie()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || isMeNewbie()
   }
   REPORT_AN_ISSUE = {
     text = @() loc("topmenu/reportAnIssue")
@@ -271,7 +241,9 @@ let list = {
       ? openQrWindow({
           headerText = loc("topmenu/reportAnIssue")
           additionalInfoText = loc("qrWindow/info/reportAnIssue")
-          baseUrl = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
+          qrCodesData = [
+            {url = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })}
+          ]
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
@@ -279,14 +251,16 @@ let list = {
     link = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
     isLink = @() isPlatformPC
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !::isInMenu()
+    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !isInMenu()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
     onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
       ? openQrWindow({
           headerText = loc("topmenu/streamsAndReplays")
-          baseUrl = loc("url/streamsAndReplays")
+          qrCodesData = [
+            {url = loc("url/streamsAndReplays")}
+          ]
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj)
@@ -295,7 +269,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-       || !::isInMenu()
+       || !isInMenu()
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"
@@ -304,41 +278,41 @@ let list = {
       : showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
     onClickFunc = @(_obj, handler) handler.startOnlineShop("premium")
     image = @() "#ui/gameuiskin#sub_premiumaccount.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !::isInMenu()
+    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
     onClickFunc = @(_obj, handler) handler.startOnlineShop("warpoints")
     image = @() "#ui/gameuiskin#shop_warpoints.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   INVENTORY = {
     text = @() "#items/inventory"
     onClickFunc = @(...) ::gui_start_inventory()
     image = @() "#ui/gameuiskin#inventory_icon.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu()
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu()
     unseenIcon = @() SEEN.INVENTORY
   }
   ITEMS_SHOP = {
     text = @() "#items/shop"
     onClickFunc = @(...) ::gui_start_itemsShop()
     image = @() "#ui/gameuiskin#store_icon.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !hasFeature("ItemsShopInTopMenu")
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu() || !hasFeature("ItemsShopInTopMenu")
     unseenIcon = @() SEEN.ITEMS_SHOP
   }
   WORKSHOP = {
     text = @() "#items/workshop"
     onClickFunc = @(...) ::gui_start_items_list(itemsTab.WORKSHOP)
     image = @() "#ui/gameuiskin#btn_modifications.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !workshop.isAvailable()
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu() || !workshop.isAvailable()
     unseenIcon = @() SEEN.WORKSHOP
   }
   WARBONDS_SHOP = {
@@ -347,7 +321,7 @@ let list = {
     image = @() "#ui/gameuiskin#wb.svg"
     isHidden = @(...) !isBattleTasksAvailable()
       || !::g_warbonds.isShopAvailable()
-      || !::isInMenu()
+      || !isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
   }
   ONLINE_SHOP = {
@@ -368,13 +342,13 @@ let list = {
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
-    isHidden = @(...) !isMarketplaceEnabled() || !::isInMenu()
+    isHidden = @(...) !isMarketplaceEnabled() || !isInMenu()
   }
   COLLECTIONS = {
     text = @() "#mainmenu/btnCollections"
     onClickFunc = @(...) openCollectionsWnd()
     image = @() "#ui/gameuiskin#collection.svg"
-    isHidden = @(...) !hasAvailableCollections() || !::isInMenu()
+    isHidden = @(...) !hasAvailableCollections() || !isInMenu()
   }
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"
@@ -382,7 +356,7 @@ let list = {
       if (!("getWndHelpConfig" in handler))
         return
 
-      gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+      gui_handlers.HelpInfoHandlerModal.openHelp(handler)
     }
     isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
   }
@@ -393,14 +367,16 @@ let list = {
     link = "#url/faq"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
   }
   SUPPORT = {
     text = @() "#mainmenu/support"
     onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
       ? openQrWindow({
           headerText = loc("mainmenu/support")
-          baseUrl = loc("url/support")
+          qrCodesData = [
+            {url = loc("url/support")}
+          ]
         })
       : openUrlByObj(obj)
     isDelayed = false
@@ -408,7 +384,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-      || !::isInMenu()
+      || !isInMenu()
   }
   WIKI = {
     text = @() "#mainmenu/wiki"
@@ -417,7 +393,7 @@ let list = {
     link = "#url/wiki"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
@@ -428,7 +404,7 @@ let list = {
     link = "#url/eula"
     isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
-    isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
+    isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu()
   }
   DEBUG_PS4_SHOP_DATA = {
     text = @() "Debug PS4 Data" //intentionally without localization
@@ -441,29 +417,10 @@ let list = {
       }
       let data = "\n".join(itemInfo, true)
       log(data)
-      ::script_net_assert("PS4 Internal debug shop data")
+      script_net_assert("PS4 Internal debug shop data")
     }
     isHidden = @(...) !hasFeature("DebugLogPS4ShopData")
   }
-  EMPTY = {
-    elementType = TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON
-  }
-  LINE_SEPARATOR = {
-    elementType = TOP_MENU_ELEMENT_TYPE.LINE_SEPARATOR
-  }
 }
 
-let fillButtonConfig = function(buttonCfg, name) {
-  return template.__merge(buttonCfg.__merge({
-    id = name.tolower()
-    typeName = name
-  }))
-}
-
-buttonsListWatch(list.map(fillButtonConfig))
-
-return {
-  addButtonConfig = function(newBtnConfig, name) {
-    buttonsListWatch.value[name] <- fillButtonConfig(newBtnConfig, name)
-  }
-}
+list.each(addButtonConfig)

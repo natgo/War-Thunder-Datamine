@@ -1,10 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
-::items_classes.CraftPart <- class extends ItemExternal {
+let CraftPart = class (ItemExternal) {
   static iType = itemType.CRAFT_PART
+  static name = "CraftPart"
   static defaultLocId = "craft_part"
   static typeIcon = "#ui/gameuiskin#item_type_craftpart.svg"
 
@@ -16,3 +17,4 @@ let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
     openingRewardTitle = "mainmenu/itemCreated/title"
   })
 }
+return { CraftPart }

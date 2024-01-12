@@ -1,15 +1,22 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, get_current_personal_discount_count, get_current_personal_discount_uid
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
-::items_classes.Discount <- class extends ::BaseItem {
+let Discount = class (BaseItem) {
   static iType = itemType.DISCOUNT
+  static name = "Discount"
   static defaultLocId = "personalDiscount"
   static defaultIconStyle = "default_personal_discount"
   static typeIcon = "#ui/gameuiskin#item_type_discounts.svg"
@@ -58,6 +65,13 @@ let { addTask } = require("%scripts/tasker.nut")
   }
 
   /* override */ function doMainAction(cb, handler, params = null) {
+    let unit = this.getUnit()
+    let canBuy = this.isInventoryItem && this.amount && this.isActive()
+      && unit != null && canBuyUnit(unit)
+    if (canBuy) {
+      ::buyUnit(unit)
+      return
+    }
     let baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return this.activateDiscount(cb, handler)
@@ -74,7 +88,7 @@ let { addTask } = require("%scripts/tasker.nut")
     let blk = DataBlock()
     blk.setStr("name", this.uids[0])
 
-    let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
+    let taskId = char_send_blk("cln_set_current_personal_discount", blk)
     let taskCallback = Callback( function() {
       ::g_discount.updateDiscountData()
       cb({ success = true })
@@ -109,6 +123,29 @@ let { addTask } = require("%scripts/tasker.nut")
   }
 
   function getMainActionData(isShort = false, params = {}) {
+    let unit = this.getUnit()
+    if (this.isInventoryItem && this.amount && this.isActive() && unit != null) {
+      let purchaseText = loc("msgbox/btn_purchase")
+      if (isShort)
+        return {
+          btnName = purchaseText
+        }
+      let priceWithDiscount = ::getUnitCost(unit).getTextAccordingToBalance()
+      let priceWithDiscountNoTags = removeTextareaTags(priceWithDiscount)
+      let realCost = ::getUnitRealCost(unit).getTextAccordingToBalance()
+      let realCostNoTags = removeTextareaTags(realCost)
+      let realCostNoTagsLength = getStringWidthPx(realCostNoTags, "fontMedium")
+      let purchaseLength = getStringWidthPx(loc("mainmenu/btnBuy"), "fontMedium")
+      return {
+        needCrossedOldPrice = true
+        redLinePos = $"{purchaseLength}-3@blockInterval, ph/2-h/2"
+        realCostNoTagsLength
+        btnStyle = "purchase"
+        btnName = $"{purchaseText} {realCostNoTags} {priceWithDiscountNoTags}"
+        btnColoredName = $"{purchaseText} {realCost} {priceWithDiscount}"
+      }
+    }
+
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
@@ -123,8 +160,8 @@ let { addTask } = require("%scripts/tasker.nut")
   function isActive(...) {
     if (!this.isInventoryItem || this.uids == null)
       return false
-    for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i) {
-      let currentDiscountUid = ::get_current_personal_discount_uid(i)
+    for (local i = get_current_personal_discount_count() - 1; i >= 0; --i) {
+      let currentDiscountUid = get_current_personal_discount_uid(i)
       if (isInArray(currentDiscountUid, this.uids))
         return true
     }
@@ -317,4 +354,18 @@ let { addTask } = require("%scripts/tasker.nut")
     this._initPersonalDiscountParams()
     return this.discountDescriptionDataItems
   }
+
+  function getUnit() {
+    return this.getSpecialOfferLocParams()?.unit
+  }
+
+  function canPreview() {
+    return this.getSpecialOfferLocParams()?.unit.canPreview() ?? false
+  }
+
+  function doPreview() {
+    this.getSpecialOfferLocParams().unit.doPreview()
+  }
 }
+
+return {Discount}

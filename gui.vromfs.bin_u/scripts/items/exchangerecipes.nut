@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,23 +11,19 @@ let DataBlock  = require("DataBlock")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
 let time = require("%scripts/time.nut")
 let { getCustomLocalizationPresets, getRandomEffect,
   getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
-let { getUserstatItemRewardData,
-  userstatItemsListLocId, userstatRewardTitleLocId
+let { getUserstatItemRewardData, userstatItemsListLocId
 } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
-
-global enum MARK_RECIPE {
-  NONE
-  BY_USER
-  USED
-}
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
+let { floor } = require("math")
+let { showBuyAndOpenChestWnd } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -52,6 +49,238 @@ let function showExchangeInventoryErrorMsg(errorId, componentItem) {
   let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
   showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
+}
+
+let hasFakeRecipesInList = @(recipes) u.search(recipes, @(r) r?.isFake) != null
+
+function getRecipesCraftTimeText(recipes) {
+  let minSeconds = max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+  let maxSeconds = max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+  if (minSeconds <= 0 && maxSeconds <= 0)
+    return ""
+
+  let timeText = [loc("icon/hourglass"), time.secondsToString(minSeconds, true, true)]
+  if (minSeconds != maxSeconds)
+    timeText.append(loc("ui/ndash"), time.secondsToString(maxSeconds, true, true))
+
+  return loc(recipes[0].getLocIdsList().craftTime, { time = " ".join(timeText) })
+}
+
+function getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
+  if (componentItem.showAllowableRecipesOnly())
+    return ""
+
+  let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
+  let isFullRecipesList = recipes.len() <= maxRecipes
+
+  let isMultiRecipes = recipes.len() > 1
+  local isMultiExtraItems = false
+  let hasFakeRecipes = hasFakeRecipesInList(recipes)
+
+  local recipesToShow = recipes
+  if (!hasFakeRecipes)
+    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
+  if (!isFullRecipesList) {
+    recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
+    if (recipesToShow.len() > maxRecipes)
+      recipesToShow = recipesToShow.slice(0, maxRecipes)
+    else if (recipesToShow.len() < maxRecipes)
+      foreach (r in recipes)
+        if (!r.isUsable && !r.isRecipeLocked()) {
+          recipesToShow.append(r)
+          if (recipesToShow.len() == maxRecipes)
+            break
+        }
+  }
+
+  let needShowHeader = params?.needShowHeader ?? true
+  local headerFirst = ""
+  local headerNext = ""
+  if (needShowHeader) {
+    foreach (recipe in recipesToShow) {
+      let multipleExtraItems = recipe.visibleComponents.filter(
+        @(c) c.itemdefId != recipe.generatorId && componentItem.id != c.itemdefId)
+      isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
+    }
+
+    let craftTimeText = getRecipesCraftTimeText(recipes)
+    headerFirst = colorize("grayOptionColor",
+      componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),
+                                          isMultiExtraItems, hasFakeRecipes,
+                                          craftTimeText))
+    headerNext = isMultiRecipes && isMultiExtraItems ?
+      colorize("grayOptionColor", loc("hints/shortcut_separator")) : null
+  }
+
+  params.componentToHide <- componentItem
+  params.showCurQuantities <- (params?.showCurQuantities ?? true) && componentItem.descReceipesListWithCurQuantities
+  params.canOpenForGold <- componentItem.canOpenForGold()
+
+  let res = []
+  foreach (recipe in recipesToShow) {
+    if (needShowHeader)
+      params.header <- !res.len() ? headerFirst : headerNext
+
+    if (shouldReturnMarkup)
+      res.append(recipe.getTextMarkup(params))
+    else
+      res.append(recipe.getText(params))
+  }
+
+  return (shouldReturnMarkup ? "" : "\n").join(res, true)
+}
+
+let getRequirementsMarkup = @(recipes, componentItem, params)
+  getRequirements(recipes, componentItem, params, true)
+
+let getRequirementsText = @(recipes, componentItem, params)
+  getRequirements(recipes, componentItem, params, false)
+
+function saveMarkedRecipes(newMarkedRecipesUid) {
+  if (!newMarkedRecipesUid.len())
+    return
+
+  local markRecipeBlk = loadLocalAccountSettings(markRecipeSaveId)
+  if (!markRecipeBlk)
+    markRecipeBlk = DataBlock()
+  foreach (i in newMarkedRecipesUid)
+    markRecipeBlk[i] = MARK_RECIPE.USED
+
+  saveLocalAccountSettings(markRecipeSaveId, markRecipeBlk)
+}
+
+function showUseErrorMsg(recipes, componentItem) {
+  let locId = componentItem.getCantUseLocId()
+  let text = colorize("badTextColor", loc(locId))
+  let msgboxParams = {
+    data_below_text = getRequirementsMarkup(recipes, componentItem, {
+      widthByParentParent = true
+      headerParams = { hasHeaderPadding = true }
+    }),
+    baseHandler = get_cur_base_gui_handler(), //FIX ME: used only for tooltip
+    cancel_fn = function() {}
+  }
+
+  //Suggest to buy not enough item on marketplace
+  local requiredItem = null
+  if (isMarketplaceEnabled() && recipes.len() == 1)
+    foreach (c in recipes[0].components)
+      if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity) {
+        let item = ::ItemsManager.findItemById(c.itemdefId)
+        if (!item || !item.hasLink())
+          continue
+        requiredItem = item
+        break
+      }
+
+  let buttons = [ ["cancel"] ]
+  local defBtn = "cancel"
+  if (requiredItem) {
+    buttons.insert(0, [ "find_on_marketplace", @() requiredItem.openLink() ])
+    defBtn = "find_on_marketplace"
+  }
+
+  scene_msg_box("cant_open_chest", null, text, buttons, defBtn, msgboxParams)
+}
+
+function showUseErrorMsgIfNeed(recipe, componentItem, recipes = null){
+  if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
+    scene_msg_box("reached_max_amount", null,
+    loc(componentItem.getLocIdsList().reachedMaxAmount),
+      [["cancel"]], "cancel")
+    return true
+  }
+
+  if (!recipe?.isUsable) {
+    showUseErrorMsg(recipes ?? [recipe], componentItem)
+    return true
+  }
+
+  return false
+}
+
+function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, recipes = null) {
+  let msgData = componentItem.getConfirmMessageData(recipe, quantity)
+  let msgboxParams = { cancel_fn = function() {} }
+
+  if (msgData?.needRecipeMarkup)
+    msgboxParams.__update({
+      data_below_text = recipe.getExchangeMarkup(componentItem,
+        { header = msgData?.headerRecipeMarkup ?? ""
+          headerParams = recipeComponentHeaderParams
+          widthByParentParent = true
+          quantity
+        })
+      baseHandler = get_cur_base_gui_handler()
+    })
+  if (recipe.isDisassemble && params?.bundleContent) {
+    msgboxParams.__update({
+      data_below_text = (msgboxParams?.data_below_text ?? "")
+        + ::PrizesView.getPrizesListView(params.bundleContent,
+            { header = loc("mainmenu/you_will_receive")
+              headerParams = recipeComponentHeaderParams
+              widthByParentParent = true
+            }, false)
+      baseHandler = get_cur_base_gui_handler()
+    })
+  }
+
+  scene_msg_box("chest_exchange", null, msgData.text, [
+    [ "yes", function() {
+        recipe.updateComponents()
+        if (recipe.isUsable && recipe.quantityAvailableExchanges >= quantity)
+          recipe.doExchange(componentItem, quantity, params)
+        else
+          showUseErrorMsg(recipes ?? [recipe], componentItem)
+      } ],
+    [ "no" ]
+  ], "yes", msgboxParams)
+}
+
+function tryUseRecipes(recipes, componentItem, params = {}) {
+  let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
+  if (showUseErrorMsgIfNeed(recipe, componentItem, recipes) || recipe == null)
+    return false
+
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, 1, params)
+    return true
+  }
+
+  showConfirmExchangeMsg(recipe, componentItem, params, 1, recipes)
+  return true
+}
+
+function tryUseRecipeSeveralTime(recipe, componentItem, maxAmount, params = {}) {
+  if (showUseErrorMsgIfNeed(recipe, componentItem))
+    return
+
+  maxAmount = min(maxAmount, recipe.quantityAvailableExchanges)
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, maxAmount, params)
+    return true
+  }
+
+  if (maxAmount == 1) {
+    showConfirmExchangeMsg(recipe, componentItem, params)
+    return
+  }
+
+  chooseAmountWnd.open({
+    parentObj = params?.obj
+    align = params?.align ?? "bottom"
+    minValue = 1
+    maxValue = maxAmount
+    curValue = maxAmount
+    valueStep = 1
+
+    headerText = $"{loc(componentItem.getLocIdsList().consumeSeveral)} {componentItem.getName()}"
+    buttonText = loc("item/consume")
+    getValueText = @(value) value.tostring()
+
+    onAcceptCb = @(value) showConfirmExchangeMsg(recipe, componentItem, params, value)
+    onCancelCb = null
+  })
 }
 
 local lastRecipeIdx = 0
@@ -82,6 +311,7 @@ local ExchangeRecipes = class {
   visibleComponents = null
   allowableComponents = null
   showRecipeAsProduct = null
+  quantityAvailableExchanges = 0
 
   constructor(params) {
     this.idx = lastRecipeIdx++
@@ -125,9 +355,12 @@ local ExchangeRecipes = class {
     let items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) isInArray(item.id, componentItemdefArray))
     this.hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
+    local minQuantityAvailableExchanges = null
     foreach (component in componentsArray) {
       let curQuantity = this.getCompQuantityById(items, component.itemdefid)
       let reqQuantity = component.quantity
+      let quantityExchanges = reqQuantity == 0 ? 0 : floor(curQuantity / reqQuantity)
+      minQuantityAvailableExchanges = min(minQuantityAvailableExchanges ?? quantityExchanges, quantityExchanges)
       let isHave = curQuantity >= reqQuantity
       this.isUsable = this.isUsable && isHave
       let shopItem = ::ItemsManager.findItemById(component.itemdefid)
@@ -157,6 +390,7 @@ local ExchangeRecipes = class {
       if (isVisible && component.itemdefid != this.generatorId)
         extraItemsCount++
     }
+    this.quantityAvailableExchanges = minQuantityAvailableExchanges ?? 0
   }
 
   function isEnabled() {
@@ -179,7 +413,7 @@ local ExchangeRecipes = class {
         continue
       list.append(DataBlockAdapter({
         item  = component.itemdefId
-        commentText = this.getComponentQuantityText(component)
+        commentText = this.getComponentQuantityText(component, params)
       }))
     }
     return ::PrizesView.getPrizesListView(list, params, false)
@@ -356,115 +590,15 @@ local ExchangeRecipes = class {
     })
   }
 
-  static function getRequirementsMarkup(recipes, componentItem, params) {
-    return this._getRequirements(recipes, componentItem, params, true)
-  }
-
-  static function getRequirementsText(recipes, componentItem, params) {
-    return this._getRequirements(recipes, componentItem, params, false)
-  }
-
-  static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
-    if (componentItem.showAllowableRecipesOnly())
-      return ""
-
-    let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
-    let isFullRecipesList = recipes.len() <= maxRecipes
-
-    let isMultiRecipes = recipes.len() > 1
-    local isMultiExtraItems = false
-    let hasFakeRecipesInList = this.hasFakeRecipes(recipes)
-
-    local recipesToShow = recipes
-    if (!hasFakeRecipesInList)
-      recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
-    if (!isFullRecipesList) {
-      recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
-      if (recipesToShow.len() > maxRecipes)
-        recipesToShow = recipesToShow.slice(0, maxRecipes)
-      else if (recipesToShow.len() < maxRecipes)
-        foreach (r in recipes)
-          if (!r.isUsable && !r.isRecipeLocked()) {
-            recipesToShow.append(r)
-            if (recipesToShow.len() == maxRecipes)
-              break
-          }
-    }
-
-    let needShowHeader = params?.needShowHeader ?? true
-    local headerFirst = ""
-    local headerNext = ""
-    if (needShowHeader) {
-      foreach (recipe in recipesToShow) {
-        let multipleExtraItems = recipe.visibleComponents.filter(
-          @(c) c.itemdefId != recipe.generatorId && componentItem.id != c.itemdefId)
-        isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
-      }
-
-      let craftTimeText = this.getRecipesCraftTimeText(recipes)
-      headerFirst = colorize("grayOptionColor",
-        componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),
-                                            isMultiExtraItems, hasFakeRecipesInList,
-                                            craftTimeText))
-      headerNext = isMultiRecipes && isMultiExtraItems ?
-        colorize("grayOptionColor", loc("hints/shortcut_separator")) : null
-    }
-
-    params.componentToHide <- componentItem
-    params.showCurQuantities <- (params?.showCurQuantities ?? true) && componentItem.descReceipesListWithCurQuantities
-    params.canOpenForGold <- componentItem.canOpenForGold()
-
-    let res = []
-    foreach (recipe in recipesToShow) {
-      if (needShowHeader)
-        params.header <- !res.len() ? headerFirst : headerNext
-
-      if (shouldReturnMarkup)
-        res.append(recipe.getTextMarkup(params))
-      else
-        res.append(recipe.getText(params))
-    }
-
-    return (shouldReturnMarkup ? "" : "\n").join(res, true)
-  }
-
-  static function getRecipesCraftTimeText(recipes) {
-    let minSeconds = max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
-    let maxSeconds = max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
-    if (minSeconds <= 0 && maxSeconds <= 0)
-      return ""
-
-    local timeText = loc("icon/hourglass") + " " + time.secondsToString(minSeconds, true, true)
-    if (minSeconds != maxSeconds)
-      timeText += " " + loc("ui/ndash") + " " + time.secondsToString(maxSeconds, true, true)
-
-    return loc(recipes[0].getLocIdsList().craftTime,
-      { time = timeText })
-  }
-
-  static hasFakeRecipes = @(recipes) u.search(recipes, @(r) r?.isFake) != null
-
-  static function saveMarkedRecipes(newMarkedRecipesUid) {
-    if (!newMarkedRecipesUid.len())
-      return
-
-    local markRecipeBlk = loadLocalAccountSettings(markRecipeSaveId)
-    if (!markRecipeBlk)
-      markRecipeBlk = DataBlock()
-    foreach (i in newMarkedRecipesUid)
-      markRecipeBlk[i] = MARK_RECIPE.USED
-
-    saveLocalAccountSettings(markRecipeSaveId, markRecipeBlk)
-  }
-
   function getComponentQuantityText(component, params = null) {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
         (nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
-    let locId = (params?.needShowItemName ?? true) ? "ui/parentheses/space" : "ui/parentheses"
-    let locText = loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
-    if (params?.needColoredText ?? true)
+    let { needShowItemName = true, quantity = 1, needColoredText = true } = params
+    let locId = needShowItemName ? "ui/parentheses/space" : "ui/parentheses"
+    let locText = loc(locId, { text = $"{component.curQuantity}/{component.reqQuantity * quantity}" })
+    if (needColoredText)
       return colorize(this.getComponentQuantityColor(component, true), locText)
 
     return locText
@@ -475,106 +609,15 @@ local ExchangeRecipes = class {
       : component.has ? "goodTextColor"
       : "badTextColor"
 
-  static function tryUse(recipes, componentItem, params = {}) {
-    let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
-
-    if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
-      scene_msg_box("reached_max_amount", null,
-      loc(componentItem.getLocIdsList().reachedMaxAmount),
-        [["cancel"]], "cancel")
-      return false
-    }
-
-    if (!recipe?.isUsable) {
-      this.showUseErrorMsg(recipes, componentItem)
-      return false
-    }
-
-    if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
-      recipe.doExchange(componentItem, 1, params)
-      return true
-    }
-
-    let msgData = componentItem.getConfirmMessageData(recipe)
-    let msgboxParams = { cancel_fn = function() {} }
-
-    if (msgData?.needRecipeMarkup)
-      msgboxParams.__update({
-        data_below_text = recipe.getExchangeMarkup(componentItem,
-          { header = msgData?.headerRecipeMarkup ?? ""
-            headerParams = recipeComponentHeaderParams
-            widthByParentParent = true
-          })
-        baseHandler = ::get_cur_base_gui_handler()
-      })
-    if (recipe.isDisassemble && params?.bundleContent) {
-      msgboxParams.__update({
-        data_below_text = (msgboxParams?.data_below_text ?? "")
-          + ::PrizesView.getPrizesListView(params.bundleContent,
-              { header = loc("mainmenu/you_will_receive")
-                headerParams = recipeComponentHeaderParams
-                widthByParentParent = true
-              }, false)
-        baseHandler = ::get_cur_base_gui_handler()
-      })
-    }
-
-    scene_msg_box("chest_exchange", null, msgData.text, [
-      [ "yes", Callback(function() {
-          recipe.updateComponents()
-          if (recipe.isUsable)
-            recipe.doExchange(componentItem, 1, params)
-          else
-            this.showUseErrorMsg(recipes, componentItem)
-        }, this) ],
-      [ "no" ]
-    ], "yes", msgboxParams)
-    return true
-  }
-
-  static function showUseErrorMsg(recipes, componentItem) {
-    let locId = componentItem.getCantUseLocId()
-    let text = colorize("badTextColor", loc(locId))
-    let msgboxParams = {
-      data_below_text = this.getRequirementsMarkup(recipes, componentItem, {
-        widthByParentParent = true
-        headerParams = { hasHeaderPadding = true }
-      }),
-      baseHandler = ::get_cur_base_gui_handler(), //FIX ME: used only for tooltip
-      cancel_fn = function() {}
-    }
-
-    //Suggest to buy not enough item on marketplace
-    local requiredItem = null
-    if (isMarketplaceEnabled() && recipes.len() == 1)
-      foreach (c in recipes[0].components)
-        if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity) {
-          let item = ::ItemsManager.findItemById(c.itemdefId)
-          if (!item || !item.hasLink())
-            continue
-          requiredItem = item
-          break
-        }
-
-    let buttons = [ ["cancel"] ]
-    local defBtn = "cancel"
-    if (requiredItem) {
-      buttons.insert(0, [ "find_on_marketplace", Callback(@() requiredItem.openLink(), this) ])
-      defBtn = "find_on_marketplace"
-    }
-
-    scene_msg_box("cant_open_chest", null, text, buttons, defBtn, msgboxParams)
-  }
-
-
   //////////////////////////////////// Internal functions ////////////////////////////////////
 
-  function getMaterialsListForExchange(usedUidsList) {
+  function getMaterialsListForExchange(recipesQuantity) {
     let res = []
+    let usedUidsList = {}
     this.components.each(function(component) {
       if (this.reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
         return
-      local leftCount = component.reqQuantity
+      local leftCount = component.reqQuantity * recipesQuantity
       let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach (item in itemsList) {
         foreach (i in item.uids) {
@@ -582,7 +625,7 @@ local ExchangeRecipes = class {
           if (leftByUid <= 0)
             continue
 
-          let count = min(leftCount, leftByUid)
+          let count = min(leftCount, leftByUid).tointeger()
           res.append([ i, count ])
           usedUidsList[i] <- leftByUid - count
           leftCount -= count
@@ -597,31 +640,17 @@ local ExchangeRecipes = class {
   }
 
   function doExchange(componentItem, amount = 1, params = {}) {
-    let resultItems = []
-    let usedUidsList = {}
     let recipe = this //to not remove recipe until operation complete
     params = params ?? {}
-    if (componentItem.canRecraftFromRewardWnd())
-      params.reUseRecipeUid <- this.uid
+    if (componentItem.canRecraftFromRewardWnd()) {
+      params.__update({
+        reUseRecipeUid = this.uid
+        usedRecipeAmount = amount
+      })
+    }
 
-    local leftAmount = amount
-    let errorCb = (componentItem?.shouldAutoConsume ?? true)
-      ? null
+    let errorCb = (componentItem?.shouldAutoConsume ?? true) ? null
       : @(errorId) showExchangeInventoryErrorMsg(errorId, componentItem)
-    let exchangeAction = (@(cb) inventoryClient.exchange(
-      this.getMaterialsListForExchange(usedUidsList),
-      this.generatorId,
-      function(items) {
-        resultItems.extend(items)
-        cb()
-      },
-      errorCb,
-      --leftAmount <= 0,
-      this.requirement
-    )).bindenv(recipe)
-
-    let exchangeActions = array(amount, exchangeAction)
-    exchangeActions.append(@(_cb) recipe.onExchangeComplete(componentItem, resultItems, params))
 
     let effectOnStartCraft = this.getEffectOnStartCraft()
     if (effectOnStartCraft?.showImage != null)
@@ -629,18 +658,26 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.playSound != null)
       get_cur_gui_scene()?.playSound(getRandomEffect(effectOnStartCraft.playSound))
 
-    asyncActions.callAsyncActionsList(exchangeActions)
+    inventoryClient.exchange(
+      this.getMaterialsListForExchange(amount),
+      this.generatorId,
+      amount.tointeger(),
+      @(resultItems) recipe.onExchangeComplete(componentItem, resultItems, params)
+      errorCb,
+      this.requirement
+    )
   }
 
   function onExchangeComplete(componentItem, resultItems, params = null) {
     ::ItemsManager.markInventoryUpdate()
-    if (params?.cb)
-      params.cb()
+    let { cb = null, showCollectRewardsWaitBox = true } = params
+    if (cb != null)
+      cb()
 
     let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen() ?? componentItem.getGenerator()
-    let isHasFakeRecipes = parentGen && this.hasFakeRecipes(parentGen.getRecipes())
-    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom) ?? this
+    let isHasFakeRecipes = parentGen && hasFakeRecipesInList(parentGen.getRecipes())
+    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
     let effectOnOpenChest = componentItem.getEffectOnOpenChest()
@@ -648,7 +685,7 @@ local ExchangeRecipes = class {
     if (resultItemsShowOpening.len() > 0) {
       let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
       let isUserstatRewards = userstatItemRewardData != null
-      let rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
+      let rewardTitle = isUserstatRewards ? userstatItemRewardData.rewardTitleLocId
         : parentRecipe ? parentRecipe.isDisassemble ?
             componentItem.getDissasembledCaption() :
             parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
@@ -680,15 +717,22 @@ local ExchangeRecipes = class {
         rewardImage = effectOnOpenChest?.showImage
         rewardImageRatio = effectOnOpenChest?.imageRatio
         reUseRecipeUid = params?.reUseRecipeUid
+        usedRecipeAmount = params?.usedRecipeAmount ?? 1
       }
       if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData ?? false)
         showExternalTrophyRewardWnd({
           trophyItemDefId = componentItem.id
+          showCollectRewardsWaitBox
           expectedPrizes
           rewardWndConfig
         })
-      else
-        ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+      else {
+        let rewardsHandler = showBuyAndOpenChestWnd(componentItem)
+        if (rewardsHandler != null)
+          rewardsHandler.showReceivedPrizes(expectedPrizes)
+        else
+          ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+      }
     }
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null
@@ -777,4 +821,12 @@ local ExchangeRecipes = class {
 
 u.registerClass("Recipe", ExchangeRecipes, @(r1, r2) r1.idx == r2.idx)
 
-return ExchangeRecipes
+return {
+  ExchangeRecipes
+  hasFakeRecipesInList
+  getRequirementsMarkup
+  getRequirementsText
+  saveMarkedRecipes
+  tryUseRecipes
+  tryUseRecipeSeveralTime
+}

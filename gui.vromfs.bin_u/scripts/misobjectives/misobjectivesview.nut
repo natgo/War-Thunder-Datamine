@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_objectives_list
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -16,7 +17,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
                                        })
 }
 
-gui_handlers.misObjectivesView <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 
@@ -40,7 +41,7 @@ gui_handlers.misObjectivesView <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getNewList() {
-    let fullList = ::get_objectives_list()
+    let fullList = get_objectives_list()
     let res = []
     foreach (misObj in fullList)
       if (misObj.status > 0 && (this.objTypeMask & (1 << misObj.type)))

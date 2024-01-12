@@ -8,6 +8,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
 
@@ -144,18 +145,18 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 //    obj     - array of objects to show in this step.
 //              (some of object can be array of objects, - they will be combined in one)
 //    text    - text to view
-//    actionType = global enum tutorAction    - type of action for the next step (default = tutorAction.ANY_CLICK)
+//    actionType = enum tutorAction    - type of action for the next step (default = tutorAction.ANY_CLICK)
 //    cb      - callback on finish tutor step
 //  }
 //]
-  return ::gui_start_modal_wnd(gui_handlers.Tutor, {
+  return loadHandler(gui_handlers.Tutor, {
     ownerWeak = wndHandler,
     config = stepsConfig,
     isTutorialCancelable = isTutorialCancelable
   })
 }
 
-gui_handlers.Tutor <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 

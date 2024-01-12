@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import send_error_log, script_net_assert, get_dyncampaign_b64blk, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 let { INVALID_ROOM_ID } = require("matching.errors")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -6,13 +7,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { format } = require("string")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 // rooms notifications
 function notify_room_invite(params) {
   log("notify_room_invite")
   //debugTableData(params)
 
-  if (!::isInMenu() && ::g_login.isLoggedIn()) {
+  if (!isInMenu() && ::g_login.isLoggedIn()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false;
   }
@@ -139,9 +141,9 @@ let function connectToHost() {
     let meStr = toString(me, 3)                  // warning disable: -declared-never-used
     let roomStr = toString(roomPub, 3)           // warning disable: -declared-never-used
     let roomMission = toString(roomPub?.mission) // warning disable: -declared-never-used
-    ::script_net_assert("missing room_key in room")
+    script_net_assert("missing room_key in room")
 
-    ::send_error_log("missing room_key in room", false, "log")
+    send_error_log("missing room_key in room", false, "log")
     return
   }
 
@@ -154,7 +156,7 @@ let function connectToHost() {
     serverUrls.append(ipStr)
   }
 
-  ::connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key,
+  connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key,
     getTblValue("sessionId", roomPub, roomState.roomId))
 }
 
@@ -181,7 +183,7 @@ let function mergeAttribs(attrFrom, attrTo) {
   let updateAttribs = function(updData, attribs) {
     foreach (key, value in updData) {
       if (value == null && (key in attribs))
-        delete attribs[key]
+        attribs.$rawdelete(key)
       else
         attribs[key] <- value
     }
@@ -219,7 +221,7 @@ let function removeRoomMember(userId) {
   }
 
   if (userId in roomState.roomOps)
-    delete roomState.roomOps[userId]
+    roomState.roomOps.$rawdelete(userId)
 
   if (isMyUserId(userId))
     cleanupRoomState()
@@ -470,7 +472,7 @@ let function fetchRoomsList(params, cb) {
 let function serializeDyncampaign(cb) {
   let priv = {
     dyncamp = {
-      data = ::get_dyncampaign_b64blk()
+      data = get_dyncampaign_b64blk()
     }
   }
 

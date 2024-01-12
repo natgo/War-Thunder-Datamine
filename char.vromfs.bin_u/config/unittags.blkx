@@ -320,7 +320,6 @@
       }
     },
     "tags": {
-      "ally": true,
       "country_usa": true,
       "type_assault": true,
       "type_strike_ucav": true,
@@ -358,13 +357,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_britain": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_britain": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -396,13 +394,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_sweden": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_sweden": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -434,13 +431,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_france": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_france": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -472,13 +468,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_japan": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_japan": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -510,13 +505,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_germany": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_germany": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -548,13 +542,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_israel": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_israel": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -586,13 +579,12 @@
       }
     },
     "tags": {
-      "ally": true,
-      "country_italy": true,
       "type_assault": true,
       "type_strike_ucav": true,
       "not_in_dynamic_campaign": true,
       "air": true,
-      "hideBrForVehicle": true
+      "hideBrForVehicle": true,
+      "country_italy": true
     },
     "Shop": {
       "maxAltitude": 7500.0,
@@ -710,13 +702,13 @@
           "protected": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         },
         "tank5_dm": {
-          "protected": true
+          "protected": false
         }
       }
     },
@@ -769,13 +761,13 @@
           "protected": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         },
         "tank5_dm": {
-          "protected": true
+          "protected": false
         }
       }
     },
@@ -896,8 +888,8 @@
       "engine1_dm": {
         "manufacturer": "isaev",
         "model": "d-1a",
-        "thrust": 1700.0,
-        "mass": 300.0
+        "mass": 300.0,
+        "thrust": 1100.0
       },
       "tanks_params": {
         "protected": true
@@ -2048,31 +2040,28 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": false
         },
         "tank2_dm": {
-          "protected": true
+          "protected": false
         },
         "tank3_dm": {
-          "protected": true
+          "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         },
         "tank5_dm": {
-          "protected": true
+          "protected": false
         },
         "tank6_dm": {
-          "protected": true
+          "protected": false
         },
         "tank7_dm": {
           "protected": true
         },
         "tank8_dm": {
           "protected": true
-        },
-        "tank9_dm": {
-          "protected": false
         }
       }
     },
@@ -2119,31 +2108,28 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": false
         },
         "tank2_dm": {
-          "protected": true
+          "protected": false
         },
         "tank3_dm": {
-          "protected": true
+          "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         },
         "tank5_dm": {
-          "protected": true
+          "protected": false
         },
         "tank6_dm": {
-          "protected": true
+          "protected": false
         },
         "tank7_dm": {
           "protected": true
         },
         "tank8_dm": {
           "protected": true
-        },
-        "tank9_dm": {
-          "protected": false
         }
       }
     },
@@ -2792,6 +2778,158 @@
       "rollRate": 160.0
     }
   },
+  "f_15a": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_wake_island_Jet",
+    "operatorCountry": "country_usa_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "f100_pw_100",
+        "mass": 1470.0
+      },
+      "engine2_dm": {
+        "manufacturer": "p&w",
+        "model": "f100_pw_100",
+        "mass": 1470.0
+      },
+      "tanks_params": {
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_usa": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16764.0,
+      "maxSpeed": 720.0,
+      "turnTime": 20.5,
+      "airfieldLen": 750.0,
+      "climbTime": 45.0,
+      "maxSpeedAlt": 10668.0,
+      "climbAlt": 9144.0,
+      "climbSpeed": 330.0,
+      "wingLoading": 316.0,
+      "thrustToWeightRatio": 1.21,
+      "rollRate": 160.0
+    }
+  },
+  "f_15a_iaf": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_israel_jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "f100_pw_100",
+        "mass": 1470.0
+      },
+      "engine2_dm": {
+        "manufacturer": "p&w",
+        "model": "f100_pw_100",
+        "mass": 1470.0
+      },
+      "tanks_params": {
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_israel": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16764.0,
+      "maxSpeed": 720.0,
+      "turnTime": 20.5,
+      "airfieldLen": 750.0,
+      "climbTime": 45.0,
+      "maxSpeedAlt": 10668.0,
+      "climbAlt": 9144.0,
+      "climbSpeed": 330.0,
+      "wingLoading": 316.0,
+      "thrustToWeightRatio": 1.21,
+      "rollRate": 160.0
+    }
+  },
+  "f_15j": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_iwo_jima_Jet",
+    "operatorCountry": "country_japan_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "ishikawa-harima",
+        "model": "f100_ihi_100",
+        "mass": 1470.0
+      },
+      "engine2_dm": {
+        "manufacturer": "ishikawa-harima",
+        "model": "f100_ihi_100",
+        "mass": 1470.0
+      },
+      "tanks_params": {
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16764.0,
+      "maxSpeed": 720.0,
+      "turnTime": 21.9,
+      "airfieldLen": 750.0,
+      "climbTime": 45.0,
+      "maxSpeedAlt": 10668.0,
+      "climbAlt": 9144.0,
+      "climbSpeed": 310.0,
+      "wingLoading": 316.0,
+      "thrustToWeightRatio": 1.21,
+      "rollRate": 160.0
+    }
+  },
   "f_16a_block_10": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -2806,25 +2944,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -2867,25 +3012,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -2927,25 +3079,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -2987,25 +3146,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -3047,25 +3213,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -3108,25 +3281,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -3169,25 +3349,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -3230,25 +3417,32 @@
       },
       "tanks_params": {
         "tank1_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank2_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank3_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank4_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank5_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank6_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank7_dm": {
-          "protected": true
+          "protected": true,
+          "protected_boost": true
         },
         "tank8_dm": {
           "protected": false
@@ -3495,7 +3689,7 @@
           "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         }
       }
     },
@@ -3635,7 +3829,7 @@
         "mass": 1687.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -3677,7 +3871,7 @@
         "mass": 1687.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -3718,7 +3912,24 @@
         "mass": 1796.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": false
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        }
       }
     },
     "tags": {
@@ -8219,7 +8430,7 @@
           "protected": false
         },
         "tank4_dm": {
-          "protected": true
+          "protected": false
         }
       }
     },
@@ -29705,6 +29916,103 @@
       "rollRate": 120.0
     }
   },
+  "saab_jas39a": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_denmark_Jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "svenska_flygmotor",
+        "model": "rm12",
+        "mass": 1054.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_sweden": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "western_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 14500.0,
+      "maxSpeed": 622.3,
+      "turnTime": 24.0,
+      "airfieldLen": 500.0,
+      "climbTime": 92.0,
+      "maxSpeedAlt": 11000.0,
+      "climbAlt": 12000.0,
+      "climbSpeed": 245.0,
+      "wingLoading": 316.0,
+      "thrustToWeightRatio": 0.86,
+      "rollRate": 160.0
+    }
+  },
+  "saab_jas39c_south_africa": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_britain_Jet",
+    "operatorCountry": "country_south_africa_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "svenska_flygmotor",
+        "model": "rm12",
+        "mass": 1054.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_south_africa": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "western_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 14500.0,
+      "maxSpeed": 622.3,
+      "turnTime": 24.0,
+      "airfieldLen": 500.0,
+      "climbTime": 92.0,
+      "maxSpeedAlt": 11000.0,
+      "climbAlt": 12000.0,
+      "climbSpeed": 245.0,
+      "wingLoading": 316.0,
+      "thrustToWeightRatio": 0.86,
+      "rollRate": 160.0
+    }
+  },
   "mig-9": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -43478,7 +43786,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_ussr": true,
       "type_bomber": true,
       "type_jet_bomber": true,
@@ -43503,7 +43811,7 @@
   "il_28_china_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_zhengzhou_Jet",
+    "testFlight": "testFlight_krymsk_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "klimov",
@@ -43521,13 +43829,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_china": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_china": true
     },
     "Shop": {
       "maxAltitude": 11500.0,
@@ -50147,7 +50455,24 @@
         "alias": "engine1_dm"
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": false
+        },
+        "tank3_dm": {
+          "protected": false
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -51453,7 +51778,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_britain": true,
       "type_bomber": true,
       "type_jet_bomber": true,
@@ -51478,7 +51803,7 @@
   "canberra_bimk6_france_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_france_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51497,13 +51822,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_france": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_france": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51522,7 +51847,7 @@
   "canberra_bimk6_germany_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_berlin_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51541,13 +51866,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_germany": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_germany": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51566,7 +51891,7 @@
   "canberra_bimk6_italy_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_sicily_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51585,13 +51910,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_italy": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_italy": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51610,7 +51935,7 @@
   "canberra_bimk6_japan_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_iwo_jima_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51629,13 +51954,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_japan": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_japan": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51654,7 +51979,7 @@
   "canberra_bimk6_sweden_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_denmark_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51673,13 +51998,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_sweden": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_sweden": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51698,7 +52023,7 @@
   "canberra_bimk6_usa_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_wake_island_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51717,13 +52042,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_usa": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_usa": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51742,7 +52067,7 @@
   "canberra_bimk6_iaf_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_wake_island_Jet",
+    "testFlight": "testFlight_britain_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "rolls-royce",
@@ -51761,13 +52086,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_israel": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
       "not_in_dynamic_campaign": true,
-      "air": true
+      "air": true,
+      "country_israel": true
     },
     "Shop": {
       "maxAltitude": 12192.0,
@@ -51809,7 +52134,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_usa": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
@@ -51834,7 +52159,7 @@
   "b-29_france_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_france_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -51857,13 +52182,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_france": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_france": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -51882,7 +52207,7 @@
   "b-29_japan_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_iwo_jima_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -51905,13 +52230,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_japan": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_japan": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -51930,7 +52255,7 @@
   "b-29_sweden_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_denmark_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -51953,13 +52278,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_sweden": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_sweden": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -51978,7 +52303,7 @@
   "b-29_uk_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_britain_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -52001,13 +52326,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_britain": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_britain": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -52026,7 +52351,7 @@
   "b-29_italy_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_sicily_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -52049,13 +52374,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_italy": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_italy": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -52074,7 +52399,7 @@
   "b-29_germany_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_berlin_Jet",
+    "testFlight": "testFlight_wake_island_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
@@ -52097,13 +52422,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_germany": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_germany": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -52145,13 +52470,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_israel": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_israel": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -56615,6 +56940,56 @@
       "rollRate": 75.0
     }
   },
+  "j9_early": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_denmark",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "r1830-45",
+        "mass": 658.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "type_fighter": true,
+      "country_sweden": true,
+      "western_front": true,
+      "air": true
+    },
+    "years_active": {
+      "year1940": {
+        "bulge": 0.5,
+        "ruhr": 0.5
+      },
+      "year1941": {
+        "bulge": 0.5,
+        "ruhr": 0.5
+      },
+      "year1942": {
+        "bulge": 0.5,
+        "ruhr": 0.5
+      }
+    },
+    "Shop": {
+      "maxAltitude": 9200.0,
+      "maxSpeed": 130.5556,
+      "turnTime": 18.0,
+      "airfieldLen": 300.0,
+      "climbTime": 90.0,
+      "maxSpeedAlt": 3700.0,
+      "climbAlt": 1000.0,
+      "climbSpeed": 9.8,
+      "wingLoading": 135.8,
+      "powerToWeightRatio": 0.172,
+      "rollRate": 86.0
+    }
+  },
   "vl_myrsky_2_late": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -58898,7 +59273,7 @@
         "mass": 1640.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -58939,7 +59314,7 @@
         "mass": 1640.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -58980,7 +59355,7 @@
         "mass": 1650.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -59021,7 +59396,7 @@
         "mass": 1650.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": false
       }
     },
     "tags": {
@@ -59062,7 +59437,24 @@
         "mass": 1710.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": false
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        }
       }
     },
     "tags": {
@@ -59380,6 +59772,79 @@
       "rollRate": 200.0
     }
   },
+  "tornado_ids_de_wtd61": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_berlin_Jet",
+    "operatorCountry": "country_germany_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "turbo_union",
+        "model": "rb199_34r_mk103",
+        "mass": 968.0
+      },
+      "engine2_dm": {
+        "manufacturer": "turbo_union",
+        "model": "rb199_34r_mk103",
+        "mass": 968.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        },
+        "tank7_dm": {
+          "protected": true
+        },
+        "tank8_dm": {
+          "protected": true
+        },
+        "tank9_dm": {
+          "protected": false
+        },
+        "tank10_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_germany": true,
+      "type_assault": true,
+      "type_strike_aircraft": true,
+      "eastern_front": true,
+      "air": true,
+      "airfield_take_off_air_rb": true
+    },
+    "Shop": {
+      "maxAltitude": 13000.0,
+      "maxSpeed": 641.0,
+      "turnTime": 29.0,
+      "airfieldLen": 800.0,
+      "climbTime": 113.0,
+      "maxSpeedAlt": 11582.0,
+      "climbAlt": 10668.0,
+      "climbSpeed": 195.0,
+      "wingLoading": 734.0,
+      "thrustToWeightRatio": 0.77,
+      "rollRate": 200.0
+    }
+  },
   "tornado_ids_it_mod95": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -59521,6 +59986,73 @@
       "wingLoading": 744.0,
       "thrustToWeightRatio": 0.75,
       "rollRate": 200.0
+    }
+  },
+  "amx": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_sicily_Jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "spey_807",
+        "mass": 1856.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        },
+        "tank7_dm": {
+          "protected": true
+        },
+        "tank8_dm": {
+          "protected": true
+        },
+        "tank9_dm": {
+          "protected": false
+        },
+        "tank10_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_italy": true,
+      "type_assault": true,
+      "type_strike_aircraft": true,
+      "eastern_front": true,
+      "air": true,
+      "airfield_take_off_air_rb": true
+    },
+    "Shop": {
+      "maxAltitude": 12500.0,
+      "maxSpeed": 320.0,
+      "turnTime": 31.0,
+      "airfieldLen": 1000.0,
+      "climbTime": 217.0,
+      "maxSpeedAlt": 0.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 90.0,
+      "wingLoading": 459.0,
+      "thrustToWeightRatio": 0.52,
+      "rollRate": 140.0
     }
   },
   "su-7b": {
@@ -60023,11 +60555,11 @@
           "filling_polyurethane": true
         },
         "tank3_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank4_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank5_dm": {
@@ -60093,11 +60625,11 @@
           "filling_polyurethane": true
         },
         "tank3_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank4_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank5_dm": {
@@ -60163,15 +60695,15 @@
           "filling_polyurethane": true
         },
         "tank3_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank4_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank6_dm": {
@@ -60238,15 +60770,15 @@
           "filling_polyurethane": true
         },
         "tank3_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank4_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank6_dm": {
@@ -60313,11 +60845,11 @@
           "filling_polyurethane": true
         },
         "tank3_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank4_dm": {
-          "protected": true,
+          "protected": false,
           "filling_polyurethane": true
         },
         "tank5_dm": {
@@ -60375,7 +60907,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_ussr": true,
       "type_assault": true,
       "type_strike_aircraft": true,
@@ -60399,7 +60931,7 @@
   "su-7bkl_china_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_zhengzhou_Jet",
+    "testFlight": "testFlight_krymsk_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -60414,12 +60946,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_china": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_china": true
     },
     "Shop": {
       "maxAltitude": 19000.0,
@@ -60711,6 +61243,48 @@
       "climbSpeed": 300.0,
       "wingLoading": 435.0,
       "thrustToWeightRatio": 0.85,
+      "rollRate": 160.0
+    }
+  },
+  "su_27": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_krymsk_Jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "saturn",
+        "model": "al_31f",
+        "mass": 1520.0
+      },
+      "engine2_dm": {
+        "manufacturer": "saturn",
+        "model": "al_31f",
+        "mass": 1520.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_ussr": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16000.0,
+      "maxSpeed": 694.0,
+      "turnTime": 23.5,
+      "airfieldLen": 750.0,
+      "climbTime": 72.0,
+      "maxSpeedAlt": 12000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 225.0,
+      "wingLoading": 351.0,
+      "thrustToWeightRatio": 1.05,
       "rollRate": 160.0
     }
   },
@@ -61943,6 +62517,48 @@
       "climbSpeed": 190.0,
       "wingLoading": 413.0,
       "thrustToWeightRatio": 0.9,
+      "rollRate": 160.0
+    }
+  },
+  "j_11": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_zhengzhou_Jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "saturn",
+        "model": "al_31f",
+        "mass": 1520.0
+      },
+      "engine2_dm": {
+        "manufacturer": "saturn",
+        "model": "al_31f",
+        "mass": 1520.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_china": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16000.0,
+      "maxSpeed": 692.0,
+      "turnTime": 24.5,
+      "airfieldLen": 750.0,
+      "climbTime": 72.0,
+      "maxSpeedAlt": 12000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 210.0,
+      "wingLoading": 365.0,
+      "thrustToWeightRatio": 0.98,
       "rollRate": 160.0
     }
   },
@@ -64040,7 +64656,7 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "wright",
-        "model": "r-1820-52",
+        "model": "r-1820g2",
         "mass": 907.0
       },
       "tanks_params": {
@@ -64905,7 +65521,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_ussr": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
@@ -64930,7 +65546,7 @@
   "tu_4_china_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_zhengzhou_Jet",
+    "testFlight": "testFlight_krymsk_Jet",
     "info": {
       "engine1_dm": {
         "manufacturer": "shvetsov",
@@ -64953,13 +65569,13 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_china": true,
+      "nuclear_bomber": true,
       "type_bomber": true,
       "type_longrange_bomber": true,
       "bomberview": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_china": true
     },
     "Shop": {
       "maxAltitude": 12000.0,
@@ -66092,7 +66708,7 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
+      "nuclear_bomber": true,
       "country_france": true,
       "type_assault": true,
       "type_strike_aircraft": true,
@@ -66116,7 +66732,7 @@
   "jaguar_a_germany_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_berlin_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66136,12 +66752,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_germany": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_germany": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66160,7 +66776,7 @@
   "jaguar_a_italy_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_sicily_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66180,12 +66796,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_italy": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_italy": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66204,7 +66820,7 @@
   "jaguar_a_japan_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_iwo_jima_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66224,12 +66840,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "axis": true,
-      "country_japan": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_japan": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66248,7 +66864,7 @@
   "jaguar_a_sweden_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_denmark_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66268,12 +66884,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_sweden": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_sweden": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66292,7 +66908,7 @@
   "jaguar_a_uk_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_britain_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66312,12 +66928,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_britain": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_britain": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66336,7 +66952,7 @@
   "jaguar_a_usa_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_wake_island_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66356,12 +66972,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_usa": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_usa": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66380,7 +66996,7 @@
   "jaguar_a_iaf_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_wake_island_Jet",
+    "testFlight": "testFlight_france_Jet",
     "releaseDate": "2020-09-08 00:00:00",
     "info": {
       "engine1_dm": {
@@ -66400,12 +67016,12 @@
     "tags": {
       "hideBrForVehicle": true,
       "airfield_take_off": true,
-      "ally": true,
-      "country_israel": true,
+      "nuclear_bomber": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "air": true,
-      "not_in_dynamic_campaign": true
+      "not_in_dynamic_campaign": true,
+      "country_israel": true
     },
     "Shop": {
       "maxAltitude": 13716.0,
@@ -66746,11 +67362,11 @@
       "rollRate": 140.0
     }
   },
-  "mirage_2000c_s5": {
+  "mirage_2000c_s4": {
     "type": "aircraft",
     "hangar_place": "aircraft",
     "testFlight": "testFlight_france_Jet",
-    "releaseDate": "2022-09-14 00:00:00",
+    "releaseDate": "2023-12-14 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "snecma",
@@ -66758,7 +67374,36 @@
         "mass": 1515.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        },
+        "tank7_dm": {
+          "protected": true
+        },
+        "tank8_dm": {
+          "protected": true
+        },
+        "tank9_dm": {
+          "protected": true
+        },
+        "tank10_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -66781,6 +67426,114 @@
       "wingLoading": 380.0,
       "thrustToWeightRatio": 0.85,
       "rollRate": 140.0
+    }
+  },
+  "mirage_2000c_s5": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_france_Jet",
+    "releaseDate": "2022-09-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "snecma",
+        "model": "m53-p2",
+        "mass": 1515.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        },
+        "tank7_dm": {
+          "protected": true
+        },
+        "tank8_dm": {
+          "protected": true
+        },
+        "tank9_dm": {
+          "protected": true
+        },
+        "tank10_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_france": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "western_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16000.0,
+      "maxSpeed": 653.0,
+      "turnTime": 25.0,
+      "airfieldLen": 750.0,
+      "climbTime": 150.0,
+      "maxSpeedAlt": 12000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 195.0,
+      "wingLoading": 380.0,
+      "thrustToWeightRatio": 0.85,
+      "rollRate": 140.0
+    }
+  },
+  "mirage_4000": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_france_Jet",
+    "releaseDate": "2023-12-14 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "snecma",
+        "model": "m53-p2",
+        "mass": 1515.0
+      },
+      "engine2_dm": {
+        "manufacturer": "snecma",
+        "model": "m53-p2",
+        "mass": 1515.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_france": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "western_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16000.0,
+      "maxSpeed": 644.0,
+      "turnTime": 23.5,
+      "airfieldLen": 750.0,
+      "climbTime": 95.0,
+      "maxSpeedAlt": 12000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 275.0,
+      "wingLoading": 380.0,
+      "thrustToWeightRatio": 1.04,
+      "rollRate": 160.0
     }
   },
   "mirage_2000d_r1": {
@@ -67299,7 +68052,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67342,7 +68112,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67385,7 +68172,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67428,7 +68232,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67471,7 +68292,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67515,7 +68353,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -67558,7 +68413,24 @@
         "mass": 950.0
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -70705,6 +71577,30 @@
       ]
     }
   },
+  "ussr_t_90m_2020": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        170.0,
+        80.0,
+        40.0
+      ],
+      "armorThicknessTurret": [
+        235.0,
+        70.0,
+        50.0
+      ]
+    }
+  },
   "ussr_t_80u_race": {
     "type": "tank",
     "hangar_place": "tank",
@@ -70947,14 +71843,14 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        40.0,
-        40.0,
-        40.0
+        45.0,
+        37.0,
+        37.0
       ],
       "armorThicknessTurret": [
-        40.0,
-        40.0,
-        15.0
+        37.0,
+        37.0,
+        37.0
       ]
     }
   },
@@ -72778,14 +73674,14 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        38.0,
-        25.0,
-        44.0
+        32.0,
+        32.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        12.7,
-        12.7,
-        12.7
+        15.0,
+        15.0,
+        15.0
       ]
     }
   },
@@ -73179,7 +74075,7 @@
     "tags": {
       "country_italy": true,
       "tank": true,
-      "type_tank_destroyer": true
+      "type_light_tank": true
     },
     "Shop": {
       "armorThicknessHull": [
@@ -74419,6 +75315,30 @@
         30.0,
         30.0,
         30.0
+      ]
+    }
+  },
+  "jp_type_99": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "operatorCountry": "country_japan_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_japan": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        20.0,
+        20.0,
+        20.0
+      ],
+      "armorThicknessTurret": [
+        20.0,
+        20.0,
+        20.0
       ]
     }
   },
@@ -77990,13 +78910,43 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
+        139.0,
+        120.0,
+        13.0
+      ],
+      "armorThicknessCumulativeTurret": [
+        450.0,
+        86.0,
+        45.0
+      ]
+    }
+  },
+  "us_m1a1_hc_usmc": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_usa_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
         133.0,
-        133.0,
-        12.7
+        60.0,
+        32.0
+      ],
+      "armorThicknessTurret": [
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78018,14 +78968,14 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        145.0,
-        62.0,
-        31.0
+        133.0,
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        145.0,
-        145.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78047,14 +78997,14 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        145.0,
-        62.0,
-        31.0
+        133.0,
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        145.0,
-        145.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78077,13 +79027,13 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        133.0,
-        133.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78106,13 +79056,13 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        133.0,
-        133.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78135,13 +79085,13 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        133.0,
-        133.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78164,13 +79114,13 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
-        133.0,
-        133.0,
-        12.7
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78193,13 +79143,42 @@
     "Shop": {
       "armorThicknessHull": [
         133.0,
-        62.0,
-        31.0
+        60.0,
+        32.0
       ],
       "armorThicknessTurret": [
+        139.0,
+        120.0,
+        13.0
+      ],
+      "armorThicknessCumulativeTurret": [
+        450.0,
+        86.0,
+        45.0
+      ]
+    }
+  },
+  "us_m1a2_sep2_abrams": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_usa_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
         133.0,
-        133.0,
-        12.7
+        60.0,
+        32.0
+      ],
+      "armorThicknessTurret": [
+        139.0,
+        120.0,
+        13.0
       ],
       "armorThicknessCumulativeTurret": [
         450.0,
@@ -78968,6 +79947,30 @@
       ]
     }
   },
+  "germ_leopard_2a7v": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessTurret": [
+        75.0,
+        80.0,
+        20.0
+      ],
+      "armorThicknessHull": [
+        80.0,
+        30.0,
+        20.0
+      ]
+    }
+  },
   "germ_leopard_2a6": {
     "type": "tank",
     "hangar_place": "tank",
@@ -79673,6 +80676,32 @@
       ],
       "armorThicknessTurret": [
         25.0,
+        15.0,
+        15.0
+      ]
+    }
+  },
+  "germ_vilkas": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "operatorCountry": "country_lithuania",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        53.0,
+        53.0,
+        53.0
+      ],
+      "armorThicknessTurret": [
+        15.0,
         15.0,
         15.0
       ]
@@ -80684,12 +81713,12 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        48.0,
+        35.0,
         13.0,
         13.0
       ],
       "armorThicknessTurret": [
-        50.0,
+        20.0,
         13.0,
         13.0
       ]
@@ -81717,6 +82746,29 @@
       ]
     }
   },
+  "sw_strv_122b_plus": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_sweden": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        35.0,
+        25.0,
+        20.0
+      ],
+      "armorThicknessTurret": [
+        25.0,
+        25.0,
+        15.0
+      ]
+    }
+  },
   "sw_strv_121": {
     "type": "tank",
     "hangar_place": "tank",
@@ -81882,7 +82934,7 @@
   "sw_k9_vidar": {
     "type": "tank",
     "hangar_place": "tank",
-    "testFlight": "testFlight_germany_tft",
+    "testFlight": "testFlight_ERA_tft",
     "operatorCountry": "country_norway",
     "releaseDate": "2023-09-19 00:00:00",
     "tags": {
@@ -81892,14 +82944,14 @@
     },
     "Shop": {
       "armorThicknessHull": [
-        14.0,
-        14.0,
-        14.0
+        40.0,
+        35.0,
+        35.0
       ],
       "armorThicknessTurret": [
-        20.0,
-        20.0,
-        20.0
+        35.0,
+        35.0,
+        35.0
       ]
     }
   },
@@ -83923,6 +84975,34 @@
       ]
     }
   },
+  "uk_challenger_2_lep": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_britain": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        130.0,
+        38.0,
+        50.0
+      ],
+      "armorThicknessTurret": [
+        270.0,
+        90.0,
+        58.0
+      ],
+      "armorThicknessCumulativeTurret": [
+        450.0,
+        86.0,
+        45.0
+      ]
+    }
+  },
   "uk_challenger_2_dorchester": {
     "type": "tank",
     "hangar_place": "tank",
@@ -83976,6 +85056,34 @@
         450.0,
         86.0,
         45.0
+      ]
+    }
+  },
+  "uk_challenger_2_megatron": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_britain": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        130.0,
+        38.0,
+        50.0
+      ],
+      "armorThicknessTurret": [
+        270.0,
+        80.0,
+        58.0
+      ],
+      "armorThicknessCumulativeTurret": [
+        396.0,
+        394.0,
+        387.0
       ]
     }
   },
@@ -84458,6 +85566,30 @@
       "type_medium_tank": true
     }
   },
+  "it_pzkpfw_VI_ausf_e_tiger": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_germany_tft",
+    "operatorCountry": "country_hungary",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_hungary": true,
+      "tank": true,
+      "type_heavy_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        102.0,
+        82.0,
+        82.0
+      ],
+      "armorThicknessTurret": [
+        100.0,
+        82.0,
+        82.0
+      ]
+    }
+  },
   "it_m26_ariete": {
     "type": "tank",
     "hangar_place": "tank",
@@ -84846,6 +85978,29 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "releaseDate": "2017-12-18 00:00:00",
+    "tags": {
+      "country_france": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "armorThicknessTurret": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "fr_tpk_641_vpc": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "releaseDate": "2023-12-14 00:00:00",
     "tags": {
       "country_france": true,
       "tank": true,
@@ -88112,11 +89267,58 @@
       ]
     }
   },
+  "il_m113a1_tow": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_israel": true,
+      "tank": true,
+      "type_tank_destroyer": true,
+      "type_missile_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        38.0,
+        44.0,
+        38.0
+      ],
+      "armorThicknessTurret": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
   "il_m109": {
     "type": "tank",
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "releaseDate": "2023-10-31 00:00:00",
+    "tags": {
+      "country_israel": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        32.0,
+        32.0,
+        32.0
+      ],
+      "armorThicknessTurret": [
+        32.0,
+        32.0,
+        32.0
+      ]
+    }
+  },
+  "il_m109a1": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2023-12-14 00:00:00",
     "tags": {
       "country_israel": true,
       "tank": true,
@@ -91802,7 +93004,7 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "p&w",
-        "model": "r1830-17",
+        "model": "s3c4-g",
         "mass": 675.0
       },
       "tanks_params": {
@@ -94639,7 +95841,7 @@
       "armorThicknessHull": [
         15.0,
         15.0,
-        10.0
+        15.0
       ],
       "armorThicknessTurret": [
         30.0,
@@ -94958,6 +96160,30 @@
       "country_china": true,
       "tank": true,
       "type_medium_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        70.0,
+        50.0,
+        45.0
+      ],
+      "armorThicknessTurret": [
+        85.0,
+        60.0,
+        35.0
+      ]
+    }
+  },
+  "cn_vt_4b": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
     },
     "Shop": {
       "armorThicknessHull": [
@@ -100328,9 +101554,9 @@
     },
     "Shop": {
       "armorThicknessCitadel": [
-        152.0,
-        152.0,
-        63.5
+        122.0,
+        147.0,
+        86.0
       ],
       "armorThicknessTurretMainCaliber": [
         203.2,
@@ -100542,7 +101768,7 @@
     },
     "Shop": {
       "armorThicknessCitadel": [
-        152.0,
+        122.0,
         147.0,
         86.0
       ],
@@ -101066,7 +102292,7 @@
       "armorThicknessCitadel": [
         0.0,
         250.0,
-        40.0
+        42.0
       ],
       "maxSpeed": 11.16,
       "displacement": 26000000.0
@@ -101220,7 +102446,7 @@
         178.0,
         279.0
       ],
-      "maxSpeed": 15.18,
+      "maxSpeed": 15.82,
       "displacement": 36657000.0,
       "atProtection": 250.0
     }
@@ -101259,7 +102485,7 @@
       "armorThicknessCitadel": [
         279.0,
         305.0,
-        89.0
+        69.85
       ],
       "armorThicknessTurretMainCaliber": [
         356.0,
@@ -101568,7 +102794,7 @@
     "testFlight": "testFlight_destroyer_ussr_tfs",
     "releaseDate": "2023-10-31 00:00:00",
     "tags": {
-      "country_britain": true,
+      "country_france": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -101619,104 +102845,196 @@
       "displacement": 66000.0
     }
   },
-  "destroyer_heavy_tank_h": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ERA_tft",
-    "releaseDate": "40022-04-01 00:00:00",
-    "operatorCountry": "country_invisible",
-    "tags": {
-      "country_ussr": true,
-      "tank": true,
-      "type_heavy_tank": true,
-      "hideBrForVehicle": true
-    },
-    "Shop": {
-      "armorThicknessHull": [
-        20.0,
-        16.0,
-        20.0
-      ],
-      "armorThicknessTurret": [
-        20.0,
-        20.0,
-        20.0
-      ]
-    }
-  },
-  "sdi_minotaur": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ERA_tft",
-    "releaseDate": "2077-04-01 00:00:00",
-    "operatorCountry": "country_invisible",
-    "tags": {
-      "country_usa": true,
-      "tank": true,
-      "type_medium_tank": true,
-      "hideBrForVehicle": true
-    },
-    "Shop": {
-      "armorThicknessHull": [
-        20.0,
-        14.0,
-        20.0
-      ],
-      "armorThicknessTurret": [
-        20.0,
-        20.0,
-        20.0
-      ]
-    }
-  },
-  "us_destroyer_fletcher_sub_event": {
+  "us_cruiser_worcester_class_roanoke": {
     "type": "ship",
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_usa_tfs",
+    "releaseDate": "2023-12-14 00:00:00",
     "tags": {
       "country_usa": true,
+      "type_light_cruiser": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessCitadel": [
+        102.0,
+        127.0,
+        89.0
+      ],
+      "armorThicknessTurretMainCaliber": [
+        165.0,
+        76.0,
+        51.0
+      ],
+      "maxSpeed": 16.98,
+      "displacement": 18500000.0
+    }
+  },
+  "jp_yuri_class_asagao": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_jp_tfs",
+    "operatorCountry": "country_japan_modern",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_japan": true,
+      "type_gun_boat": true,
+      "type_heavy_boat": true,
+      "type_boat": true,
+      "ship": true,
+      "boat": true
+    },
+    "Shop": {
+      "maxSpeed": 6.17,
+      "displacement": 450000.0
+    }
+  },
+  "uk_battleship_orion": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_uk_tfs",
+    "operatorCountry": "country_britain_empire_navy",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_britain": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessCitadel": [
+        152.0,
+        305.0,
+        25.0
+      ],
+      "armorThicknessTurretMainCaliber": [
+        279.0,
+        279.0,
+        203.0
+      ],
+      "maxSpeed": 10.8,
+      "displacement": 26284000.0
+    }
+  },
+  "fr_battleship_courbet_class_courbet": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_ussr_tfs",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_france": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessTurretMainCaliber": [
+        250.0,
+        250.0,
+        360.0
+      ],
+      "armorThicknessCitadel": [
+        0.0,
+        250.0,
+        42.0
+      ],
+      "maxSpeed": 10.71,
+      "displacement": 25579000.0
+    }
+  },
+  "it_battleship_leonardo_da_vinci": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_it_tfs",
+    "operatorCountry": "country_italy_kingdom",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_italy": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessTurretMainCaliber": [
+        280.0,
+        240.0,
+        220.0
+      ],
+      "armorThicknessCitadel": [
+        130.0,
+        250.0,
+        30.0
+      ],
+      "maxSpeed": 11.11,
+      "displacement": 25580000.0
+    }
+  },
+  "fr_destroyer_vauquelin_class_vauquelin": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_ussr_tfs",
+    "releaseDate": "2023-12-14 00:00:00",
+    "tags": {
+      "country_france": true,
       "type_destroyer": true,
       "ship": true
     },
     "Shop": {
       "armorThicknessTurretMainCaliber": [
-        3.175,
-        3.175,
-        3.175
+        3.0,
+        3.0,
+        0.0
       ],
-      "maxSpeed": 18.0,
-      "displacement": 2924000.0
+      "maxSpeed": 20.42,
+      "displacement": 3410000.0
     }
   },
-  "us_frigate_tacoma_sub_event": {
+  "ussr_battleship_novorossiysk": {
     "type": "ship",
     "hangar_place": "ship",
-    "testFlight": "testFlight_destroyer_usa_tfs",
-    "releaseDate": "2021-09-07 00:00:00",
+    "testFlight": "testFlight_destroyer_ussr_tfs",
+    "releaseDate": "2023-12-14 00:00:00",
     "tags": {
-      "country_usa": true,
-      "type_frigate": true,
+      "country_ussr": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
-      "maxSpeed": 10.29,
-      "displacement": 2238000.0
+      "armorThicknessTurretMainCaliber": [
+        280.0,
+        240.0,
+        220.0
+      ],
+      "armorThicknessCitadel": [
+        130.0,
+        250.0,
+        100.0
+      ],
+      "maxSpeed": 14.4,
+      "displacement": 29032000.0
     }
   },
-  "germ_sub_type_7": {
+  "us_battleship_mississippi": {
     "type": "ship",
     "hangar_place": "ship",
-    "testFlight": "testFlight_destroyer_germ_tfs",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "releaseDate": "2023-12-14 00:00:00",
     "tags": {
-      "country_germany": true,
-      "type_destroyer": true,
-      "ship": true,
-      "destroyer": true,
-      "submarine": true
+      "country_usa": true,
+      "type_battleship": true,
+      "ship": true
     },
     "Shop": {
-      "maxSpeed": 9.62,
-      "maxDepth": 260.0
+      "armorThicknessCitadel": [
+        343.0,
+        343.0,
+        140.0
+      ],
+      "armorThicknessTurretMainCaliber": [
+        457.0,
+        254.0,
+        229.0
+      ],
+      "maxSpeed": 11.16,
+      "displacement": 37000000.0,
+      "atProtection": 250.0
     }
   }
 }

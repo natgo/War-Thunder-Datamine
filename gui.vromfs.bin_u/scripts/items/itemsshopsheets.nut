@@ -1,8 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
+from "%scripts/mainConsts.nut" import SEEN
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
@@ -17,15 +17,15 @@ shopSheets.template <- {
   id = "" //used from type name
   sortId = 0
   searchId = null // To Identify externally, because typeMask is not work
-  locId = null //default: "itemTypes/" + id.tolower()
-  emptyTabLocId = null //default: "items/shop/emptyTab/" + id.tolower()
+  locId = null //default: $"itemTypes/{id.tolower()}"
+  emptyTabLocId = null //default: $"items/shop/emptyTab/{id.tolower()}"
 
   typeMask = itemType.INVENTORY_ALL
   isDevItemsTab = false
   isMarketplace = false
   hasSubLists = @() false
 
-  getSeenId = @() "##item_sheet_" + this.id
+  getSeenId = @() $"##item_sheet_{this.id}"
 
   isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP
   isEnabled = @(shopTab) this.isAllowedForTab(shopTab)
@@ -52,22 +52,24 @@ shopSheets.template <- {
 }
 
 let function getTabSeenId(tabIdx) { //!!FIX ME: move tabs to separate enum
-  switch (tabIdx) {
-    case itemsTab.SHOP:          return SEEN.ITEMS_SHOP
-    case itemsTab.INVENTORY:     return SEEN.INVENTORY
-    case itemsTab.WORKSHOP:      return SEEN.WORKSHOP
-  }
+  if (tabIdx == itemsTab.SHOP)
+    return SEEN.ITEMS_SHOP
+  if (tabIdx == itemsTab.INVENTORY)
+    return SEEN.INVENTORY
+  if (tabIdx == itemsTab.WORKSHOP)
+    return SEEN.WORKSHOP
   return null
 }
+
 let isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable() //!!FIX ME: move tabs to separate enum
 
 shopSheets.addSheets <- function(sheetsTable) {
   enums.addTypes(this, sheetsTable,
     function() {
       if (!this.locId)
-        this.locId = "itemTypes/" + this.id.tolower()
+        this.locId = $"itemTypes/{this.id.tolower()}"
       if (!this.emptyTabLocId)
-        this.emptyTabLocId = "items/shop/emptyTab/" + this.id.tolower()
+        this.emptyTabLocId = $"items/shop/emptyTab/{this.id.tolower()}"
       if (!this.searchId)
         this.searchId = this.id
     },

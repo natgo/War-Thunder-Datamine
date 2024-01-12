@@ -1,7 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
-::WwOperationArmies <- class {
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { wwGetArmiesNames } = require("worldwar")
+let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+
+
+let WwOperationArmies = class {
   armiesByNameCache = null
   armiesByStatusCache = null
 
@@ -26,7 +31,7 @@ from "%scripts/dagui_library.nut" import *
       this.removeArmyFromCache(cachedArmy)
 
     this.addArmyToCache(army, true)
-    ::ww_event("MapArmiesByStatusUpdated", { armies = [army] })
+    wwEvent("MapArmiesByStatusUpdated", { armies = [army] })
   }
 
   function statusUpdate() {
@@ -35,7 +40,7 @@ from "%scripts/dagui_library.nut" import *
   }
 
   function updateArmiesByStatus() {
-    let armyNames = ::ww_get_armies_names()
+    let armyNames = wwGetArmiesNames()
     let armiesCountChanged = armyNames.len() != this.armiesByNameCache.len()
 
     let changedArmies = []
@@ -59,15 +64,15 @@ from "%scripts/dagui_library.nut" import *
       .filter(@(cachedArmy) cachedArmy.name in findedCachedArmies)
 
     foreach (armyName, _cachedArmy in deletingCachedArmiesNames)
-      delete this.armiesByNameCache[armyName]
+      this.armiesByNameCache.$rawdelete(armyName)
 
     if (changedArmies.len() > 0 || armiesCountChanged) {
       foreach (_status, cacheData in this.armiesByStatusCache) {
-        cacheData.common.sort(::WwArmy.sortArmiesByUnitType)
-        cacheData.surrounded.sort(::WwArmy.sortArmiesByUnitType)
+        cacheData.common.sort(WwArmy.sortArmiesByUnitType)
+        cacheData.surrounded.sort(WwArmy.sortArmiesByUnitType)
       }
 
-      ::ww_event("MapArmiesByStatusUpdated", { armies = changedArmies })
+      wwEvent("MapArmiesByStatusUpdated", { armies = changedArmies })
     }
   }
 
@@ -116,3 +121,4 @@ from "%scripts/dagui_library.nut" import *
       }
   }
 }
+return { WwOperationArmies }

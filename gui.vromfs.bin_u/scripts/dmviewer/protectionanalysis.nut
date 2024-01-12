@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
 from "%scripts/dagui_library.nut" import *
 
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -7,7 +8,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hangar_focus_model, hangar_set_dm_viewer_mode } = require("hangar")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
@@ -26,7 +27,17 @@ local explosionTest = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
-gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
+let helpHintsParams = [
+  {hintName = "hint_filter_edit_box", objName = "filter_edit_box", shiftX = "- 1@bw", shiftY = "- 1@bh -h - 1.5@helpInterval"}
+  {hintName = "hint_unit_params", objName = "UNITTYPE", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh"}
+  {hintName = "hint_distanse_offset", objName = "tr_DISTANCE", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh - h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_checkboxSaveChoice", objName = "checkboxSaveChoice", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh -h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_btnProtectionMap", objName = "btnProtectionMap", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 2@helpInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding + 1.5@shopWidthMax", shiftY = "- 1@bh -h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_checkboxVerticalAngle", objName = "checkboxVerticalAngle", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh"}
+]
+
+
+gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
   sceneTplName = "%gui/options/verticalOptions.tpl"
@@ -93,7 +104,7 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
     if (isSimulationEnabled)
       this.onAllowSimulation(obj)
 
-    ::allowCuttingInHangar(false)
+    allowCuttingInHangar(false)
     this.resetFilter()
   }
 
@@ -126,13 +137,13 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
   function goBack() {
     hangar_focus_model(false)
     hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
-    ::repairUnit()
+    repairUnit()
     set_protection_analysis_editing(false)
     base.goBack()
   }
 
    function onRepair() {
-    ::repairUnit()
+    repairUnit()
   }
 
   function onExplosionTest(sObj) {
@@ -145,7 +156,7 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
   function onAllowSimulation(sObj) {
     if (checkObj(sObj)) {
       switch_damage = !switch_damage
-      ::allowDamageSimulationInHangar(switch_damage)
+      allowDamageSimulationInHangar(switch_damage)
 
       this.showSceneBtn("switch_cut", switch_damage)
       this.showSceneBtn("btn_repair", switch_damage)
@@ -155,7 +166,7 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
   function onAllowCutting(sObj) {
     if (checkObj(sObj)) {
       allow_cutting = !allow_cutting
-      ::allowCuttingInHangar(allow_cutting)
+      allowCuttingInHangar(allow_cutting)
     }
   }
 
@@ -243,12 +254,53 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     filterEditBox.setValue("")
   }
+
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/dmViewer/protectionAnalysisHelp.blk"
+      objContainer = this.scene.findObject("protection_analysis_container")
+    }
+
+    let links = [
+      { obj = [$"analysis_hint_shot"], msgId = "hint_analysis_hint_shot"}
+      { obj = [$"UNITTYPE", "COUNTRY", "RANK", "UNIT", "tr_BULLET"], msgId = "hint_unit_params"}
+      { obj = [$"filter_edit_box"], msgId = "hint_filter_edit_box"}
+      { obj = [$"tr_DISTANCE", "tr_OFFSET"], msgId = "hint_distanse_offset"}
+      { obj = [$"checkboxSaveChoice"], msgId = "hint_checkboxSaveChoice"}
+      { obj = [$"btnProtectionMap"], msgId = "hint_btnProtectionMap"}
+      { obj = [$"checkboxVerticalAngle"], msgId = "hint_checkboxVerticalAngle"}
+    ]
+
+    res.links <- links
+    return res
+  }
+
+  function prepareHelpPage(handler) {
+    foreach (params in helpHintsParams) {
+      let hintObj = handler.scene.findObject(params.hintName)
+       if (hintObj?.isValid()) {
+          let obj = this.scene.findObject(params.objName)
+          if (obj?.isValid()) {
+            let objPos = obj.getPos()
+            let objSize = (params?.sizeMults) ? obj.getSize() : [0,0]
+            let sizeMults = params?.sizeMults ?? [0,0]
+            hintObj.pos = $"{objPos[0] + sizeMults[0]*objSize[0]} {params.shiftX}, {objPos[1] + sizeMults[1]*objSize[1]} {params.shiftY}"
+          }
+       }
+    }
+  }
+
 }
+
 
 return {
   canOpen = function(unit) {
     return hasFeature("DmViewerProtectionAnalysis")
-      && ::isInMenu()
+      && isInMenu()
       && !::SessionLobby.hasSessionInLobby()
       && unit?.unitType.canShowProtectionAnalysis() == true
   }

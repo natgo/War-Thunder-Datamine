@@ -5,16 +5,15 @@ let { format } = require("string")
 let { handlerType } = require("handlerType.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
-let { debug_dump_stack } = require("dagor.debug")
+let { logerr, debug_dump_stack } = require("dagor.debug")
 let { PERSISTENT_DATA_PARAMS, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = subscriptions
-let { logerr } = require("%globalScripts/logs.nut")
 let { gui_handlers } = require("gui_handlers.nut")
 let { reset_msg_box_check_anim_time, destroy_all_msg_boxes, saved_scene_msg_box } = require("msgBox.nut")
 
-::current_base_gui_handler <- null //active base handler in main gui scene
-::always_reload_scenes <- false //debug only
+local current_base_gui_handler = null //active base handler in main gui scene
+local always_reload_scenes = false //debug only
 
 let handlersManager = {
   [PERSISTENT_DATA_PARAMS] = ["lastBaseHandlerStartData", "activeBaseHandlers"]
@@ -75,7 +74,7 @@ let handlersManager = {
 
     let restoreData = this.restoreDataOnLoadHandler?[handlerClass]
     if (restoreData)
-      delete this.restoreDataOnLoadHandler[handlerClass]
+      this.restoreDataOnLoadHandler.$rawdelete(handlerClass)
 
     if (restoreData?.openData)
       params = params.__merge(restoreData.openData)
@@ -170,7 +169,7 @@ let handlersManager = {
     if (!this.isHandlerValid(handler))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
+      script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui:ObjScene:act")
       return
     }
 
@@ -183,7 +182,7 @@ let handlersManager = {
   function loadBaseHandler(handlerClass, params = {}) {
     let guiScene = get_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
+      script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui:ObjScene:act")
       return null
     }
 
@@ -341,7 +340,7 @@ let handlersManager = {
       this.activeBaseHandlers.append(handler)
 
     if (this.isMainGuiSceneActive())
-      ::current_base_gui_handler = handler
+      current_base_gui_handler = handler
 
     this.updateLoadingFlag()
 
@@ -403,7 +402,7 @@ let handlersManager = {
     if (!guiScene)
       guiScene = get_cur_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui::ObjScene::act")
+      script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui:ObjScene:act")
       return
     }
 
@@ -460,7 +459,7 @@ let handlersManager = {
   }
 
   function needReloadScene() {
-    return this.needFullReload || ::always_reload_scenes || !check_obj(get_cur_gui_scene()["root_loaded"])
+    return this.needFullReload || always_reload_scenes || !check_obj(get_cur_gui_scene()["root_loaded"])
            || this.isNeedReloadSceneSpecific()
   }
 
@@ -549,7 +548,7 @@ let handlersManager = {
 
   function closeAllModals(guiScene = null) {
     if ((guiScene ?? get_cur_gui_scene())?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("closeAllModals", "Try to close all modals while in dagui::ObjScene::act")
+      script_net_assert_once("closeAllModals", "Try to close all modals while in dagui:ObjScene:act")
       return
     }
 
@@ -570,7 +569,7 @@ let handlersManager = {
     if (!this.isHandlerValid(handler, true))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
+      script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui:ObjScene:act")
       return
     }
 
@@ -773,19 +772,14 @@ let handlersManager = {
     this.loadHandler(hClass, params ?? {})
   }
 }
-//=======================  global functions  ==============================
-
-::isHandlerInScene <- function isHandlerInScene(handlerClass) {
-  return handlersManager.findHandlerClassInScene(handlerClass) != null
-}
-::gui_start_modal_wnd <- function gui_start_modal_wnd(handlerClass, params = {}) { //only for basic handlers with sceneBlkName predefined
-  return handlersManager.loadHandler(handlerClass, params)
-}
-
-::is_in_loading_screen <- function is_in_loading_screen() {
-  return handlersManager.isInLoading
-}
+let isHandlerInScene = @(handlerClass) handlersManager.findHandlerClassInScene(handlerClass) != null
+let is_in_loading_screen = @() handlersManager.isInLoading
 
 return {
   handlersManager
+  is_in_loading_screen
+  isHandlerInScene
+  set_always_reload_scenes = @(val) always_reload_scenes = val
+  get_always_reload_scenes = @() always_reload_scenes
+  get_current_base_gui_handler = @() current_base_gui_handler
 }

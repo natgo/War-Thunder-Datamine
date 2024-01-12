@@ -1,11 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-::items_classes.Unlock <- class extends ItemCouponBase {
+let Unlock = class (ItemCouponBase) {
   static iType = itemType.UNLOCK
+  static name = "Unlock"
   static typeIcon = "#ui/gameuiskin#item_type_unlock.svg"
 
   getUnlockId          = @() this.metaBlk?.unlock ?? this.metaBlk?.unlockAddProgress
@@ -44,3 +46,4 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
   getWarbondsAmount = @() this.getUnlock()?.amount_warbonds ?? 0
 }
+return { Unlock }

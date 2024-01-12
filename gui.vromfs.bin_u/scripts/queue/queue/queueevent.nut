@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/queue/queueConsts.nut" import queueStates
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
@@ -15,7 +16,7 @@ let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/event
 let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
 } = require("%scripts/matching/matchingGameModes.nut")
 
-::queue_classes.Event <- class extends ::queue_classes.Base {
+::queue_classes.Event <- class (::queue_classes.Base) {
   shouldQueueCustomMode = false
 
   isQueueLeaved = false
@@ -76,7 +77,7 @@ let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
     base.clearAllQueues()
   }
 
-  static function getCustomModeSaveId(eventName) { return "queue/customEvent/" + eventName }
+  static function getCustomModeSaveId(eventName) { return $"queue/customEvent/{eventName}" }
   static function getShouldQueueCustomMode(eventName) {
     return loadLocalAccountSettings(::queue_classes.Event.getCustomModeSaveId(eventName), false)
   }

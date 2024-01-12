@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -26,6 +28,7 @@ let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponr
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod) {
@@ -189,7 +192,7 @@ let function getTierDescTbl(unit, params) {
 
 let function getReqTextWorldWarArmy(unit, item) {
   local text = ""
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = getCurMissionRules()
   if (!misRules.needCheckWeaponsAllowed(unit))
     return text
 
@@ -207,8 +210,8 @@ let function getReqTextWorldWarArmy(unit, item) {
 
 let function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
-  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight() &&
-    ::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight()
+    && getCurMissionRules().isWorldWar
 
   let self = callee()
   if (item.type == weaponsItem.bundle)
@@ -257,7 +260,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     if (effect)
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
     if (!effect && updateEffectFunc)
-      res.delayed = ::calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
+      res.delayed = calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
         updateEffectFunc, null) ?? true
   }
   else if (item.type == weaponsItem.primaryWeapon) {
@@ -308,7 +311,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       res.amountText <- colorize(color, loc("options/count") + loc("ui/colon") + amountText)
 
       if (isInFlight() && item.type == weaponsItem.weapon) {
-        let respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
+        let respLeft = getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
           res.amountText += loc("ui/colon") + loc("respawn/leftRespawns", { num = respLeft })
       }
@@ -324,7 +327,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   }
 
   let isScoreCost = isInFlight()
-    && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
+    && getCurMissionRules().isScoreRespawnEnabled
   if (statusTbl.discountType != "" && !isScoreCost) {
     let discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
     if (discount > 0 && statusTbl.showPrice && currentPrice != "") {
@@ -341,7 +344,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   if (repairCostCoef) {
     let avgRepairMul = get_warpoints_blk()?.avgRepairMul ?? 1.0
     let egdCode = ::get_current_shop_difficulty().egdCode
-    let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
+    let rCost = wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
       addDesc += "\n" + loc("shop/avg_repair_cost") + nbsp
@@ -380,7 +383,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect =
         self(obj, unit, item, handler, params, effect_)
     })
 
-  let curExp = ::shop_get_module_exp(unit.name, item.name)
+  let curExp = shop_get_module_exp(unit.name, item.name)
   let is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
   let is_researching = isModInResearch(unit, item)
   let is_paused = canBeResearched(unit, item, true) && curExp > 0

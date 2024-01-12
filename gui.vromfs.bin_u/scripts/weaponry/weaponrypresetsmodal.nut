@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT, INFO_DETAIL
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -10,7 +11,7 @@ let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -27,7 +28,7 @@ let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
-let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isWeaponModsPurchasedOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -41,7 +42,7 @@ const MY_FILTERS = "weaponry_presets/filters"
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
-gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/weaponryPresetsModal.tpl"
   unit                 = null
@@ -88,8 +89,11 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     this.presets = this.weaponryByPresetInfo.presets
     this.favoriteArr = this.weaponryByPresetInfo.favoriteArr
     let unitName = this.unit.name
+
     this.availableWeapons = this.weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) w?.reqModification == null || isModAvailableOrFree(unitName, w.reqModification))
+      @(w) isWeaponModsPurchasedOrFree(unitName, w)
+    )
+
     this.lastWeapon = this.initLastWeapon ?? getLastWeapon(this.unit.name)
     this.chosenPresetName = this.lastWeapon
     this.presetsMarkup = this.getPresetsMarkup(this.presets)
@@ -112,7 +116,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     this.updateCustomIdx()
     this.updatePresetsByRanks()
     this.updateMultiPurchaseList()
-    ::move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
+    move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
 
     this.filterObj = this.scene.findObject("filter_nest")
     this.myFilters = loadLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", DataBlock())
@@ -329,7 +333,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
   }
 
   function onBuy(item) {
-    if (!::shop_is_weapon_available(this.unit.name, item.name, false, true))
+    if (!shop_is_weapon_available(this.unit.name, item.name, false, true))
       return
     this.checkSaveBulletsAndDo(Callback(function() { //-param-hides-param
       weaponsPurchase(this.unit, { modItem = item, open = false })
@@ -345,7 +349,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     }
 
     if (needSave) {
-      this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      this.taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
         let cb = u.isFunction(func) ? Callback(func, this) : func
         addTask(this.taskId, { showProgressBox = true }, cb)
@@ -730,7 +734,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     foreach (preset in this.presets) {
       let weaponPreset = preset.weaponPreset
       let statusTbl = getItemStatusTbl(this.unit, weaponPreset)
-      if (!::shop_is_weapon_available(this.unit.name, preset.name, false, true) || !statusTbl.canBuyMore)
+      if (!shop_is_weapon_available(this.unit.name, preset.name, false, true) || !statusTbl.canBuyMore)
         continue
 
       this.multiPurchaseList.append(weaponPreset)
@@ -743,7 +747,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
   function buyAll() {
     if (!this.multiPurchaseList.len()) {
       this.isAllBuyProcess = false
-      ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       this.updateAll()
       this.updateMultiPurchaseList()
       return

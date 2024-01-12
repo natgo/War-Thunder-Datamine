@@ -5,14 +5,14 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
-gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
@@ -160,7 +160,7 @@ gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onAccesskeyActivateSearch(_obj) {
-    ::select_editbox(this.scene.findObject("search_edit_box"))
+    select_editbox(this.scene.findObject("search_edit_box"))
   }
 
   function onEventShopUnitTypeSwitched(p) {

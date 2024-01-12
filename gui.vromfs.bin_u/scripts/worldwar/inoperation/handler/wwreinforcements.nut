@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,8 +12,11 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { wwGetPlayerSide } = require("worldwar")
 let { addTask } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 
-gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
+gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList.tpl"
   sceneBlkName = null
@@ -70,7 +77,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
     for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++) {
       let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
-      let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
+      let wwReinforcementArmy = WwReinforcementArmy(reinforcement)
       if (!hasFeature("worldWarMaster") &&
           (!wwReinforcementArmy.isMySide(playerSide) ||
            !wwReinforcementArmy.hasManageAccess())
@@ -83,8 +90,8 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
         newArmies.append(wwReinforcementArmy)
     }
 
-    existedArmies.sort(::WwReinforcementArmy.sortReadyReinforcements)
-    newArmies.sort(::WwReinforcementArmy.sortNewReinforcements)
+    existedArmies.sort(WwReinforcementArmy.sortReadyReinforcements)
+    newArmies.sort(WwReinforcementArmy.sortNewReinforcements)
 
     this.armiesBlocks.extend(existedArmies)
     this.armiesBlocks.extend(newArmies)
@@ -101,7 +108,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
     this.currentReinforcementName = obj.armyName
     this.showDeployHint(obj?.canDeploy == "yes")
-    ::ww_event("SelectedReinforcement", { name = this.currentReinforcementName })
+    wwEvent("SelectedReinforcement", { name = this.currentReinforcementName })
   }
 
   function onEventWWMapRequestReinforcement(params) {
@@ -119,10 +126,10 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
       return
 
     let mapObj = this.guiScene["worldwar_map"]
-    ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, this.currentReinforcementName)
+    worldWarMapControls.selectArmy.call(worldWarMapControls, mapObj, this.currentReinforcementName)
     this.updateSelectedArmy(false, true)
 
-    let selectedArmies = ::ww_get_selected_armies_names()
+    let selectedArmies = ww_get_selected_armies_names()
     if (!selectedArmies.len())
       return
 
@@ -133,7 +140,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
   function onSendReinforcementError(_err) {
     ::g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
-    ::ww_event("ShowRearZones", { name = this.currentReinforcementName })
+    wwEvent("ShowRearZones", { name = this.currentReinforcementName })
   }
 
   function fillReinforcementsList() {
@@ -277,7 +284,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
       reinforcementsObj.getChild(0).setValue(true)
 
     foreach (army in this.armiesBlocks)
-      if (army.isReady() && ::ww_side_val_to_name(army.getArmySide()) == side) {
+      if (army.isReady() && ww_side_val_to_name(army.getArmySide()) == side) {
         let armyView = army.getView()
         if (!armyView)
           continue

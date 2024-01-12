@@ -89,7 +89,8 @@
       "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarTwsWide": {
       "type": "pyramide",
@@ -108,7 +109,8 @@
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarDesignationLockSearch": {
       "type": "pyramide",
@@ -234,6 +236,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -252,11 +255,16 @@
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "groundClutter": false,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "mainBeamDopplerSpeed": true,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
       "track": true,
       "distance": {
         "presents": true,
@@ -266,7 +274,7 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 50.0,
+        "minValue": -1200.0,
         "maxValue": 1200.0,
         "signalWidthMin": 2.0,
         "width": 24.0
@@ -278,6 +286,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -959,18 +968,7 @@
             ]
           }
         },
-        "acmStandbyToLock": {
-          "stateFrom": "standby",
-          "command": "acmSwitch",
-          "stateTo": "acmLock",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmLockMode"
-            }
-          }
-        },
-        "hmdStandbyToLock": {
+        "standbyToHmdStandby": {
           "stateFrom": "standby",
           "command": "selectTarget",
           "stateTo": "hmdLock",
@@ -978,6 +976,17 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "setHmdLockMode"
+            }
+          }
+        },
+        "standbyToAcmLock": {
+          "stateFrom": "standby",
+          "command": "acmSwitch",
+          "stateTo": "acmLock",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setAcmLockMode"
             }
           }
         },
@@ -1945,15 +1954,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

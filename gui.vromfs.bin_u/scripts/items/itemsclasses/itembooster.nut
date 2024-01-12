@@ -1,9 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
+let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
@@ -13,8 +16,10 @@ let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlo
 let { getFullUnlockCondsDesc,
   getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isInFlight } = require("gameplayBinding")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Booster <- class extends ::BaseItem {
+let Booster = class (BaseItem) {
+  static name = "Booster"
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
   static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
@@ -116,9 +121,9 @@ let { isInFlight } = require("gameplayBinding")
 
   function getDiffEffect(effectsArray) {
     if (this.personal)
-      return ::calc_personal_boost(effectsArray)
+      return calc_personal_boost(effectsArray)
     else
-      return ::calc_public_boost(effectsArray)
+      return calc_public_boost(effectsArray)
   }
 
   function getDiffEffectText(diffResult) {
@@ -130,9 +135,9 @@ let { isInFlight } = require("gameplayBinding")
       return false
 
     local res = false
-    let total = ::get_current_booster_count(::INVALID_USER_ID)
+    let total = get_current_booster_count(::INVALID_USER_ID)
     for (local i = 0; i < total; i++)
-      if (isInArray(::get_current_booster_uid(::INVALID_USER_ID, i), this.uids)) {
+      if (isInArray(get_current_booster_uid(::INVALID_USER_ID, i), this.uids)) {
         res = true
         break
       }
@@ -169,7 +174,7 @@ let { isInFlight } = require("gameplayBinding")
     let blk = DataBlock()
     blk.setStr("name", this.uids[0])
 
-    return ::char_send_blk("cln_set_current_booster", blk)
+    return char_send_blk("cln_set_current_booster", blk)
   }
 
   function activate(cb, handler = null) {
@@ -228,7 +233,7 @@ let { isInFlight } = require("gameplayBinding")
       return false
 
     if (!handler)
-      handler = ::get_cur_base_gui_handler()
+      handler = get_cur_base_gui_handler()
 
     let checkIsInFlight = getTblValue("checkIsInFlight", checkParams, false)
     if (checkIsInFlight && isInFlight()) {
@@ -256,7 +261,7 @@ let { isInFlight } = require("gameplayBinding")
 
     handler.taskId = this._requestActivate()
     if (handler.taskId >= 0) {
-      ::set_char_cb(handler, handler.slotOpCb)
+      set_char_cb(handler, handler.slotOpCb)
       handler.showTaskProgressBox.call(handler)
       handler.afterSlotOp =  function() {
         ::update_gamercards()
@@ -443,7 +448,7 @@ let { isInFlight } = require("gameplayBinding")
 
     local res = this.getTotalStopSessions() - this.stopProgress
     if (this.spentInSessionTimeMin && isInFlight())
-      res -= (time.secondsToMinutes(::get_usefull_total_time()) / this.spentInSessionTimeMin).tointeger()
+      res -= (time.secondsToMinutes(get_usefull_total_time()) / this.spentInSessionTimeMin).tointeger()
     return max(0, res)
   }
 
@@ -537,7 +542,8 @@ let { isInFlight } = require("gameplayBinding")
   }
 }
 
-::items_classes.FakeBooster <- class extends ::items_classes.Booster {
+let FakeBooster = class (Booster) {
+  static name = "FakeBooster"
   static iType = itemType.FAKE_BOOSTER
   showBoosterInSeparateList = true
 
@@ -596,3 +602,5 @@ let { isInFlight } = require("gameplayBinding")
 
   function isActive(...) { return true }
 }
+
+return { Booster, FakeBooster }

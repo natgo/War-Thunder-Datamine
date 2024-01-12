@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -16,6 +17,8 @@ let { register_command } = require("console")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_pve_awards_blk } = require("blkGetters")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 
 register_command(
   function (misName) {
@@ -23,14 +26,14 @@ register_command(
     if(checkTutorialsList.filter(@(t) t.tutorial == misName).len() == 0)
       return
 
-    let dataBlk = get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
+    let dataBlk = get_pve_awards_blk()?[get_game_mode_name(GM_TRAINING)]
     let rewardsConfig = [{
       rewardMoney = getMoneyFromDebriefingResult()
       hasRewardImage = false
       isBaseReward = true
       needVerticalAlign = true
     }]
-    return ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
+    return loadHandler(gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName
@@ -41,7 +44,7 @@ register_command(
   "ui.debug_tutorial_reward"
 )
 
-local TutorialRewardHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
   sceneBlkName = "%gui/tutorials/tutorialReward.blk"
@@ -149,7 +152,7 @@ let function tryOpenTutorialRewardHandler() {
 
   let mainGameMode = get_game_mode()
   set_game_mode(GM_TRAINING)  //req to check progress
-  let progress = ::get_mission_progress(tutorialRewardData.value.fullMissionName)
+  let progress = get_mission_progress(tutorialRewardData.value.fullMissionName)
   set_game_mode(mainGameMode)
 
   let decorator = getDecoratorByResource(
@@ -163,7 +166,7 @@ let function tryOpenTutorialRewardHandler() {
 
     if ((tutorialRewardData.value.progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
       let rBlk = get_pve_awards_blk()
-      let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
+      let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""
@@ -183,8 +186,7 @@ let function tryOpenTutorialRewardHandler() {
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 
-      ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
-      {
+      loadHandler(gui_handlers.TutorialRewardHandler, {
         misName = misName
         decorator = decorator
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
@@ -193,7 +195,7 @@ let function tryOpenTutorialRewardHandler() {
     }
 
     if (u.search(reqTutorial, @(val) val == misName) != null) {
-      newCountries = ::checkUnlockedCountries()
+      newCountries = checkUnlockedCountries()
       foreach (c in newCountries)
         checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
     }

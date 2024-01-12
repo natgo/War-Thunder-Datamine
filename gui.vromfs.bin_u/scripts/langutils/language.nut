@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_language, set_language, get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -65,8 +66,6 @@ let function getCurLangShortName() {
 
 let isChineseHarmonized = @() getLanguageName() == "HChinese" //we need to check language too early when get_language from profile not work
 
-let isVietnameseVersion = @() getLanguageName() == "Vietnamese" //we need to check language too early when get_language from profile not work
-
 let function isChineseVersion() {
   let language = getLanguageName()
   return language == "Chinese"
@@ -74,8 +73,7 @@ let function isChineseVersion() {
     || language == "Korean"
 }
 
-let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne
-  && !isChineseHarmonized() && !isVietnameseVersion()
+let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne && !isChineseHarmonized()
 
 let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
@@ -109,13 +107,12 @@ let function checkInitList() {
   langsListForInventory.clear()
 
   let locBlk = DataBlock()
-  ::get_localization_blk_copy(locBlk)
+  get_localization_blk_copy(locBlk)
   let ttBlk = locBlk?.text_translation ?? DataBlock()
   let existingLangs = ttBlk % "lang"
 
   let guiBlk = GUI.get()
-  let blockName = isVietnameseVersion() ? "vietnam" : "default"
-  let preset = guiBlk?.game_localization[blockName] ?? DataBlock()
+  let preset = guiBlk?.game_localization["default"] ?? DataBlock()
   for (local l = 0; l < preset.blockCount(); l++) {
     let lang = preset.getBlock(l)
     if (isInArray(lang.id, existingLangs))
@@ -182,7 +179,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
 
   handlersManager.shouldResetFontsCache = true
   ::setSystemConfigOption("language", langId)
-  ::set_language(langId)
+  set_language(langId)
   saveLanguage(langId)
 
   if (suggestPkgDownload)
@@ -265,7 +262,7 @@ let getCurrentSteamLanguage = @() currentSteamLanguage
 
 // called from native playerProfile on language change, so at this point we can use get_language
 ::on_language_changed <- function on_language_changed() {
-  saveLanguage(::get_language())
+  saveLanguage(get_language())
 }
 
 // used in native code
@@ -305,7 +302,6 @@ let g_language = {
   currentLanguageW
   curLangShortName
   isChineseHarmonized
-  isVietnameseVersion
   isChineseVersion
   canSwitchGameLocalization
 }

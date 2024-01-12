@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import bit_activity
 
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
@@ -24,15 +26,18 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
-let { isVietnameseVersion, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
+let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
-  if (::isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
-      ::isHandlerInScene(gui_handlers.RankUpModal) ||
-      ::isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
+  if (isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
+      isHandlerInScene(gui_handlers.RankUpModal) ||
+      isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
     return ::delayed_unlock_wnd.append(config)
 
   ::gui_start_unlock_wnd(config)
@@ -48,7 +53,7 @@ let { userName, userIdStr } = require("%scripts/user/myUser.nut")
   else if (unlockType == "TournamentReward")
     return gui_handlers.TournamentRewardReceivedWnd.open(config)
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler, { config = config })
+  loadHandler(gui_handlers.ShowUnlockHandler, { config = config })
   return true
 }
 
@@ -63,7 +68,7 @@ let { userName, userIdStr } = require("%scripts/user/myUser.nut")
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
   sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
@@ -103,12 +108,12 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let params = { hasActions = true }
-    let data = ::build_aircraft_item(this.unit.name, this.unit, params)
+    let data = buildUnitSlot(this.unit.name, this.unit, params)
     let airObj = this.scene.findObject("reward_aircrafts")
     this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(this.unit.name)
     airObj.setValue(0)
-    ::fill_unit_item_timers(airObj.findObject(this.unit.name), this.unit, params)
+    fillUnitSlotTimers(airObj.findObject(this.unit.name), this.unit)
   }
 
   function updateTexts() {
@@ -145,13 +150,16 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     imgObj["background-image"] = image
+    let { imgWidth = null, ratioHeight = null, id = null } = this.config
+    if (imgWidth != null)
+      imgObj.width = imgWidth
 
-    if ("ratioHeight" in this.config)
-      imgObj["height"] = this.config.ratioHeight + "w"
-    else if ("id" in this.config) {
-      let unlockBlk = getUnlockById(this.config.id)
+    if (ratioHeight != null)
+      imgObj["height"] = $"{ratioHeight}w"
+    else if (id != null) {
+      let unlockBlk = getUnlockById(id)
       if (unlockBlk?.aspect_ratio)
-        imgObj["height"] = unlockBlk.aspect_ratio + "w"
+        imgObj["height"] = $"{unlockBlk.aspect_ratio}w"
     }
   }
 
@@ -165,8 +173,7 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_sendEmail", getTblValue("showSendEmail", this.config, false)
-                                  && !isVietnameseVersion())
+    this.showSceneBtn("btn_sendEmail", this.config?.showSendEmail ?? false)
 
     local linkText = getPromoLinkText(this.config)
     if (this.config?.pollId && this.config?.link) {
@@ -192,9 +199,9 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 
-    let showSetAir = this.unit != null && this.unit.isUsable() && !::isUnitInSlotbar(this.unit)
+    let showSetAir = this.unit != null && this.unit.isUsable() && !isUnitInSlotbar(this.unit)
     let canBuyOnline = this.unit != null && ::canBuyUnitOnline(this.unit)
-    let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (::canBuyUnit(this.unit) || canBuyOnline)
+    let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (canBuyUnit(this.unit) || canBuyOnline)
     this.showSceneBtn("btn_set_air", showSetAir)
     let okObj = this.showSceneBtn("btn_ok", !showSetAir)
     if (this.config?.okBtnText)
@@ -325,7 +332,9 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function openQR(_obj) {
     openQrWindow({
-      baseUrl = this.config.qrUrl
+      qrCodesData = [
+        {url = this.config.qrUrl}
+      ]
       needUrlWithQrRedirect = true
       needShowUrlLink = false
     })

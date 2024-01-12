@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -10,8 +11,10 @@ let { setColoredDoubleTextToButton, warningIfGold } = require("%scripts/viewUtil
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
-let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
+let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
 
   getSlotbarParams = @() {
@@ -66,7 +69,7 @@ let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
     this.showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
     this.showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
-      let rawCost = ::get_crew_slot_cost(this.getCurCountryName())
+      let rawCost = get_crew_slot_cost(this.getCurCountryName())
       let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
       let text = "".concat(loc("shop/recruitCrew"),
         loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
@@ -76,14 +79,14 @@ let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
 
   function onRecruitCrew() {
     let country = this.getCurCountryName()
-    let rawCost = ::get_crew_slot_cost(country)
+    let rawCost = get_crew_slot_cost(country)
     let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
-    if (!::check_balance_msgBox(cost))
+    if (!checkBalanceMsgBox(cost))
       return
 
     let unit = this.getCrewUnit(this.crew)
     let onTaskSuccess = Callback(function() {
-      let crews = ::get_crews_list_by_country(country)
+      let crews = getCrewsListByCountry(country)
       if (!crews.len())
         return
 

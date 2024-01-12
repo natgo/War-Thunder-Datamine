@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -609,7 +610,7 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
 
       setClone.bIconParam = { [p] = value }
       descTbl.bulletActions.append({
-        text = loc("bulletAction/" + p)
+        text = loc($"bulletAction/{p}")
         visual = getBulletsIconData(setClone)
       })
     }

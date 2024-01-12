@@ -11,8 +11,9 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let Squad = class extends BaseInvite {
+let Squad = class (BaseInvite) {
   //custom class params, not exist in base invite
   squadId = 0
   leaderId = 0
@@ -76,7 +77,7 @@ let Squad = class extends BaseInvite {
   function checkAutoAcceptXboxInvite() {
     if (!is_platform_xbox
         || !this.leaderContact
-        || (this.haveRestrictions() && !::isInMenu())
+        || (this.haveRestrictions() && !isInMenu())
         || !needProceedSquadInvitesAccept()
       )
       return

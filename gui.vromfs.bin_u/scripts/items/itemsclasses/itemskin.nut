@@ -1,12 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Skin <- class extends ItemCouponBase {
+let Skin = class (ItemCouponBase) {
   static iType = itemType.SKIN
+  static name = "Skin"
   static typeIcon = "#ui/gameuiskin#item_type_skin.svg"
   static descHeaderLocId = "coupon/for/skin"
 
@@ -27,3 +27,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
   canPreview = @() this.getDecorator() ? this.getDecorator().canPreview() : false
   doPreview  = @() this.getDecorator() && this.getDecorator().doPreview()
 }
+return {Skin}

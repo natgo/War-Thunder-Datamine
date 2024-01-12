@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -120,7 +121,7 @@ let function fetchGameModes() {
 }
 
 let function forceUpdateGameModes() {
-  if (!::is_online_available())
+  if (!is_online_available())
     return
 
   fetching = false
@@ -129,8 +130,7 @@ let function forceUpdateGameModes() {
 }
 
 let function removeGameMode(game_mode_id) {
-  if (game_mode_id in gameModes)
-    delete gameModes[game_mode_id]
+  gameModes?.$rawdelete(game_mode_id)
 }
 
 let function onGameModesChangedNotify(added_list, removed_list, changed_list) {

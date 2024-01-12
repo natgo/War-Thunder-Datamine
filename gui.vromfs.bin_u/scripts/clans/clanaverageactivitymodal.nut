@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -12,6 +13,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let PROGRESS_PARAMS = {
   type = "old"
@@ -24,13 +26,12 @@ let PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   clanData = null
 
   static function open(clanData) {
-    ::gui_start_modal_wnd(
-      gui_handlers.clanAverageActivityModal, { clanData = clanData })
+    loadHandler(gui_handlers.clanAverageActivityModal, { clanData = clanData })
   }
 
   function initScreen() {
@@ -54,7 +55,7 @@ gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandl
         let roundMyExp = round(myExp)
         let limit = min(100.0 * limitClanActivity / maxActivity, 100)
         let isAllVehiclesResearched = isAllClanUnitsResearched()
-        let expBoost = ::clan_get_exp_boost() / 100.0
+        let expBoost = clan_get_exp_boost() / 100.0
         let hasBoost = expBoost > 0
         let descrArray = this.clanData.nextRewardDayId != null
           ? [loc("clan/activity_period_end", { date = colorize("activeTextColor",

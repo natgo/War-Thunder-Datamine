@@ -1,14 +1,16 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, shop_get_units_list_with_autoset_modules, get_auto_buy_modifications, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 
-
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
-::researched_items_table <- null
+local researched_items_table = null
 ::abandoned_researched_items_for_session <- []
 ::researchedModForCheck <- "prevMod"
 ::researchedUnitForCheck <- "prevUnit"
@@ -25,7 +27,7 @@ let getUnitNameFromResearchItem = @(research)
 ::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null) {
   if (!isResearchForModification(researchBlock)) {
     ::gui_start_shop_research({ researchBlock = researchBlock })
-    ::gui_start_modal_wnd(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
+    loadHandler(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
   }
   else {
     let unit = getAircraftByName(getUnitNameFromResearchItem(researchBlock))
@@ -66,36 +68,36 @@ let function removeResearchBlock(researchBlock) {
   if (!isResearchAbandoned(researchBlock))
     ::abandoned_researched_items_for_session.append(researchBlock)
 
-  foreach (idx, newResearch in ::researched_items_table)
+  foreach (idx, newResearch in researched_items_table)
     if (isResearchEqual(researchBlock, newResearch)) {
-      ::researched_items_table.remove(idx)
+      researched_items_table.remove(idx)
       break
     }
 }
 
 ::checkNonApprovedResearches <- function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
-  if (!::isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || ::checkIsInQueue())
     return false
 
   if (needUpdateResearchTable) {
-    ::researched_items_table = ::shop_get_countries_list_with_autoset_units()
-    ::researched_items_table.extend(::shop_get_units_list_with_autoset_modules())
+    researched_items_table = shop_get_countries_list_with_autoset_units()
+    researched_items_table.extend(shop_get_units_list_with_autoset_modules())
   }
 
-  if (!::researched_items_table || !::researched_items_table.len())
+  if (!researched_items_table || !researched_items_table.len())
     return false
 
-  for (local i = ::researched_items_table.len() - 1; i >= 0; --i) {
-    if (isResearchAbandoned(::researched_items_table[i]) ||
-      !getAircraftByName(getUnitNameFromResearchItem(::researched_items_table[i]))?.unitType.isAvailable()
+  for (local i = researched_items_table.len() - 1; i >= 0; --i) {
+    if (isResearchAbandoned(researched_items_table[i]) ||
+      !getAircraftByName(getUnitNameFromResearchItem(researched_items_table[i]))?.unitType.isAvailable()
     )
-      removeResearchBlock(::researched_items_table[i])
+      removeResearchBlock(researched_items_table[i])
   }
 
-  if (!::researched_items_table.len())
+  if (!researched_items_table.len())
     return false
 
-  foreach (research in ::researched_items_table) {
+  foreach (research in researched_items_table) {
     if (!isResearchLast(research))
       continue
 
@@ -103,16 +105,16 @@ let function removeResearchBlock(researchBlock) {
       let unit = getAircraftByName(getUnitNameFromResearchItem(research))
       sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_modification",{ unit = unit.name
         modification = research.name })
-      ::shop_set_researchable_unit_module(unit.name, "")
+      shop_set_researchable_unit_module(unit.name, "")
       prepareUnitsForPurchaseMods.addUnit(unit)
     }
     removeResearchBlock(research)
   }
 
-  if (!::researched_items_table.len()) {
+  if (!researched_items_table.len()) {
     if (prepareUnitsForPurchaseMods.haveUnits()) {
       if (needResearchAction)
-        prepareUnitsForPurchaseMods.checkUnboughtMods(::get_auto_buy_modifications())
+        prepareUnitsForPurchaseMods.checkUnboughtMods(get_auto_buy_modifications())
       return true
     }
     else
@@ -120,12 +122,12 @@ let function removeResearchBlock(researchBlock) {
   }
 
   if (needResearchAction) {
-    let resBlock = ::researched_items_table[0]
+    let resBlock = researched_items_table[0]
     if (isResearchForModification(resBlock)
-      && ::isHandlerInScene(gui_handlers.WeaponsModalHandler))
+      && isHandlerInScene(gui_handlers.WeaponsModalHandler))
       return true
 
-    if (::isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (isHandlerInScene(gui_handlers.ShopCheckResearch))
       return true
 
     ::gui_start_choose_next_research(resBlock)
@@ -135,7 +137,7 @@ let function removeResearchBlock(researchBlock) {
   return true
 }
 
-gui_handlers.researchUnitNotification <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/researchedModifications.blk"
 
@@ -164,10 +166,10 @@ gui_handlers.researchUnitNotification <- class extends gui_handlers.BaseGuiHandl
     if (!checkObj(placeObj))
       return
 
-    let unit_blk = ::build_aircraft_item(this.unit.name, this.unit)
+    let unit_blk = buildUnitSlot(this.unit.name, this.unit)
     this.guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
     placeObj.tooltipId = ::g_tooltip.getIdUnit(this.unit.name)
-    ::fill_unit_item_timers(placeObj.findObject(this.unit.name), this.unit)
+    fillUnitSlotTimers(placeObj.findObject(this.unit.name), this.unit)
   }
 
   function onEventCrewTakeUnit(_params) {

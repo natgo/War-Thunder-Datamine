@@ -1,17 +1,21 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_update_hover_army_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { wwGetPlayerSide } = require("worldwar")
+let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
+const WW_LOG_MAX_DISPLAY_AMOUNT = 40
 
-gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = null
   sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
@@ -129,13 +133,13 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     this.configScrollPosition(scrollTargetId, isNewOperationEventLog)
 
     if (!this.selectedArmyName.len()) {
-      let selectedArmies = ::ww_get_selected_armies_names()
+      let selectedArmies = ww_get_selected_armies_names()
       if (selectedArmies.len())
         this.selectedArmyName = selectedArmies[0]
     }
     this.setArmyObjsSelected(this.findArmyObjsInLog(this.selectedArmyName), true)
 
-    ::ww_event("NewLogsDisplayed", { amount = ::g_ww_logs.getUnreadedNumber() })
+    wwEvent("NewLogsDisplayed", { amount = ::g_ww_logs.getUnreadedNumber() })
   }
 
   function setObjParamsById(objNest, id, paramsToSet) {
@@ -435,24 +439,24 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   function onHoverZoneName(obj) {
     let zone = obj.getValue()
     if (zone)
-      ::ww_mark_zones_as_outlined_by_name([zone])
+      ww_mark_zones_as_outlined_by_name([zone])
   }
 
   function onHoverLostZoneName(_obj) {
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
   }
 
   function onHoverArmyItem(obj) {
     this.clearHoverFromLogArmy()
     this.setArmyObjsHovered(this.findArmyObjsInLog(obj.id), true)
     this.markZoneByArmyName(obj.id)
-    ::ww_update_hover_army_name(obj.id)
+    ww_update_hover_army_name(obj.id)
   }
 
   function onHoverLostArmyItem(_obj) {
     this.clearHoverFromLogArmy()
-    ::ww_update_hover_army_name("")
-    ::ww_clear_outlined_zones()
+    ww_update_hover_army_name("")
+    wwClearOutlinedZones()
   }
 
   function clearHoverFromLogArmy() {
@@ -460,11 +464,11 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onHoverBattle(obj) {
-    ::ww_update_hover_battle_id(obj.battleId)
+    ww_update_hover_battle_id(obj.battleId)
   }
 
   function onHoverLostBattle(_obj) {
-    ::ww_update_hover_battle_id("")
+    ww_update_hover_battle_id("")
   }
 
   function onClickArmy(obj) {
@@ -472,7 +476,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let wwArmy = getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
     if (wwArmy)
-      ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
+      wwEvent("ShowLogArmy", { wwArmy = wwArmy })
   }
 
   function onEventWWSelectLogArmyByName(params = {}) {
@@ -497,8 +501,8 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!wwArmyPosition)
       return
 
-    let wwArmyZoneName = ::ww_get_zone_name(::ww_get_zone_idx_world(wwArmyPosition))
-    ::ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
+    let wwArmyZoneName = wwGetZoneName(ww_get_zone_idx_world(wwArmyPosition))
+    ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
   }
 
   function findArmyObjsInLog(armyName) {
@@ -544,12 +548,12 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     let battleId = obj.battleId
     let battle = ::g_world_war.getBattleById(battleId)
     if (battle.isValid()) {
-      ::ww_event("MapSelectedBattle", { battle = battle })
+      wwEvent("MapSelectedBattle", { battle = battle })
       return
     }
 
     let logBlk = ::g_ww_logs.logsBattles?[battleId].logBlk
-    gui_handlers.WwBattleResults.open(::WwBattleResults(logBlk))
+    gui_handlers.WwBattleResults.open(WwBattleResults(logBlk))
   }
 
   function onClickShowFirstLogs(_obj) {

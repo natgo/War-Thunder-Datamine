@@ -122,7 +122,8 @@
       "barHeight": 3.4,
       "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "twsMedium": {
       "type": "pyramide",
@@ -141,7 +142,8 @@
       "barHeight": 3.4,
       "barsCount": 2,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "hudLock": {
       "type": "pyramide",
@@ -301,6 +303,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -592,7 +595,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "mprfTrack"
+            "signal": "mprfSearch"
           },
           "setModeName": {
             "name": "PD acquisition"
@@ -619,7 +622,7 @@
             "transiver": "pulse"
           },
           "setSignal": {
-            "signal": "pulseTrack"
+            "signal": "pulseSearch"
           },
           "setModeName": {
             "name": "acquisition"
@@ -1579,15 +1582,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

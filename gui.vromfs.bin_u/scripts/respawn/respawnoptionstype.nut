@@ -1,5 +1,8 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed, get_option_torpedo_dive_depth_auto
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
@@ -87,6 +90,7 @@ options.template <- {
   isNeedUpdateByTrigger = _isNeedUpdateByTrigger
   isNeedUpdContentByTrigger = _isNeedUpdContentByTrigger
   update = _update
+  tooltipName = null
 
   needCheckValueWhenOptionUpdate = false //some options save by unit, and when unit changed need update option value if it changed
 }
@@ -111,10 +115,16 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
     isShowForUnit = @(_p) true
+    tooltipName = "skin_tooltip"
+    cb = "onSkinSelect"
     getUseropt = function(p) {
       let skinsOpt = getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, i) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN) }
+        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
+        {
+          hideDesignedFor = true
+          hideUnlockInfo = true
+        })}
       }))
       return skinsOpt
     }
@@ -143,7 +153,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     cType = optionControlType.CHECKBOX
     needSetToReqData = true
-    isAvailableInMission = @() ::is_gun_vertical_convergence_allowed()
+    isAvailableInMission = @() is_gun_vertical_convergence_allowed()
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
   }
   bomb_activation_time = {
@@ -193,7 +203,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
-    isAvailableInMission = @() !::get_option_torpedo_dive_depth_auto()
+    isAvailableInMission = @() !get_option_torpedo_dive_depth_auto()
     isShowForUnit = @(p) p.unit.isShipOrBoat()
       && (getCurrentPreset(p.unit)?.torpedo ?? false)
   }

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import player_have_attachable, player_have_decal, warbonds_can_buy_battle_task, warbond_get_type_by_name, get_warbond_item_bought_count_with_amount, char_send_blk, get_warbond_item_bought_count_with_name
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasks.nut")
@@ -12,6 +13,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 ::g_wb_award_type <- {
   types = []
@@ -24,7 +26,7 @@ let function requestBuyByName(warbond, blk) {
   reqBlk.type = blk?.type
   reqBlk.name = blk?.name ?? ""
 
-  return ::char_send_blk("cln_exchange_warbonds", reqBlk)
+  return char_send_blk("cln_exchange_warbonds", reqBlk)
 }
 
 let function requestBuyByAmount(warbond, blk) {
@@ -34,13 +36,13 @@ let function requestBuyByAmount(warbond, blk) {
   reqBlk.type = blk?.type
   reqBlk.amount = blk?.amount ?? 1
 
-  return ::char_send_blk("cln_exchange_warbonds", reqBlk)
+  return char_send_blk("cln_exchange_warbonds", reqBlk)
 }
 
 let getBoughtCountByName = @(warbond, blk)
-  ::get_warbond_item_bought_count_with_name(warbond.id, warbond.listId, blk?.type, blk?.name ?? "")
+  get_warbond_item_bought_count_with_name(warbond.id, warbond.listId, blk?.type, blk?.name ?? "")
 local getBoughtCountByAmount = @(warbond, blk)
-  ::get_warbond_item_bought_count_with_amount(warbond.id, warbond.listId, blk?.type, blk?.amount ?? 1)
+  get_warbond_item_bought_count_with_amount(warbond.id, warbond.listId, blk?.type, blk?.amount ?? 1)
 
 
 ::g_wb_award_type.template <- {
@@ -148,7 +150,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         return ""
 
       let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
-      return format(blockFormat, ::build_aircraft_item(unit.name, unit, {
+      return format(blockFormat, buildUnitSlot(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true
@@ -231,7 +233,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
     getMaxBoughtCount = @(_warbond, _blk) 1
     getBoughtCount = function(_warbond, blk) {
-      return ::player_have_decal(blk?.name ?? "") ? 1 : 0
+      return player_have_decal(blk?.name ?? "") ? 1 : 0
     }
     showAvailableAmount = false
     imgNestDoubleSize = "yes"
@@ -263,7 +265,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
     getMaxBoughtCount = @(_warbond, _blk) 1
     getBoughtCount = function(_warbond, blk) {
-      return ::player_have_attachable(blk?.name ?? "") ? 1 : 0
+      return player_have_attachable(blk?.name ?? "") ? 1 : 0
     }
     showAvailableAmount = false
     imgNestDoubleSize = "yes"
@@ -294,10 +296,10 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
   [EWBAT_BATTLE_TASK] = {
     getLayeredImage = @(_blk, warbond) warbond.getLayeredIconStyle()
-    getNameText = @(blk) loc("item/" + blk.name)
+    getNameText = @(blk) loc($"item/{blk.name}")
     getDescText = @(blk) loc("item/" + blk.name + "/desc")
     hasIncreasingLimit = true
-    canBuy = @(warbond, blk) ::warbonds_can_buy_battle_task(blk.name)
+    canBuy = @(warbond, blk) warbonds_can_buy_battle_task(blk.name)
       && (getPurchaseLimitWb(warbond) > this.getBoughtCount(warbond, blk))
     getMaxBoughtCount = @(warbond, _blk) getPurchaseLimitWb(warbond)
     isReqSpecialTasks = true
@@ -316,6 +318,6 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 null, "id")
 
 ::g_wb_award_type.getTypeByBlk <- function getTypeByBlk(blk) {
-  let typeInt = ::warbond_get_type_by_name(blk?.type ?? "invalid")
+  let typeInt = warbond_get_type_by_name(blk?.type ?? "invalid")
   return getTblValue(typeInt, this, this[EWBAT_INVALID])
 }

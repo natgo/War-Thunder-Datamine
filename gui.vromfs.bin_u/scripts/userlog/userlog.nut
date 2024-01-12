@@ -1,10 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
@@ -118,10 +120,10 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
 ]
 
 ::gui_modal_userLog <- function gui_modal_userLog() {
-  ::gui_start_modal_wnd(gui_handlers.UserLogHandler)
+  loadHandler(gui_handlers.UserLogHandler)
 }
 
-gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
@@ -181,10 +183,10 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getNewMessagesByPages() {
     let res = array(::userlog_pages.len(), 0)
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = 0; i < total; i++) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if (blk?.disabled) // was seen
         continue
@@ -212,7 +214,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.selectedIndex = clamp(this.selectedIndex, 0, childrenCount - 1)
       this.listObj.setValue(this.selectedIndex);
     }
-    ::move_mouse_on_child_by_value(this.listObj)
+    move_mouse_on_child_by_value(this.listObj)
 
     let msgObj = this.scene.findObject("middle_message")
     msgObj.show(this.logs.len() == 0)
@@ -290,7 +292,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.taskId = saveOnlineJob()
     log("saveOnlineJobWithUpdate")
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = this.updateTabNewIconWidgets
     }
   }
@@ -299,8 +301,8 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     local needSave = false
     if (this.fullLogs)
       foreach (logObj in this.fullLogs)
-        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < ::get_user_logs_count()) {
-          if (::disable_user_log_entry(logObj.idx))
+        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < get_user_logs_count()) {
+          if (disable_user_log_entry(logObj.idx))
             needSave = true
         }
 
@@ -311,14 +313,14 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function markItemSeen(index) {
     local needSave = false
 
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     local counter = 0
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
       if (!isInArray(blk?.type, ::hidden_userlogs)) {
         if (index == counter && !blk?.disabled) {
-          if (::disable_user_log_entry(i)) {
+          if (disable_user_log_entry(i)) {
             needSave = true
             break;
           }
@@ -385,7 +387,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     childObj.scrollToView()
-    ::move_mouse_on_obj(childObj)
+    move_mouse_on_obj(childObj)
   }
 
   function onChangePage(obj) {
@@ -444,6 +446,6 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function copyToClipboard() {
     if(this.currentLog == null)
       return
-    ::copy_to_clipboard(get_userlog_plain_text(this.currentLog))
+    copy_to_clipboard(get_userlog_plain_text(this.currentLog))
   }
 }

@@ -1,16 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { wwGetAirfieldsCount, wwGetSelectedAirfield } = require("worldwar")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
-gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
+gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/airfieldObject.tpl"
   sceneBlkName = null
@@ -36,8 +40,8 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
 
   function initScreen() {
     this.updateAirfields()
-    if (::ww_get_selected_airfield() >= 0) {
-      this.updateSelectedAirfield(::ww_get_selected_airfield())
+    if (wwGetSelectedAirfield() >= 0) {
+      this.updateSelectedAirfield(wwGetSelectedAirfield())
       this.selectDefaultFormation()
     }
   }
@@ -51,7 +55,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   }
 
   function getAirfields() {
-    let selAirfield = ::ww_get_selected_airfield()
+    let selAirfield = wwGetSelectedAirfield()
     let airfields = []
     let fieldsArray = ::g_world_war.getAirfieldsArrayBySide(this.side)
     foreach (idx, field in fieldsArray) {
@@ -310,7 +314,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
       : loc("worldwar/airfield/not_enough_units_to_send"))
 
     if (!hasFormationUnits && !hasCooldownUnits)
-      ::ww_event("MapClearSelection", {})
+      wwEvent("MapClearSelection", {})
   }
 
   function getAirfieldId(index) {
@@ -332,16 +336,16 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
 
   function onChangeFormationValue(obj) {
     this.deselectRadioButtonBlocks(this.scene.findObject("cooldowns_list"))
-    ::ww_event("MapAirfieldFormationSelected", {
-      airfieldIdx = ::ww_get_selected_airfield(),
+    wwEvent("MapAirfieldFormationSelected", {
+      airfieldIdx = wwGetSelectedAirfield(),
       formationType = "formation",
       formationId = obj.formationId.tointeger() })
   }
 
   function onChangeCooldownValue(obj) {
     this.deselectRadioButtonBlocks(this.scene.findObject("free_formations"))
-    ::ww_event("MapAirfieldFormationSelected", {
-      airfieldIdx = ::ww_get_selected_airfield(),
+    wwEvent("MapAirfieldFormationSelected", {
+      airfieldIdx = wwGetSelectedAirfield(),
       formationType = "cooldown",
       formationId = obj.formationId.tointeger() })
   }
@@ -349,15 +353,15 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   function onAirfieldClick(obj) {
     let index = to_integer_safe(obj.id.slice(this.airfieldIdPrefix.len()), -1)
     let mapObj = get_cur_gui_scene()["worldwar_map"]
-    ::ww_gui_bhv.worldWarMapControls.selectAirfield.call(
-      ::ww_gui_bhv.worldWarMapControls, mapObj, { airfieldIdx = index })
+    worldWarMapControls.selectAirfield.call(
+      worldWarMapControls, mapObj, { airfieldIdx = index })
   }
 
   onHoverAirfieldItem = @(obj)
-    ::ww_event("HoverAirfieldItem",
+    wwEvent("HoverAirfieldItem",
       { airfieldIndex = cutPrefix(obj.id, this.airfieldIdPrefix).tointeger() })
 
-  onHoverLostAirfieldItem = @(_obj) ::ww_event("HoverLostAirfieldItem", { airfieldIndex = -1 })
+  onHoverLostAirfieldItem = @(_obj) wwEvent("HoverLostAirfieldItem", { airfieldIndex = -1 })
 
   function selectDefaultFormation() {
     let placeObj = this.scene.findObject("free_formations")
@@ -368,7 +372,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
     if (this.ownedAirfieldsNumber != this.getAirfields().len())
       this.updateAirfields()
 
-    for (local index = 0; index < ::ww_get_airfields_count(); index++) {
+    for (local index = 0; index < wwGetAirfieldsCount(); index++) {
       let airfieldObj = this.scene.findObject(this.getAirfieldId(index))
       if (checkObj(airfieldObj))
         airfieldObj.selected = selectedAirfield == index ? "yes" : "no"
@@ -385,7 +389,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
     if (!checkObj(this.scene))
       return
 
-    this.updateSelectedAirfield(::ww_get_selected_airfield())
+    this.updateSelectedAirfield(wwGetSelectedAirfield())
   }
 
   function onEventWWMapAirfieldCleared(_params) {
@@ -393,7 +397,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   }
 
   function onEventWWLoadOperation(_params = {}) {
-    this.updateSelectedAirfield(::ww_get_selected_airfield())
+    this.updateSelectedAirfield(wwGetSelectedAirfield())
   }
 
   function onEventWWMapClearSelectionBySelectedObject(params) {

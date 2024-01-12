@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import xbox_complete_login
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -9,15 +11,14 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { get_gamertag } = require("%xboxLib/impl/user.nut")
-let { init_with_ui } = require("%xboxLib/user.nut")
-let { login } = require("%scripts/xbox/auth.nut")
+let { init_with_ui } = require("%scripts/xbox/user.nut")
+let { login } = require("%scripts/xbox/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let isLoginAllowedNow = hardPersistWatched("xbox.isLoginAllowedNow", true)
 
-gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
@@ -68,22 +69,12 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.updateGamertag()
-    this.updateButtonsState()
 
-    ::move_mouse_on_obj("authorization_button")
+    move_mouse_on_obj("authorization_button")
   }
 
   function onEulaButton() {
     openEulaWnd()
-  }
-
-  function updateButtonsState() {
-    local authBtn = this.scene.findObject("authorization_button")
-    local changeProfileBtn = this.scene.findObject("change_profile")
-    if (authBtn)
-      authBtn.enable(isLoginAllowedNow.value)
-    if (changeProfileBtn)
-      changeProfileBtn.enable(isLoginAllowedNow.value)
   }
 
   function onOk() {
@@ -113,14 +104,12 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
         ::close_wait_screen()
         if (err_code == 0) { // YU2_OK
           forceHideCursor(false)
-          ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
+          loadHandler(gui_handlers.UpdaterModal,
               {
                 configPath = "updater.blk"
                 onFinishCallback = function() {
                   log("Login completed")
-                  isLoginAllowedNow(false)
-                  this.updateButtonsState()
-                  ::xbox_complete_login()
+                  xbox_complete_login()
                 }.bindenv(this)
               })
         }
@@ -153,11 +142,6 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
 
   function onEventXboxInviteAccepted(_p) {
     this.onOk()
-  }
-
-  function onEventXboxUserSignoutFinished(_p) {
-    isLoginAllowedNow(true)
-    this.updateButtonsState()
   }
 
   function onDestroy() {

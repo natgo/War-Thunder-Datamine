@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let DataBlock = require("DataBlock")
 let { hangar_force_reload_model } = require("hangar")
@@ -29,8 +29,8 @@ let function invalidateCache() {
 }
 
 let function invalidateUnitCache(unit) {
-  customPresetsConfigByUnit.mutate(@(val) val.rawdelete(unit.name))
-  customPresetsByUnit.mutate(@(val) val.rawdelete(unit.name))
+  customPresetsConfigByUnit.mutate(@(val) val.$rawdelete(unit.name))
+  customPresetsByUnit.mutate(@(val) val.$rawdelete(unit.name))
 }
 
 let function savePresetInProfile(unit, id, presetBlk, successCb) {

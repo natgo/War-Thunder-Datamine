@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, steam_is_running, yuplay2_buy_entitlement, has_entitlement, is_app_active, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -13,6 +14,8 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -20,6 +23,9 @@ let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
+let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -32,7 +38,7 @@ let payMethodsCfg = [
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
-gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
@@ -88,7 +94,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     local idx = 0
     let isGold = this.chapter == "eagles"
     local curChapter = ""
-    let eblk = ::OnlineShopModel.getPriceBlk()
+    let eblk = getShopPriceBlk()
 
     local first = true
     let numBlocks = eblk.blockCount()
@@ -99,7 +105,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         continue
       if (this.chapter != null && ib?.chapter != this.chapter)
         continue
-      if (ib?.hideWhenUnbought && !::has_entitlement(name))
+      if (ib?.hideWhenUnbought && !has_entitlement(name))
         continue
 
       this.goods[name] <- {
@@ -189,7 +195,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       let tblObj = this.scene.findObject("items_list")
 
       this.guiScene.setUpdatesEnabled(true, true)
-      this.guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
+      this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, 0))
     }
     else { // Buy Campaigns & Bonuses.
       this.scene.findObject("chapter_update").setUserData(this)
@@ -212,7 +218,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
     }
 
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
     this.onItemSelect()
   }
 
@@ -278,15 +284,15 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUpdate(_obj, _dt) {
-    if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available()) {
+    else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
         return
 
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
       this.afterSlotOp = function() {
         if (!checkObj(this.scene))
@@ -300,7 +306,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function goForwardIfPurchase() {
-    let taskId = ::purchase_entitlement(this.task)
+    let taskId = purchase_entitlement(this.task)
     let taskOptions = {
       showProgressBox = true
     }
@@ -317,7 +323,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (product?.onlinePurchase ?? false)
       return this.onOnlinePurchase(this.task)
 
-    let costGold = "goldCost" in product ? ::get_entitlement_cost_gold(product.name) : 0
+    let costGold = "goldCost" in product ? get_entitlement_cost_gold(product.name) : 0
     let price = Cost(0, costGold)
     let msgText = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
@@ -325,10 +331,10 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       price)
     let curIdx = this.scene.findObject("items_list").getValue()
     let onCallbackYes = Callback(function() {
-      if (::check_balance_msgBox(price))
+      if (checkBalanceMsgBox(price))
         this.goForwardIfPurchase()
     }, this)
-    let onCallbackNo = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
+    let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
     purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)
   }
 
@@ -338,9 +344,9 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    let payMethods = ::yuplay2_get_payment_methods()
-    if (!payMethods || ::steam_is_running() || !hasFeature("PaymentMethods"))
-      return ::OnlineShopModel.doBrowserPurchase(itemId)
+    let payMethods = yuplay2_get_payment_methods()
+    if (!payMethods || steam_is_running() || !hasFeature("PaymentMethods"))
+      return doBrowserPurchase(itemId)
 
     let items = []
     local selItem = null
@@ -360,11 +366,11 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     items.append({
       name = name
       icon = ""
-      callback = Callback(@() ::OnlineShopModel.doBrowserPurchase(itemId), this)
+      callback = Callback(@() doBrowserPurchase(itemId), this)
     })
     selItem = selItem || name
 
-    ::gui_modal_payment({ items = items, owner = this, selItem = selItem, cancel_fn = function() {} })
+    openPaymentWnd({ items = items, owner = this, selItem = selItem, cancel_fn = function() {} })
   }
 
   function onYuplayPurchase(itemId, payMethod, nameLocId) {
@@ -383,7 +389,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (guid == "")
       logerr($"Error: not found guid for {itemId}")
 
-    let response = (guid == "") ? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
+    let response = (guid == "") ? -1 : yuplay2_buy_entitlement(guid, payMethod)
     if (response != YU2_OK) {
       let errorText = ::get_yu2_error_text(response)
       this.msgBox("errorMessageBox", errorText, [["ok", function() {}]], "ok")
@@ -391,7 +397,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    ::update_entitlements()
+    update_entitlements()
 
     this.msgBox("purchase_done",
       format(loc("userlog/buy_entitlement"), getEntitlementName(this.goods[itemId])),
@@ -449,7 +455,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 
   function onFav() {}
@@ -470,7 +476,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     else if (item?.group && item.group in this.groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = this.groupCost[item.group]
-      if (itemPrice > 0 && defItemPrice && (!isGold || !::steam_is_running())) {
+      if (itemPrice > 0 && defItemPrice && (!isGold || !steam_is_running())) {
         let calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount * 0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
@@ -510,7 +516,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.OnlineShopRowHandler <- class extends gui_handlers.OnlineShopHandler {
+gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneNavBlkName = null
@@ -521,8 +527,8 @@ gui_handlers.OnlineShopRowHandler <- class extends gui_handlers.OnlineShopHandle
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
       let realname = ("alias" in product) ? product.alias : productId
-      let expire = ::entitlement_expires_in(realname == "PremiumAccount"
-        ? ::shop_get_premium_account_ent_name()
+      let expire = entitlement_expires_in(realname == "PremiumAccount"
+        ? shop_get_premium_account_ent_name()
         : realname)
       if (expire > 0)
         descText = "".concat(descText,

@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import UnitRelevance
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
@@ -18,6 +20,8 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scripts/events/eventInfo.nut")
+let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%scripts/myStats.nut")
 
 ::featured_modes <- [
   {
@@ -25,7 +29,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
     startFunction = @() ::g_world_war.openMainWnd()
-    isWide = @() ::is_me_newbie() || !is_platform_pc
+    isWide = @() isMeNewbie() || !is_platform_pc
     image = function() {
         let operation = ::g_world_war.getLastPlayedOperation()
         if (operation != null)
@@ -62,7 +66,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + "?P1"
     videoPreview = null
-    isVisible = @() !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
+    isVisible = @() !isMeNewbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
@@ -142,7 +146,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     }
     videoPreview = null
     isVisible = function () {
-      return !::is_me_newbie() && ::is_custom_battles_enabled()
+      return !isMeNewbie() && ::is_custom_battles_enabled()
     }
     hasNewIconWidget = false
     newIconWidgetId = ""
@@ -171,8 +175,8 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     type = ::g_event_display_type.REGULAR
     displayWide = true
     getEventId = function() {
-      let curUnit = ::get_cur_slotbar_unit()
-      let chapter = ::events.chapters.getChapter("simulation_battles")
+      let curUnit = getCurSlotbarUnit()
+      let chapter = ::events.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
       local openEventId = null
@@ -198,13 +202,13 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
       if (!isMultiplayerPrivilegeAvailable.value)
         return true
 
-      let chapter = ::events.chapters.getChapter("simulation_battles")
+      let chapter = ::events.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
     isVisible = function() {
       return hasFeature("AllModesInRandomBattles")
-             && ::g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
-             && !::is_me_newbie()
+        && ::g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
+        && !isMeNewbie()
     }
     getTooltipText = function() { return loc("simulator_battles/desc") }
   }
@@ -490,7 +494,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
 
       // Step 2. Player's newbie event is may be not longer available.
       //         Attempting to get event with same unit type.
-      unitType = ::my_stats.getUnitTypeByNewbieEventId(idFromAccount)
+      unitType = getUnitTypeByNewbieEventId(idFromAccount)
       if (unitType != ES_UNIT_TYPE_INVALID) {
         local gameMode = null
         if (preferredDiffCode != -1)
@@ -503,13 +507,13 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     }
 
     // Step 4. Attempting to retrieve current game mode id from newbie event.
-    let event = ::my_stats.getNextNewbieEvent(null, null, true)
+    let event = getNextNewbieEvent(null, null, true)
     let idFromEvent = getTblValue("name", event, null)
     if (idFromEvent in this._gameModeById)
       return idFromEvent
 
     // Step 5. Attempting to get unit type from currently selected unit.
-    let unit = ::get_cur_slotbar_unit()
+    let unit = getCurSlotbarUnit()
     if (unitType == ES_UNIT_TYPE_INVALID && unit != null)
         unitType = getEsUnitType(unit)
 
@@ -518,7 +522,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     let firstUnitType = getFirstChosenUnitType(ES_UNIT_TYPE_INVALID)
     if (unitType == ES_UNIT_TYPE_INVALID
         && firstUnitType != ES_UNIT_TYPE_INVALID
-        && ::my_stats.isMeNewbie())
+        && isMeNewbie())
       unitType = firstUnitType
 
     // Step 8. We have unit type. Selecting easiest game mode.
@@ -561,7 +565,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
   isSeenByGameModeId = {}
 
   function _setCurrentGameModeId(id, save, isUserSelected = false) {
-    if (!::events.eventsLoaded)
+    if (!::events.isEventsLoaded())
       return
 
     if (isUserSelected)
@@ -676,7 +680,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
 
     let newbieGmByUnitType = {}
     foreach (unitType in unitTypes.types) {
-      let event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
+      let event = getNextNewbieEvent(null, unitType.esUnitType, false)
       if (event)
         newbieGmByUnitType[unitType.esUnitType] <- this._createEventGameMode(event)
     }
@@ -710,7 +714,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     let currentGameModeId = this.findCurrentGameModeId()
     if (currentGameModeId != null) {
       // This activates saving to profile on first update after profile loaded.
-      let save = this._currentGameModeId == null && ::events.eventsLoaded
+      let save = this._currentGameModeId == null && ::events.isEventsLoaded()
       this._setCurrentGameModeId(currentGameModeId, save)
     }
   }

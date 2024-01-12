@@ -1,9 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_warbond_balance, get_warbond_curr_stage_name, warbond_get_shop_levels
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
@@ -42,7 +44,7 @@ let Warbond = class {
     this.awardsList = []
 
     let pBlk = get_price_blk()
-    let listBlk = get_blk_value_by_path(pBlk, this.blkListPath)
+    let listBlk = getBlkValueByPath(pBlk, this.blkListPath)
     if (!u.isDataBlock(listBlk))
       return
 
@@ -66,7 +68,7 @@ let Warbond = class {
   }
 
   function isCurrent() { //warbond than can be received right now
-    return ::get_warbond_curr_stage_name(this.id) == this.listId
+    return get_warbond_curr_stage_name(this.id) == this.listId
   }
 
   function isVisible() {
@@ -81,7 +83,7 @@ let Warbond = class {
     this.awardsList.clear()
 
     let pBlk = get_price_blk()
-    let config = get_blk_value_by_path(pBlk, this.blkListPath + "/shop")
+    let config = getBlkValueByPath(pBlk, this.blkListPath + "/shop")
     if (!u.isDataBlock(config))
       return
 
@@ -118,7 +120,7 @@ let Warbond = class {
   }
 
   function getBalance() {
-    return ::get_warbond_balance(this.id)
+    return get_warbond_balance(this.id)
   }
 
   function getBalanceText() {
@@ -144,7 +146,7 @@ let Warbond = class {
   }
 
   function getLevelData() {
-    return ::warbond_get_shop_levels(this.id, this.listId)
+    return warbond_get_shop_levels(this.id, this.listId)
   }
 
   function haveAnyOrdinaryRequirements() {

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_tournament_desk_blk
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -13,7 +14,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
 } = require("%scripts/events/eventRewards.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
-gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/events/eventRewardsWnd.tpl"
@@ -30,7 +31,7 @@ gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!event)
         continue
 
-      let tournamenBlk = ::get_tournament_desk_blk(tourId ?? getEventEconomicName(event))
+      let tournamenBlk = get_tournament_desk_blk(tourId ?? getEventEconomicName(event))
       let finalAwardDate = tournamenBlk?.finalAwardDate
       let rewards = getSortedRewardsByConditions(event, tournamenBlk?.awards)
       if (!rewards.len() && !getBaseVictoryReward(event))

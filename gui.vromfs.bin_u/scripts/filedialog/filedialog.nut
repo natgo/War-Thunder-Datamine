@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -14,8 +16,9 @@ let stdpath = require("%sqstd/path.nut")
 let { abs } = require("math")
 let { find_files } = require("dagor.fs")
 let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
+let { select_editbox, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
@@ -338,9 +341,9 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         name = "#filesystem/gamePaths"
         childs = [
           { name = "#filesystem/gameSaves",
-            path = stdpath.normalize(::get_save_load_path()) },
+            path = stdpath.normalize(get_save_load_path()) },
           { name = "#filesystem/gameExe",
-            path = stdpath.parentPath(stdpath.normalize(::get_exe_dir())) }
+            path = stdpath.parentPath(stdpath.normalize(get_exe_dir())) }
         ]
       })
 
@@ -453,7 +456,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
       loc(this.isSaveFile ? "filesystem/savefile" : "filesystem/openfile"))
     this.updateAllDelayed()
 
-    ::move_mouse_on_child_by_value(this.getObj("file_table"))
+    move_mouse_on_child_by_value(this.getObj("file_table"))
 
     this.restorePathFromSettings()
   }
@@ -533,7 +536,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
     let dirPathObj = this.getObj("dir_path")
     let path = dirPathObj.isFocused() ? dirPathObj.getValue() : this.dirPath
     this.openDirectory(path)
-    ::move_mouse_on_child_by_value(this.getObj("file_table"))
+    move_mouse_on_child_by_value(this.getObj("file_table"))
   }
 
 
@@ -541,7 +544,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
     let dirPathObj = this.getObj("dir_path")
     let path = dirPathObj.isFocused() ? dirPathObj.getValue() : this.dirPath
     this.openFileOrDir(path)
-    ::move_mouse_on_child_by_value(this.getObj("file_table"))
+    move_mouse_on_child_by_value(this.getObj("file_table"))
   }
 
 
@@ -566,18 +569,18 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
     let fileTableObj = this.getObj("file_table")
     let fileNameObj = this.getObj("file_name")
     if (fileNameObj.isHovered())
-      ::move_mouse_on_child_by_value(fileTableObj)
+      move_mouse_on_child_by_value(fileTableObj)
     else
-      ::select_editbox(fileNameObj)
+      select_editbox(fileNameObj)
   }
 
   function onToggleFocusDirPath() {
     let fileTableObj = this.getObj("file_table")
     let dirPathObj = this.getObj("dir_path")
     if (dirPathObj.isHovered())
-      ::move_mouse_on_child_by_value(fileTableObj)
+      move_mouse_on_child_by_value(fileTableObj)
     else
-      ::select_editbox(dirPathObj)
+      select_editbox(dirPathObj)
   }
 
 
@@ -710,7 +713,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
 
-  setFocusToFileTable = @() ::move_mouse_on_child_by_value(this.getObj("file_table"))
+  setFocusToFileTable = @() move_mouse_on_child_by_value(this.getObj("file_table"))
 
 
   function updateSelectedFileName() {

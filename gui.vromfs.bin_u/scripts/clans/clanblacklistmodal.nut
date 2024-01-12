@@ -1,9 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -13,15 +13,7 @@ local clanBlackList = [
   { id = "initiator_nick", type = lbDataType.NICK },
   { id = "date", type = lbDataType.DATE }]
 
-::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null) {
-  clanData = clanData || ::my_clan_info
-  if (!clanData)
-    return
-
-  ::gui_start_modal_wnd(gui_handlers.clanBlacklistModal, { clanData = clanData })
-}
-
-gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 
@@ -36,7 +28,7 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
   rowsPerPage = 10
 
   function initScreen() {
-    this.myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : ::clan_get_my_role())
+    this.myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : clan_get_my_role())
 
     this.blacklistData = this.clanData.blacklist
     this.updateBlacklistTable()
@@ -90,7 +82,7 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     tblObj.setValue(1) //after header
     this.guiScene.setUpdatesEnabled(true, true)
-    ::move_mouse_on_child_by_value(tblObj)
+    move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.blacklistData.len() - 1) / this.rowsPerPage).tointeger())
@@ -200,4 +192,16 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
     let candidate = u.search(this.blacklistData, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
+}
+
+function openClanBlacklistWnd(clanData = null) {
+  clanData = clanData || ::my_clan_info
+  if (!clanData)
+    return
+
+  loadHandler(gui_handlers.clanBlacklistModal, { clanData = clanData })
+}
+
+return {
+  openClanBlacklistWnd
 }

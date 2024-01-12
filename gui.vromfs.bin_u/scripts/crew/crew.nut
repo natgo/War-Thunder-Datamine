@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_upgrade_crew, purchase_crew_slot, get_training_cost, get_aircraft_crew_by_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -10,18 +11,18 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
-let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock = require("DataBlock")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
+
+let crew_skills = []
+let crew_skills_available = {}
+let crew_air_train_req = {} //[crewUnitType] = array
 
 let function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
   let typesList = getTblValue(country, ::get_unit_types_in_countries(), {})
@@ -186,7 +187,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 
 //crewUnitType == -1 - all unitTypes
 ::g_crew.isCrewMaxLevel <- function isCrewMaxLevel(crew, unit, country, crewUnitType = -1) {
-  foreach (page in ::crew_skills) {
+  foreach (page in crew_skills) {
     if (crewUnitType >= 0 && !page.isVisible(crewUnitType))
       continue
 
@@ -201,7 +202,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 }
 
 ::g_crew.getSkillItem <- function getSkillItem(memberName, skillName) {
-  foreach (page in ::crew_skills)
+  foreach (page in crew_skills)
     if (page.id == memberName) {
       foreach (skillItem in page.items)
         if (skillItem.name == skillName)
@@ -286,7 +287,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 //action = function(page, skillItem)
 ::g_crew.doWithAllSkills <- function doWithAllSkills(crew, crewUnitType, action) {
   let country = this.getCrewCountry(crew)
-  foreach (page in ::crew_skills) {
+  foreach (page in crew_skills) {
     if (crewUnitType >= 0 && !page.isVisible(crewUnitType))
       continue
 
@@ -331,7 +332,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   if (!unit)
     return res
   if (crew)
-    res.wp = ::get_training_cost(crew.id, unit.name).cost
+    res.wp = get_training_cost(crew.id, unit.name).cost
   else
     res.wp = unit.trainCost
   return res
@@ -341,7 +342,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   ::load_crew_skills_once()
 
   local res = 0.0
-  foreach (page in ::crew_skills)
+  foreach (page in crew_skills)
     if (page.isVisible(crewUnitType))
       foreach (item in page.items) {
         if (!item.isVisible(crewUnitType))
@@ -365,142 +366,6 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   return stdMath.round_by_value(level, 0.01)
 }
 
-::g_crew.upgradeUnitSpec <- function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = null) {
-  if (!unit)
-    return showInfoMsgBox(loc("shop/aircraftNotSelected"))
-
-  if ((crew?.id ?? -1) == -1)
-    return showInfoMsgBox(loc("mainmenu/needRecruitCrewWarning"))
-
-  if (!unit.isUsable())
-    return showInfoMsgBox(loc("weaponry/unit_not_bought"))
-
-  let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-  if (curSpecType == ::g_crew_spec_type.UNKNOWN) {
-    trainCrewUnitWithoutSwitchCurrUnit(crew, unit)
-    return
-  }
-
-  if (!curSpecType.hasNextType())
-    return
-
-  if (!nextSpecType)
-    nextSpecType = curSpecType.getNextType()
-  local upgradesAmount = nextSpecType.code - curSpecType.code
-  if (upgradesAmount <= 0)
-    return
-
-  let unitTypeSkillsMsg = "<b>" + colorize("warningTextColor", loc("crew/qualifyOnlyForSameType")) + "</b>"
-
-  let crewUnitType = unit.getCrewUnitType()
-  let reqLevel = nextSpecType.getReqCrewLevel(unit)
-  let crewLevel = this.getCrewLevel(crew, unit, crewUnitType)
-
-  local msgLocId = "shop/needMoneyQuestion_increaseQualify"
-  let msgLocParams = {
-    unitName = colorize("userlogColoredText", getUnitName(unit))
-    wantedQualify = colorize("userlogColoredText", nextSpecType.getName())
-    reqLevel = colorize("badTextColor", reqLevel)
-  }
-
-  if (reqLevel > crewLevel) {
-    nextSpecType = curSpecType.getNextMaxAvailableType(unit, crewLevel)
-    upgradesAmount = nextSpecType.code - curSpecType.code
-    if (upgradesAmount <= 0) {
-      local msgText = loc("crew/msg/qualifyRequirement", msgLocParams)
-      if (crewUnitTypeToCheck != null && crewUnitType != crewUnitTypeToCheck)
-        msgText += "\n" + unitTypeSkillsMsg
-      showInfoMsgBox(msgText)
-      return
-    }
-    else {
-      msgLocId = "shop/ask/increaseLowerQualify"
-      msgLocParams.targetQualify <- colorize("userlogColoredText", nextSpecType.getName())
-    }
-  }
-
-  let cost = curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, nextSpecType.code)
-  if (cost.gold > 0 && !::can_spend_gold_on_unit_with_popup(unit))
-    return
-
-  msgLocParams.cost <- colorize("activeTextColor", cost.getTextAccordingToBalance())
-
-  if (cost.isZero())
-    return this._upgradeUnitSpec(crew, unit, upgradesAmount)
-
-  let msgText = warningIfGold(
-    loc(msgLocId, msgLocParams) + "\n\n"
-      + loc("shop/crewQualifyBonuses",
-        { qualification = colorize("userlogColoredText", nextSpecType.getName())
-          bonuses = nextSpecType.getFullBonusesText(crewUnitType, curSpecType.code) })
-      + "\n" + unitTypeSkillsMsg,
-    cost)
-  scene_msg_box("purchase_ask", null, msgText,
-    [
-      ["yes", function() {
-                 if (::check_balance_msgBox(cost))
-                   ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)
-               }
-      ],
-      ["no", function() {}]
-    ],
-    "yes",
-    {
-      cancel_fn = function() {}
-      font = "fontNormal"
-    }
-  )
-}
-
-::g_crew._upgradeUnitSpec <- function _upgradeUnitSpec(crew, unit, upgradesAmount = 1) {
-  let taskId = ::shop_specialize_crew(crew.id, unit.name)
-  let progBox = { showProgressBox = true }
-  upgradesAmount--
-  let onTaskSuccess =  function() {
-    ::updateAirAfterSwitchMod(unit)
-    ::update_gamercards()
-    broadcastEvent("QualificationIncreased", { unit = unit, crew = crew })
-
-    if (upgradesAmount > 0)
-      return ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)
-    if (getTblValue("aircraft", crew) != unit.name)
-      showInfoMsgBox(format(loc("msgbox/qualificationIncreased"), getUnitName(unit)))
-  }
-
-  addTask(taskId, progBox, onTaskSuccess)
-}
-
-let function is_crew_slot_empty(crew) {
-  return getTblValue("aircraft", crew, "") == ""
-}
-
-::g_crew.getBestTrainedCrewIdxForUnit <- function getBestTrainedCrewIdxForUnit(unit, mustBeEmpty, compareToCrew = null) {
-  if (!unit)
-    return -1
-
-  let crews = ::get_crews_list_by_country(unit.shopCountry)
-  if (!crews.len())
-    return -1
-
-  local maxSpecCrewIdx = -1
-  local maxSpecCode = -1
-
-  if (compareToCrew) {
-    maxSpecCrewIdx = getTblValue("idInCountry", compareToCrew, maxSpecCrewIdx)
-    maxSpecCode = ::g_crew_spec_type.getTypeByCrewAndUnit(compareToCrew, unit).code
-  }
-
-  foreach (idx, crew in crews) {
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-    if (specType.code > maxSpecCode && (!mustBeEmpty || is_crew_slot_empty(crew))) {
-      maxSpecCrewIdx = idx
-      maxSpecCode = specType.code
-    }
-  }
-
-  return maxSpecCrewIdx
-}
-
 ::g_crew.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(params) {
   if (!params?.isOnlyPointsChanged) {
     let unit = params?.unit ?? this.getCrewUnit(params.crew)
@@ -511,7 +376,7 @@ let function is_crew_slot_empty(crew) {
 }
 
 ::g_crew.purchaseNewSlot <- function purchaseNewSlot(country, onTaskSuccess, onTaskFail = null) {
-  let taskId = ::purchase_crew_slot(country)
+  let taskId = purchase_crew_slot(country)
   return addTask(taskId, { showProgressBox = true }, onTaskSuccess, onTaskFail)
 }
 
@@ -543,7 +408,7 @@ let function is_crew_slot_empty(crew) {
   )
 
   let isTaskCreated = addTask(
-    ::shop_upgrade_crew(crew.id, blk),
+    shop_upgrade_crew(crew.id, blk),
     { showProgressBox = true },
     function() {
       broadcastEvent("CrewSkillsChanged", { crew = crew, unit = unit })
@@ -562,7 +427,7 @@ let function is_crew_slot_empty(crew) {
     return null
 
   let crewUnitType = unit.getCrewUnitType()
-  foreach (skillPage in ::crew_skills)
+  foreach (skillPage in crew_skills)
     if (skillPage.isVisible(crewUnitType))
       if (this.hasSkillPointsToRunTutorial(crew, unit, crewUnitType, skillPage))
         return skillPage.id
@@ -592,12 +457,9 @@ subscribe_handler(::g_crew, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 
 let min_steps_for_crew_status = [1, 2, 3]
 
-::crew_skills <- []
-::crew_air_train_req <- {} //[crewUnitType] = array
-::crew_skills_available <- {}
 local is_crew_skills_available_inited = false
 /*
-  ::crew_skills <- [
+  crew_skills : [
     { id = "pilot"
       items = [{ name = eyesight, costTbl = [1, 5, 10]}, ...]
     }
@@ -605,8 +467,8 @@ local is_crew_skills_available_inited = false
 */
 
 ::load_crew_skills <- function load_crew_skills() {
-  ::crew_skills = []
-  ::crew_air_train_req = {}
+  crew_skills.clear()
+  crew_air_train_req.clear()
 
   let blk = get_skills_blk()
   ::g_crew.crewLevelBySkill = blk?.skill_to_level_ratio ?? ::g_crew.crewLevelBySkill
@@ -645,7 +507,7 @@ local is_crew_skills_available_inited = false
       item.useLeadership <- itemBlk?.use_leadership ?? false
       page.items.append(item)
     })
-    ::crew_skills.append(page)
+    crew_skills.append(page)
   })
 
   broadcastEvent("CrewSkillsReloaded")
@@ -655,7 +517,7 @@ local is_crew_skills_available_inited = false
     return
 
   foreach (t in unitTypes.types) {
-    if (!t.isAvailable() || ::crew_air_train_req?[t.crewUnitType] != null)
+    if (!t.isAvailable() || crew_air_train_req?[t.crewUnitType] != null)
       continue
 
     let typeBlk = reqBlk?[t.getCrewTag()]
@@ -676,12 +538,12 @@ local is_crew_skills_available_inited = false
     }
     while (costBlk != null)
 
-    ::crew_air_train_req[t.crewUnitType] <- trainReq
+    crew_air_train_req[t.crewUnitType] <- trainReq
   }
 }
 
 ::load_crew_skills_once <- function load_crew_skills_once() {
-  if (::crew_skills.len() == 0)
+  if (crew_skills.len() == 0)
     ::load_crew_skills()
 }
 
@@ -694,11 +556,11 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   if (!curPoints)
     return 0.0
 
-  let crewSkills = ::get_aircraft_crew_by_id(crew.id)
+  let crewSkills = get_aircraft_crew_by_id(crew.id)
   local notMaxTotal = 0
   let available = [0, 0, 0]
 
-  foreach (page in ::crew_skills)
+  foreach (page in crew_skills)
     foreach (item in page.items) {
       if (!item.isVisible(crewUnitType))
         continue
@@ -734,7 +596,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   is_crew_skills_available_inited = true
 
   ::load_crew_skills_once()
-  ::crew_skills_available = {}
+  crew_skills_available.clear()
   foreach (cList in ::g_crews_list.get())
     foreach (_idx, crew in cList?.crews || []) {
       let data = {}
@@ -743,7 +605,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
         if (!data?[crewUnitType])
           data[crewUnitType] <- count_available_skills(crew, crewUnitType)
       }
-      ::crew_skills_available[crew.id] <- data
+      crew_skills_available[crew.id] <- data
     }
 }
 
@@ -751,7 +613,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   local status = ""
   if (isInFlight())
     return status
-  foreach (id, data in ::crew_skills_available) {
+  foreach (id, data in crew_skills_available) {
     if (id != crew.id)
       continue
     unit = unit ?? getAircraftByName(crew?.aircraft ?? "")
@@ -775,27 +637,13 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   return status
 }
 
-::get_first_empty_crew_slot <- function get_first_empty_crew_slot(country = null) {
-  if (!country)
-    country = profileCountrySq.value
-
-  local crew = null
-  foreach (_idx, crewBlock in ::g_crews_list.get())
-    if (crewBlock.country == country) {
-      crew = crewBlock.crews
-      break
-    }
-
-  if (crew == null)
-    return -1
-
-  foreach (idx, crewBlock in crew)
-    if (is_crew_slot_empty(crewBlock))
-      return idx
-
-  return -1
-}
+::crew_skills_available <- crew_skills_available
+::crew_skills <- crew_skills
+::crew_air_train_req <- crew_air_train_req
 
 return {
   getCrew
+  crew_skills
+  crew_skills_available
+  crew_air_train_req
 }

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_cached_music, has_entitlement, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let { isDataBlock, isEmpty, copy, isString, chooseRandom } = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -13,6 +14,7 @@ let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoAc
 let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { validateLink } = require("%scripts/onlineShop/url.nut")
+let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { is_chat_message_empty } = require("chat")
@@ -192,8 +194,8 @@ let function requestTurnOffPlayMenuMusic(_dt) {
   if (playlistSongTimerTask < 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, "", "")
-  ::periodic_task_unregister(playlistSongTimerTask)
+  set_cached_music(CACHED_MUSIC_MENU, "", "")
+  periodic_task_unregister(playlistSongTimerTask)
   playlistSongTimerTask = -1
 }
 
@@ -201,8 +203,8 @@ let function enablePromoPlayMenuMusic(playlistArray, periodSec) {
   if (playlistSongTimerTask >= 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
-  playlistSongTimerTask = ::periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
+  set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
+  playlistSongTimerTask = periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
 }
 //------------------ </PLAYBACK> -----------------------------
 
@@ -244,7 +246,7 @@ let function togglePromoItem(toggleButtonObj) {
   let newVal = changeToggleStatus(promoButtonObj.id, toggled)
   promoButtonObj.collapsed = newVal ? "yes" : "no"
   toggleButtonObj.getScene().applyPendingChanges(false)
-  ::move_mouse_on_obj(toggleButtonObj)
+  move_mouse_on_obj(toggleButtonObj)
 }
 //-------------------- </TOGGLE> ----------------------------
 
@@ -377,7 +379,7 @@ let function checkPromoBlockReqEntitlement(block) {
     return true
 
   return split_by_chars(block.reqEntitlement, "; ")
-    .findvalue(@(ent) ::has_entitlement(ent) == 1) != null
+    .findvalue(@(ent) has_entitlement(ent) == 1) != null
 }
 
 let function checkPromoBlockReqFeature(block) {
@@ -665,8 +667,7 @@ let function generatePromoBlockView(block) {
   if (!hasImage)
     view.h_ratio = 0
 
-  if ("action" in view)
-    delete view.action
+  view?.$rawdelete("action")
   view.show <- checkBlockVisibility(block) && block?.pollId == null
   view.collapsedIcon <- getPromoCollapsedIcon(view, id)
   view.collapsedText <- getPromoCollapsedText(view, id)

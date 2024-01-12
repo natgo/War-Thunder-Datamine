@@ -1,4 +1,8 @@
+from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/queue/queueConsts.nut" import queueStates
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -15,15 +19,6 @@ let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
-
-global enum queueStates {
-  ERROR,
-  NOT_IN_QUEUE,
-  ACTUALIZE,
-  JOINING_QUEUE,
-  LEAVING_QUEUE,
-  IN_QUEUE
-}
 
 let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true
@@ -47,19 +42,7 @@ foreach (fn in [
                ])
   loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
-matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
-  if (params?.service != "match" || ::queues.lastQueueReqParams == null)
-    return
-
-  ::queues.init()
-  ::g_delayed_actions.add(
-    Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
-    5000 + rnd() % 5000)
-})
-
-::queues <- null //init in second mainmenu
-
-::QueueManager <- class {
+let QueueManager = class {
   state              = queueStates.NOT_IN_QUEUE
 
   progressBox        = null
@@ -301,7 +284,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
 
   function afterJoinQueue(queue) {
     this.changeState(queue, queueStates.IN_QUEUE)
-    ::set_presence_to_player("queue")
+    set_presence_to_player("queue")
   }
 
   function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { //null = all
@@ -650,13 +633,26 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   }
 }
 
-::queues = ::QueueManager()
+let queues = QueueManager()
+
+matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
+  if (params?.service != "match" || queues.lastQueueReqParams == null)
+    return
+
+  queues.init()
+  ::g_delayed_actions.add(
+    Callback(@() queues.joinQueue(queues.lastQueueReqParams), queues),
+    5000 + rnd() % 5000)
+})
 
 ::checkIsInQueue <- function checkIsInQueue() {
-  return ::queues.isAnyQueuesActive()
+  return queues.isAnyQueuesActive()
 }
 
 ::open_search_squad_player <- function open_search_squad_player() {
-  ::queues.checkAndStart(::gui_start_search_squadPlayer, null,
+  queues.checkAndStart(::gui_start_search_squadPlayer, null,
     "isCanModifyQueueParams", QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE)
 }
+
+::queues <- queues
+return {queues}

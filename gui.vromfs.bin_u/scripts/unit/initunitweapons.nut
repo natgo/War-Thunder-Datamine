@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -94,8 +94,12 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false
   weaponry.isHidden <- blk?.isHidden ?? weaponBlk?.isHidden ?? false
   weaponry.weaponmask <- blk?.weaponmask ?? 0
-  if (weaponry.type == weaponsItem.modification)
+
+  if (weaponry.type == weaponsItem.modification) {
     weaponry.modificationAnimation <- blk?.animation ?? weaponBlk?.animation
+    weaponry.tutorialMission <- blk?.tutorialMission
+    weaponry.tutorialMissionWeapon <- blk?.tutorialMissionWeapon
+  }
 
   if (weaponry.name == "tank_additional_armor")
     weaponry.requiresModelReload <- true
@@ -204,7 +208,7 @@ let function initUnitModifications(modifications, modificationsBlk, esUnitType) 
     //validate prevModification. it used in gui only.
     if (("prevModification" in mod) && !(modificationsBlk?[mod.prevModification]))
       errorsTextArray.append(
-        $"Not exist prevModification '{delete mod.prevModification}' for '{modName}'")
+        $"Not exist prevModification '{mod.$rawdelete("prevModification")}' for '{modName}'")
   })
   return errorsTextArray
 }
@@ -225,5 +229,3 @@ return {
   initUnitWeaponsContainers
   initUnitCustomPresetsWeapons
 }
-
-

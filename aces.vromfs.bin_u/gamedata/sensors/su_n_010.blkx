@@ -127,7 +127,8 @@
       "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarTwsWide": {
       "type": "pyramide",
@@ -146,7 +147,8 @@
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarDesignationLockSearch": {
       "type": "pyramide",
@@ -440,6 +442,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -458,11 +461,16 @@
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "groundClutter": false,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "mainBeamDopplerSpeed": true,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
       "track": true,
       "distance": {
         "presents": true,
@@ -472,8 +480,26 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 50.0,
+        "minValue": -1200.0,
         "maxValue": 1200.0,
+        "signalWidthMin": 2.0,
+        "width": 24.0
+      }
+    },
+    "acm": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 250.0,
+        "maxValue": 10000.0,
+        "width": 250.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
         "signalWidthMin": 2.0,
         "width": 24.0
       }
@@ -484,6 +510,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -649,6 +676,13 @@
             "name": "IRST standby"
           }
         },
+        "resetRadarStandbyMode": {
+          "setFsmActive": {
+            "fsm": "radarSearchModes",
+            "active": false
+          }
+        },
+        "resetIrstStandbyMode": {},
         "setSearchTwsModeCommon": {
           "setStandbySearchTwsModeCommon": {},
           "setEnabled": {
@@ -929,7 +963,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmTrack"
+            "signal": "acm"
           },
           "setCustomActionTemplate": [
             {
@@ -971,7 +1005,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmTrack"
+            "signal": "acm"
           },
           "setScanPatternSet": {
             "scanPatternSet": "radarHmdLock"
@@ -1444,10 +1478,16 @@
           "command": "acmSwitch",
           "stateTo": "acmLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmLockMode"
+              }
+            ]
           }
         },
         "hmdStandbyToLock": {
@@ -1455,10 +1495,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToAcmTrack": {
@@ -1731,9 +1777,24 @@
         "switchScanPattern": {
           "stateFrom": [
             "standby",
-            "search",
-            "acmLock"
+            "search"
           ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
+          }
+        },
+        "switchAcmScanPattern": {
+          "stateFrom": "acmLock",
           "command": "scanPatternSwitch",
           "actions": {
             "setNextScanPattern": {}
@@ -1866,6 +1927,11 @@
               "fsm": "main",
               "name": "changeHmdTrackMode",
               "actionTemplateName": "changeRadarToIrstHmdTrack"
+            },
+            {
+              "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetIrstStandbyMode"
             },
             {
               "fsm": "main",
@@ -2044,6 +2110,11 @@
             },
             {
               "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetRadarStandbyMode"
+            },
+            {
+              "fsm": "main",
               "name": "resetSearchMode",
               "actionTemplateName": "resetRadarSearchMode"
             },
@@ -2121,6 +2192,11 @@
               "fsm": "main",
               "name": "setDesignationLockMode",
               "actionTemplateName": "setHprfDesignationLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetRadarStandbyMode"
             },
             {
               "fsm": "main",
@@ -2568,15 +2644,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
@@ -2599,7 +2669,7 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 3.0
+              "timeOut": 1.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

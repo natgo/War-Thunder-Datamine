@@ -1,11 +1,13 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import live_preview_resource, live_preview_resource_for_approve, live_preview_resource_by_guid
 from "%scripts/dagui_library.nut" import *
+from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hangar_is_model_loaded } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -15,7 +17,6 @@ let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
@@ -23,6 +24,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
+let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -38,7 +40,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
-  if (!::isInMenu() || ::checkIsInQueue()
+  if (!isInMenu() || ::checkIsInQueue()
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       || ::SessionLobby.hasSessionInLobby())
     return "temporarily_forbidden"
@@ -78,7 +80,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   let startFunc = function() {
     ::gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
-      needForceShowUnitInfoPanel = isUnitPreview && ::isUnitSpecial(unit)
+      needForceShowUnitInfoPanel = isUnitPreview && isUnitSpecial(unit)
       previewParams = {
         unitName = unitId
         skinName = skinId
@@ -104,7 +106,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
     if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
       return unit
 
-    let crews = ::get_crews_list_by_country(countryId)
+    let crews = getCrewsListByCountry(countryId)
     foreach (crew in crews)
       if ((crew?.aircraft ?? "") != "") {
         unit = getAircraftByName(crew.aircraft)
@@ -206,7 +208,7 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   if (guidParser.isGuid(resource)) {
     downloadProgressBox = scene_msg_box("live_resource_requested", null, loc("msgbox/please_wait"),
       [["cancel"]], "cancel", { waitAnim = true, delayedButtons = downloadTimeoutSec })
-    ::live_preview_resource_by_guid(resource, resourceType)
+    live_preview_resource_by_guid(resource, resourceType)
   }
   else {
     if (resourceType == "skin") {
@@ -230,8 +232,8 @@ let function liveSkinPreview(params) {
   let blkHashName = params.hash
   let name = params?.name ?? "testName"
   let shouldPreviewForApprove = params?.previewForApprove ?? false
-  let res = shouldPreviewForApprove ? ::live_preview_resource_for_approve(blkHashName, "skin", name)
-                                      : ::live_preview_resource(blkHashName, "skin", name)
+  let res = shouldPreviewForApprove ? live_preview_resource_for_approve(blkHashName, "skin", name)
+                                      : live_preview_resource(blkHashName, "skin", name)
   return res.result
 }
 

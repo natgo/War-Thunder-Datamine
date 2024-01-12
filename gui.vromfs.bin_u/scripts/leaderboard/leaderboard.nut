@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import request_leaderboard_blk, get_leaderboard_blk, clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,17 +19,20 @@ let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig
+} = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 ::leaderboards_list <- [
-  ::g_lb_category.PVP_RATIO
-  ::g_lb_category.VICTORIES_BATTLES
-  ::g_lb_category.AVERAGE_RELATIVE_POSITION
-  ::g_lb_category.AIR_KILLS
-  ::g_lb_category.GROUND_KILLS
-  ::g_lb_category.NAVAL_KILLS
-  ::g_lb_category.AVERAGE_ACTIVE_KILLS_BY_SPAWN
-  ::g_lb_category.AVERAGE_SCRIPT_KILLS_BY_SPAWN
-  ::g_lb_category.AVERAGE_SCORE
+  lbCategoryTypes.PVP_RATIO
+  lbCategoryTypes.VICTORIES_BATTLES
+  lbCategoryTypes.AVERAGE_RELATIVE_POSITION
+  lbCategoryTypes.AIR_KILLS
+  lbCategoryTypes.GROUND_KILLS
+  lbCategoryTypes.NAVAL_KILLS
+  lbCategoryTypes.AVERAGE_ACTIVE_KILLS_BY_SPAWN
+  lbCategoryTypes.AVERAGE_SCRIPT_KILLS_BY_SPAWN
+  lbCategoryTypes.AVERAGE_SCORE
 ]
 
 ::leaderboard_modes <- [
@@ -109,11 +113,11 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 ]
 
 ::gui_modal_leaderboards <- function gui_modal_leaderboards(lb_presets = null) {
-  ::gui_start_modal_wnd(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
+  loadHandler(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
 }
 
 ::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
-  ::gui_start_modal_wnd(gui_handlers.EventsLeaderboardWindow, params)
+  loadHandler(gui_handlers.EventsLeaderboardWindow, params)
 }
 
 ::leaderboardModel <-
@@ -197,10 +201,10 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
     db.setInt("count", requestData.rowsInPage)
     db.setStr("gameMode", requestData.lbMode)
     db.setStr("platformFilter", requestData.platformFilter)
-    db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
+    db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
     db.setInt("start", requestData.pos)
 
-    let taskId = ::request_leaderboard_blk(db)
+    let taskId = request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
@@ -216,14 +220,14 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
     db.setInt("count", 0)
     db.setStr("gameMode", requestData.lbMode)
     db.setStr("platformFilter", requestData.platformFilter)
-    db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
+    db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
 
-    let taskId = ::request_leaderboard_blk(db)
+    let taskId = request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
   function handleLbRequest(requestData) {
-    let LbBlk = ::get_leaderboard_blk()
+    let LbBlk = get_leaderboard_blk()
     this.leaderboardData = {}
     this.leaderboardData["rows"] <- this.lbBlkToArray(LbBlk, requestData)
     this.canRequestLb = true
@@ -240,7 +244,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   }
 
   function handleSelfRowLbRequest(requestData) {
-    let sefRowblk = ::get_leaderboard_blk()
+    let sefRowblk = get_leaderboard_blk()
     this.selfRowData = this.lbBlkToArray(sefRowblk, requestData)
     this.canRequestLb = true
     if (!this.compareRequests(this.lastRequestSRData, requestData))
@@ -341,7 +345,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
  * Generates view for leaderbord item
  *
  * @param field_config  - item of ::leaderboards_list
- *                        or ::events.eventsTableConfig
+ *                        or eventsTableConfig
  * @param lb_value      - value of specified field as it comes from char
  * @param lb_value_diff - optional, diff data, generated
  *                        with ::leaderboarsdHelpers.getLbDiff(...)
@@ -376,7 +380,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   return handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
 }
 
-gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
@@ -501,7 +505,7 @@ gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
     showObjectsByTable(this.scene, {
       btn_usercard = showPlayer && hasFeature("UserCards")
       btn_clan_info = showClan
-      btn_membership_req = showClan && !::is_in_clan() && ::clan_get_requested_clan_id() != this.getLbClanUid(rowData)
+      btn_membership_req = showClan && !::is_in_clan() && clan_get_requested_clan_id() != this.getLbClanUid(rowData)
     })
   }
 
@@ -632,7 +636,7 @@ gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
       }
     }
     else {
-      this.curLbCategory = ::g_lb_category.getTypeById(obj.id)
+      this.curLbCategory = getLbCategoryTypeById(obj.id)
       this.pos = 0
     }
     this.fetchLbData(true)
@@ -779,7 +783,7 @@ gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
   //----END_VIEW----//
 }
 
-gui_handlers.EventsLeaderboardWindow <- class extends gui_handlers.LeaderboardWindow {
+gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
   eventId = null
   sharedEconomicName = null
 
@@ -804,11 +808,11 @@ gui_handlers.EventsLeaderboardWindow <- class extends gui_handlers.LeaderboardWi
 
     this.forClans = this.request?.forClans ?? this.forClans
     if (this.lb_presets == null)
-      this.lb_presets = ::events.eventsTableConfig
+      this.lb_presets = eventsTableConfig
 
     let sortLeaderboard = eventData?.sort_leaderboard
     this.curLbCategory = (sortLeaderboard != null)
-      ? ::g_lb_category.getTypeByField(sortLeaderboard)
+      ? getLbCategoryTypeByField(sortLeaderboard)
       : ::events.getTableConfigShortRowByEvent(eventData)
 
     this.updateLeaderboard()

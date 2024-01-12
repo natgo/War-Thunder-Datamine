@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_race_laps_count
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
@@ -24,7 +25,8 @@ let expEventLocIds = {
   [EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
   [EXP_EVENT_DEATH]              = "expEventScore/death",
   [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction",
-  [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies"
+  [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies",
+  [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage"
 }
 
 ::g_mplayer_param_type <- {
@@ -105,7 +107,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     pareText = true
     updateSpecificMarkupParams = function(markupTbl) {
       markupTbl.widthInWideScreen <- "1@nameWidthInWideScreen + 1@tablePad"
-      delete markupTbl.tooltip
+      markupTbl.$rawdelete("tooltip")
     }
   }
 
@@ -154,6 +156,29 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/mpstats/kills"
     tooltip = "multiplayer/air_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_AIR
+    printFunc = function(val, player) {
+      local valStr = this.getVal(player).tostring()
+      let airSevereDamageCount = player?.airSevereDamage ?? 0
+      if (airSevereDamageCount > 0)
+        valStr = $"{val}+{airSevereDamageCount}"
+      return valStr
+    }
+    getTooltip = function(_val, player, defText) {
+      if ((player?.airSevereDamage ?? 0) == 0)
+        return defText
+
+      let rows = [
+        { id = "kills",           label = "multiplayer/air_kills" }
+        { id = "airSevereDamage", label = "multiplayer/severe_damage" }
+      ]
+      let res = []
+      foreach (row in rows) {
+        let rowVal = player?[row.id] ?? 0
+        if (rowVal)
+          res.append(loc(row.label) + loc("ui/colon") + rowVal)
+      }
+      return "\n".join(res, true)
+    }
   }
 
   GROUND_KILLS = {
@@ -285,8 +310,8 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
     printFunc = function(val, _player) {
-      let total = ::get_race_checkpioints_count()
-      let laps = ::get_race_laps_count()
+      let total = get_race_checkpioints_count()
+      let laps = get_race_laps_count()
       if (total && laps)
         val = (max(val, 0) % (total / laps))
       return val.tostring()
@@ -334,7 +359,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     isForceUpdate = true // Because it shows race completion percentage.
     printFunc = function(val, player) {
       if (val < 0) {
-        let total = ::get_race_checkpioints_count()
+        let total = get_race_checkpioints_count()
         if (total)
           return (100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
       }

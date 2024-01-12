@@ -119,7 +119,8 @@
       "barHeight": 1.3,
       "barsCount": 8,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "twsMedium": {
       "type": "pyramide",
@@ -138,7 +139,8 @@
       "barHeight": 1.3,
       "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "boresightLock": {
       "type": "cone",
@@ -1705,15 +1707,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

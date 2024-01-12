@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -9,7 +10,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { subscribe } = require("eventbus")
 let { format } = require("string")
 
-gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
   onApplyFunc = null
@@ -31,7 +32,7 @@ gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
 
   onApply = function() {
     this.onApplyFunc?(true)
-    openUrl(format(loc("url/steamstore/item"), ::steam_get_app_id().tostring()))
+    openUrl(format(loc("url/steamstore/item"), steam_get_app_id().tostring()))
   }
   onEventDestroyEmbeddedBrowser = @(_p) base.goBack()
   onEventSteamOverlayStateChanged = function(p) {

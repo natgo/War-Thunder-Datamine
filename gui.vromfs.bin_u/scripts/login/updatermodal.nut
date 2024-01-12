@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -30,7 +32,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     handler?.onUpdaterCallback(evt)
 })
 
-gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
+gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600
@@ -88,25 +90,23 @@ gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
     if (this.isFinished || !this.isValid())
       return
     let { eventType } = evt
-    switch (eventType) {
-    case UPDATER_EVENT_STAGE:
+    if (eventType == UPDATER_EVENT_STAGE ) {
       this.stage = evt?.stage
       this.updateText()
       this.updateProgressbar()
-      break;
-    case UPDATER_EVENT_PROGRESS:
+    }
+    else if ( eventType == UPDATER_EVENT_PROGRESS) {
       this.percent = evt?.percent
       this.dspeed  = evt?.dspeed
       this.etaSec  = evt?.etaSec
       this.updateText()
       this.updateProgressbar()
-      break;
-    case UPDATER_EVENT_ERROR:
+    }
+    else if (eventType == UPDATER_EVENT_ERROR) {
       this.errorCode = evt?.error
-      break;
-    case UPDATER_EVENT_FINISH:
+    }
+    else if (eventType == UPDATER_EVENT_FINISH){
       this.onFinish()
-      break;
     }
   }
 

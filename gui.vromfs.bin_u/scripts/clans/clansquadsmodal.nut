@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
+let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,12 +10,13 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
 dagui_propid_add_name_id("leaderUid")
 
-gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSquadsModal.blk"
   squadsListObj = null
@@ -69,7 +72,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
   selectedIndex = 0
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.MyClanSquadsListModal)
+    loadHandler(gui_handlers.MyClanSquadsListModal)
   }
 
   function initScreen() {
@@ -136,7 +139,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
     else if (newList.len() <= 0) {
         this.selectedSquad = null
         this.selectedIndex = -1
-        ::gui_bhv.posNavigator.clearSelect(this.squadsListObj)
+        posNavigator.clearSelect(this.squadsListObj)
     }
     this.updateSquadDummyButtons()
     this.updateSquadsListInfo(this.curList.len())
@@ -381,7 +384,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
   }
 
   function refreshOnlineUsersTable() {
-    let roomId = ::g_chat_room_type.CLAN.roomPrefix + ::clan_get_my_clan_id()
+    let roomId = ::g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
     let room = ::g_chat.getRoomById(roomId)
     if (!room || !("users" in room))
       return

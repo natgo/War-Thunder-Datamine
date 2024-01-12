@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -18,6 +20,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -44,7 +48,7 @@ let function canBuyItem(cost, unit, afterRefillFunc = null, silent = false) {
   if (!canBuyForEagles(cost, unit))
     return false
 
-  if (!::check_balance_msgBox(cost, afterRefillFunc, silent))
+  if (!checkBalanceMsgBox(cost, afterRefillFunc, silent))
     return false
 
   return true
@@ -117,7 +121,7 @@ local class WeaponsPurchaseProcess {
       onExitFunc = Callback(function() { this.complete() }, this)
     }
 
-    ::gui_start_modal_wnd(gui_handlers.MultiplePurchase, params)
+    loadHandler(gui_handlers.MultiplePurchase, params)
   }
 
   function complete() {
@@ -222,7 +226,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_all_modification", blk)
+    let taskId = char_send_blk("cln_buy_all_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -255,7 +259,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
+    let taskId = char_send_blk("cln_buy_spare_aircrafts", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -289,7 +293,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_weapon", blk)
+    let taskId = char_send_blk("cln_buy_weapon", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -325,14 +329,14 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let hadUnitModResearch = ::shop_get_researchable_module_name(this.unit.name)
-    let taskId = ::char_send_blk("cln_buy_modification", blk)
+    let hadUnitModResearch = shop_get_researchable_module_name(this.unit.name)
+    let taskId = char_send_blk("cln_buy_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = Callback(function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(this.unit, this.modName)
 
-      let newResearch = ::shop_get_researchable_module_name(this.unit.name)
+      let newResearch = shop_get_researchable_module_name(this.unit.name)
       if (u.isEmpty(newResearch) && !u.isEmpty(hadUnitModResearch))
         broadcastEvent("AllModificationsPurchased", { unit = this.unit })
 

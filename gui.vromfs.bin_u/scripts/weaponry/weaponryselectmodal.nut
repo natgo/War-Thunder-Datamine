@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil, sqrt } = require("math")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -11,6 +11,7 @@ let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultT
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 /*
   config = {
@@ -51,7 +52,7 @@ local CHOOSE_WEAPON_PARAMS = {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   let curWeaponName = params.getLastWeapon(unit.name)
-  let hasOnlySelectable = !isInFlight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
   let isForcedAvailable = params.isForcedAvailable
   let forceShowDefaultTorpedoes = params?.forceShowDefaultTorpedoes ?? false
   let onChangeValueCb = function(weapon) {
@@ -93,7 +94,7 @@ local CHOOSE_WEAPON_PARAMS = {
     })
 }
 
-gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/weaponry/weaponrySelectModal.tpl"
   needVoiceChat = false
@@ -156,7 +157,7 @@ gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT 
     this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.updateItems()
     this.updateOpenAnimParams()
-    ::move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))
   }
 
   function updateItems() {
@@ -209,7 +210,7 @@ gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function afterModalDestroy() {
     if (this.alignObj?.isValid())
-      ::move_mouse_on_obj(this.alignObj)
+      move_mouse_on_obj(this.alignObj)
 
     if (this.selIdx == this.wasSelIdx
         || !(this.selIdx in this.list)

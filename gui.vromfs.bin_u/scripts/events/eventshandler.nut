@@ -1,10 +1,13 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -36,6 +39,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
+let { getMissionsComplete } = require("%scripts/myStats.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -65,7 +69,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   local chapterId = getTblValue ("chapter", options, null)
 
   if (chapterId) {
-    let chapter = ::events.chapters.getChapter(chapterId)
+    let chapter = ::events.getChapter(chapterId)
     if (chapter && !chapter.isEmpty()) {
       let chapterEvents = chapter.getEvents()
       eventId = chapterEvents[0]
@@ -80,14 +84,14 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
   }
 
-  ::gui_start_modal_wnd(gui_handlers.EventsHandler, {
+  loadHandler(gui_handlers.EventsHandler, {
     curEventId = eventId
     curChapterId = chapterId
     autoJoin = options?.autoJoin ?? false
   })
 }
 
-gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null
@@ -133,7 +137,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.scene.findObject("event_update").setUserData(this)
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(this.eventsListObj)
+    move_mouse_on_child_by_value(this.eventsListObj)
   }
 
   //----CONTROLLER----//
@@ -226,7 +230,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       economicName = getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::EventJoinProcess(event, null,
@@ -315,7 +319,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.isInEventQueue())
       this.hoveredIdx = -1
     else
-      ::move_mouse_on_child_by_value(this.eventsListObj)
+      move_mouse_on_child_by_value(this.eventsListObj)
 
     this.updateButtons()
   }
@@ -400,7 +404,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function onEventSquadStatusChanged(_params) {
@@ -451,7 +455,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       alignObj = obj
       columnsRatio = 0.6
     }
-    handlersManager.loadHandler(gui_handlers.FramedOptionsWnd, params)
+    loadHandler(gui_handlers.FramedOptionsWnd, params)
   }
 
   function onCreateRoom() {}
@@ -480,7 +484,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let queueObj = this.showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
     let queueHandlerClass = this.queueToShow && ::queues.getQueuePreferredViewClass(this.queueToShow)
-    let queueHandler = handlersManager.loadHandler(queueHandlerClass, {
+    let queueHandler = loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = Callback(this.onLeaveEvent, this)
     })
@@ -679,7 +683,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (! chapterObj)
       return
     let collapsed = chapterObj.collapsed == "yes" ? true : false
-    let curChapter = ::events.chapters.getChapter(chapterId)
+    let curChapter = ::events.getChapter(chapterId)
     if (! curChapter)
       return
     foreach (eventName in curChapter.getEvents()) {

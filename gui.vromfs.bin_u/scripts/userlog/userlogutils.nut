@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import save_online_single_job, disable_user_log_entry, disable_user_log_entry_by_id
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -6,8 +7,9 @@ let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { isArray } = require("%sqstd/underscore.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
+let saveOnlineJob = @() save_online_single_job(223) //super secure digit for job tag :)
 
 let function disableSeenUserlogs(idsList) {
   if (u.isEmpty(idsList))
@@ -18,7 +20,7 @@ let function disableSeenUserlogs(idsList) {
     if (!id)
       continue
 
-    let disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : ::disable_user_log_entry
+    let disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : disable_user_log_entry
     if (disableFunc(id)) {
       needSave = true
       u.appendOnce(id, ::shown_userlog_notifications)
@@ -43,7 +45,7 @@ let actionByLogType = {
     if (battleId == null)
       return
 
-    if (!::isInMenu())
+    if (!isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))

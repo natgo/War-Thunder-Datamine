@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -13,6 +13,7 @@ let { add_won_mission } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary() {
   handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = false })
@@ -22,7 +23,7 @@ let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingR
   handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = true })
 }
 
-gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
   sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -60,12 +61,12 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
     setSummaryPreview(this.scene.findObject("tactical-map"), this.info, "")
 
     let l_file = this.info.getStr("layout", "")
-    let dynLayouts = ::get_dynamic_layouts()
+    let dynLayouts = getDynamicLayouts()
     for (local i = 0; i < dynLayouts.len(); i++)
       if (dynLayouts[i].mis_file == l_file) {
         this.layout = dynLayouts[i].name
         if (!this.isFinal)
-          this.guiScene["scene-title"].text = loc("dynamic/" + this.layout)
+          this.guiScene["scene-title"].text = loc($"dynamic/{this.layout}")
       }
     if (this.isFinal)
       this.guiScene["scene-title"].text = (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("DYNAMIC_CAMPAIGN_SUCCESS") : loc("DYNAMIC_CAMPAIGN_FAIL")
@@ -118,7 +119,7 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
     else if (!::first_generation)
         setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnNext"))
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
+    move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function buildLogLine(blk) {
@@ -233,7 +234,7 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
       if (isDynamicWonByPlayer()) {
         local wonCampaign = ""
         let l_file = this.info.getStr("layout", "")
-        let dynLayouts = ::get_dynamic_layouts()
+        let dynLayouts = getDynamicLayouts()
         for (local i = 0; i < dynLayouts.len(); i++)
           if (dynLayouts[i].mis_file == l_file) {
             wonCampaign = dynLayouts[i].name

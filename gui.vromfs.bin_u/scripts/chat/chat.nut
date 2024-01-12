@@ -1,10 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_is_connected, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -20,21 +21,6 @@ let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEP
 let { get_game_settings_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
-
-global enum chatUpdateState {
-  OUTDATED
-  IN_PROGRESS
-  UPDATED
-}
-
-global enum chatErrorName {
-  NO_SUCH_NICK_CHANNEL    = "401"
-  NO_SUCH_CHANNEL         = "403"
-  CANT_SEND_MESSAGE       = "404"
-  ALREADY_ON_CHANNEL      = "443"
-  CANNOT_JOIN_CHANNEL_NO_INVITATION = "473"
-  CANNOT_JOIN_THE_CHANNEL = "475"
-}
 
 ::g_chat <- {
   [PERSISTENT_DATA_PARAMS] = ["rooms", "threadsInfo", "userCaps", "userCapsGen",
@@ -147,7 +133,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.checkChatConnected <- function checkChatConnected() {
-  if (::gchat_is_connected())
+  if (gchat_is_connected())
     return true
 
   this.systemMessage(loc("chat/not_connected"))
@@ -257,7 +243,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.getMyClanRoomId <- function getMyClanRoomId() {
-  let myClanId = ::clan_get_my_clan_id()
+  let myClanId = clan_get_my_clan_id()
   if (myClanId != "-1")
     return ::g_chat_room_type.CLAN.getRoomId(myClanId)
   return ""
@@ -287,7 +273,7 @@ global enum chatErrorName {
     if (thread.isOutdated())
       outdatedArr.append(id)
   foreach (id in outdatedArr)
-    delete this.threadsInfo[id]
+    this.threadsInfo.$rawdelete(id)
 }
 
 ::g_chat.getThreadInfo <- function getThreadInfo(roomId) {
@@ -351,7 +337,7 @@ global enum chatErrorName {
     langTags = ::g_chat_thread_tag.LANG.prefix + getCurLangInfo().chatId
   let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
   let tagsList = ",".join([langTags, categoryTag], true)
-  ::gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
+  gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
   broadcastEvent("ChatThreadCreateRequested")
 }
 
@@ -362,7 +348,7 @@ global enum chatErrorName {
     return this.systemMessage(loc(this.CHAT_ERROR_NO_CHANNEL))
 
   if (!this.isRoomJoined(roomId))
-    ::gchat_raw_command("xtjoin " + roomId)
+    gchat_raw_command("xtjoin " + roomId)
   else if (::menu_chat_handler)
     ::menu_chat_handler.switchCurRoom(roomId)
 }
@@ -411,7 +397,7 @@ global enum chatErrorName {
   if (devoiceMsg)
     return showInfoMsgBox(devoiceMsg)
 
-  ::gui_start_modal_wnd(gui_handlers.CreateRoomWnd)
+  loadHandler(gui_handlers.CreateRoomWnd)
 }
 
 ::g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null) {
@@ -424,7 +410,7 @@ global enum chatErrorName {
 
 ::g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo) {
   if (threadInfo.canEdit())
-    handlersManager.loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
+    loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
 }
 
 ::g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId) {
@@ -453,18 +439,18 @@ global enum chatErrorName {
   local isChanged = false
   if (threadInfo.title != curTitle) {
     let title = ::g_chat.prepareThreadTitleToSend(threadInfo.title)
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
     isChanged = true
   }
 
   let newTagsString = threadInfo.getFullTagsString()
   if (newTagsString != curTagsString) {
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
     isChanged = true
   }
 
   if (curTimeStamp != threadInfo.timeStamp) {
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " stamp " + threadInfo.timeStamp)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " stamp " + threadInfo.timeStamp)
     isChanged = true
   }
 
@@ -521,9 +507,9 @@ global enum chatErrorName {
       text = room.getRoomName()
       show = true
       action = function () {
-          ::gchat_raw_command(format("INVITE %s %s",
-            ::gchat_escape_target(playerName),
-            ::gchat_escape_target(roomId)))
+          gchat_raw_command(format("INVITE %s %s",
+            gchat_escape_target(playerName),
+            gchat_escape_target(roomId)))
           }
     })
   }
@@ -588,7 +574,7 @@ global enum chatErrorName {
     return res
   }
 
-  ::gchat_chat_message(::gchat_escape_target(roomId), this.LOCALIZED_MESSAGE_PREFIX + message)
+  ::gchat_chat_message(gchat_escape_target(roomId), this.LOCALIZED_MESSAGE_PREFIX + message)
   return true
 }
 

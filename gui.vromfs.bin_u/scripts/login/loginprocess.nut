@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
@@ -36,7 +37,7 @@ let class LoginProcess {
   }
 
   function restoreStateAfterScriptsReload() {
-    let curMState = ::get_online_client_cur_state()
+    let curMState = get_online_client_cur_state()
     foreach (mState, lState in matchingStageToLoginState)
       if (mState & curMState)
         ::g_login.addState(lState)
