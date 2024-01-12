@@ -1,9 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action, steam_is_running, steam_get_my_id, steam_get_app_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let inventory = require("inventory")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -20,6 +21,7 @@ let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
+let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -286,15 +288,15 @@ let class InventoryClient {
   }
 
   function getMarketplaceBaseUrl() {
-    let circuit = ::get_cur_circuit_name();
+    let circuit = get_cur_circuit_name();
     let networkBlock = get_network_block();
     let url = networkBlock?[circuit]?.marketplaceURL ?? networkBlock?.marketplaceURL;
     if (!url)
       return null
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
-      (::steam_is_running()
-        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), ::steam_get_my_id())
+      (steam_is_running()
+        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), steam_get_my_id())
         : "")
   }
 
@@ -317,12 +319,6 @@ let class InventoryClient {
     item.itemdef = this.itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
     this.items[item.itemid] <- item
     return shouldUpdateItemdDefs
-  }
-
-  function handleRpc(params) {
-    if (params.func == "changed") {
-      this.refreshItems()
-    }
   }
 
   function refreshItems() {
@@ -370,7 +366,7 @@ let class InventoryClient {
           }
 
           this.addInventoryItem(item)
-          delete oldItems[item.itemid]
+          oldItems.$rawdelete(item.itemid)
 
           continue
         }
@@ -471,8 +467,7 @@ let class InventoryClient {
         local hasItemDefChanges = false
         foreach (itemdef in itemdef_json) {
           let itemdefid = itemdef.itemdefid
-          if (itemdefid in this.itemdefidsRequested)
-            delete this.itemdefidsRequested[itemdefid]
+          this.itemdefidsRequested?.$rawdelete(itemdefid)
           hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || u.isEmpty(this.itemdefs?[itemdefid])
           this.addItemDef(itemdef)
         }
@@ -484,8 +479,7 @@ let class InventoryClient {
   }
 
   function removeItem(itemid) {
-    if (itemid in this.items)
-      delete this.items[itemid]
+    this.items?.$rawdelete(itemid)
     this.notifyInventoryUpdate(true)
   }
 
@@ -584,7 +578,7 @@ let class InventoryClient {
     return recipes
   }
 
-  function handleItemsDelta(result, cb = null, errocCb = null, shouldCheckInventory = true) {
+  function handleItemsDelta(result, cb = null, errocCb = null) {
     if (result?.error != null) {
       errocCb?(getErrorId(result))
       return
@@ -601,7 +595,7 @@ let class InventoryClient {
       let oldItem = getTblValue(item.itemid, this.items)
       if (item.quantity == 0) {
         if (oldItem) {
-          delete this.items[item.itemid]
+          this.items.$rawdelete(item.itemid)
           hasInventoryChanges = true
         }
 
@@ -617,11 +611,6 @@ let class InventoryClient {
       newItems.append(item)
       hasInventoryChanges = true
       shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
-    }
-
-    if (!shouldCheckInventory) {
-      cb?(newItems)
-      return
     }
 
     if (shouldUpdateItemdefs) {
@@ -643,9 +632,10 @@ let class InventoryClient {
     }
   }
 
-  function exchangeViaChard(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
+  function exchangeViaChard(materials, outputItemDefId, quantity, cb = null, errocCb = null, requirement = null) {
     let json = {
       outputitemdefid = outputItemDefId
+      quantity
       materials
     }
     if (u.isString(requirement) && requirement.len() > 0) {
@@ -653,9 +643,9 @@ let class InventoryClient {
     }
 
     let internalCb = Callback( function(data) {
-                                     this.handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
+                                     this.handleItemsDelta(data, cb, errocCb)
                                  }, this)
-    let taskId = ::char_send_custom_action("cln_inventory_exchange_items",
+    let taskId = char_send_custom_action("cln_inventory_exchange_items",
                                              EATT_JSON_REQUEST,
                                              DataBlock(),
                                              json_to_string(json, false),
@@ -663,32 +653,33 @@ let class InventoryClient {
     addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
   }
 
-  function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {
+  function exchangeDirect(materials, outputItemDefId, quantity, cb = null, errocCb = null) {
     let req = {
-      outputitemdefid = outputItemDefId,
+      outputitemdefid = outputItemDefId
+      quantity
       materials
     }
 
     this.request("ExchangeItems", {}, req,
       function(result) {
-        this.handleItemsDelta(result, cb, errocCb, shouldCheckInventory)
+        this.handleItemsDelta(result, cb, errocCb)
       },
       { }
     )
   }
 
-  function exchange(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
+  function exchange(materials, outputItemDefId, quantity, cb = null, errocCb = null, requirement = null) {
     // We can continue to use exchangeDirect if requirement is null. It would be
     // better to use exchangeViaChard in all cases for the sake of consistency,
     // but this will break compatibility with the char server. This distinction
     // can be removed later.
 
     if (!u.isString(requirement) || requirement.len() == 0) {
-      this.exchangeDirect(materials, outputItemDefId, cb, errocCb, shouldCheckInventory)
+      this.exchangeDirect(materials, outputItemDefId, quantity, cb, errocCb)
       return
     }
 
-    this.exchangeViaChard(materials, outputItemDefId, cb, errocCb, shouldCheckInventory, requirement)
+    this.exchangeViaChard(materials, outputItemDefId, quantity, cb, errocCb, requirement)
   }
 
   function getChestGeneratorItemdefIds(itemdefid) {
@@ -765,7 +756,17 @@ let class InventoryClient {
       @(result) this.handleItemsDelta(result, cb, errocCb)
     )
   }
-
 }
 
-return InventoryClient()
+let client = InventoryClient()
+
+function handleRpc(params) {
+  if (params.func == "changed") {
+    client.refreshItems()
+  }
+}
+
+mnSubscribe("inventory", handleRpc)
+mrSubscribe("inventory", @(params, _cb) handleRpc(params))
+
+return client

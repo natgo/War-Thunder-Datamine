@@ -9,7 +9,9 @@ let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { isVietnameseVersion, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let persistent = { encyclopediaData = [] }
 
@@ -44,10 +46,6 @@ let initEncyclopediaData = function() {
 
       let articleDesc = {}
       articleDesc.id <- blkArticle.getBlockName()
-
-      if (isVietnameseVersion() && isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
-        continue
-
       articleDesc.haveHint <- blkArticle.getBool("haveHint", false)
 
       if (blkArticle?.images != null) {
@@ -71,10 +69,10 @@ let open = function() {
   if (persistent.encyclopediaData.len() == 0)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.Encyclopedia)
+  loadHandler(gui_handlers.Encyclopedia)
 }
 
-gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   menuConfig = null
@@ -106,7 +104,7 @@ gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
     let canShowLinkButtons = !isChineseHarmonized() && hasFeature("AllowExternalLink")
     foreach (btn in ["faq", "support", "wiki"])
       this.showSceneBtn("button_" + btn, canShowLinkButtons)
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function onChapterSelect(obj) {
@@ -134,7 +132,7 @@ gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
     let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
 
     this.guiScene.replaceContentFromText(objArticles, data, data.len(), this)
-    ::move_mouse_on_child(objArticles, 0)
+    move_mouse_on_child(objArticles, 0)
     objArticles.setValue(0)
     this.onItemSelect(objArticles)
   }

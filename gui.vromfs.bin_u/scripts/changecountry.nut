@@ -7,6 +7,7 @@ let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { isCountryUnlocked } = require("%scripts/firstChoice/firstChoice.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -17,7 +18,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   currentCountry = null
   chosenCountry = null
@@ -59,22 +60,20 @@ gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function afterModalDestroy() {
-    switch (this.pendingAction) {
-      case ChangeCountryAction.APPLY_COUNTRY:
-        if (this.chosenCountry != null)
-          this.onCountryChooseCb?(this.chosenCountry)
-        break
-      case ChangeCountryAction.CHANGE_GAME_MODE:
-          gui_handlers.GameModeSelect.open()
-        break
+    let pAct = this.pendingAction
+    if (pAct == ChangeCountryAction.APPLY_COUNTRY) {
+      if (this.chosenCountry != null)
+        this.onCountryChooseCb?(this.chosenCountry)
     }
+    else if (pAct == ChangeCountryAction.CHANGE_GAME_MODE )
+        gui_handlers.GameModeSelect.open()
   }
 
   function onCountrySelect(obj) {
     let country = this.getCountryByValue(obj.getValue())
     if (country == null)
       return
-    let countryUnlocked = this.isCountryUnlocked(country)
+    let countryUnlocked = isCountryUnlocked(country)
     this.currentCountry = countryUnlocked ? country : null
     if (checkObj(this.buttonObject))
       this.buttonObject.enable(countryUnlocked || !this.hasUnlockedAvailableCountry())
@@ -102,7 +101,7 @@ gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
       shopFilterItems.append({
         shopFilterId = country
         shopFilterText = loc(country)
-        shopFilterImage = getCountryIcon(country, true, !this.isCountryUnlocked(country))
+        shopFilterImage = getCountryIcon(country, true, !isCountryUnlocked(country))
       })
     }
     return shopFilterItems
@@ -132,13 +131,9 @@ gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
     return res
   }
 
-  function isCountryUnlocked(country) {
-    return isInArray(country, ::unlocked_countries)
-  }
-
   function hasUnlockedAvailableCountry() {
     foreach (country in this.getAvailableCountries()) {
-      if (this.isCountryUnlocked(country))
+      if (isCountryUnlocked(country))
         return true
     }
     return false

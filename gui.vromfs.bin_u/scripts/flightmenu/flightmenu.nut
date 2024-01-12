@@ -1,10 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_mplayer_host } = require("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
@@ -21,6 +23,7 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu() {
   ::flight_menu_handler = handlersManager.loadHandler(gui_handlers.FlightMenu)
@@ -29,7 +32,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 ::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
 ::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
 
-gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/flightMenu/flightMenu.blk"
   handlerLocId = "flightmenu"
   shouldBlurSceneBg = true
@@ -56,12 +59,12 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function reinitScreen(_params = null) {
     this.isMissionFailed = get_mission_status() == MISSION_STATUS_FAIL
-    this.usePause = !::is_game_paused()
+    this.usePause = !is_game_paused()
 
     if (!handlersManager.isFullReloadInProgress) {
-      ::in_flight_menu(true)
+      in_flight_menu(true)
       if (this.usePause)
-        ::pause_game(true)
+        pause_game(true)
     }
 
     this.updateButtons()
@@ -92,7 +95,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
     let btnObj = this.getObj(btnId)
 
     if (showConsoleButtons.value)
-      ::move_mouse_on_obj(btnObj)
+      move_mouse_on_obj(btnObj)
     else if (isInitial)
       setMousePointerInitialPos(btnObj)
   }
@@ -123,9 +126,9 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
         return
       this._isWaitForResume = false
       this.lastSelectedBtnId = null
-      ::in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
+      in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
       if (this.usePause)
-        ::pause_game(false)
+        pause_game(false)
     })
   }
 
@@ -144,7 +147,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
   function restartBriefing() {
     if (!canRestart())
       return
-    if (("is_offline_version" in getroottable()) && ::is_offline_version)
+    if (getroottable()?["is_offline_version"])
       return restart_mission()
 
     if ([ GM_CAMPAIGN, GM_SINGLE_MISSION, GM_DYNAMIC ].contains(get_game_mode()))
@@ -156,7 +159,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
   function onRestart(_obj) {
     if (!canRestart())
       return
-    if (("is_offline_version" in getroottable()) && ::is_offline_version)
+    if (getroottable()?["is_offline_version"])
       return restart_mission()
 
     if (this.isMissionFailed)
@@ -193,7 +196,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onQuitMission(_obj) {
-    if (("is_offline_version" in getroottable()) && ::is_offline_version)
+    if (getroottable()?["is_offline_version"])
       return restart_mission()
 
     if (is_replay_playing()) {
@@ -204,7 +207,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
       if (is_mplayer_host())
         text = loc("flightmenu/questionQuitMissionHost")
       else if (get_game_mode() == GM_DOMINATION) {
-        let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
+        let unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
         let unitsTexts = unitsData.map(function(ud) {
           local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())
@@ -231,9 +234,9 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
         ["yes", function() {
           quit_to_debriefing()
           interrupt_multiplayer(true)
-          ::in_flight_menu(false)
+          in_flight_menu(false)
           if (this.usePause)
-            ::pause_game(false)
+            pause_game(false)
         }],
         ["no"]
       ], "yes", { cancel_fn = @() null })
@@ -258,7 +261,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function doBailout() {
     if (canBailout())
-      ::do_player_bailout()
+      do_player_bailout()
 
     this.onResume(null)
   }
@@ -293,15 +296,13 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onFreecam(_obj) {
     this.onResumeRaw()
-
-    if ("toggle_freecam" in getroottable())
-      ::toggle_freecam()
+    toggle_freecam?()
   }
 }
 
 ::quit_mission <- function quit_mission() {
-  ::in_flight_menu(false)
-  ::pause_game(false)
+  in_flight_menu(false)
+  pause_game(false)
   ::gui_start_hud()
   broadcastEvent("PlayerQuitMission")
 

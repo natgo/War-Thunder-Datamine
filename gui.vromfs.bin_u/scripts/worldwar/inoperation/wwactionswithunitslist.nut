@@ -1,11 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
-
 let DataBlock  = require("DataBlock")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
+let { wwGetSpeedupFactor } = require("worldwar")
 
 let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   if (!blk)
@@ -14,7 +13,7 @@ let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   let units = []
   for (local i = 0; i < blk.blockCount(); i++) {
     let unitBlk = blk.getBlock(i)
-    let unit    = ::WwUnit(unitBlk)
+    let unit    = WwUnit(unitBlk)
 
     if (unit.isValid())
       units.append(unit)
@@ -22,7 +21,7 @@ let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
     if (aiUnitsBlk) {
       let aiUnitData = getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
       if (aiUnitData) {
-        let aiUnit = ::WwUnit(unitBlk)
+        let aiUnit = WwUnit(unitBlk)
         aiUnit.setCount(getTblValue("count", aiUnitData, -1))
         aiUnit.setForceControlledByAI(true)
         units.append(aiUnit)
@@ -42,7 +41,7 @@ let function loadUnitsFromNameCountTbl(tbl) {
     loadingBlk["name"] = name
     loadingBlk["count"] = count
 
-    let unit = ::WwUnit(loadingBlk)
+    let unit = WwUnit(loadingBlk)
     if (unit.isValid())
       units.append(unit)
   }
@@ -60,7 +59,7 @@ let function loadWWUnitsFromUnitsArray(unitsArray) {
     loadingBlk["name"] = unit.name
     loadingBlk["count"] = 1
 
-    let wwUnit = ::WwUnit(loadingBlk)
+    let wwUnit = WwUnit(loadingBlk)
     if (wwUnit.isValid())
       units.append(wwUnit)
   }
@@ -76,7 +75,7 @@ let function getFakeUnitsArray(blk) {
   let loadingBlk = DataBlock()
   loadingBlk.changeBlockName("fake_infantry")
   loadingBlk.count <- blk.fakeInfantry
-  let fakeUnit = ::WwUnit(loadingBlk)
+  let fakeUnit = WwUnit(loadingBlk)
   if (fakeUnit.isValid())
     resArray.append(fakeUnit)
 
@@ -103,7 +102,7 @@ let function getMaxFlyTime(unit) {
 
   let maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??
     ::g_world_war.getWWConfigurableValue("defaultMaxFlightTimeMinutes", 0)
-  return (maxFlyTime * 60 / ::ww_get_speedup_factor()).tointeger()
+  return (maxFlyTime * 60 / wwGetSpeedupFactor()).tointeger()
 }
 
 return {

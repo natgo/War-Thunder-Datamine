@@ -1,15 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { set_rnd_seed } = require("dagor.random")
 let { get_time_msec, get_local_unixtime } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { ExchangeRecipes, hasFakeRecipesInList, saveMarkedRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
@@ -18,7 +16,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let collection = {}
 
-local ItemGenerator = class {
+let ItemGenerator = class {
   id = -1
   genType = ""
   exchange = null
@@ -62,7 +60,7 @@ local ItemGenerator = class {
 
   function getRecipes(needUpdateRecipesList = true) {
     if (!this._exchangeRecipes
-      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime)) {
+      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.getExtInventoryUpdateTime())) {
       let generatorId = this.id
       let generatorCraftTime = this.getCraftTime()
       let parsedRecipes = inventoryClient.parseRecipesString(this.exchange)
@@ -215,7 +213,7 @@ local ItemGenerator = class {
 
   function markAllRecipes() {
     let recipes = this.getRecipes()
-    if (!ExchangeRecipes.hasFakeRecipes(recipes))
+    if (!hasFakeRecipesInList(recipes))
       return
 
     let markedRecipes = []
@@ -223,7 +221,7 @@ local ItemGenerator = class {
       if (recipe.markRecipe(false, false))
         markedRecipes.append(recipe.uid)
 
-    ExchangeRecipes.saveMarkedRecipes(markedRecipes)
+    saveMarkedRecipes(markedRecipes)
   }
 
   isDelayedxchange = @() this.genType == "delayedexchange"

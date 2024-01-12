@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
@@ -9,13 +8,13 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   cache = {
     byName = {}
   }
+  template = {
+    category  = -1
+    iconImage = ""
+    iconColor = ""
+  }
 }
 
-::g_ww_unit_type.template <- {
-      category  = -1
-      iconImage = ""
-      iconColor = ""
-}
 
 enums.addTypesByGlobalName("g_ww_log_type", {
     [WW_LOG_TYPES.UNKNOWN] = {

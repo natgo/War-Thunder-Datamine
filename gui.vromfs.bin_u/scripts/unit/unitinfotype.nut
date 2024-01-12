@@ -1,10 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -12,7 +12,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
-  getFullUnitRoleText, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
+  getFullUnitRoleText, getShipMaterialTexts, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -48,8 +48,8 @@ enum UNIT_INFO_ORDER{
   AIRFIELD_LEN,
   WEAPON_PRESETS,
   MASS_PER_SEC,
-  CLIMB_ALT,
   CLIMB_TIME,
+  CLIMB_ALT,
   WING_LOADING,
   THRUST_TO_WEIGHT_RATIO,
   POWER_TO_WEIGHT_RATIO,
@@ -191,7 +191,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = ::image_for_air(unit)
       blk.icon = ::getUnitClassIco(unit)
-      blk.iconColor = get_main_gui_scene().getConstantValue(::getUnitClassColor(unit)) || ""
+      blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) || ""
     }
   }
 
@@ -284,7 +284,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       return loc("reward") + loc("ui/parentheses/space", { text = loc("currency/researchPoints/name") }) + ":"
     }
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let talismanMul = ::isUnitSpecial(unit) ? (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
+      let talismanMul = isUnitSpecial(unit) ? (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
       let value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
       if (value == 100) {
         blk.hide = true
@@ -360,7 +360,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/free_repairs"
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      if (::is_default_aircraft(unit.name)) {
+      if (is_default_aircraft(unit.name)) {
         blk.hide = true
         return
       }
@@ -538,7 +538,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "climb_time"
-    order = UNIT_INFO_ORDER.CLIMB_ALT
+    order = UNIT_INFO_ORDER.CLIMB_TIME
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/climb_time"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER

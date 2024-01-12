@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
+from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,13 +9,16 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
+let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 
-gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   featureLockAction = CheckFeatureLockAction.BUY
   purchaseAvailable = true
@@ -22,7 +27,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   purchases = []
 
   function initScreen() {
-    this.purchases = ::OnlineShopModel.getAllFeaturePurchases(this.unit.reqFeature)
+    this.purchases = getAllFeaturePurchases(this.unit.reqFeature)
     let view = {
       headerText = this.getWndHeaderText()
       windowImage = this.getWndImage()
@@ -41,7 +46,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
     let tblObj = this.getObj("items_list")
     if (tblObj?.isValid() ?? false) {
       tblObj.setValue(this.purchases.len() > 0 ? 0 : -1)
-      ::move_mouse_on_child_by_value(tblObj)
+      move_mouse_on_child_by_value(tblObj)
     }
   }
 
@@ -92,7 +97,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   }
 
   function onRowBuy(obj) {
-    if (! ::OnlineShopModel.getPurchaseData(obj.entitlementId).openBrowser())
+    if (!openBrowserByPurchaseData(getPurchaseData(obj.entitlementId)))
       showInfoMsgBox(loc("msgbox/notAvailbleYet"))
   }
 
@@ -116,14 +121,14 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   }
 
   function onTimerUpdate(_obj, _dt) {
-    if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available()) {
+    else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
         return
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
       this.afterSlotOp = function() {
         if (!::isUnitFeatureLocked(this.unit))
@@ -167,6 +172,6 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 }

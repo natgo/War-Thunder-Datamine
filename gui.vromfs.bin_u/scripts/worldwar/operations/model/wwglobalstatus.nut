@@ -1,5 +1,8 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -9,6 +12,7 @@ let { secondsToMilliseconds } = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { charRequestJson } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
@@ -27,7 +31,7 @@ let function reset() {
 }
 
 let function pushStatusChangedEvent(changedListsMask) {
-  ::ww_event("GlobalStatusChanged", { changedListsMask = changedListsMask })
+  wwEvent("GlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
 let function canRefreshData(refreshDelay = null) {
@@ -118,7 +122,7 @@ let function refreshGlobalStatusData(refreshDelay = null) {
 
   let requestBlk = DataBlock()
   if (::is_in_clan())
-    requestBlk.clanId = ::clan_get_my_clan_id()
+    requestBlk.clanId = clan_get_my_clan_id()
   if (::g_world_war.lastPlayedOperationId != null)
     requestBlk.operationId = ::g_world_war.lastPlayedOperationId
   actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)

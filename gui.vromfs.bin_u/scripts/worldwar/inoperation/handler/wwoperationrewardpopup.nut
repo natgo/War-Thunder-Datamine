@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_side_name_to_val, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,22 +13,23 @@ let { register_command } = require("console")
 let { round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let STATS_FIELDS = [
-  ::g_lb_category.PLAYER_KILLS
-  ::g_lb_category.AI_KILLS
-  ::g_lb_category.FLYOUTS
-  ::g_lb_category.DEATHS
-  ::g_lb_category.MISSION_SCORE
-  ::g_lb_category.WP_EARNED
+  lbCategoryTypes.PLAYER_KILLS
+  lbCategoryTypes.AI_KILLS
+  lbCategoryTypes.FLYOUTS
+  lbCategoryTypes.DEATHS
+  lbCategoryTypes.MISSION_SCORE
+  lbCategoryTypes.WP_EARNED
 ]
 
 let MANAGER_STATS_FIELDS = [
-  ::g_lb_category.TOTAL_SCORE
-  ::g_lb_category.ACTIVITY
+  lbCategoryTypes.TOTAL_SCORE
+  lbCategoryTypes.ACTIVITY
 ]
 
-local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
+local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/worldWar/wwOperationRewardPopup.tpl"
   logObj       = null
@@ -42,7 +44,7 @@ local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
 
     let uLog = deep_clone(this.logObj)
     let operationId = uLog.operationId ?? -1
-    let mySide = ::ww_side_name_to_val(uLog.side)
+    let mySide = ww_side_name_to_val(uLog.side)
     this.isMeWinner = uLog?.winner ?? false
     this.myClanId = uLog?[$"side{mySide}Clan0"].tostring()
     this.opClanId = uLog?[$"side{::g_world_war.getOppositeSide(mySide)}Clan0"].tostring()
@@ -137,8 +139,8 @@ register_command(
           winner = true
           wp = rnd() % 10000
           side = "SIDE_1"
-          side1Clan0 = ::clan_get_my_clan_id().tointeger()
-          side2Clan0 = ::clan_get_my_clan_id().tointeger()
+          side1Clan0 = clan_get_my_clan_id().tointeger()
+          side2Clan0 = clan_get_my_clan_id().tointeger()
 
           userStats = {
             wpEarned = rnd() % 100000

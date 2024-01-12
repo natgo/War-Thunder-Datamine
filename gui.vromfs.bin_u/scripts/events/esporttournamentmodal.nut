@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -24,6 +25,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getMissionsComplete } = require("%scripts/myStats.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -41,7 +43,7 @@ let function getActiveTicketTxt(event) {
     : ""
 }
 
-local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
+local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/events/eSportTournamentModal.tpl"
   slotbarActions       = []
@@ -292,7 +294,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
     let blk = DataBlock()
     blk["eventName"] = tourId
 
-    let taskId = ::char_send_blk("cln_subscribe_tournament", blk)
+    let taskId = char_send_blk("cln_subscribe_tournament", blk)
     let taskOptions = {
       showProgressBox = true
       progressBoxText = loc("tournaments/registration_in_progress")
@@ -330,7 +332,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
       economicName = getEventEconomicName(this.curEvent)
       difficulty = this.curEvent?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::EventJoinProcess(this.curEvent, null,

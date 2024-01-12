@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { search } = require("%sqStdLibs/helpers/u.nut")
 let platform = require("%scripts/clientState/platform.nut")
@@ -11,17 +11,20 @@ let tabGroups = [
   {
     title = "#controls/help/aircraft_simpleControls"
     list = [
-      helpTypes.IMAGE_AIRCRAFT
+      helpTypes.IMAGE_AIRCRAFT_NORMAL
+      helpTypes.IMAGE_AIRCRAFT_AAM
+      helpTypes.IMAGE_AIRCRAFT_ATGM
       helpTypes.CONTROLLER_AIRCRAFT
       helpTypes.KEYBOARD_AIRCRAFT
-      helpTypes.RADAR_AIRBORNE
-      helpTypes.RWR_AIRBORNE
+      helpTypes.RADAR_AIRCRAFT
+      helpTypes.RWR_AIRCRAFT
     ]
   }
   {
     title = "#controls/help/tank_simpleControls"
     list = [
-      helpTypes.IMAGE_TANK
+      helpTypes.IMAGE_TANK_OLD
+      helpTypes.IMAGE_TANK_MODERN
       helpTypes.CONTROLLER_TANK
       helpTypes.KEYBOARD_TANK
       helpTypes.RADAR_GROUND
@@ -49,8 +52,8 @@ let tabGroups = [
       helpTypes.IMAGE_HELICOPTER
       helpTypes.CONTROLLER_HELICOPTER
       helpTypes.KEYBOARD_HELICOPTER
-      helpTypes.RADAR_AIRBORNE
-      helpTypes.RWR_AIRBORNE
+      helpTypes.RADAR_HELICOPTER
+      helpTypes.RWR_HELICOPTER
     ]
   }
   {
@@ -108,9 +111,9 @@ let function getPrefferableType(contentSet) {
     CONTROL_HELP_PATTERN.SPECIAL_EVENT,
     CONTROL_HELP_PATTERN.HOTAS4,
     CONTROL_HELP_PATTERN.MISSION,
+    CONTROL_HELP_PATTERN.IMAGE,
     CONTROL_HELP_PATTERN.RWR,
     CONTROL_HELP_PATTERN.RADAR,
-    CONTROL_HELP_PATTERN.IMAGE,
     CONTROL_HELP_PATTERN.GAMEPAD,
     CONTROL_HELP_PATTERN.KEYBOARD_MOUSE,
   ]) {

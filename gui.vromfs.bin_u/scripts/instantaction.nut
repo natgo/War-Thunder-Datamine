@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modification, shop_repair_aircraft, wp_get_repair_cost, shop_purchase_weapon
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -11,11 +13,14 @@ let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost, getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
+let { getSelSlotsData, getCrewByAir } = require("%scripts/slotbar/slotbarState.nut")
 let { get_gui_option } = require("guiOptions")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk } = require("blkGetters")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -41,15 +46,15 @@ let { get_warpoints_blk } = require("blkGetters")
     let selList = getSelSlotsData().units
     foreach (c, airName in selList)
       if ((isInArray(c, countries)) && airName != "") {
-        let repairCost = ::wp_get_repair_cost(airName)
+        let repairCost = wp_get_repair_cost(airName)
         if (repairCost > 0) {
           res.repairCost += repairCost
           res.broken_countries.append({ country = c, airs = [airName] })
           res.canFlyout = false
         }
         let air = getAircraftByName(airName)
-        let crew = air && ::getCrewByAir(air)
-        if (!crew || ::is_crew_locked_by_prev_battle(crew))
+        let crew = air && getCrewByAir(air)
+        if (!crew || isCrewLockedByPrevBattle(crew))
           res.canFlyoutIfRepair = false
 
         let ammoList = getUnitNotReadyAmmoList(
@@ -74,7 +79,7 @@ let { get_warpoints_blk } = require("blkGetters")
           if (!unit || (checkAvailFunc && !checkAvailFunc(unit)))
             continue
 
-          let repairCost = ::wp_get_repair_cost(unit.name)
+          let repairCost = wp_get_repair_cost(unit.name)
           if (repairCost > 0) {
             brokenList.append(unit.name)
             res.repairCost += repairCost
@@ -82,7 +87,7 @@ let { get_warpoints_blk } = require("blkGetters")
           else
             have_repaired_in_country = true
 
-          if (!::is_crew_locked_by_prev_battle(crew))
+          if (!isCrewLockedByPrevBattle(crew))
             have_unlocked_in_country = true
 
           let ammoList = getUnitNotReadyAmmoList(
@@ -125,7 +130,7 @@ let { get_warpoints_blk } = require("blkGetters")
     local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
     msg += "\n\n" + format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
 
-    ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+    loadHandler(gui_handlers.WeaponWarningHandler,
       {
         parentHandler = handler
         message = msg
@@ -192,7 +197,7 @@ let { get_warpoints_blk } = require("blkGetters")
   }
   else if (repairInfo.shipsWithoutPurshasedTorpedoes.len() > 0
     && !loadLocalAccountSettings("skipped_msg/shipsWithoutPurshasedTorpedoes", false))
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+    loadHandler(gui_handlers.SkipableMsgBox,
       {
         parentHandler = handler
         message = loc("msgbox/hasShipWithoutPurshasedTorpedoes",
@@ -228,21 +233,21 @@ let { get_warpoints_blk } = require("blkGetters")
 
   if (totalRCost) {
     let afterCheckFunc = function() {
-      if (::check_balance_msgBox(totalRCost, null, true))
+      if (checkBalanceMsgBox(totalRCost, null, true))
         ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
       else if (onCancelFunc)
         onCancelFunc.call(handler)
     }
-    if (!::check_balance_msgBox(totalRCost, afterCheckFunc))
+    if (!checkBalanceMsgBox(totalRCost, afterCheckFunc))
       return
   }
 
   local taskId = -1
 
   if (broken_countries[0].airs.len() == 1 || !canRepairWholeCountry)
-    taskId = ::shop_repair_aircraft(broken_countries[0].airs[0])
+    taskId = shop_repair_aircraft(broken_countries[0].airs[0])
   else
-    taskId = ::shop_repair_all(broken_countries[0].country, true)
+    taskId = shop_repair_all(broken_countries[0].country, true)
 
   if (broken_countries[0].airs.len() > 1 && !canRepairWholeCountry)
     broken_countries[0].airs.remove(0)
@@ -267,16 +272,16 @@ let { get_warpoints_blk } = require("blkGetters")
     return
   }
 
-  if (!::check_balance_msgBox(totalCost))
+  if (!checkBalanceMsgBox(totalCost))
     return
 
   let ammo = unreadyAmmoList[0]
   local taskId = -1
 
   if (ammo.ammoType == AMMO.WEAPON)
-    taskId = ::shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
+    taskId = shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
   else if (ammo.ammoType == AMMO.MODIFICATION)
-    taskId = ::shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
+    taskId = shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
   unreadyAmmoList.remove(0)
 
   if (taskId >= 0) {

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -6,18 +7,19 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
 let { stripTags } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
   return handlersManager.loadHandler(gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
-gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChoosePreset.blk"
 
@@ -122,7 +124,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
           posX = idx % perRow
           posY = idx / perRow
         }
-        unitsMarkupList.append(::build_aircraft_item(unitId, unit, params))
+        unitsMarkupList.append(buildUnitSlot(unitId, unit, params))
         unitItems.append({ id = unitId, unit = unit, params = params })
       }
       let sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
@@ -137,7 +139,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
       let markup = "\n".join(markupList)
       this.guiScene.replaceContentFromText(objDesc, markup, markup.len(), this)
       foreach (unitItem in unitItems)
-        ::fill_unit_item_timers(objDesc.findObject(unitItem.id), unitItem.unit, unitItem.params)
+        fillUnitSlotTimers(objDesc.findObject(unitItem.id), unitItem.unit)
     }
     else {
       let data = format("textarea{ text:t='%s' width:t='pw' } ", stripTags(loc("shop/slotbarPresets/presetUnknown")))
@@ -154,13 +156,13 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
 
   restoreFocusDelayed = @() this.guiScene.performDelayed(this, function() {
     if (this.isValid())
-      ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   })
 
   function updateButtons() {
     if (showConsoleButtons.value) {
       let isAnyPresetHovered = this.hoveredValue != -1
-      let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
+      let isShowContextActions = is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
       showObjectsByTable(this.scene, {
         btn_preset_rename   = isShowContextActions
         btn_preset_delete   = isShowContextActions

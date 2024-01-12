@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, get_trophy_info, wp_get_trophy_cost, wp_get_trophy_cost_gold
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -12,9 +16,11 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Trophy <- class extends ::BaseItem {
+let Trophy = class (BaseItem) {
   static iType = itemType.TROPHY
+  static name = "Trophy"
   static defaultLocId = "trophy"
   static defaultIconStyle = "default_chest_debug"
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
@@ -158,7 +164,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     let t = this.getRemainingLifetime()
     if (t == -1)
       return false
-    if ((::get_trophy_info(this.id)?.openCount ?? 0) == 0)
+    if ((get_trophy_info(this.id)?.openCount ?? 0) == 0)
       return false
 
     if (!(getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false))
@@ -264,7 +270,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
   function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
-      return Cost(::wp_get_trophy_cost(this.id), ::wp_get_trophy_cost_gold(this.id))
+      return Cost(::wp_get_trophy_cost(this.id), wp_get_trophy_cost_gold(this.id))
     return Cost()
   }
 
@@ -311,7 +317,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     local name = this.locId ? "".join(getLocIdsArray(this.locId).map(@(id) loc(id))) : loc(("item/" + this.id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
-      name = loc("item/" + this.defaultLocId)
+      name = loc($"item/{this.defaultLocId}")
 
     let showType = this.showTypeInName != null ? this.showTypeInName : !hasCustomName
     if (showType) {
@@ -390,7 +396,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     blk["index"] = getTblValue("index", params, -1)
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
-    return ::char_send_blk("cln_buy_trophy", blk)
+    return char_send_blk("cln_buy_trophy", blk)
   }
 
   function getMainActionData(isShort = false, params = {}) {
@@ -415,7 +421,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
   }
 
   function needOpenTrophyGroupOnBuy() {
-    return this.isGroupTrophy && !::isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
+    return this.isGroupTrophy && !isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
   }
 
   function getOpeningCaption() {
@@ -442,7 +448,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     if (!this.showTillValue)
       return ""
 
-    return ::PrizesView.getTrophyOpenCountTillPrize(this.getContent(), ::get_trophy_info(this.id))
+    return ::PrizesView.getTrophyOpenCountTillPrize(this.getContent(), get_trophy_info(this.id))
   }
 
   function getDescriptionUnderTable() {
@@ -456,5 +462,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
       colorize("activeTextColor", timeText))
   }
 
-  canBuyTrophyByLimit = @() this.numTotal == 0 || this.numTotal > (::get_trophy_info(this.id)?.openCount ?? 0)
+  canBuyTrophyByLimit = @() this.numTotal == 0 || this.numTotal > (get_trophy_info(this.id)?.openCount ?? 0)
 }
+
+return { Trophy }

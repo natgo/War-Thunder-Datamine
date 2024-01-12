@@ -3,9 +3,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
 
 let steamNewItems = mkWatched(persist, "steamNewItems", [])
@@ -22,10 +23,16 @@ let showSteamItemNotification = function(itemInfo) {
     name = item.getName(false)
     desc = item.getLongDescription()
     popupImage = item.getIconName()
+    imgWidth = "300@sf/@pf"
     ratioHeight = 1.0
     onDestroyFunc = function() {
-      inqueueSteamItems.mutate(@(v) delete v[steamItemId])
-      ExchangeRecipes.tryUse(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
+      inqueueSteamItems.mutate(@(v) v.$rawdelete(steamItemId))
+      if (item.doMainAction(@(_) null, null, { needConsumeImpl = true, shouldSkipMsgBox = true }))
+        return
+
+      let recipes = item.getRelatedRecipes()
+      if (recipes.len() > 0)
+        tryUseRecipes(recipes, item, { shouldSkipMsgBox = true })
     }
     okBtnText = loc("items/getReward")
     okBtnStyle = "secondary"
@@ -33,7 +40,7 @@ let showSteamItemNotification = function(itemInfo) {
 }
 
 let function tryShowSteamItemsNotification(items = []) {
-  if (!::isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || ::checkIsInQueue())
     return
 
   items.each(function(itemInfo) {
@@ -94,7 +101,7 @@ let function checkUnknownItems() {
     if (::ItemsManager.findItemById(itemDef)) {
       knownItems.append(sItem)
       let itemDefId = itemDef
-      unknownSteamNewItems.mutate(@(v) delete v[itemDefId])
+      unknownSteamNewItems.mutate(@(v) v.$rawdelete(itemDefId))
     }
   }
 
@@ -105,6 +112,16 @@ let function checkUnknownItems() {
   steamNewItems.update(knownItems)
   steamCheckNewItems()
 }
+
+register_command(function(itemId = 20366) {
+  let item = ::ItemsManager.getInventoryItemById(itemId)
+  if (item == null)
+    return
+  showSteamItemNotification({
+    item
+    steamItemId = 4495219818634627298
+  })
+}, "debug.showSteamItemNotification")
 
 addListenersWithoutEnv({
   LoginComplete = @(_) requestRewardsAndCheckSteamInventory()

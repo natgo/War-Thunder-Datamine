@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile
 from "%scripts/dagui_library.nut" import *
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { get_last_skin, set_last_skin } = require("unitCustomization")
@@ -49,10 +50,21 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
 
 // return default skin if no skin matches location
 let function getAutoSkin(unitName, isLockedAllowed = false) {
-  let list = getBestSkinsList(unitName, isLockedAllowed)
+  local list = getBestSkinsList(unitName, isLockedAllowed)
   if (list.len() == 0)
     return DEFAULT_SKIN_NAME
   // use last skin if no in session
+
+  let couponSkins = list.filter(
+    function(skin) {
+      let decorator = getDecorator(getSkinId(unitName, skin), decoratorTypes.SKINS)
+      return decorator?.getCouponItemdefId() != null
+    }
+  )
+
+  if (couponSkins.len() > 0)
+    list = couponSkins
+
   return list[list.len() - 1 - (::SessionLobby.roomId % list.len())]
 }
 
@@ -223,7 +235,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     let autoSkin = getAutoSkin(unitName)
     let decorator = getDecorator(getSkinId(unitName, autoSkin), decoratorTypes.SKINS)
     let locName = loc("skins/auto", { skin = (decorator?.getName() ?? "") })
-    addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
+    addSkinItemToOption(descr, locName, autoSkin, decorator, true, needIcon)
   }
 
   let curSkin = getLastSkin(unit.name)
@@ -249,8 +261,8 @@ let function applyPreviewSkin(unitName) {
 
   setLastSkin(unit.name, previewSkinId, false)
 
-  ::save_online_single_job(3210)
-  ::save_profile(false)
+  save_online_single_job(3210)
+  save_profile(false)
 }
 
 let function clearLivePreviewParams() {

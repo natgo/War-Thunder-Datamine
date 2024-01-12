@@ -8,8 +8,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.modifyUrlMissionWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/missions/modifyUrlMission.blk"
 
@@ -37,7 +38,7 @@ gui_handlers.modifyUrlMissionWnd <- class extends gui_handlers.BaseGuiHandlerWT 
     else
       this.scene.findObject("btn_apply").setValue(loc("chat/create"))
 
-    ::select_editbox(this.scene.findObject("name_editbox"))
+    select_editbox(this.scene.findObject("name_editbox"))
   }
 
   function onChangeName(obj) {

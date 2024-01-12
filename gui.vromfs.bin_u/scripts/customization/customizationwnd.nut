@@ -1,19 +1,21 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile, get_time_till_decals_disabled, is_decals_disabled, hangar_get_attachable_tm, set_option_delayed_download_content, hangar_prem_vehicle_view_close, reload_user_skins
 from "%scripts/dagui_library.nut" import *
+from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
 let { acos, PI } = require("math")
 let penalty = require("penalty")
 let { hangar_is_model_loaded, hangar_get_loaded_unit_name,
-  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode
+  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode, force_retrace_decorators
 } = require("hangar")
 let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
   apply_skin, apply_skin_preview, notify_decal_menu_visibility,
@@ -59,9 +61,12 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -84,7 +89,7 @@ enum decalTwoSidedMode {
   let callback = getTblValue(taskId, decoratorTypes.DECALS.jobCallbacksStack, null)
   if (callback) {
     callback()
-    delete decoratorTypes.DECALS.jobCallbacksStack[taskId]
+    decoratorTypes.DECALS.jobCallbacksStack.$rawdelete(taskId)
   }
 
   broadcastEvent("DecalJobComplete", { taskId = taskId })
@@ -106,7 +111,7 @@ enum decalTwoSidedMode {
 
   params = params || {}
   params.backSceneParams <- { globalFunctionName = "gui_start_mainmenu" }
-  handlersManager.loadHandler(gui_handlers.DecalMenuHandler, params)
+  loadHandler(gui_handlers.DecalMenuHandler, params)
 }
 
 ::hangar_add_popup <- function hangar_add_popup(text) { // called from client
@@ -118,18 +123,17 @@ enum decalTwoSidedMode {
     return
   let skip = loadLocalAccountSettings("skipped_msg/delayedDownloadContent", false)
   if (!skip) {
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
-    {
+    loadHandler(gui_handlers.SkipableMsgBox, {
       parentHandler = handlersManager.getActiveBaseHandler()
       message = loc("msgbox/delayedDownloadContent")
       startBtnText = loc("msgbox/confirmDelayedDownload")
       defaultBtnId = "btn_select"
       onStartPressed = function() {
-        ::set_option_delayed_download_content(true)
+        set_option_delayed_download_content(true)
         saveLocalAccountSettings("delayDownloadContent", true)
       }
       cancelFunc = function() {
-        ::set_option_delayed_download_content(false)
+        set_option_delayed_download_content(false)
         saveLocalAccountSettings("delayDownloadContent", false)
       }
       skipFunc = function(value) {
@@ -139,11 +143,11 @@ enum decalTwoSidedMode {
   }
   else {
     local choosenDDC = loadLocalAccountSettings("delayDownloadContent", true)
-    ::set_option_delayed_download_content(choosenDDC)
+    set_option_delayed_download_content(choosenDDC)
   }
 }
 
-gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customization.blk"
   unit = null
   owner = null
@@ -315,7 +319,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
     }
     else if (this.previewMode & PREVIEW_MODE.DECORATOR) {
-      let typeText = loc("trophy/unlockables_names/" + this.decoratorPreview.decoratorType.resourceType)
+      let typeText = loc($"trophy/unlockables_names/{this.decoratorPreview.decoratorType.resourceType}")
       let nameText = colorize(this.decoratorPreview.getRarityColor(), this.decoratorPreview.getName())
       title += typeText + " " + nameText
     }
@@ -530,7 +534,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateUserSkinList() {
-    ::reload_user_skins()
+    reload_user_skins()
     let userSkinsOption = ::get_option(USEROPT_USER_SKIN)
     this.renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
@@ -786,7 +790,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let isGift = isUnitGift(this.unit)
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
-    let canBuyIngame = !canBuyOnline && (::canBuyUnit(this.unit) || canBuyNotResearchedUnit)
+    let canBuyIngame = !canBuyOnline && (canBuyUnit(this.unit) || canBuyNotResearchedUnit)
     let canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
@@ -1042,7 +1046,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     obj = this.showSceneBtn("previewed_decorator", true)
     if (obj) {
-      let txtApplyDecorator = loc("decoratorPreview/applyManually/" + this.currentType.resourceType)
+      let txtApplyDecorator = loc($"decoratorPreview/applyManually/{this.currentType.resourceType}")
       let labelObj = obj.findObject("label")
       labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
 
@@ -1180,7 +1184,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return true
 
     local onOkFunc = function() {}
-    if (::canBuyUnit(this.unit))
+    if (canBuyUnit(this.unit))
       onOkFunc = (@(unit) function() { ::buyUnit(unit) })(this.unit) //-ident-hides-ident
 
     this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
@@ -1426,7 +1430,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function buyDecorator(decorator, cost, afterPurchDo = null) {
-    if (!::check_balance_msgBox(decorator.getCost()))
+    if (!checkBalanceMsgBox(decorator.getCost()))
       return false
 
     decorator.decoratorType.save(this.unit.name, false)
@@ -1584,7 +1588,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function showFailedInstallPopup(decorator) {
-    let attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
+    let attachAngle = acos(hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
       ::g_popups.add("", loc("mainmenu/failedInstallAttachableAngle",
         { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
@@ -1599,8 +1603,13 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function installDecorationOnUnit(decorator) {
     let save = !!decorator && decorator.isUnlocked() && this.previewMode != PREVIEW_MODE.DECORATOR
-    return this.currentType.exitEditMode(true, save,
-      Callback(function () { this.onFinishInstallDecoratorOnUnit(true) }, this))
+    let cb = this.currentType == decoratorTypes.DECALS && save
+      ? Callback(function () {
+          this.onFinishInstallDecoratorOnUnit(true)
+          tryShowPeriodicPopupDecalsOnOtherPlayers()
+        }, this)
+      : Callback(@() this.onFinishInstallDecoratorOnUnit(true), this)
+    return this.currentType.exitEditMode(true, save, cb)
   }
 
   function onFinishInstallDecoratorOnUnit(isInstalled = false) {
@@ -1714,14 +1723,15 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       apply_skin_preview(skinId)
     else {
       setLastSkin(this.unit.name, skinId, false)
+      force_retrace_decorators()
       apply_skin(skinId)
     }
 
     this.previewSkinId = previewSkin ? skinId : null
 
     if (!previewSkin) {
-      ::save_online_single_job(3210)
-      ::save_profile(false)
+      save_online_single_job(3210)
+      save_profile(false)
     }
   }
 
@@ -1774,7 +1784,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.msgBox("need_money", msgText,
           [["ok", function() {
-            if (::check_balance_msgBox(cost))
+            if (checkBalanceMsgBox(cost))
               this.buySkin(this.previewSkinId, cost)
           }],
           ["cancel", function() {} ]], "ok")
@@ -1931,7 +1941,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     [
       ["ok", function() {
           decoratorType.removeDecorator(slotInfo.id, true)
-          ::save_profile(false)
+          save_profile(false)
 
           this.generateDecorationsList(slotInfo, decoratorType)
           this.updateSlotsBlockByType(decoratorType)
@@ -2077,7 +2087,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.isValid())
       this.setDmgSkinMode(false)
     show_model_damaged(MDS_ORIGINAL)
-    ::hangar_prem_vehicle_view_close()
+    hangar_prem_vehicle_view_close()
 
     if (this.unit) {
       if (this.currentState & decoratorEditState.EDITING) {
@@ -2098,7 +2108,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
       else {
         this.saveDecorators(false)
-        ::save_profile(true)
+        save_profile(true)
       }
     }
   }
@@ -2123,8 +2133,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     local txt = ""
-    if (::is_decals_disabled()) {
-      local timeSec = ::get_time_till_decals_disabled()
+    if (is_decals_disabled()) {
+      local timeSec = get_time_till_decals_disabled()
       if (timeSec == 0) {
         let st = penalty.getPenaltyStatus()
         if ("seconds_left" in st)
@@ -2158,23 +2168,20 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     if (hangar_get_loaded_unit_name() == this.previewParams.unitName)
       this.removeAllDecorators(false)
-    switch (this.previewMode) {
-      case PREVIEW_MODE.UNIT:
-      case PREVIEW_MODE.SKIN:
-        let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
-        previewedLiveSkinIds.append(skinBlockName)
-        if (this.initialUserSkinId != "")
-          get_user_skins_profile_blk()[this.unit.name] = ""
-        let isForApprove = this.previewParams?.isForApprove ?? false
-        approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
-        ::g_delayed_actions.add(Callback(function() {
-          this.applySkin(this.previewParams.skinName, true)
-        }, this), 100)
-        break
-      case PREVIEW_MODE.DECORATOR:
-        this.decoratorPreview = this.previewParams.decorator
-        this.currentType = this.decoratorPreview.decoratorType
-        break
+    if (this.previewMode == PREVIEW_MODE.UNIT || this.previewMode == PREVIEW_MODE.SKIN) {
+      let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
+      previewedLiveSkinIds.append(skinBlockName)
+      if (this.initialUserSkinId != "")
+        get_user_skins_profile_blk()[this.unit.name] = ""
+      let isForApprove = this.previewParams?.isForApprove ?? false
+      approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
+      ::g_delayed_actions.add(Callback(function() {
+        this.applySkin(this.previewParams.skinName, true)
+      }, this), 100)
+    }
+    else if (this.previewMode == PREVIEW_MODE.DECORATOR) {
+      this.decoratorPreview = this.previewParams.decorator
+      this.currentType = this.decoratorPreview.decoratorType
     }
   }
 
@@ -2222,4 +2229,108 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
     }
   }
+
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/customization/customizationHelp.blk"
+      objContainer = this.scene.findObject("customizationFrame")
+    }
+
+    let links = [
+      { obj = ["btn_decor_layout_presets"], msgId = "hint_btn_decor_layout_presets"}
+      { obj = ["slots_attachable_list_edge"], msgId = "hint_slots_attachable_list_edge"}
+      { obj = ["slots_list_edge"], msgId = "hint_slots_list_edge"}
+      { obj = ["slots_flag_list_edge"], msgId = "hint_slots_flag_list_edge"}
+    ]
+
+    let scrollbox = this.scene.findObject("main_scrollbox")
+    let scrollboxPos = scrollbox.getPos()
+    let scrollboxSize = scrollbox.getSize()
+
+    let isObjectOnScreen = function(objName) {
+      let obj = this.scene.findObject(objName)
+      if (obj?.isValid()) {
+        let objPos = obj.getPos()
+        let objSize = obj.getSize()
+        if (scrollboxPos[1] <= objPos[1] && scrollboxPos[1] + scrollboxSize[1] > objPos[1] + objSize[1] )
+          return true
+      }
+      return false
+    }
+
+    let scrollBoxHints = [
+      { obj="user_skins_block", msgId="hint_user_skins"}
+      { obj="tank_skin_settings", msgId="hint_tank_skin_settings"}
+      { obj="auto_skin_block", msgId="hint_autoskin"}
+      { obj="skins_dropright", msgId = "hint_select_camouflage"}
+    ]
+
+    foreach (hint in scrollBoxHints) {
+      if (isObjectOnScreen(hint.obj)) {
+        links.append(hint)
+      }
+    }
+
+    res.links <- links
+    return res
+  }
+
+  function prepareHelpPage(handler) {
+    let hintsParams = [
+      { hintName = "hint_user_skins",
+        objName = "user_skins_block",
+        shiftY = "- 1@bh + 0.5@optionsHeaderRowHeight + 0.5@baseTrHeight -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval"
+      },
+      { hintName = "hint_tank_skin_settings",
+        objName = "tank_skin_settings",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_btn_decor_layout_presets",
+        objName = "btn_decor_layout_presets",
+        shiftY = "- 1@bh",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+      },
+      { hintName = "hint_slots_attachable_list_edge",
+        objName = "slots_attachable_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_slots_list_edge",
+        objName = "slots_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_slots_flag_list_edge",
+        objName = "slots_flag_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_autoskin",
+        objName = "auto_skin_block",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_select_camouflage",
+        objName = "main_scrollbox",
+        shiftY = "- h - 1.5@helpInterval -1@bh",
+        posX = "sw - w - 2@bw - 4@helpInterval",
+      }
+    ]
+
+    foreach (hintParam in hintsParams)
+      updateHintPosition(this.scene, handler.scene, hintParam)
+  }
+
 }

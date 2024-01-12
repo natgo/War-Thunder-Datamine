@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -13,6 +14,8 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarState.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -140,9 +143,9 @@ let CrewTakeUnitProcess = class {
     },
 
     [CTU_PROGRESS.CHECK_MONEY] = function() {
-      if (::check_balance_msgBox(this.cost,
+      if (checkBalanceMsgBox(this.cost,
             Callback(function() {
-                if (::check_balance_msgBox(this.cost, this.nextStepCb, true))
+                if (checkBalanceMsgBox(this.cost, this.nextStepCb, true))
                   this.nextStep()
                 else
                   this.remove()
@@ -155,7 +158,7 @@ let CrewTakeUnitProcess = class {
       if (this.crew)
         return this.nextStep()
       let purchaseCb = Callback(function() {
-          let crews = ::get_crews_list_by_country(this.country)
+          let crews = getCrewsListByCountry(this.country)
           if (!crews.len())
             return this.remove()
 
@@ -218,7 +221,7 @@ let CrewTakeUnitProcess = class {
     if (crew || (!unit && !country))
       return resCost
 
-    let crewCostTbl = ::get_crew_slot_cost(country || getUnitCountry(unit))
+    let crewCostTbl = get_crew_slot_cost(country || getUnitCountry(unit))
     if (crewCostTbl) {
       resCost.wp += crewCostTbl.cost
       resCost.gold += crewCostTbl.costGold
@@ -268,7 +271,7 @@ let CrewTakeUnitProcess = class {
       return false
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
-      getEnumValName("CTU_PROGRESS", this.activeProcesses[0].curProgress))
+      getEnumValName("CTU_PROGRESS", CTU_PROGRESS, this.activeProcesses[0].curProgress))
     script_net_assert_once("can't start take crew", msg)
     return false
   }
@@ -325,7 +328,7 @@ let CrewTakeUnitProcess = class {
     this.isSuccess = true
     if (this.unit) {
       ::updateAirAfterSwitchMod(this.unit)
-      ::select_crew(this.crew.idCountry, this.crew.idInCountry, true)
+      selectCrew(this.crew.idCountry, this.crew.idInCountry, true)
       setShowUnit(this.unit)
     }
     ::g_crews_list.flushSlotbarUpdate()

@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 /*
   config = {
@@ -32,7 +32,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
   handlersManager.loadHandler(gui_handlers.MultiSelectMenu, config)
 }
 
-gui_handlers.MultiSelectMenu <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -68,7 +68,7 @@ gui_handlers.MultiSelectMenu <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)
+    move_mouse_on_child(this.scene.findObject("multi_select"), 0)
   }
 
   function initListValues() {

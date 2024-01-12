@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mission_progress
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -7,7 +9,7 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { dynamicInit, dynamicGetList } = require("dynamicMission")
 let { get_cur_game_mode_name } = require("mission")
@@ -17,14 +19,13 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_game_settings_blk } = require("blkGetters")
-
-::dynamic_req_country_rank <- 1
+let { DYNAMIC_REQ_COUNTRY_RANK, getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
   handlersManager.loadHandler(gui_handlers.DynamicLayouts)
 }
 
-gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
+gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -49,7 +50,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     this.updateMouseMode()
     this.initDescHandler()
     this.initMissionsList()
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initMissionsList(...) {
@@ -67,7 +68,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
   }
 
   function add_missions() {
-    let mission_array = ::get_dynamic_layouts()
+    let mission_array = getDynamicLayouts()
     local unlockedMissionCount = 0
 
     for (local j = 0; j < mission_array.len(); j++) {
@@ -124,7 +125,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
 
       let nameId = "dynamic/" + misDescr.id
       misDescr.unlockText <- lockReason
-      misDescr.progress <- isAnyCountryUnlocked ? ::get_mission_progress(nameId) : -1
+      misDescr.progress <- isAnyCountryUnlocked ? get_mission_progress(nameId) : -1
 
       if (misDescr.progress == -1)
         this.missions.append(misDescr)
@@ -138,24 +139,23 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     foreach (idx, mission in this.missions) {
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
-      let nameId = "dynamic/" + mission.id
-      switch (mission.progress) {
-        case 0:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
-          break
-        case 1:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
-          break
-        case 2:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
-          break
-        case 3:
-          elemCssId = "mission_item_unlocked"
-          medalIcon = ""
-          break
+      let nameId = $"dynamic/{mission.id}"
+      let progress = mission.progress
+      if (0 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_arcade"
+      }
+      else if (1 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+      }
+      else if (2 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+      }
+      else if (3 == progress) {
+        elemCssId = "mission_item_unlocked"
+        medalIcon = ""
       }
 
       view.items.append({
@@ -350,7 +350,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     ::first_generation = true
 
     this.goForwardCheckEntitlement(::gui_start_dynamic_summary, {
-      minRank = ::dynamic_req_country_rank
+      minRank = DYNAMIC_REQ_COUNTRY_RANK
       rankCountry = playerCountry
       silentFeature = "ModeDynamic"
     })

@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_mp_local_team, get_race_winners_count
 from "%scripts/dagui_library.nut" import *
+from "%scripts/debriefing/debriefingConsts.nut" import debrState
+
+let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
@@ -25,15 +29,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-
-global enum debrState {
-  init
-  showPlayers
-  showMyStats
-  showBonuses
-  showAwards
-  done
-}
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -143,6 +139,7 @@ debriefingRows = [
     text = "multiplayer/assists"
     icon = "icon/mpstats/assists"
   }
+  "SevereDamage"
   "Critical"
   "Hit"
   { id = "Scouting"
@@ -867,7 +864,7 @@ let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   let warpoints = get_warpoints_blk()
 
   let isEnoughActivity = sessionActivity >= getTblValue("pveTrophyMinActivity", warpoints, 1)
-  let reachedTrophyName = isEnoughActivity ? ::get_pve_trophy_name(sessionTime, isSuccess) : null
+  let reachedTrophyName = isEnoughActivity ? get_pve_trophy_name(sessionTime, isSuccess) : null
   local receivedTrophyName = null
 
   if (reachedTrophyName) {
@@ -975,11 +972,11 @@ let function gatherDebriefingResult() {
   if (is_benchmark_game_mode())
     debriefingResult.benchmark <- stat_get_benchmark()
 
-  debriefingResult.numberOfWinningPlaces <- ::get_race_winners_count()
+  debriefingResult.numberOfWinningPlaces <- get_race_winners_count()
   debriefingResult.mplayers_list <- getMplayersList()
 
   //Fill Exp and WP table in correct format
-  let exp = ::stat_get_exp() || {}
+  let exp = ::stat_get_exp() ?? {}
 
   debriefingResult.expDump <- u.copy(exp) // Untouched copy for debug
 
@@ -1007,9 +1004,9 @@ let function gatherDebriefingResult() {
   if (!("result" in debriefingResult.exp))
     debriefingResult.exp.result <- STATS_RESULT_FAIL
 
-  debriefingResult.country <- ::get_local_player_country()
-  debriefingResult.localTeam <- ::get_mp_local_team()
-  debriefingResult.friendlyTeam <- ::get_player_army_for_hud()
+  debriefingResult.country <- get_local_player_country()
+  debriefingResult.localTeam <- get_mp_local_team()
+  debriefingResult.friendlyTeam <- get_player_army_for_hud()
   debriefingResult.haveTeamkills <- debriefingResultHaveTeamkills()
   debriefingResult.activeBoosters <- getDebriefingActiveBoosters()
   debriefingResult.activeWager <- getDebriefingActiveWager()
@@ -1022,10 +1019,10 @@ let function gatherDebriefingResult() {
   debriefingResult.mulsList <- []
 
   debriefingResult.roomUserlogs <- []
-  for (local i = ::get_user_logs_count() - 1; i >= 0; i--)
-    if (::is_user_log_for_current_room(i)) {
+  for (local i = get_user_logs_count() - 1; i >= 0; i--)
+    if (is_user_log_for_current_room(i)) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
       debriefingResult.roomUserlogs.append(blk)
     }
 
@@ -1040,7 +1037,7 @@ let function gatherDebriefingResult() {
     if (airData.sessionTime == 0 || !getAircraftByName(airName))
       aircraftsForDelete.append(airName)
   foreach (airName in aircraftsForDelete)
-    debriefingResult.exp.aircrafts.rawdelete(airName)
+    debriefingResult.exp.aircrafts.$rawdelete(airName)
 
   debriefingResult.exp["tntDamage"] <- getTblValue("numDamage", debriefingResult.exp, 0)
   foreach (_airName, airData in debriefingResult.exp.aircrafts)
@@ -1079,7 +1076,7 @@ let function gatherDebriefingResult() {
   debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
   debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
 
-  let missionRules = ::g_mis_custom_state.getCurMissionRules()
+  let missionRules = getCurMissionRules()
   debriefingResult.overrideCountryIconByTeam <- {
     [::g_team.A.code] = missionRules.getOverrideCountryIconByTeam(::g_team.A.code),
     [::g_team.B.code] = missionRules.getOverrideCountryIconByTeam(::g_team.B.code)

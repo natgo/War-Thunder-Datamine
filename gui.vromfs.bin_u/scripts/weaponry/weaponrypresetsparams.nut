@@ -450,8 +450,12 @@ let function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   }
   let presetsList = getPresetsList(unit, chooseMenuList)
 
-  foreach (preset in presetsList)
-    res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
+  let presets = fullUnitBlk.weapon_presets % "preset"
+  foreach (preset in presetsList) {
+    let showInWeaponMenu = ::is_debug_mode_enabled || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
+    if(showInWeaponMenu)
+      res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
+  }
 
   res.presets.sort(sortPresetsList)
   return res
@@ -461,7 +465,7 @@ let function editSlotInPresetImpl(preset, slots, cb) {
   foreach (slot in slots)
     if ("presetId" not in slot) {
       if (slot.tierId in preset.tiers)
-        delete preset.tiers[slot.tierId]
+        preset.tiers.$rawdelete(slot.tierId)
     }
     else
       preset.tiers[slot.tierId] <- { slot = slot.slot, presetId = slot.presetId }
@@ -589,7 +593,7 @@ let function createPresetAfter(preset, unit, favoriteArr, availableWeapons, edit
   foreach (slot in editSlotParams.slots) {
     if ("presetId" not in slot) {
       if (slot.tierId in res.tiers)
-        delete res.tiers[slot.tierId]
+        res.tiers.$rawdelete(slot.tierId)
     }
     else
       res.tiers[slot.tierId] <- { slot = slot.slot, presetId = slot.presetId }

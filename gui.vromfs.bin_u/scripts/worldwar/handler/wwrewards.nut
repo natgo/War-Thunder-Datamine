@@ -37,7 +37,7 @@ let fetchRewardsTimeData = function(cb) {
     })
 }
 
-gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -126,7 +126,7 @@ gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (tillPlace - prevPlace == 1)
       return tillPlace <= 3
-        ? loc("clan/season_award/place/place" + tillPlace)
+        ? loc($"clan/season_award/place/place{tillPlace}")
         : loc("clan/season_award/place/placeN", { placeNum = tillPlace })
 
     return loc("clan/season_award/place/top", { top = tillPlace })

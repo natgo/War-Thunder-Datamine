@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
 
@@ -6,6 +7,7 @@ let { getAvailableRespawnBases } = require("guiRespawn")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -67,7 +69,7 @@ enum MIS_LOAD { //bit enum
     return
 
   local hasRespBases = false
-  foreach (crew in ::get_crews_list_by_country(::get_local_player_country())) {
+  foreach (crew in getCrewsListByCountry(get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (!unit)
       continue

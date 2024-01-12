@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { calcPercent } = require("%sqstd/math.nut")
 let statsd = require("statsd")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -15,10 +16,10 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
 let function product_kind_to_media_item_type(product_kind) {
-  switch (product_kind) {
-    case ProductKind.Consumable: return xboxMediaItemType.GameConsumable
-    case ProductKind.Durable: return xboxMediaItemType.GameContent
-  }
+  if (product_kind == ProductKind.Consumable)
+    return xboxMediaItemType.GameConsumable
+  if (product_kind == ProductKind.Durable)
+    return xboxMediaItemType.GameContent
   return 0;
 }
 

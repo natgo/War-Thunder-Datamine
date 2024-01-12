@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available, set_char_cb, is_mouse_last_time_used
+from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,7 +14,8 @@ let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -46,6 +51,8 @@ let {
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
+let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 local lastUnitType = null
 
@@ -73,10 +80,10 @@ shopData = [
 */
 
 ::gui_start_shop_research <- function gui_start_shop_research(config) {
-  ::gui_start_modal_wnd(gui_handlers.ShopCheckResearch, config)
+  loadHandler(gui_handlers.ShopCheckResearch, config)
 }
 
-gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -170,7 +177,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           && !unit.isSquadronVehicle()
           && getUnitCountry(unit) == this.curCountry
           && !isUnitGift(unit)
-          && !::isUnitSpecial(unit)
+          && !isUnitSpecial(unit)
           && !::isUnitResearched(unit))
         return false
     return true
@@ -227,11 +234,11 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
                 if (isUnitGroup(air)) {
                   foreach (gAir in air.airsGroup)
-                    if (gAir.isUsable() && ::shop_get_aircraft_hp(gAir.name) < 1.0)
-                      this.repairAllCost += ::wp_get_repair_cost(gAir.name)
+                    if (gAir.isUsable() && shop_get_aircraft_hp(gAir.name) < 1.0)
+                      this.repairAllCost += wp_get_repair_cost(gAir.name)
                 }
-                else if (air.isUsable() && ::shop_get_aircraft_hp(air.name) < 1.0)
-                  this.repairAllCost += ::wp_get_repair_cost(air.name)
+                else if (air.isUsable() && shop_get_aircraft_hp(air.name) < 1.0)
+                  this.repairAllCost += wp_get_repair_cost(air.name)
               }
         }
   }
@@ -697,7 +704,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     for (local i = 0; i < tiersTotal; i++) {
       let tierNum = (i + 1).tostring()
-      let tierUnlocked = ::is_era_available(this.curCountry, i + 1, this.getCurPageEsUnitType())
+      let tierUnlocked = is_era_available(this.curCountry, i + 1, this.getCurPageEsUnitType())
       let fakeRowsCount = treeData.fakeRanksRowsCount[i + 1]
 
       let pY = treeData.ranksHeight[i] + fakeRowsCount
@@ -750,7 +757,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!ranksBlk)
       ranksBlk = get_ranks_blk()
 
-    let isEraAvailable = !isTreeReserchable || ::is_era_available(this.curCountry, rank, this.getCurPageEsUnitType())
+    let isEraAvailable = !isTreeReserchable || is_era_available(this.curCountry, rank, this.getCurPageEsUnitType())
     local tooltipPlate = ""
     local tooltipRank = ""
     local tooltipReqCounter = ""
@@ -815,7 +822,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
       let prevFakeRowRankCount = treeData.fakeRanksRowsCount[i - 1]
       let drawArrow = i > 1 && prevEraPos != (treeData.ranksHeight[i - 2] + prevFakeRowRankCount)
-      let isRankAvailable = !isTreeReserchable || ::is_era_available(this.curCountry, i, pageUnitsType)
+      let isRankAvailable = !isTreeReserchable || is_era_available(this.curCountry, i, pageUnitsType)
       let status =  isRankAvailable ?  "owned" : "locked"
 
       let texts = this.getRankProgressTexts(i, blk, isTreeReserchable)
@@ -1290,7 +1297,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (checkObj(tableObj)) {
         this.skipOpenGroup = true
         tableObj.setValue(this.selCellOnSearchQuit)
-        ::move_mouse_on_child(tableObj, this.selCellOnSearchQuit)
+        move_mouse_on_child(tableObj, this.selCellOnSearchQuit)
         this.skipOpenGroup = false
       }
       this.selCellOnSearchQuit = null
@@ -1510,7 +1517,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateUnitCell(tblObj.getChild(idx), unit)
 
     tblObj.setValue(selected)
-    ::move_mouse_on_child(tblObj, selected)
+    move_mouse_on_child(tblObj, selected)
   }
 
   function onSceneActivate(show) {
@@ -1534,7 +1541,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.groupChooseObj = null
     this.updateButtons()
     broadcastEvent("ModalWndDestroy")
-    ::move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
   }
 
   function destroyGroupChooseDelayed() {
@@ -1550,14 +1557,14 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let cost = Cost()
     cost.wp = this.repairAllCost
 
-    if (!::check_balance_msgBox(cost))
+    if (!checkBalanceMsgBox(cost))
       return
 
-    this.taskId = ::shop_repair_all(this.curCountry, false)
+    this.taskId = shop_repair_all(this.curCountry, false)
     if (this.taskId < 0)
       return
 
-    ::set_char_cb(this, this.slotOpCb)
+    set_char_cb(this, this.slotOpCb)
     this.showTaskProgressBox()
 
     this.afterSlotOp = function() {
@@ -1599,12 +1606,12 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventUpdateResearchingUnit(params) {
-    let unitName = getTblValue("unitName", params, ::shop_get_researchable_unit_name(this.curCountry, this.getCurPageEsUnitType()))
+    let unitName = getTblValue("unitName", params, shop_get_researchable_unit_name(this.curCountry, this.getCurPageEsUnitType()))
     this.checkUnitItemAndUpdate(getAircraftByName(unitName))
   }
 
   function onOpenOnlineShop(_obj) {
-    ::OnlineShopModel.showUnitGoods(this.getCurAircraft().name, "shop")
+    showUnitGoods(this.getCurAircraft().name, "shop")
   }
 
   function onBuy() {
@@ -1707,7 +1714,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.searchBoxWeak?.searchCancel()
     this.selectCellByUnitName(unitId)
     // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
-    if (!showConsoleButtons.value || ::is_mouse_last_time_used())
+    if (!showConsoleButtons.value || is_mouse_last_time_used())
       this.doWhenActive(@() this.highlightUnitsInTree([ unitId ]))
   }
 
@@ -2068,7 +2075,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventSquadronExpChanged(_params) {
-    this.checkUnitItemAndUpdate(getAircraftByName(::clan_get_researching_unit()))
+    this.checkUnitItemAndUpdate(getAircraftByName(clan_get_researching_unit()))
   }
 
   function onEventFlushSquadronExp(params) {
@@ -2076,10 +2083,10 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   getResearchingSquadronVehicle = function() {
-    if (::clan_get_exp() <= 0)
+    if (clan_get_exp() <= 0)
       return null
 
-    let unit = getAircraftByName(::clan_get_researching_unit())
+    let unit = getAircraftByName(clan_get_researching_unit())
     if (!unit)
       return null
 

@@ -1,11 +1,14 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
+from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
+
+let { setTranspRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,11 +22,15 @@ let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
   USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
+let { isUnitEnabledForSlotbar, getCrewsListByCountry, getBestTrainedCrewIdxForUnit
+} = require("%scripts/slotbar/slotbarState.nut")
 
-global enum SEL_UNIT_BUTTON {
-  EMPTY_CREW
-  SHOP
-  SHOW_MORE
+function isUnitInCustomList(unit, params) {
+  if (!unit)
+    return false
+
+  return params?.customUnitsList ? unit.name in params.customUnitsList : true
 }
 
 let defaultFilterOptions = [
@@ -40,9 +47,9 @@ let getOptionsMaskForUnit = {
   [USEROPT_BIT_CHOOSE_UNITS_OTHER] =
     @(unit, crew, _config) (unit.name in (crew?.trainedSpec ?? {}) ? 0 : unit.trainCost) ? 2 : 1,
   [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE] =
-    @(unit, _crew, config) ::is_unit_enabled_for_slotbar(unit, config) ? 2 : 1,
+    @(unit, _crew, config) isUnitEnabledForSlotbar(unit, config) ? 2 : 1,
   [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST] =
-    @(unit, _crew, config) ::isUnitInCustomList(unit, config) ? 2 : 1
+    @(unit, _crew, config) isUnitInCustomList(unit, config) ? 2 : 1
 }
 
 const MIN_NON_EMPTY_SLOTS_IN_COUNTRY = 1
@@ -54,7 +61,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
     return null
 
   let slotbarObj = slotbar.scene
-  let slotObj = ::get_slot_obj(slotbarObj, crew.idCountry, crew.idInCountry)
+  let slotObj = getSlotObj(slotbarObj, crew.idCountry, crew.idInCountry)
   if (!checkObj(slotObj))
     return null
 
@@ -65,7 +72,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
   local unitsArray = []
   if (!isSelectByGroups) {
     let crewUnitId = ::g_crew.getCrewUnit(crew)?.name ?? ""
-    let busyUnits = ::get_crews_list_by_country(country)
+    let busyUnits = getCrewsListByCountry(country)
       .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
     busyUnitsCount = busyUnits.len()
     unitsArray = getAllUnits().filter(@(unit) busyUnits.indexof(unit.name) == null
@@ -93,7 +100,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
   }
 }
 
-local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
+local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChooseAircraft.blk"
   slotbarWeak = null
@@ -145,19 +152,19 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
     let tdClone = tdObj.getClone(this.scene, this.slotbarWeak)
-    tdClone.pos = tdPos[0] + ", " + tdPos[1]
+    tdClone.pos = ", ".concat(tdPos[0], tdPos[1])
     tdClone["class"] = "slotbarClone"
     this.curClonObj = tdClone
 
     // When menu opens on switching to country, slots are invisible due to animation
     if ((tdClone?["color-factor"] ?? "255") != "255")
-      ::gui_bhv_deprecated.massTransparency.setTranspRecursive(tdClone, 255)
+      setTranspRecursive(tdClone, 255)
 
-    let curUnitCloneObj = ::get_slot_obj(tdClone, this.countryId, this.idInCountry)
-    ::fill_unit_item_timers(curUnitCloneObj, this.getCrewUnit())
+    let curUnitCloneObj = getSlotObj(tdClone, this.countryId, this.idInCountry)
+    fillUnitSlotTimers(curUnitCloneObj, this.getCrewUnit())
     gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
-    this.scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
+    this.scene.findObject("tablePlace").pos = ", ".concat(tdPos[0], tdPos[1])
 
     let needEmptyCrewButton = this.initAvailableUnitsArray()
 
@@ -172,7 +179,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     this.fillLegend()
     this.fillUnitsList()
     this.updateUnitsList()
-    ::move_mouse_on_obj(curUnitCloneObj)
+    move_mouse_on_obj(curUnitCloneObj)
     this.updateOptionShowUnsupportedForCustomList()
     this.showSceneBtn("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText())
   }
@@ -189,7 +196,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     this.legendData.clear()
     foreach (specType in ::g_crew_spec_type.types)
       if (specType != ::g_crew_spec_type.UNKNOWN)
-        this.addLegendData(specType.specName, specType.trainedIcon, loc("crew/trained") + loc("ui/colon") + specType.getName())
+        this.addLegendData(specType.specName, specType.trainedIcon, "".concat(loc("crew/trained"), loc("ui/colon"), specType.getName()))
     this.addLegendData("warningIcon", "#ui/gameuiskin#new_icon.svg", "#mainmenu/selectCrew/haveMoreQualified/tooltip")
   }
 
@@ -237,7 +244,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
         isCurrent = unit == selectedUnit
         groupId = groupIdByUnitName?[unit.name] ?? ""
         economicRank = unit.getEconomicRank(ediff)
-        isDefaultAircraft = ::is_default_aircraft(unit.name)
+        isDefaultAircraft = is_default_aircraft(unit.name)
         sortSpecialization = getSortSpecialization(unit)
         unit = unit
       }
@@ -269,11 +276,11 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function haveMoreQualifiedCrew(unit) {
-    let bestIdx = ::g_crew.getBestTrainedCrewIdxForUnit(unit, false, this.crew)
+    let bestIdx = getBestTrainedCrewIdxForUnit(unit, false, this.crew)
     return bestIdx >= 0 && bestIdx != this.crew.idInCountry
   }
 
-  getTextSlotMarkup = @(id, text) ::build_aircraft_item(id, null, { emptyText = text })
+  getTextSlotMarkup = @(id, text) buildUnitSlot(id, null, { emptyText = text })
 
   function fillUnitsList() {
     let markupArr = []
@@ -457,7 +464,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getGameModeNameFromParams(params) {
-    //same order as in is_unit_enabled_for_slotbar
+    //same order as in isUnitEnabledForSlotbar
     local event = ::events.getEvent(params?.eventId)
     if (!event && params?.roomCreationContext)
       event = params.roomCreationContext.mGameMode
@@ -530,7 +537,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let isTrained = (unit.name in this.crew?.trainedSpec) || unit.trainCost == 0
-    let isEnabled = ::is_unit_enabled_for_slotbar(unit, this.config)
+    let isEnabled = isUnitEnabledForSlotbar(unit, this.config)
     let isLockedUnit = this.isSelectByGroups && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country)
 
     let unitItemParams = {
@@ -554,10 +561,11 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
       unitItemParams.specType <- specType
 
     let id = unit.name
-    let markup = ::build_aircraft_item(id, unit, unitItemParams)
+    let markup = buildUnitSlot(id, unit, unitItemParams)
     this.guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
-    objSlot.tooltipId = ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams)
-    ::fill_unit_item_timers(objSlot.findObject(id), unit, unitItemParams)
+    objSlot.tooltipId = showConsoleButtons.get()
+      ? ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams) : null
+    fillUnitSlotTimers(objSlot.findObject(id), unit)
   }
 
   function updateUnitsList() {

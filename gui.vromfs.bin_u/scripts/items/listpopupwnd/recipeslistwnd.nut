@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { hasFakeRecipesInList } = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -12,7 +14,7 @@ let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nu
 
 local MIN_ITEMS_IN_ROW = 7
 
-gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 
@@ -30,7 +32,7 @@ gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getSceneTplView() {
     this.recipesList = clone this.recipesList
-    let hasMarkers = ExchangeRecipes.hasFakeRecipes(this.recipesList)
+    let hasMarkers = hasFakeRecipesInList(this.recipesList)
     if (hasMarkers)
       this.recipesList.sort(@(a, b) a.idx <=> b.idx)
     else
@@ -84,13 +86,13 @@ gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
-    this.needMarkRecipes = ExchangeRecipes.hasFakeRecipes(this.recipesList)
+    this.needMarkRecipes = hasFakeRecipesInList(this.recipesList)
     let recipesListObj = this.scene.findObject("recipes_list")
     if (this.recipesList.len() > 0)
       recipesListObj.setValue(0)
 
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(recipesListObj)
+    move_mouse_on_child_by_value(recipesListObj)
     this.updateCurRecipeInfo()
 
     if (this.showTutorial)

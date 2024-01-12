@@ -1,5 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, shop_enable_modifications, set_char_cb, utf8_strlen, shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import *
+from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -8,7 +13,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
@@ -55,8 +60,15 @@ let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
+let { findPlaceForHint, updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit,
   markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
+let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
+  startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -72,7 +84,7 @@ local timerPID = dagui_propid_add_name_id("_size-timer")
   db[unitName] <- DataBlock()
   foreach (modName in modNames)
     db[unitName][modName] <- enable
-  return ::shop_enable_modifications(db)
+  return shop_enable_modifications(db)
 }
 
 ::enable_current_modifications <- function enable_current_modifications(unitName) {
@@ -83,7 +95,7 @@ local timerPID = dagui_propid_add_name_id("_size-timer")
   foreach (mod in air.modifications)
     db[unitName][mod.name] <- shopIsModificationEnabled(unitName, mod.name)
 
-  return ::shop_enable_modifications(db)
+  return shop_enable_modifications(db)
 }
 
 ::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {}) {
@@ -143,7 +155,7 @@ function getSkinMod(unit) {
   } : null
 }
 
-gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   items = null
 
   wndWidth = 7
@@ -185,6 +197,8 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   purchasedModifications = null
   needHideSlotbar = false
 
+  shouldBeRestoredOnMainMenu = false
+
   function initScreen() {
     this.setResearchManually = !this.researchMode
     this.mainModsObj = this.scene.findObject("main_modifications")
@@ -221,10 +235,10 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function initSlotbar() {
-    if (this.researchMode || !::isUnitInSlotbar(this.air) || this.needHideSlotbar)
+    if (this.researchMode || !isUnitInSlotbar(this.air) || this.needHideSlotbar)
       return
     this.createSlotbar({
-      crewId = ::getCrewByAir(this.air).id
+      crewId = getCrewByAir(this.air).id
       showNewSlot = false
       emptyText = "#shop/aircraftNotSelected"
       afterSlotbarSelect = this.onSlotbarSelect
@@ -253,7 +267,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.items = []
     this.fillPage()
 
-    if (::isUnitInSlotbar(this.air) && !::check_aircraft_tags(this.air.tags, ["bomberview"]))
+    if (isUnitInSlotbar(this.air) && !::check_aircraft_tags(this.air.tags, ["bomberview"]))
       if (!this.canBomb(true) && this.canBomb(false))
         this.needCheckTutorial = true
 
@@ -391,7 +405,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     tutorialModule.saveShowedTutorial("researchMod")
 
     let finMod = getTblValue(::researchedModForCheck, this.researchBlock, "")
-    let newMod = ::shop_get_researchable_module_name(this.airName)
+    let newMod = shop_get_researchable_module_name(this.airName)
 
     let finIdx = this.getItemIdxByName(finMod)
     let newIdx = this.getItemIdxByName(newMod)
@@ -453,7 +467,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!this.researchMode)
       return
 
-    this.availableFlushExp = ::shop_get_unit_excess_exp(this.airName)
+    this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
     let freeRPObj = this.scene.findObject("available_free_exp_text")
     if (checkObj(freeRPObj))
       freeRPObj.setValue(::get_flush_exp_text(this.availableFlushExp))
@@ -461,8 +475,8 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function automaticallySpendAllExcessiveExp() { //!!!TEMP function, true func must be from code
     this.showTaskProgressBox()
-    this.availableFlushExp = ::shop_get_unit_excess_exp(this.airName)
-    let curResModuleName = ::shop_get_researchable_module_name(this.airName)
+    this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
+    let curResModuleName = shop_get_researchable_module_name(this.airName)
 
     if (this.availableFlushExp <= 0 || curResModuleName == "") {
       let afterDoneFunc = function() {
@@ -730,7 +744,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (checkObj(checkboxObj)) {
       checkboxObj.show(this.isOwn)
       if (this.isOwn)
-        checkboxObj.setValue(::get_auto_buy_modifications())
+        checkboxObj.setValue(get_auto_buy_modifications())
     }
 
     this.showSceneBtn("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl") && isShipDamageControlEnabled(this.air));
@@ -741,14 +755,14 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       slotbarActions = this.airActions
       getEdiffFunc  = this.getCurrentEdiff.bindenv(this)
     }
-    let unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
+    let unitBlk = buildUnitSlot("unit_item", item.unit, params)
     this.guiScene.replaceContentFromText(itemObj, unitBlk, unitBlk.len(), this)
     itemObj.tooltipId = ::g_tooltip.getIdUnit(item.unit.name, params)
-    ::fill_unit_item_timers(itemObj.findObject("unit_item"), item.unit, params)
+    fillUnitSlotTimers(itemObj.findObject("unit_item"), item.unit)
   }
 
   function isAnyModuleInResearch() {
-    let module = ::shop_get_researchable_module_name(this.airName)
+    let module = shop_get_researchable_module_name(this.airName)
     if (module == "")
       return false
 
@@ -793,7 +807,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     return resItems
   }
 
-  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "") {
+  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "", headerId = null) {
     let fullWidth = this.wndWidth - treeOffsetX
     let view = {
       width = fullWidth
@@ -803,6 +817,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       columnsList = columnsList
       rows = []
       rowType = blockType
+      id = headerId
     }
 
     if (columnsList.len()) {
@@ -810,7 +825,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       foreach (idx, column in columnsList) {
         column.needDivLine <- idx > 0
         headerWidth += column.width
-        if (column.name && ::utf8_strlen(column.name) > ::header_len_per_cell * column.width)
+        if (column.name && utf8_strlen(column.name) > ::header_len_per_cell * column.width)
           column.isSmallFont <- true
       }
 
@@ -1087,7 +1102,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       }
     }
 
-    this.createTreeBlocks(this.modsBgObj, columnsList, 1, 0, offsetY)
+    this.createTreeBlocks(this.modsBgObj, columnsList, 1, 0, offsetY, "", "", "weapons")
   }
 
   function updateWeaponsWarning() {
@@ -1254,7 +1269,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
     if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
-    ::move_mouse_on_child(this.curBundleTblObj, 0)
+    move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
@@ -1266,7 +1281,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function onCloseBundle(obj) {
     if (showConsoleButtons.value)
-      ::move_mouse_on_obj(obj.getParent().getParent().getParent())
+      move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
   function onModAction(obj, fullAction = true, stickBundle = false) {
@@ -1391,11 +1406,11 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       return
     }
 
-    this.taskId = ::shop_set_researchable_unit_module(this.airName, item.name)
+    this.taskId = shop_set_researchable_unit_module(this.airName, item.name)
     if (this.taskId >= 0) {
       this.setResearchManually = true
       this.lastResearchMod = item
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
       this.afterSlotOpError = @(_res) this.msgBox("unit_modul_research_fail",
@@ -1424,7 +1439,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
     this.taskId = ::flushExcessExpToModule(this.airName, modName)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
       this.afterSlotOpError = function(_res) {
@@ -1455,6 +1470,38 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.onBuy(idx)
   }
 
+  function onGoToModTutorial(obj) {
+    let idx = this.getItemIdxByObj(obj)
+    let item = this.items[idx]
+    let { tutorialMission, tutorialMissionWeapon = null } = item
+    let misInfo = get_meta_mission_info_by_name(tutorialMission)
+    let unit = this.air
+
+    this.markSeenModTutorialIfNeeded(item)
+
+    let params = {
+      modalHeader = loc("mod/start_test_modal_title", { modName = getModificationName(this.air, item.name) })
+      modalWidth = "900@sf/@pf"
+      modalHeight = "300@sf/@pf"
+      columnsRatio = 0.35
+      options = [[USEROPT_DIFFICULTY, "spinner"]]
+      optionsConfig = {
+        missionName = misInfo.name,
+        gm = GM_TRAINING
+      }
+      applyAtClose = false
+      wndOptionsMode = OPTIONS_MODE_TRAINING
+      applyFunc = function() {
+        if (!::g_squad_utils.canJoinFlightMsgBox())
+          return
+        this.shouldBeRestoredOnMainMenu = true
+        startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon)
+      }.bindenv(this)
+    }
+
+    handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
+  }
+
   function onAltModActionCommon(obj) { //only buy atm before no research.
     let idx = this.getItemIdxByObj(obj)
     if (idx < 0)
@@ -1476,7 +1523,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       return getByCurBundle(this.air, item, @(_a, it) this.onBuy(it.guiPosIdx, buyAmount))
 
     if (item.type == weaponsItem.weapon) {
-      if (!::shop_is_weapon_available(this.airName, item.name, false, true))
+      if (!shop_is_weapon_available(this.airName, item.name, false, true))
         return
     }
     else if (item.type == weaponsItem.primaryWeapon) {
@@ -1524,7 +1571,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       weaponsPurchase(this.air, {
         modItem = modItem,
         open = open,
-        onFinishCb = @() ::move_mouse_on_child(listObj, curValue)
+        onFinishCb = @() move_mouse_on_child(listObj, curValue)
       })
     }, this))
   }
@@ -1587,7 +1634,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     }
 
     if (needSave) {
-      this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      this.taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
         let cb = u.isFunction(func) ? Callback(func, this) : func
         addTask(this.taskId, { showProgressBox = true }, cb)
@@ -1599,7 +1646,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function getAutoPurchaseValue() {
-    return this.isOwn && ::get_auto_buy_modifications()
+    return this.isOwn && get_auto_buy_modifications()
   }
 
   function onChangeAutoPurchaseModsValue(obj) {
@@ -1608,8 +1655,8 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (value == savedValue)
       return
 
-    ::set_auto_buy_modifications(value)
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+    set_auto_buy_modifications(value)
+    save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   }
 
   function goBack() {
@@ -1617,7 +1664,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.sendModPurchasedStatistic(this.air)
 
     if (this.researchMode) {
-      let curResName = ::shop_get_researchable_module_name(this.airName)
+      let curResName = shop_get_researchable_module_name(this.airName)
       if (getTblValue("name", this.lastResearchMod, "") != curResName)
         this.setModificatonOnResearch(getModificationByName(this.air, curResName))
     }
@@ -1636,21 +1683,23 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function onDestroy() {
-    if (this.researchMode && findAnyNotResearchedMod(this.air))
+    if ((this.researchMode && findAnyNotResearchedMod(this.air)) || this.shouldBeRestoredOnMainMenu)
       handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
   }
 
   function getHandlerRestoreData() {
-    if (!this.researchMode || (this.setResearchManually && !this.availableFlushExp))
-      return null
-    return {
-      openData = {
-        researchMode = this.researchMode
-        researchBlock = this.researchBlock
+    if (this.shouldBeRestoredOnMainMenu)
+      return {}
+    if (this.researchMode && (!this.setResearchManually || this.availableFlushExp))
+      return {
+        openData = {
+          researchMode = this.researchMode
+          researchBlock = this.researchBlock
+        }
       }
-    }
+    return null
   }
 
   function onEventUniversalSpareActivated(_p) {
@@ -1690,18 +1739,23 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     showDamageControl(this.air)
   }
 
-  function markSeenNightBattleIfNeed(modObj, modSlotButtonsNest) {
+  function getUnhoveredItem(modObj, modSlotButtonsNest) {
     if (modObj.isHovered() || modSlotButtonsNest.isHovered())
-      return
-
+      return null
     let idx = this.getItemIdxByObj(modObj)
-    if (idx < 0)
-      return
+    return idx < 0 ? null : this.items[idx]
+  }
 
-    let item = this.items[idx]
+  function markSeenNightBattleIfNeed(item) {
     if (!needShowUnseenNightBattlesForUnit(this.air, item.name))
       return
     markSeenNightBattle()
+  }
+
+  function markSeenModTutorialIfNeeded(item) {
+    if (!needShowUnseenModTutorialForUnitMod(this.air, item))
+      return
+    markSeenModTutorial(item)
   }
 
   function onEventMarkSeenNightBattle(_) {
@@ -1718,11 +1772,226 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     }
   }
 
-  onModUnhover = @(obj) this.markSeenNightBattleIfNeed(obj, obj.findObject("modSlotButtonsNest"))
-  onModButtonNestUnhover = @(obj) this.markSeenNightBattleIfNeed(obj.getParent(), obj)
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/weaponry/weaponryHelp.blk"
+      objContainer = this.scene.findObject("mods_frame")
+    }
+
+    let links = [
+      { obj = [$"auto_purchase_mods"], msgId = "hint_auto_purchase_mods"}
+      { obj = [$"progressBonus", "progressModsThumb"], msgId = "hint_progressBonus"}
+      { obj = [$"weapons", "header_weapons"], msgId = "hint_weapons"}
+    ]
+
+    let itemsByStatus = {}
+    itemsByStatus.researched <- []
+    itemsByStatus.canResearch <- []
+    itemsByStatus.cantResearch <- []
+    itemsByStatus.progress <- []
+    itemsByStatus.buyed <- []
+
+    let itemsLength = this.items.len()
+    for ( local i = 0; i < itemsLength; i++) {
+      let item = this.items[i]
+      if (item.type == itemType.TICKET)
+        continue
+
+      if (item?.isBonusTier || item?.isHidden || item.name == "allowPremDecals") continue
+
+      if (item.name == "spare") {
+        links.append({ obj = [$"item_{i}"], msgId = "hint_item_spare"})
+        continue
+      }
+
+      if (item.name == "premExpMul") {
+        links.append({ obj = [$"item_{i}"], msgId = "hint_item_talisman"})
+        continue
+      }
+
+      if (item.name == "skin") {
+        let camouflageComplete = item.progress < 0 ? "_complete" : ""
+        links.append({ obj = [$"item_{i}"], msgId = $"hint_item_camouflage{camouflageComplete}"})
+        continue
+      }
+
+      let statusTbl = getItemStatusTbl(this.air , item)
+      if (statusTbl.maxAmount == 0) continue
+
+      let itemReqExp = item?.reqExp ?? 0
+      let canResearch = canResearchItem(this.air, item, false)
+      let isModResearching = canResearch &&
+                             statusTbl.modExp >= 0 &&
+                             statusTbl.modExp < itemReqExp &&
+                             !statusTbl.amount
+
+      if (isModResearching && isModInResearch(this.air, item)) {
+        itemsByStatus.progress.append($"item_{i}")
+        continue
+      }
+
+      if (statusTbl.unlocked) {
+        if (statusTbl?.amount && statusTbl.amount > 0) {
+          itemsByStatus.buyed.append($"item_{i}")
+        } else {
+          itemsByStatus.researched.append($"item_{i}")
+        }
+      } else if (canResearch) {
+        itemsByStatus.canResearch.append($"item_{i}")
+      }
+    }
+
+    let hintSizes = {
+      hintWidth = to_pixels("2@shopWidthMax")
+      hintHeight = to_pixels("1@modItemHeight + 4@modPadSize")
+      padding = to_pixels("1@helpInterval")
+    }
+
+    let rects = [] //added hint and items rects
+
+    let itemStatusTypes = [
+     {type = "progress", hintId = "hint_progressItem"}
+     {type = "canResearch", hintId = "hint_noProgressItem"}
+     {type = "researched", hintId = "hint_researchedItem"}
+     {type = "buyed", hintId = "hint_buyedItem"}
+    ]
+
+    local safeArea = null //rect for hints
+    let window = this.scene.findObject("main_modifications")
+    if (window?.isValid()) {
+      let tierLine1 = window.findObject("tierLine_1")
+      let tierLine1Pos = tierLine1.getPos()
+      let saveAreaPaddingTop = tierLine1Pos[1] - to_pixels("1@cIco + 2@buttonImgPadding")
+      let sw = to_pixels("sw")
+      let windowPos = window.getPos()
+      let windowSize = window.getSize()
+      safeArea = {x = 0, y = saveAreaPaddingTop, w = sw, h = windowPos[1] + windowSize[1] - saveAreaPaddingTop}
+    }
+
+    foreach (itemStatusType in itemStatusTypes) {
+      if (!itemsByStatus?[itemStatusType.type])
+        continue
+      foreach (itemId in itemsByStatus[itemStatusType.type]) {
+        let hintRect = findPlaceForHint(this.scene.findObject(itemId), rects, hintSizes, safeArea)
+        if (hintRect) {
+          links.append({ obj = [itemId], msgId = itemStatusType.hintId, rect = hintRect})
+          break;
+        }
+      }
+    }
+
+    res.links <- links
+    return res
+  }
+
+  function prepareHelpPage(handler) {
+    let spechialHintsParams = {
+      hint_item_talisman = {
+        hintName = "hint_item_talisman"
+        shiftX = "+ 0.8@modItemWidth - 1@bw"
+        shiftY = "- 2@helpInterval - h - 1@bh"
+      }
+      hint_item_camouflage_complete = {
+        hintName = "hint_item_camouflage_complete"
+        shiftX = "+ 1@modItemWidth + 1@helpInterval - 1@bw"
+        shiftY = "- 1@bh - h"
+        sizeMults = [0,1]
+      }
+      hint_item_camouflage = {
+        hintName = "hint_item_camouflage"
+        shiftX = "+ 1@modItemWidth + 1@helpInterval - 1@bw"
+        shiftY = "- 1@bh - h"
+        sizeMults = [0,1]
+      }
+      hint_auto_purchase_mods = {
+        hintName = "hint_auto_purchase_mods"
+        shiftX = $"- 1@bw",
+        shiftY = $"+ 1@helpInterval - 1@bh"
+        sizeMults = [0,1]
+      }
+      hint_progressBonus = {
+        objName = "mods_frame"
+        hintName = "hint_progressBonus"
+        shiftX = $"+ 2@shopWidthMax - 1@bw + 2@helpInterval"
+        posY = $"sh - 1@bh - h - 2@helpInterval"
+        sizeMults = [0,1]
+      }
+      hint_item_spare = {
+        hintName = "hint_item_spare"
+        shiftX = $"+ 1.8@modItemWidth - w - 1@bw -1@helpInterval"
+        shiftY = $"- h - 2@helpInterval - 1@bh"
+      }
+    }
+
+    let mainModifications = this.scene.findObject("main_modifications")
+    if ( mainModifications?.isValid()) {
+      let mainModsPos = mainModifications.getPos()
+      let hintLeftOffset = to_pixels("1.5@shopWidthMax - 1@modItemWidth")
+      if ( mainModsPos[0] > hintLeftOffset ) {
+        spechialHintsParams.hint_weapons <- {
+          objName = "main_modifications"
+          hintName = "hint_weapons"
+          shiftX = $"+ 1@modItemWidth - w-  1@bw"
+          shiftY = $"- 1@bh + 1@helpInterval"
+        }
+      } else {
+        let hintObj = handler.scene.findObject("hint_weapons")
+        if (hintObj?.isValid()) {
+          hintObj.pos = $"sw - w - 2@bw - 2@helpInterval, sh - 2@bh -h  - 2@helpInterval"
+        }
+      }
+    }
+
+    foreach (link in handler.config.links) {
+      if (spechialHintsParams?[link.msgId]) {
+        let spechialHint = spechialHintsParams[link.msgId]
+        if (!spechialHint?.objName) {
+          if (u.isArray(link.obj))
+            spechialHint.objName <- link.obj[0]
+          else
+            spechialHint.objName <- link.obj
+        }
+        updateHintPosition(this.scene, handler.scene, spechialHint)
+        continue
+      }
+
+      if (link?.rect) {
+        let hintObj = handler.scene.findObject(link.msgId)
+        if (hintObj.isValid)
+          hintObj.pos = $"{link.rect.x} -1@bw, {link.rect.y} -1@bh"
+      }
+    }
+
+  }
+
+  function onEventMarkSeenModTutorial(params) {
+    foreach(idx, item in this.items)
+      if (item?.tutorialMission == params.missionName)
+        this.updateItem(idx)
+  }
+
+  function onModUnhover(obj) {
+    let item = this.getUnhoveredItem(obj, obj.findObject("modSlotButtonsNest"))
+    if (!item)
+      return
+    this.markSeenNightBattleIfNeed(item)
+    this.markSeenModTutorialIfNeeded(item)
+  }
+
+  function onModButtonNestUnhover(obj) {
+    let item = this.getUnhoveredItem(obj.getParent(), obj)
+    if (!item)
+      return
+    this.markSeenNightBattleIfNeed(item)
+    this.markSeenModTutorialIfNeeded(item)
+  }
 }
 
-gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
   curValue = 0
   minValue = 0
   maxValue = 1
@@ -1766,7 +2035,7 @@ gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
     ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
-    ::move_mouse_on_obj(this.scene.findObject("skillSlider"))
+    move_mouse_on_obj(this.scene.findObject("skillSlider"))
   }
 
   function updateSlider() {

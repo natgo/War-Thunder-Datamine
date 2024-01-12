@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_axis_digital, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -12,7 +13,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getShortcutData } = require("%scripts/controls/shortcutsUtils.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
-gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
+gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/joystickAxisInput.blk"
   sceneNavBlkName = null
@@ -94,7 +95,7 @@ gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
               def = rawPos,
               last = rawPos,
               stuckTime = 0.0,
-              inited = ::is_axis_digital(idx) || rawPos != 0
+              inited = is_axis_digital(idx) || rawPos != 0
             }
       this.axisRawValues[idx] = res
     }
@@ -191,7 +192,7 @@ gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
     if (!checkObj(listObj))
       return
 
-    let curDevice = ::joystick_get_default()
+    let curDevice = joystick_get_default()
     let curPreset = ::g_controls_manager.getCurPreset()
     this.numAxisInList = curDevice ? curPreset.getNumAxes() : 0
 
@@ -281,7 +282,7 @@ gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
     if (this.scene.getModalCounter() > 0)
       return
 
-    let curDevice = ::joystick_get_default()
+    let curDevice = joystick_get_default()
     if (!curDevice)
       return
 
@@ -414,7 +415,7 @@ gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
 
     local actionText = ""
     foreach (item in alreadyBindedAxes)
-      actionText += ((actionText == "") ? "" : ", ") + loc("controls/" + item.id)
+      actionText += ((actionText == "") ? "" : ", ") + loc($"controls/{item.id}")
     let msg = loc("hotkeys/msg/unbind_axis_question", {
       action = actionText
     })

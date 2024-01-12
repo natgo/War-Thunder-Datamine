@@ -1,16 +1,16 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_unlock_type, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription, getEntitlementLocParams, premiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
@@ -28,6 +28,9 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -45,6 +48,12 @@ let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = requi
 //                                                  receivedPrizes (true) - show prizes as received.
 //  getPrizesListView(content, params = null) - get full prizes list not stacked.
 //
+
+enum prizesStack {
+  NOT_STACKED
+  DETAILED
+  BY_TYPE
+}
 
 enum PRIZE_TYPE {
   UNKNOWN
@@ -616,7 +625,7 @@ let prizeViewConfig = {
       name = loc("trophy/unlockables_names/aircraft")
     else {
       name = getUnitName(prize.unit, true)
-      color = ::getUnitClassColor(prize.unit)
+      color = getUnitClassColor(prize.unit)
     }
   }
   else if (prize?.rentedUnit) {
@@ -624,7 +633,7 @@ let prizeViewConfig = {
       name = loc("shop/unitRent")
     else {
       let unitName = prize.rentedUnit
-      let unitColor = ::getUnitClassColor(unitName)
+      let unitColor = getUnitClassColor(unitName)
       name = loc("shop/rentUnitFor", {
         unit = colorize(unitColor, getUnitName(unitName, true))
         time = colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
@@ -670,7 +679,7 @@ let prizeViewConfig = {
 
     local unlockTypeName = isLoadingBgUnlock(unlockId)
       ? loc("loading_bg")
-      : loc($"trophy/unlockables_names/{typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"}")
+      : loc($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
     unlockTypeName = colored ? colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
 
     name = unlockTypeName
@@ -686,7 +695,7 @@ let prizeViewConfig = {
     color = "commonTextColor"
   }
   else if (prize?.unlockType)
-    name = loc("trophy/unlockables_names/" + prize.unlockType)
+    name = loc($"trophy/unlockables_names/{prize.unlockType}")
   else if (prize?.resource) {
     if (prize?.resourceType) {
       let decoratorType = getTypeByResourceType(prize.resourceType)
@@ -705,7 +714,7 @@ let prizeViewConfig = {
     }
   }
   else if (prize?.resourceType)
-    name = loc("trophy/unlockables_names/" + prize.resourceType)
+    name = loc($"trophy/unlockables_names/{prize.resourceType}")
   else if (prize?.gold)
     name = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
   else if (prize?.warpoints)
@@ -758,12 +767,12 @@ let prizeViewConfig = {
     return "#ui/gameuiskin#item_type_rent.svg"
   if (prize?.item) {
     let item = ::ItemsManager.findItemById(prize.item)
-    return item?.getSmallIconName() ?? ::BaseItem.typeIcon
+    return item?.getSmallIconName() ?? BaseItem.typeIcon
   }
   if (prize?.trophy) {
     let item = ::ItemsManager.findItemById(prize.trophy)
     if (!item)
-      return ::BaseItem.typeIcon
+      return BaseItem.typeIcon
     let topPrize = item.getTopPrize()
     return topPrize ? this.getPrizeTypeIcon(topPrize) : "#ui/gameuiskin#item_type_trophies.svg"
   }
@@ -774,7 +783,7 @@ let prizeViewConfig = {
   if (prize?.unlock || prize?.unlockType) {
     local unlockType = prize?.unlockType || getUnlockType(prize?.unlock)
     if (type(unlockType) == "string")
-      unlockType = ::get_unlock_type(unlockType)
+      unlockType = get_unlock_type(unlockType)
     return getTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 
@@ -970,7 +979,7 @@ let prizeViewConfig = {
   let units = []
   foreach (p in stack.params.prizes) {
     let unitId = isRent ? p.rentedUnit : p.unit
-    let color = ::getUnitClassColor(unitId)
+    let color = getUnitClassColor(unitId)
     local name = colorize(color, getUnitName(unitId))
     if (isRent)
       name = "".concat(name, this._getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))
@@ -1065,7 +1074,7 @@ let prizeViewConfig = {
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
-  let unitPlate = ::build_aircraft_item(unitName, unit, {
+  let unitPlate = buildUnitSlot(unitName, unit, {
     hasActions = true,
     status = (!receivedPrizes && isBought) ? "locked" : "canBuy",
     isLocalState = isShowLocalState
@@ -1167,7 +1176,7 @@ let prizeViewConfig = {
     return null
 
   let { showTooltip = true } = params
-  let crew = ::get_crew_by_id(prize?.crew ?? 0)
+  let crew = getCrewById(prize?.crew ?? 0)
   let title = colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + loc("ui/colon")
               + colorize("activeTextColor", getUnitName(unit))
               + ", " + colorize("userlogColoredText", loc("crew/qualification/" + specLevel))
@@ -1297,7 +1306,7 @@ let prizeViewConfig = {
   let view = params ? clone params : {}
   if ("headerParams" in params) {
     view.__update(params.headerParams)
-    params.rawdelete("headerParams")
+    params.$rawdelete("headerParams")
   }
 
   if (content.len() == 1) {
@@ -1307,7 +1316,7 @@ let prizeViewConfig = {
   }
 
   if (!view?.timerId && view?.header == "")
-    delete view.header
+    view.$rawdelete("header")
 
   view.list <- []
   foreach (prize in content) {
@@ -1343,7 +1352,7 @@ let prizeViewConfig = {
     let item = ::ItemsManager.findItemById(itemId)
     if (!item || workshop.shouldDisguiseItem(item))
       return view
-    if (item.canPreview() && ::isInMenu()) {
+    if (item.canPreview() && isInMenu()) {
       let gcb = globalCallbacks.ITEM_PREVIEW
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"

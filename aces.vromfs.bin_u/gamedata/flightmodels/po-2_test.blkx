@@ -10,7 +10,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -1776,31 +1776,53 @@
             "gunnerDm": "gunner2_dm",
             "gunDm": "gun1_dm",
             "partsDP": "gun1_dm",
-            "bullets": 200,
+            "bullets": 400,
             "turret": {
               "head": "turret1",
               "gun": "gun1"
             },
             "limits": {
               "yaw": [
-                -30.0,
-                30.0
+                -60.0,
+                60.0
               ],
               "pitch": [
-                -5.0,
-                35.0
+                -16.0,
+                62.0
               ]
             },
-            "limitsDeadzone": {
-              "yaw": [
-                -1.0,
-                1.0
-              ],
-              "pitch": [
-                -5.0,
-                17.0
-              ]
-            }
+            "limitsDeadzone": [
+              {
+                "yaw": [
+                  -8.0,
+                  8.0
+                ],
+                "pitch": [
+                  -20.0,
+                  20.0
+                ]
+              },
+              {
+                "yaw": [
+                  -35.0,
+                  -8.0
+                ],
+                "pitch": [
+                  -10.0,
+                  -3.0
+                ]
+              },
+              {
+                "yaw": [
+                  8.0,
+                  35.0
+                ],
+                "pitch": [
+                  -10.0,
+                  -3.0
+                ]
+              }
+            ]
           }
         }
       },

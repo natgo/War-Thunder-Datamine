@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import set_presence_to_player, is_online_available
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
@@ -15,7 +16,7 @@ let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
-let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
+let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
   wndGameMode = GM_DOMINATION
   sceneBlkName = "%gui/autoStartBattle.blk"
@@ -30,7 +31,7 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   autoStartQueueWnd = null
 
   function initScreen() {
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
 
@@ -106,7 +107,7 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onStartAction() {
-    if (!::is_online_available()) {
+    if (!is_online_available()) {
       let handler = this
       this.goForwardIfOnline(function() {
           if (handler?.isValid())

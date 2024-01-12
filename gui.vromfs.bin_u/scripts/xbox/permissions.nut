@@ -1,16 +1,18 @@
 let logX = require("%sqstd/log.nut")().with_prefix("[PERMISSIONS] ")
 let {Privilege, State, DenyReason, retrieve_current_state, resolve_with_ui} = require("%xboxLib/impl/privileges.nut")
-let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser} = require("%xboxLib/crossnetwork.nut")
+let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser} = require("%scripts/xbox/crossnetwork.nut")
 let {CommunicationState} = require("%xboxLib/impl/crossnetwork.nut")
 
 
 let function crossnetwork_comms_to_int(state) {
-  switch (state) {
-    case CommunicationState.Allowed: return XBOX_COMMUNICATIONS_ALLOWED
-    case CommunicationState.Blocked: return XBOX_COMMUNICATIONS_BLOCKED
-    case CommunicationState.Muted: return XBOX_COMMUNICATIONS_MUTED
-    case CommunicationState.FriendsOnly: return XBOX_COMMUNICATIONS_ONLY_FRIENDS
-  }
+  if (state == CommunicationState.Allowed)
+    return XBOX_COMMUNICATIONS_ALLOWED
+  if (state == CommunicationState.Blocked)
+    return XBOX_COMMUNICATIONS_BLOCKED
+  if (state == CommunicationState.Muted)
+    return XBOX_COMMUNICATIONS_MUTED
+  if (state == CommunicationState.FriendsOnly)
+    return XBOX_COMMUNICATIONS_ONLY_FRIENDS
   return -1;
 }
 

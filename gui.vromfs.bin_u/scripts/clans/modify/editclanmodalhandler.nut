@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -6,8 +7,10 @@ let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalHandler {
+gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
 
   isMyClan = false
@@ -52,7 +55,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
     let clanNameObj = this.scene.findObject("newclan_name")
     clanNameObj.setValue(this.clanData.name)
 
-    ::select_editbox(clanNameObj)
+    select_editbox(clanNameObj)
 
     this.update()
   }
@@ -140,7 +143,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
 
     if (cost <= ::zero_money)
       this.editClanInfo()
-    else if (::check_balance_msgBox(cost)) {
+    else if (checkBalanceMsgBox(cost)) {
       let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
@@ -156,11 +159,11 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
   }
 
   function update() {
-    this.isMyClan = ::clan_get_my_clan_id() == this.clanData.id
-    this.adminMode = ::clan_get_admin_editor_mode()
+    this.isMyClan = clan_get_my_clan_id() == this.clanData.id
+    this.adminMode = clan_get_admin_editor_mode()
     this.myRights = []
     if (this.isMyClan || this.adminMode)
-      this.myRights = ::clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : ::clan_get_my_role())
+      this.myRights = ::clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : clan_get_my_role())
 
     this.updateButtons()
   }
@@ -174,7 +177,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
                           canUpgrade
 
     if (upgradeMembersButtonVisible) {
-      let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
+      let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
       let upgStep = this.clanData.clanType.getMembersUpgradeStep()
       placePriceTextToButton(this.scene, "btn_upg_members", loc("clan/members_upgrade_button", { step = upgStep }), cost)
     }
@@ -185,8 +188,8 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
 
   // Override
   function onUpgradeMembers() {
-    let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
-    if (::check_balance_msgBox(cost)) {
+    let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
+    if (checkBalanceMsgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
       let msgText = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
@@ -204,7 +207,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
 
   // Override
   function onEventClanInfoUpdate(_p) {
-    if (this.clanData && this.clanData.id == ::clan_get_my_clan_id()) {
+    if (this.clanData && this.clanData.id == clan_get_my_clan_id()) {
       if (!::my_clan_info)
         return this.goBack()
       this.clanData = ::my_clan_info
@@ -226,7 +229,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
   }
 
   function onDisbandClan() {
-    if ((!this.isMyClan || !isInArray("LEADER", this.myRights)) && !::clan_get_admin_editor_mode())
+    if ((!this.isMyClan || !isInArray("LEADER", this.myRights)) && !clan_get_admin_editor_mode())
       return;
 
     this.msgBox("disband_clan", loc("clan/disbandClanConfirmation"),
@@ -244,4 +247,11 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
       rewardsList = this.clanData.getAllRegaliaTags()
     })
   }
+}
+
+let openEditClanWnd = @(clanData, owner) loadHandler(
+  gui_handlers.EditClanModalhandler, { clanData, owner })
+
+return {
+  openEditClanWnd
 }

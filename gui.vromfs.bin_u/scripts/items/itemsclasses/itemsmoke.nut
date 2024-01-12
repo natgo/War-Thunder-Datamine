@@ -1,13 +1,15 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getUnlockCost, buyUnlock, getUnlockType, isUnlockOpened
+let { getUnlockCost, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
@@ -15,9 +17,18 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Smoke <- class extends ::BaseItem {
+function mergeToBlk(sourceTable, blk) {
+  foreach (idx, val in sourceTable)
+    blk[idx] = val
+}
+
+let Smoke = class (BaseItem) {
   static iType = itemType.SMOKE
+  static name = "Smoke"
 
   needUpdateListAfterAction = true
   usingStyle = ""
@@ -109,7 +120,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
   function openTestFlight(unit) {
     let curItem = this
-    ::last_called_gui_testflight = { globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } }
+    set_last_called_gui_testflight({ globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } })
     ::update_test_flight_unit_info({unit})
     ::cur_aircraft_name = unit.name
     let defaultValues = {
@@ -140,13 +151,13 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
       return script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")
 
-    ::mergeToBlk({
+    mergeToBlk({
       isPersistentSmoke = true
       persistentSmokeId = smokeId
     }, misInfo)
 
     select_training_mission(misInfo)
-    ::queues.checkAndStart(@() ::get_cur_base_gui_handler().goForward(::gui_start_flight),
+    ::queues.checkAndStart(@() get_cur_base_gui_handler().goForward(::gui_start_flight),
       null, "isCanNewflight")
   }
 
@@ -198,3 +209,4 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
     return $"{loc("ugm/tags")}{loc("ui/colon")}{loc("ui/comma").join(tagsLoc)}"
   }
 }
+return {Smoke}

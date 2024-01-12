@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import save_profile, enable_bullets_modifications
 from "%scripts/dagui_library.nut" import *
 let { get_meta_mission_info_by_name, select_training_mission } = require("guiMission")
 let { set_game_mode } = require("mission")
@@ -9,6 +10,8 @@ let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
   USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
 } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut")
 
 const MIS_NAME = "tutorial_destroyer_battle_arcade"
 
@@ -18,7 +21,7 @@ let function isGmForUnitType(esUnitType) {
 }
 
 let function findUnitInSlotByType(esUnitType) {
-  let crews = ::get_crews_list_by_country(profileCountrySq.value)
+  let crews = getCrewsListByCountry(profileCountrySq.value)
   let curUnit = getPlayerCurUnit()
   let units = crews.map(@(c) ::g_crew.getCrewUnit(c))
     .filter(@(u) u?.esUnitType == esUnitType)
@@ -28,14 +31,14 @@ let function findUnitInSlotByType(esUnitType) {
 let isUnitTypeInSlot = @(esUnitType) findUnitInSlotByType(esUnitType) != null
 
 let function canStartShipTrainingMission() {
-  if (!::my_stats.isStatsLoaded() || !::g_login.isProfileReceived())
+  if (!isStatsLoaded() || !::g_login.isProfileReceived())
     return false
 
   let hasLaunches = loadLocalByAccount($"tutor/mission_launched_{MIS_NAME}", false)
   if (hasLaunches)
     return false
 
-  let hasRespawns = ::my_stats.getPvpRespawnsOnUnitType(ES_UNIT_TYPE_SHIP) > 0
+  let hasRespawns = getPvpRespawnsOnUnitType(ES_UNIT_TYPE_SHIP) > 0
   if (hasRespawns)
     return false
 
@@ -89,7 +92,7 @@ let function startShipTrainingMission() {
   set_gui_option(USEROPT_SKIN, "default")
   updateBulletCountOptions(unit)
 
-  ::enable_bullets_modifications(::aircraft_for_weapons)
+  enable_bullets_modifications(::aircraft_for_weapons)
   ::enable_current_modifications(::aircraft_for_weapons)
 
   ::current_campaign_mission = MIS_NAME
@@ -98,7 +101,7 @@ let function startShipTrainingMission() {
   ::gui_start_flight()
 
   saveLocalByAccount($"tutor/mission_launched_{MIS_NAME}", true)
-  ::save_profile(false)
+  save_profile(false)
 }
 
 return {

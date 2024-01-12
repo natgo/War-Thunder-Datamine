@@ -1,11 +1,13 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_get_country_excess_exp, wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager, is_in_loading_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
@@ -27,10 +29,14 @@ let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/u
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let {
-  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit
+  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
+let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
+let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -38,12 +44,12 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
   shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
 ) {
   let actions = []
-  if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || ::is_in_loading_screen())
+  if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || is_in_loading_screen())
     return actions
 
-  let inMenu = ::isInMenu()
+  let inMenu = isInMenu()
   let isUsable  = unit.isUsable()
-  crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : ::getCrewByAir(unit))
+  crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : getCrewByAir(unit))
 
   foreach (action in actionsNames) {
     local actionText = ""
@@ -145,7 +151,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
-        || needShowUnseenNightBattlesForUnit(unit)
+        || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {
@@ -156,14 +162,14 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "take") {
       actionText = loc("mainmenu/btnTakeAircraft")
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      showAction = inMenu && isUsable && !::isUnitInSlotbar(unit)
-      actionFunc = @() unitActions.take(unit, {
+      showAction = inMenu && isUsable && !isUnitInSlotbar(unit)
+      actionFunc = @() takeUnitInSlotbar(unit, {
         unitObj = unitObj
         shouldCheckCrewsReady = shouldCheckCrewsReady
       })
     }
     else if (action == "repair") {
-      let repairCost = ::wp_get_repair_cost(unit.name)
+      let repairCost = wp_get_repair_cost(unit.name)
       actionText = loc("mainmenu/btnRepair") + ": " + Cost(repairCost).getTextAccordingToBalance()
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
@@ -171,13 +177,13 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionFunc = @() unitActions.repairWithMsgBox(unit)
     }
     else if (action == "buy") {
-      let isSpecial   = ::isUnitSpecial(unit)
+      let isSpecial   = isUnitSpecial(unit)
       let isGift   = isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
       let canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
         && (isSpecial || ::isUnitResearched(unit))
-      let canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
+      let canBuyIngame = !canBuyOnline && (canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
       local priceText = ""
 
@@ -216,7 +222,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       showAction = inMenu && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
-        actionFunc = @() ::OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
+        actionFunc = @() showUnitGoods(unit.name, "unit_context_menu")
       else
         actionFunc = @() ::buyUnit(unit)
     }
@@ -228,13 +234,13 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let isSquadronVehicle = unit.isSquadronVehicle()
       let isInClan = ::is_in_clan()
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
-      let squadronExp = min(::clan_get_exp(), reqExp)
+      let squadronExp = min(clan_get_exp(), reqExp)
       let canFlushSquadronExp = hasFeature("ClanVehicles") && isSquadronVehicle
         && squadronExp > 0
       if (isSquadronVehicle && isInClan && isInResearch && !canFlushSquadronExp && !needChosenResearchOfSquadron)
         continue
 
-      let countryExp = ::shop_get_country_excess_exp(getUnitCountry(unit), getEsUnitType(unit))
+      let countryExp = shop_get_country_excess_exp(getUnitCountry(unit), getEsUnitType(unit))
       let getReqExp = reqExp < countryExp ? reqExp : countryExp
       let needToFlushExp = !isSquadronVehicle && shopResearchMode && countryExp > 0
       let squadronExpText = Cost().setSap(squadronExp).tostring()

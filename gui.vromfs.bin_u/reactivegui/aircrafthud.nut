@@ -23,10 +23,12 @@ let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
   laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
+let { IsMlwsLwsHudVisible } = require("twsState.nut")
 let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
+let radarHud = require("%rGui/radar.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -45,10 +47,17 @@ let radarPosWatched = Computed(@() [
 ])
 
 let twsSize = sh(20)
-let twsPosWatched = Computed(@() [
-  bw.value + 0.01 * rw.value,
-  bh.value + 0.37 * rh.value
-])
+let twsPosWatched = Computed(@()
+  IsMlwsLwsHudVisible.value ?
+  [
+    bw.value + 0.02 * rw.value,
+    bh.value + 0.43 * rh.value
+  ] :
+  [
+    bw.value + 0.01 * rw.value,
+    bh.value + 0.38 * rh.value
+  ]
+)
 
 let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
@@ -118,8 +127,8 @@ let function aircraftGunnerHud() {
 
 let function aircraftPilotHud() {
   return {
-    watch = [IsPilotHudVisible, isParamTableActivated]
-    children = IsPilotHudVisible.value && isParamTableActivated.value
+    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible]
+    children = (IsPilotHudVisible.value || OpticAtgmSightVisible.value || LaserAtgmSightVisible.value) && isParamTableActivated.value
       ? aircraftParamsTable(HudParamColor)
       : null
   }
@@ -179,7 +188,8 @@ return {
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null
       aircraftSightHud
       !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
-      planeHmd(sw(100), sh(100))
+      planeHmd
+      radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor)
     ]
   }
 

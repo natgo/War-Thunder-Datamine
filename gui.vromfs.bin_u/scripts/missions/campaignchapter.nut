@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_system_ui_active, add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,7 +9,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, sa
 } = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -29,13 +31,25 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
+let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
 registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
+
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
-gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
+enum MIS_PROGRESS { //value received from get_mission_progress
+  COMPLETED_ARCADE    = 0
+  COMPLETED_REALISTIC = 1
+  COMPLETED_SIMULATOR = 2
+  UNLOCKED            = 3 //unlocked but not completed
+  LOCKED              = 4
+}
+
+
+gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   applyAtClose = false
 
@@ -82,7 +96,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateFavorites()
     this.initDescHandler()
     this.updateWindow()
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler() {
@@ -106,7 +120,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCollapseListSaveId() {
-    return "mislist_collapsed_chapters/" + ::get_game_mode_name(this.gm)
+    return "mislist_collapsed_chapters/" + get_game_mode_name(this.gm)
   }
 
   function updateWindow() {
@@ -135,7 +149,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
       let info = DataBlock()
       dynamicGetVisual(info)
       let l_file = info.getStr("layout", "")
-      let dynLayouts = ::get_dynamic_layouts()
+      let dynLayouts = getDynamicLayouts()
       for (local i = 0; i < dynLayouts.len(); i++)
         if (dynLayouts[i].mis_file == l_file) {
           title = loc("dynamic/" + dynLayouts[i].name)
@@ -221,25 +235,25 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
 
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
-      if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING)
-        switch (mission.progress) {
-          case 0:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_arcade"
-            break
-          case 1:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_realistic"
-            break
-          case 2:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_simulator"
-            break
-          case 3:
-            elemCssId = "mission_item_unlocked"
-            medalIcon = ""
-            break
+      if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
+        let progress = mission.progress
+        if (progress == 0) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
         }
+        else if (progress == 1) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+        }
+        else if (progress == 2) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+        }
+        else if (progress == 3) {
+          elemCssId = "mission_item_unlocked"
+          medalIcon = ""
+        }
+      }
       else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH) {
         elemCssId = "mission_item_unlocked"
         medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
@@ -298,16 +312,16 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function playChapterVideo(chapterName, checkSeen = false) {
     let videoName = "video/" + chapterName
-    if (checkSeen && ::was_video_seen(videoName))
+    if (checkSeen && was_video_seen(videoName))
       return
 
     if (!::check_package_and_ask_download("hc_pacific"))
       return
 
     this.guiScene.performDelayed(this, function(_obj) {
-      if (!::is_system_ui_active()) {
-        ::play_movie(videoName, false, true, true)
-        ::add_video_seen(videoName)
+      if (!is_system_ui_active()) {
+        play_movie(videoName, false, true, true)
+        add_video_seen(videoName)
       }
     })
   }
@@ -370,7 +384,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function onEventSquadDataUpdated(_params) {
@@ -940,7 +954,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onBuyCampaign() {
-    ::purchase_any_campaign()
+    openBrowserForFirstFoundEntitlement(::get_not_purchased_campaigns())
   }
 
   function onEventProfileUpdated(p) {
@@ -949,7 +963,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.SingleMissions <- class extends gui_handlers.CampaignChapter {
+gui_handlers.SingleMissions <- class (gui_handlers.CampaignChapter) {
   sceneBlkName = "%gui/chapter.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -960,7 +974,7 @@ gui_handlers.SingleMissions <- class extends gui_handlers.CampaignChapter {
   }
 }
 
-gui_handlers.SingleMissionsModal <- class extends gui_handlers.SingleMissions {
+gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"

@@ -22,6 +22,7 @@
       "pos": "50%pw-50%w, 1@topBarHeight + 1@blockInterval",
       "position": "root",
       "flow": "vertical",
+      "id": "customizationFrame",
       "tdiv": [
         {
           "size": "pw, fh",
@@ -34,6 +35,7 @@
               "height": "fh",
               "flow": "vertical",
               "frame": {
+                "id": "main_scrollbox",
                 "pos": "0, ph-h",
                 "position": "relative",
                 "width": "1@customizationBlockWidth",
@@ -1167,13 +1169,18 @@
                 "smallFont": "yes",
                 "commonTextColor": "yes",
                 "text": "",
-                "max-width": "pw"
+                "max-width": "pw",
+                "text-shade": "blur:24",
+                "text-shade-x": "1",
+                "text-shade-y": "1",
+                "text-shade-color": "#88000000"
               },
               "Button_text": {
                 "id": "custom_lang_info",
                 "hasWarningText": "yes",
                 "position": "relative",
                 "visualStyle": "noBgr",
+                "isTextArea": "yes",
                 "display": "hide",
                 "on_click": "onCustomLangInfo",
                 "focus_border": {},
@@ -1717,5 +1724,10 @@
         }
       }
     ]
+  },
+  "DummyButton": {
+    "behaviour": "accesskey",
+    "accessKey": "F1",
+    "on_click": "onHelp"
   }
 }

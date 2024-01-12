@@ -1,5 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -29,6 +33,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -108,7 +113,7 @@ let function checkAwardsAmountPeerSession(res, config, streak, name) {
 }
 
 let function setDescriptionByUnlockType(config, unlockBlk) {
-  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
       let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
@@ -122,7 +127,7 @@ let function setDescriptionByUnlockType(config, unlockBlk) {
 }
 
 let function setImageByUnlockType(config, unlockBlk) {
-  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
       let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
@@ -138,7 +143,7 @@ let function setImageByUnlockType(config, unlockBlk) {
     config.image = "#ui/gameuiskin#item_challenge"
 
   let decoratorType = getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
+  if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     config.image <- decoratorType.getImage(decorator)
     config.imgRatio <- decoratorType.getRatio(decorator)
@@ -201,7 +206,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   config.id = id
   config.imgRatio = blk.getReal("aspect_ratio", 1.0)
   config.userLogId = blk?.userLogId
-  config.unlockType = ::get_unlock_type(blk?.type ?? "")
+  config.unlockType = get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")
   config.locStagesDescId = blk.getStr("locStagesDescId", "")
@@ -362,9 +367,9 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 }
 
 ::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk) {
-  let unlockType = ::get_unlock_type(unlockBlk.type)
+  let unlockType = get_unlock_type(unlockBlk.type)
   let decoratorType = getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
+  if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     return decoratorType.getImage(decorator)
   }
@@ -525,7 +530,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
   local uType = config?.unlockType ?? config?.type ?? -1
   if (uType < 0)
-    uType = unlockBlk?.type != null ? ::get_unlock_type(unlockBlk.type) : -1
+    uType = unlockBlk?.type != null ? get_unlock_type(unlockBlk.type) : -1
   local stage = ("stage" in config) ? config.stage : -1
   let isMultiStage = unlockBlk?.isMultiStage ? true : false // means stages are auto-generated (used only for streaks).
   let id = config?.displayId ?? realId
@@ -573,133 +578,126 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   if (config?.showAsTrophyContent)
     res.showAsTrophyContent <- true
 
-  switch (uType) {
-    case UNLOCKABLE_SKIN:
-    case UNLOCKABLE_ATTACHABLE:
-    case UNLOCKABLE_DECAL:
-      let decoratorType = getTypeByUnlockedItemType(uType)
+  if (uType == UNLOCKABLE_SKIN || uType == UNLOCKABLE_ATTACHABLE || uType == UNLOCKABLE_DECAL) {
+    let decoratorType = getTypeByUnlockedItemType(uType)
+    res.image = decoratorType.userlogPurchaseIcon
+    res.name = decoratorType.getLocName(id)
+
+    let decorator = getDecorator(id, decoratorType)
+    if (decorator && !is_in_loading_screen()) {
+      res.image = decoratorType.getImage(decorator)
+      res.descrImage <- res.image
+      res.descrImageSize <- decoratorType.getImageSize(decorator)
+      res.descrImageRatio <- decoratorType.getRatio(decorator)
+    }
+  }
+  else if ( uType == UNLOCKABLE_MEDAL) {
+    if (id != "") {
+      let imagePath = ::get_image_for_unlockable_medal(id)
+      res.image = imagePath
+      res.descrImage <- imagePath
+      res.descrImageSize <- "128, 128"
+      res.tooltipImage <- ::get_image_for_unlockable_medal(id, true)
+      res.tooltipImageSize <- "@profileMedalSize, @profileMedalSize"
+    }
+  }
+
+  else if ( uType == UNLOCKABLE_CHALLENGE) {
+    let challengeDescription = loc(id + "/desc", "")
+    if (challengeDescription && challengeDescription != "")
+      res.desc = challengeDescription
+    res.image = "#ui/gameuiskin#unlock_challenge"
+    res.isLocked <- !isUnlockOpened(id)
+  }
+
+  else if ( uType == UNLOCKABLE_SINGLEMISSION) {
+    res.image = "#ui/gameuiskin#unlock_mission"
+  }
+
+  else if ( uType == UNLOCKABLE_TITLE || uType == UNLOCKABLE_ACHIEVEMENT) {
+    let challengeDescription = loc(id + "/desc", "")
+    if (challengeDescription && challengeDescription != "")
+      res.desc = challengeDescription
+    if (unlockBlk?.battlePassSeason != null) {
+     res.descrImage <- "#ui/gameuiskin#item_challenge"
+     res.descrImageSize <- "@profileMedalSize, @profileMedalSize"
+     res.isLocked <- !isUnlockOpened(id)
+    }
+    res.image = "#ui/gameuiskin#unlock_achievement"
+  }
+
+  else if ( uType == UNLOCKABLE_TROPHY_STEAM) {
+    res.image = "#ui/gameuiskin#unlock_achievement"
+  }
+
+  else if ( uType == UNLOCKABLE_PILOT) {
+    if (id != "") {
+      res.descrImage <- $"#ui/images/avatars/{id}"
+      res.descrImageSize <- "100, 100"
+      res.needFrame <- true
+    }
+  }
+
+  else if ( uType == UNLOCKABLE_STREAK) {
+    local name = loc("streaks/" + id)
+    local desc = loc("streaks/" + id + "/desc", "")
+    local iconStyle = "streak_" + id
+
+    if (isMultiStage && stage >= 0 && unlockBlk?.stage.param != null) {
+      res.stage = stage
+      local maxStreak = unlockBlk.stage.param.tointeger() + stage
+      if ((config?.similarAwards.len() ?? 0) > 0) {
+        checkAwardsAmountPeerSession(res, config, maxStreak, name)
+        maxStreak = res.similarAwardNamesList.maxStreak
+        name = loc("streaks/" + id + "/multiple", name)
+        desc = loc("streaks/" + id + "/multiple/desc", desc)
+      }
+      else if (hasMultiStageLocId(id)) {
+        let stageId = getMultiStageLocId(id, maxStreak)
+        name = loc("streaks/" + stageId)
+        iconStyle = "streak_" + stageId
+      }
+
+      name = format(name, maxStreak)
+      desc = format(desc, maxStreak)
+    }
+    else {
+      if (name.indexof("%d") != null)
+        name = loc("streaks/" + id + "/multiple")
+      if (desc.indexof("%d") != null) {
+        let descValue = unlockBlk?.stage ? (unlockBlk?.stage.param ?? 0) : (unlockBlk?.mode.num ?? 0)
+        if (descValue > 0)
+          desc = format(desc, descValue)
+        else
+          desc = loc("streaks/" + id + "/multiple/desc", desc)
+      }
+    }
+
+    res.name = name
+    res.desc = desc
+    res.image = "#ui/gameuiskin#unlock_streak"
+    res.iconStyle <- iconStyle
+    res.minVal <- unlockCfg?.minVal ?? 0
+    res.maxVal <- unlockCfg?.maxVal ?? 0
+    res.multiplier <- unlockCfg?.multiplier ?? {}
+  }
+
+  else if ( uType == UNLOCKABLE_AWARD) {
+    if (isTask) {}
+
+    else if (id.contains("ship_flag_")) {
+      let decoratorType = decoratorTypes.FLAGS
       res.image = decoratorType.userlogPurchaseIcon
       res.name = decoratorType.getLocName(id)
-
       let decorator = getDecorator(id, decoratorType)
-      if (decorator && !::is_in_loading_screen()) {
+      if (decorator) {
         res.image = decoratorType.getImage(decorator)
         res.descrImage <- res.image
         res.descrImageSize <- decoratorType.getImageSize(decorator)
         res.descrImageRatio <- decoratorType.getRatio(decorator)
       }
-      break
-
-    case UNLOCKABLE_MEDAL:
-      if (id != "") {
-        let imagePath = ::get_image_for_unlockable_medal(id)
-        res.image = imagePath
-        res.descrImage <- imagePath
-        res.descrImageSize <- "128, 128"
-        res.tooltipImage <- ::get_image_for_unlockable_medal(id, true)
-        res.tooltipImageSize <- "@profileMedalSize, @profileMedalSize"
-      }
-      break
-
-    case UNLOCKABLE_CHALLENGE:
-      let challengeDescription = loc(id + "/desc", "")
-      if (challengeDescription && challengeDescription != "")
-        res.desc = challengeDescription
-      res.image = "#ui/gameuiskin#unlock_challenge"
-      res.isLocked <- !isUnlockOpened(id)
-      break
-
-    case UNLOCKABLE_SINGLEMISSION:
-      res.image = "#ui/gameuiskin#unlock_mission"
-      break
-
-    case UNLOCKABLE_TITLE:
-    case UNLOCKABLE_ACHIEVEMENT:
-      let challengeDescription = loc(id + "/desc", "")
-      if (challengeDescription && challengeDescription != "")
-        res.desc = challengeDescription
-      if (unlockBlk?.battlePassSeason != null) {
-       res.descrImage <- "#ui/gameuiskin#item_challenge"
-       res.descrImageSize <- "@profileMedalSize, @profileMedalSize"
-       res.isLocked <- !isUnlockOpened(id)
-      }
-      res.image = "#ui/gameuiskin#unlock_achievement"
-      break
-
-    case UNLOCKABLE_TROPHY_STEAM:
-      res.image = "#ui/gameuiskin#unlock_achievement"
-      break
-
-    case UNLOCKABLE_PILOT:
-      if (id != "") {
-        res.descrImage <- $"#ui/images/avatars/{id}"
-        res.descrImageSize <- "100, 100"
-        res.needFrame <- true
-      }
-      break
-
-    case UNLOCKABLE_STREAK:
-      local name = loc("streaks/" + id)
-      local desc = loc("streaks/" + id + "/desc", "")
-      local iconStyle = "streak_" + id
-
-      if (isMultiStage && stage >= 0 && unlockBlk?.stage.param != null) {
-        res.stage = stage
-        local maxStreak = unlockBlk.stage.param.tointeger() + stage
-        if ((config?.similarAwards.len() ?? 0) > 0) {
-          checkAwardsAmountPeerSession(res, config, maxStreak, name)
-          maxStreak = res.similarAwardNamesList.maxStreak
-          name = loc("streaks/" + id + "/multiple", name)
-          desc = loc("streaks/" + id + "/multiple/desc", desc)
-        }
-        else if (hasMultiStageLocId(id)) {
-          let stageId = getMultiStageLocId(id, maxStreak)
-          name = loc("streaks/" + stageId)
-          iconStyle = "streak_" + stageId
-        }
-
-        name = format(name, maxStreak)
-        desc = format(desc, maxStreak)
-      }
-      else {
-        if (name.indexof("%d") != null)
-          name = loc("streaks/" + id + "/multiple")
-        if (desc.indexof("%d") != null) {
-          let descValue = unlockBlk?.stage ? (unlockBlk?.stage.param ?? 0) : (unlockBlk?.mode.num ?? 0)
-          if (descValue > 0)
-            desc = format(desc, descValue)
-          else
-            desc = loc("streaks/" + id + "/multiple/desc", desc)
-        }
-      }
-
-      res.name = name
-      res.desc = desc
-      res.image = "#ui/gameuiskin#unlock_streak"
-      res.iconStyle <- iconStyle
-      res.minVal <- unlockCfg?.minVal ?? 0
-      res.maxVal <- unlockCfg?.maxVal ?? 0
-      res.multiplier <- unlockCfg?.multiplier ?? {}
-      break
-
-    case UNLOCKABLE_AWARD:
-      if (isTask)
-        break
-
-      if(id.contains("ship_flag_")) {
-        let decoratorType = decoratorTypes.FLAGS
-        res.image = decoratorType.userlogPurchaseIcon
-        res.name = decoratorType.getLocName(id)
-        let decorator = getDecorator(id, decoratorType)
-        if (decorator) {
-          res.image = decoratorType.getImage(decorator)
-          res.descrImage <- res.image
-          res.descrImageSize <- decoratorType.getImageSize(decorator)
-          res.descrImageRatio <- decoratorType.getRatio(decorator)
-        }
-        break
-      }
-
+    }
+    else {
       res.desc = loc("award/" + id + "/desc", "")
       if (id == "money_back") {
         let unitName = config?.unit
@@ -712,75 +710,75 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
             ?.getDescriptionTitle() ?? ""
         res.image = "#ui/gameuiskin#item_type_aerobatic_smoke.svg"
       }
-      break
+    }
+  }
 
-    case UNLOCKABLE_AUTOCOUNTRY:
-      res.rewardText = loc("award/autocountry")
-      break
+  else if ( uType == UNLOCKABLE_AUTOCOUNTRY) {
+    res.rewardText = loc("award/autocountry")
+  }
 
-    case UNLOCKABLE_SLOT:
-      let slotNum = getTblValue("slot", config, 0)
-      res.name = (slotNum > 0)
-        ? loc("options/crewName") + slotNum.tostring()
-        : loc("options/crew")
-      res.desc = loc("slot/" + id + "/desc", "")
-      res.image = "#ui/gameuiskin#log_crew"
-      break;
+  else if ( uType == UNLOCKABLE_SLOT) {
+    let slotNum = getTblValue("slot", config, 0)
+    res.name = (slotNum > 0)
+      ? loc("options/crewName") + slotNum.tostring()
+      : loc("options/crew")
+    res.desc = loc("slot/" + id + "/desc", "")
+    res.image = "#ui/gameuiskin#log_crew"
+  }
 
-    case UNLOCKABLE_DYNCAMPAIGN:
-    case UNLOCKABLE_YEAR:
-      if (unlockBlk?.mode.country)
-        res.image = getCountryIcon(unlockBlk.mode.country)
-      break
+  else if ( uType == UNLOCKABLE_DYNCAMPAIGN || uType == UNLOCKABLE_YEAR ) {
+    if (unlockBlk?.mode.country)
+      res.image = getCountryIcon(unlockBlk.mode.country)
+  }
 
-    case UNLOCKABLE_SKILLPOINTS:
-      let slotId = getTblValue("slot", config, -1)
-      let crew = ::get_crew_by_id(slotId)
-      let crewName = crew ? ::g_crew.getCrewName(crew) : loc("options/crew")
-      let country = crew ? crew.country : config?.country ?? ""
-      let skillPoints = getTblValue("sp", config, 0)
-      let skillPointsStr = getCrewSpTextIfNotZero(skillPoints)
+  else if ( uType == UNLOCKABLE_SKILLPOINTS) {
+    let slotId = getTblValue("slot", config, -1)
+    let crew = getCrewById(slotId)
+    let crewName = crew ? ::g_crew.getCrewName(crew) : loc("options/crew")
+    let country = crew ? crew.country : config?.country ?? ""
+    let skillPoints = getTblValue("sp", config, 0)
+    let skillPointsStr = getCrewSpTextIfNotZero(skillPoints)
 
-      if (::checkCountry(country, "userlog EULT_*_CREW"))
-        res.image2 = getCountryIcon(country)
+    if (::checkCountry(country, "userlog EULT_*_CREW"))
+      res.image2 = getCountryIcon(country)
 
-      res.desc = crewName + loc("unlocks/skillpoints/desc") + skillPointsStr
-      res.image = "#ui/gameuiskin#log_crew"
-      break
+    res.desc = crewName + loc("unlocks/skillpoints/desc") + skillPointsStr
+    res.image = "#ui/gameuiskin#log_crew"
+  }
 
-    case UNLOCKABLE_TROPHY:
-      let item = ::ItemsManager.findItemById(id)
-      if (item) {
-        res.title = getUnlockTypeText(uType, realId)
-        res.name = getUnlockNameText(uType, realId)
-        res.image = item.getSmallIconName()
-        res.desc = item.getDescription()
-        res.rewardText = item.getName()
-      }
-      break
+  else if ( uType == UNLOCKABLE_TROPHY) {
+    let item = ::ItemsManager.findItemById(id)
+    if (item) {
+      res.title = getUnlockTypeText(uType, realId)
+      res.name = getUnlockNameText(uType, realId)
+      res.image = item.getSmallIconName()
+      res.desc = item.getDescription()
+      res.rewardText = item.getName()
+    }
+  }
 
-    case UNLOCKABLE_INVENTORY:
-      let item = ::ItemsManager.isItemdefId(id) ? ::ItemsManager.getItemOrRecipeBundleById(to_integer_safe(id)) : null
-      if (item) {
-        res.title = getUnlockTypeText(uType, realId)
-        res.name = item.getName()
-        res.image = item.getSmallIconName()
-        res.desc = item.getDescription()
-      }
-      break
+  else if ( uType == UNLOCKABLE_INVENTORY) {
+    let item = ::ItemsManager.isItemdefId(id) ? ::ItemsManager.getItemOrRecipeBundleById(to_integer_safe(id)) : null
+    if (item) {
+      res.title = getUnlockTypeText(uType, realId)
+      res.name = item.getName()
+      res.image = item.getSmallIconName()
+      res.desc = item.getDescription()
+    }
+  }
 
-    case UNLOCKABLE_WARBOND:
-      let wbAmount = config?.warbonds
-      let wbStageName = config?.warbondStageName
-      let wb = ::g_warbonds.findWarbond(id, wbStageName)
-      if (wb != null && wbAmount != null)
-        res.rewardText = wb.getPriceText(wbAmount, true, false)
-      break
-    case UNLOCKABLE_AIRCRAFT:
-      let unit = getAircraftByName(id)
-      if (unit)
-        res.image = unit.getUnlockImage()
-      break
+  else if ( uType == UNLOCKABLE_WARBOND) {
+    let wbAmount = config?.warbonds
+    let wbStageName = config?.warbondStageName
+    let wb = ::g_warbonds.findWarbond(id, wbStageName)
+    if (wb != null && wbAmount != null)
+      res.rewardText = wb.getPriceText(wbAmount, true, false)
+  }
+
+  else if ( uType == UNLOCKABLE_AIRCRAFT) {
+    let unit = getAircraftByName(id)
+    if (unit)
+      res.image = unit.getUnlockImage()
   }
 
   if (unlockBlk?.useSubUnlockName)
@@ -947,7 +945,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   local nextStage = -1
   local nextNum = -1
   foreach (cb in getAllUnlocksWithBlkOrder())
-    if (!cb.hidden || (cb.type && ::get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
+    if (!cb.hidden || (cb.type && get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
       foreach (modeIdx, mode in cb % "mode")
         if (mode.getStr("type", "") == modeType) {
           let n = mode.getInt("num", 0)

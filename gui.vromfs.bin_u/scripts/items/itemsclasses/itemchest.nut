@@ -1,16 +1,20 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
+} = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-::items_classes.Chest <- class extends ItemExternal {
+let Chest = class (ItemExternal) {
+  static name = "Chest"
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
@@ -51,7 +55,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
     if (this.shouldAutoConsume) {
       params.cb <- cb
       params.shouldSkipMsgBox <- true
-      ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
+      tryUseRecipes(this.getRelatedRecipes(), this, params)
       return true
     }
 
@@ -82,18 +86,21 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
   isContentPack             = @() this.getGenerator()?.isPack ?? false
   isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
   getOpeningAnimId          = @() this.itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
-  getConfirmMessageData    = @(recipe) this.getEmptyConfirmMessageData().__update({
-    text = loc(this.getLocIdsList().msgBoxConfirm, { itemName = colorize("activeTextColor", this.getName()) })
-    headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
-    needRecipeMarkup = recipe.isMultipleItems
-  })
-
+  function getConfirmMessageData(recipe, quantity) {
+    let confirmLocId = quantity == 1 ? this.getLocIdsList().msgBoxConfirm : this.getLocIdsList().msgBoxSeveralConfirm
+    let itemName = quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity}"
+    return this.getEmptyConfirmMessageData().__update({
+      text = loc(confirmLocId, { itemName = colorize("activeTextColor", itemName) })
+      headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
+      needRecipeMarkup = recipe.isMultipleItems
+    })
+  }
   function getContent() {
     return this.getGenerator()?.getContent() ?? []
   }
 
-  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getRelatedRecipes(), this, params)
-  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
+  getDescRecipesText    = @(params) getRequirementsText(this.getRelatedRecipes(), this, params)
+  getDescRecipesMarkup  = @(params) getRequirementsMarkup(this.getRelatedRecipes(), this, params)
 
   function getDescription() {
     let params = { receivedPrizes = false }
@@ -121,34 +128,40 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
       : this._getDescHeader
   }
 
-  function getLongDescriptionMarkup(params = null) {
-    params = params || {}
-    params.receivedPrizes <- false
-    params.needShowDropChance <- this.needShowDropChance()
+  function getContentMarkupForDescription(params) {
+    let res = []
     let content = this.getContent()
     let hasContent = content.len() != 0
+    if (!hasContent)
+      return res
 
+    params.receivedPrizes <- false
+    params.needShowDropChance <- this.needShowDropChance()
+    let categoryWeightArray = this.getCategoryWeight()
+    let categoryByItemsArray = this.getCategoryByItems()
+    if (params.needShowDropChance && categoryWeightArray.len() > 0) {
+      params.categoryWeight <- categoryWeightArray
+      res.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
+    }
+    else if (categoryByItemsArray.len() > 0) {
+      params.categoryByItems <- categoryByItemsArray
+      res.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
+    }
+    else
+      res.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
+    res.append(::PrizesView.getPrizesListView([], { header = this.getHiddenItemsDesc() }))
+    return res
+  }
+
+  function getLongDescriptionMarkup(params = null) {
+    params = params ?? {}
     let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = this.getTransferText() }),
       ::PrizesView.getPrizesListView([], { header = this.getMarketablePropDesc() }),
       (this.hasTimer() ? ::PrizesView.getPrizesListView([], { header = this.getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
       this.getDescRecipesMarkup(clone params)
     ]
 
-    if (hasContent) {
-      let categoryWeightArray = this.getCategoryWeight()
-      let categoryByItemsArray = this.getCategoryByItems()
-      if (params.needShowDropChance && categoryWeightArray.len() > 0) {
-        params.categoryWeight <- categoryWeightArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
-      }
-      else if (categoryByItemsArray.len() > 0) {
-        params.categoryByItems <- categoryByItemsArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
-      }
-      else
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
-      prizeMarkupArray.append(::PrizesView.getPrizesListView([], { header = this.getHiddenItemsDesc() }))
-    }
+    prizeMarkupArray.extend(this.getContentMarkupForDescription(clone params))
     return "".join(prizeMarkupArray)
   }
 
@@ -191,7 +204,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
     if (this.openForGold(cb, params))
       return true
 
-    return ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
+    return tryUseRecipes(this.getRelatedRecipes(), this, params)
   }
 
   getContentNoRecursion = @() this.getContent()
@@ -200,6 +213,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
     descReceipesListHeaderPrefix = this.descReceipesListHeaderPrefix
     msgBoxCantUse                = "msgBox/chestOpen/cant"
     msgBoxConfirm                = "msgBox/chestOpen/confirm"
+    msgBoxSeveralConfirm         = "msgBox/chestOpen/several/confirm"
     openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
@@ -233,7 +247,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
       return true
 
     let cost = openForGoldRecipe.getOpenCost(this)
-    if (!::check_balance_msgBox(cost))
+    if (!checkBalanceMsgBox(cost))
       return true
 
     let item = this
@@ -347,3 +361,4 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
     return this.categoryByItems
   }
 }
+return {Chest}

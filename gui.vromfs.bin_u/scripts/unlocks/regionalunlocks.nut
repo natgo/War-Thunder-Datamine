@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { APP_ID } = require("app")
@@ -6,7 +7,7 @@ let DataBlock = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { userstatStats, refreshUserstatUnlocks, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
+let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
@@ -63,7 +64,7 @@ let function getRegionalUnlockProgress(unlockId) {
 }
 
 let getRegionalUnlockTypeById = @(unlockId)
-  ::get_unlock_type(acceptedUnlocksBlk.value?[unlockId].type)
+  get_unlock_type(acceptedUnlocksBlk.value?[unlockId].type)
 
 let function claimRegionalUnlockRewards() {
   let unlocks = unclaimedUnlocks.value.filter(@(u) !(u?.manualOpen ?? false))
@@ -91,7 +92,6 @@ let function acceptRegionalUnlock(unlockName, callback) {
     }
   }
   userstat.request(userstatRequestData, function(result) {
-    refreshUserstatUnlocks()
     refreshUserstatStats()
     callback(result)
   })

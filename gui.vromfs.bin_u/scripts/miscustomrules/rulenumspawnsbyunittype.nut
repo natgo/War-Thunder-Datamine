@@ -1,11 +1,18 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
+let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { get_ds_ut_name_unit_type } = require("%appGlobals/ranks_common_shared.nut")
 
-::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base {
+let NumSpawnsByUnitType = class (RuleBase) {
   needLeftRespawnOnSlots = true
   customUnitRespawnsAllyListHeaderLocId  = "multiplayer/personalUnitsLeftHeader"
 
@@ -23,16 +30,17 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     if (!unit)
       return 0
     stateData = stateData || this.getMyStateBlk()
-    switch (rule) {
-      case "type":
-        return this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData)
-      case "class":
-        return this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
-      case "type_and_class":
-        return min(
-          this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData),
-          this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
-        )
+    if ( rule == "type" ) {
+      return this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData)
+    }
+    else if ( rule == "class" ) {
+      return this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
+    }
+    else if ( rule == "type_and_class" ) {
+      return min(
+        this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData),
+        this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
+      )
     }
     return 0
   }
@@ -51,21 +59,20 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
     local icon = ""
     local name = ""
-    switch (this.getRestrictionRule()) {
-      case "type":
-        icon = unit.unitType.fontIcon
-        name = unit.unitType.getArmyLocName()
-        break
-      case "class":
-        icon = unit.expClass.getFontIcon()
-        name = unit.expClass.getName()
-        break
-      case "type_and_class":
-        let needType = this.getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
-          this.getUnitLeftRespawnsByRestrictionRule(unit, "class")
-        icon = needType ? unit.unitType.fontIcon         : unit.expClass.getFontIcon()
-        name = needType ? unit.unitType.getArmyLocName() : unit.expClass.getName()
-        break
+    let rule = this.getRestrictionRule()
+    if ( rule == "type") {
+      icon = unit.unitType.fontIcon
+      name = unit.unitType.getArmyLocName()
+    }
+    else if ( rule == "class") {
+      icon = unit.expClass.getFontIcon()
+      name = unit.expClass.getName()
+    }
+    else if ( rule == "type_and_class" ) {
+      let needType = this.getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
+        this.getUnitLeftRespawnsByRestrictionRule(unit, "class")
+      icon = needType ? unit.unitType.fontIcon         : unit.expClass.getFontIcon()
+      name = needType ? unit.unitType.getArmyLocName() : unit.expClass.getName()
     }
 
     return loc("multiplayer/noArmyRespawnsLeft",
@@ -80,7 +87,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     if (!this.getLeftRespawns())
       return res
 
-    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
+    let crewsList = getCrewsListByCountry(get_local_player_country())
     let myStateBlk = this.getMyStateBlk()
     if (!myStateBlk)
       return (1 << crewsList.len()) - 1
@@ -104,66 +111,66 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
   //unit is Unit, or null to get info about all listed units
   //stateData is a table or blk
   function getRespawnInfoText(unit, stateData) {
-    switch (this.getRestrictionRule()) {
-      case "type":
-        let res = []
-        foreach (unitType in this.getAllowedUnitTypes()) {
-          if (unit && unit.esUnitType != unitType.esUnitType)
-            continue
+    let rule = this.getRestrictionRule()
+    if ( rule == "type" ) {
+      let res = []
+      foreach (unitType in this.getAllowedUnitTypes()) {
+        if (unit && unit.esUnitType != unitType.esUnitType)
+          continue
 
-          let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-          res.append(unitType.fontIcon + resp)
-        }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+        res.append(unitType.fontIcon + resp)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+    }
+    else if ( rule == "class" ) {
+      let res = []
+      foreach (classType in this.getAllowedUnitClasses()) {
+        if (unit && unit.expClass != classType)
+          continue
 
-      case "class":
-        let res = []
-        foreach (classType in this.getAllowedUnitClasses()) {
+        let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+        res.append(classType.getFontIcon() + resp)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+    }
+    else if ( rule == "type_and_class" ) {
+      let res = []
+      foreach (unitType in this.getKnownUnitTypes()) {
+        if (unit && unit.esUnitType != unitType.esUnitType)
+          continue
+
+        let typeResp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+        if (!typeResp)
+          continue
+
+        local classesText = []
+        let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
+        foreach (classType in classTypes) {
           if (unit && unit.expClass != classType)
             continue
 
-          let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-          res.append(classType.getFontIcon() + resp)
+          let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+          classesText.append(classType.getFontIcon() + classResp)
         }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        classesText = loc("ui/comma").join(classesText, true)
 
-      case "type_and_class":
-        let res = []
-        foreach (unitType in this.getKnownUnitTypes()) {
-          if (unit && unit.esUnitType != unitType.esUnitType)
-            continue
-
-          let typeResp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-          if (!typeResp)
-            continue
-
-          local classesText = []
-          let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
-          foreach (classType in classTypes) {
-            if (unit && unit.expClass != classType)
-              continue
-
-            let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-            classesText.append(classType.getFontIcon() + classResp)
-          }
-          classesText = loc("ui/comma").join(classesText, true)
-
-          local typeText = unitType.fontIcon + typeResp
-          if (classesText != "") {
-            if (unit)
-              typeText = loc("ui/comma").join([ typeText, classesText ], true)
-            else
-              typeText += loc("ui/parentheses/space", { text = classesText })
-          }
-          res.append(typeText)
+        local typeText = unitType.fontIcon + typeResp
+        if (classesText != "") {
+          if (unit)
+            typeText = loc("ui/comma").join([ typeText, classesText ], true)
+          else
+            typeText += loc("ui/parentheses/space", { text = classesText })
         }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        res.append(typeText)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
     }
     return ""
   }
 
   function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { //stateData is a table or blk
-    let respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
+    let respawns = stateData?[(isDsUnitType ? esUnitType : get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
     return max(0, respawns) //dont have unlimited respawns
   }
 
@@ -196,7 +203,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     foreach (unitType in this.getKnownUnitTypes()) {
       if (needUnitTypes) {
         let respLeft  = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-        res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
+        res.unitLimits.append(UnitLimitByUnitType(unitType.typeName, respLeft))
       }
 
       if (needUnitClasses) {
@@ -204,7 +211,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
         foreach (classType in classTypes) {
           let expClassName = classType.getExpClass()
           local respLeft  = this.getUnitClassLeftRespawns(expClassName, stateData)
-          res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, respLeft))
+          res.unitLimits.append(UnitLimitByUnitExpClass(expClassName, respLeft))
         }
       }
     }
@@ -256,7 +263,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
       if (!unitType.isAvailable())
         continue
 
-      let dsUnitType = ::get_ds_ut_name_unit_type(unitType.esUnitType)
+      let dsUnitType = get_ds_ut_name_unit_type(unitType.esUnitType)
       if (isInArray(dsUnitType, checkedDsUnitTypes))
         continue
       checkedDsUnitTypes.append(dsUnitType)
@@ -278,3 +285,5 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     }
   }
 }
+
+registerMissionRules("NumSpawnsByUnitType", NumSpawnsByUnitType)

@@ -1,11 +1,12 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_auto_refill
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { set_gui_option } = require("guiOptions")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
-gui_handlers.WeaponWarningHandler <- class extends gui_handlers.SkipableMsgBox {
+gui_handlers.WeaponWarningHandler <- class (gui_handlers.SkipableMsgBox) {
   skipOption = USEROPT_SKIP_WEAPON_WARNING
   showCheckBoxBullets = true
 
@@ -18,7 +19,7 @@ gui_handlers.WeaponWarningHandler <- class extends gui_handlers.SkipableMsgBox {
 
     bltCheckBoxObj.show(this.showCheckBoxBullets)
     if (this.showCheckBoxBullets)
-      bltCheckBoxObj.setValue(::get_auto_refill(1))
+      bltCheckBoxObj.setValue(get_auto_refill(1))
   }
 
   function skipFunc(value) {

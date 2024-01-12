@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_map_cell_by_coords
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -44,7 +47,7 @@ local armyIdByMask = {
   [WW_UNIT_CLASS.COMBINED]   = "combined"
 }
 
-gui_handlers.WwAirfieldFlyOut <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptySceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/airfieldFlyOut.tpl"
@@ -408,7 +411,7 @@ gui_handlers.WwAirfieldFlyOut <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!this.hasUnitsToFly)
         armyInfoText = colorize("warningTextColor", loc("worldwar/airfield/not_enough_units_to_send"))
       else {
-        armyInfoText = loc("worldwar/airfield/army_type_" + formedArmyId)
+        armyInfoText = loc($"worldwar/airfield/army_type_{formedArmyId}")
         if (this.isMaxUnitsNumSet(selUnitsInfo)) {
           let maxValue = this.currentOperation.maxUniqueUnitsOnFlyout
           let maxValueText = colorize("white", loc("worldwar/airfield/unit_various_limit",
@@ -780,7 +783,7 @@ gui_handlers.WwAirfieldFlyOut <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    let cellIdx = ::ww_get_map_cell_by_coords(this.position.x, this.position.y)
+    let cellIdx = ww_get_map_cell_by_coords(this.position.x, this.position.y)
     let taskId = ::g_world_war.moveSelectedAircraftsToCell(
       cellIdx, units, group.owner, this.armyTargetName)
     if (this.onSuccessfullFlyoutCb)

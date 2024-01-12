@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -9,7 +10,7 @@ const ALL_WW_UNITS_CODE = -2
 const WW_TRANSPORT_CODE = -3
 const WW_HELICOPTER_CODE = -4
 
-::g_ww_unit_type <- {
+let g_ww_unit_type = {
   types = []
   cache = {
     byName = {}
@@ -17,26 +18,115 @@ const WW_HELICOPTER_CODE = -4
     byTextCode = {}
     byEsUnitCode = {}
   }
+  template = {
+    code = -1
+    textCode = ""
+    sortCode = WW_UNIT_SORT_CODE.UNKNOWN
+    esUnitCode = ES_UNIT_TYPE_INVALID
+    name = ""
+    fontIcon = ""
+    moveSound = ""
+    deploySound = ""
+    expClass = null
+    canBeControlledByPlayer = false
+
+    getUnitName = @(name) getUnitName(name)
+    getUnitClassIcon = @(unit) ::getUnitClassIco(unit)
+    getUnitRole
+  }
+
+  function getUnitTypeByCode(wwUnitTypeCode) {
+    return enums.getCachedType(
+      "code",
+      wwUnitTypeCode,
+      this.cache.byCode,
+      this,
+      this.UNKNOWN
+    )
+  }
+
+
+  function getUnitTypeByTextCode(wwUnitTypeTextCode) {
+    return enums.getCachedType(
+      "textCode",
+      wwUnitTypeTextCode,
+      this.cache.byTextCode,
+      this,
+      this.UNKNOWN
+    )
+  }
+
+
+  function getUnitTypeByEsUnitCode(esUnitCode) {
+    return enums.getCachedType(
+      "esUnitCode",
+      esUnitCode,
+      this.cache.byEsUnitCode,
+      this,
+      this.UNKNOWN
+    )
+  }
+
+
+  function getUnitTypeByWwUnit(wwUnit) {
+    let name = wwUnit.name
+    if (name in this.cache.byName)
+      return this.cache.byName[name]
+
+    let esUnitType = getEsUnitType(wwUnit.unit)
+    if (esUnitType != ES_UNIT_TYPE_INVALID)
+      return this.getUnitTypeByEsUnitCode(esUnitType)
+    else if (name == fakeInfantryUnitName || name in ::g_world_war.getInfantryUnits())
+      return this.INFANTRY
+    else if (name in ::g_world_war.getArtilleryUnits())
+      return this.ARTILLERY
+    else if (name in ::g_world_war.getTransportUnits())
+      return this.TRANSPORT
+
+    return this.UNKNOWN
+  }
+
+
+  function getUnitTypeFontIcon(wwUnitTypeCode) {
+    return this.getUnitTypeByCode(wwUnitTypeCode).fontIcon
+  }
+
+
+  function isAir(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.AIR.code || wwUnitTypeCode == this.HELICOPTER.code
+  }
+
+
+  function isHelicopter(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.HELICOPTER.code
+  }
+
+
+  function isGround(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.GROUND.code
+  }
+
+
+  function isWater(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.WATER.code
+  }
+
+
+  function isInfantry(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.INFANTRY.code
+  }
+
+
+  function isArtillery(wwUnitTypeCode) {
+    return wwUnitTypeCode == this.ARTILLERY.code
+  }
+
+  function canBeSurrounded(wwUnitTypeCode) {
+    return !this.isAir(wwUnitTypeCode)
+  }
 }
 
-::g_ww_unit_type.template <- {
-  code = -1
-  textCode = ""
-  sortCode = WW_UNIT_SORT_CODE.UNKNOWN
-  esUnitCode = ES_UNIT_TYPE_INVALID
-  name = ""
-  fontIcon = ""
-  moveSound = ""
-  deploySound = ""
-  expClass = null
-  canBeControlledByPlayer = false
-
-  getUnitName = @(name) getUnitName(name)
-  getUnitClassIcon = @(unit) ::getUnitClassIco(unit)
-  getUnitRole = getUnitRole
-}
-
-enums.addTypesByGlobalName("g_ww_unit_type", {
+enums.addTypes(g_ww_unit_type, {
   UNKNOWN = {
   }
   AIR = {
@@ -134,93 +224,4 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
   }
 })
 
-
-::g_ww_unit_type.getUnitTypeByCode <- function getUnitTypeByCode(wwUnitTypeCode) {
-  return enums.getCachedType(
-    "code",
-    wwUnitTypeCode,
-    this.cache.byCode,
-    this,
-    this.UNKNOWN
-  )
-}
-
-
-::g_ww_unit_type.getUnitTypeByTextCode <- function getUnitTypeByTextCode(wwUnitTypeTextCode) {
-  return enums.getCachedType(
-    "textCode",
-    wwUnitTypeTextCode,
-    this.cache.byTextCode,
-    this,
-    this.UNKNOWN
-  )
-}
-
-
-::g_ww_unit_type.getUnitTypeByEsUnitCode <- function getUnitTypeByEsUnitCode(esUnitCode) {
-  return enums.getCachedType(
-    "esUnitCode",
-    esUnitCode,
-    this.cache.byEsUnitCode,
-    this,
-    this.UNKNOWN
-  )
-}
-
-
-::g_ww_unit_type.getUnitTypeByWwUnit <- function getUnitTypeByWwUnit(wwUnit) {
-  let name = wwUnit.name
-  if (name in this.cache.byName)
-    return this.cache.byName[name]
-
-  let esUnitType = getEsUnitType(wwUnit.unit)
-  if (esUnitType != ES_UNIT_TYPE_INVALID)
-    return ::g_ww_unit_type.getUnitTypeByEsUnitCode(esUnitType)
-  else if (name == fakeInfantryUnitName || name in ::g_world_war.getInfantryUnits())
-    return ::g_ww_unit_type.INFANTRY
-  else if (name in ::g_world_war.getArtilleryUnits())
-    return ::g_ww_unit_type.ARTILLERY
-  else if (name in ::g_world_war.getTransportUnits())
-    return ::g_ww_unit_type.TRANSPORT
-
-  return ::g_ww_unit_type.UNKNOWN
-}
-
-
-::g_ww_unit_type.getUnitTypeFontIcon <- function getUnitTypeFontIcon(wwUnitTypeCode) {
-  return this.getUnitTypeByCode(wwUnitTypeCode).fontIcon
-}
-
-
-::g_ww_unit_type.isAir <- function isAir(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.AIR.code || wwUnitTypeCode == this.HELICOPTER.code
-}
-
-
-::g_ww_unit_type.isHelicopter <- function isHelicopter(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.HELICOPTER.code
-}
-
-
-::g_ww_unit_type.isGround <- function isGround(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.GROUND.code
-}
-
-
-::g_ww_unit_type.isWater <- function isWater(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.WATER.code
-}
-
-
-::g_ww_unit_type.isInfantry <- function isInfantry(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.INFANTRY.code
-}
-
-
-::g_ww_unit_type.isArtillery <- function isArtillery(wwUnitTypeCode) {
-  return wwUnitTypeCode == this.ARTILLERY.code
-}
-
-::g_ww_unit_type.canBeSurrounded <- function canBeSurrounded(wwUnitTypeCode) {
-  return !this.isAir(wwUnitTypeCode)
-}
+return { g_ww_unit_type }

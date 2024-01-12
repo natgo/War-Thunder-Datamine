@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/mainConsts.nut" import SEEN
 
 let DataBlock  = require("DataBlock")
 let { frnd } = require("dagor.random")
@@ -126,7 +125,7 @@ let function invalidateItemsCache() {
   seenIdCanBeNew.clear()
   foreach (set in getSetsList())
     set.invalidateItemsCache()
-  if (::ItemsManager.isInventoryFullUpdated)
+  if (::ItemsManager.isInventoryFullUpdated())
     seenWorkshop.setDaysToUnseen(OUT_OF_DATE_DAYS_WORKSHOP)
   seenWorkshop.onListChanged()
 }

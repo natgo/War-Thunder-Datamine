@@ -1,7 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import toggle_fav_mission, is_mission_favorite, has_entitlement, get_last_played, get_mission_progress, scan_user_missions
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -71,7 +72,7 @@ enum mislistTabsOrder {
       // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
       if (!misBlk?.player_class) {
         let missionBlk = blkOptFromPath(misBlk?.mis_file)
-        let wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
+        let wing = getBlkValueByPath(missionBlk, "mission_settings/player/wing")
         let unitsBlk = missionBlk?.units
         if (unitsBlk && wing)
           for (local i = 0; i < unitsBlk.blockCount(); i++) {
@@ -96,7 +97,7 @@ enum mislistTabsOrder {
 
     if (gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION || gm == GM_TRAINING) {
       let missionFullName = campaignName + "/" + (misDescr?.id ?? "")
-      misDescr.progress <- ::get_mission_progress(missionFullName)
+      misDescr.progress <- get_mission_progress(missionFullName)
       if (!::is_user_mission(misBlk))
         misDescr.isUnlocked = misDescr?.progress != 4
       let misLOProgress = get_mission_local_online_progress(missionFullName)
@@ -134,7 +135,7 @@ enum mislistTabsOrder {
   else {
     let mbc = get_meta_missions_info_by_campaigns(gm)
     foreach (c in mbc)
-      if (gm != GM_CAMPAIGN || ::has_entitlement(c.name) || hasFeature(c.name))
+      if (gm != GM_CAMPAIGN || has_entitlement(c.name) || hasFeature(c.name))
         campaigns.append({ name = c.name, chapters = c.chapters })
   }
 
@@ -208,7 +209,7 @@ enum mislistTabsOrder {
     if (misName)
       return this.getMissionConfig(misName)
   }
-  let lastPlayed = ::get_last_played("", get_game_mode())
+  let lastPlayed = get_last_played("", get_game_mode())
   if (!lastPlayed)
     return null
 
@@ -255,8 +256,8 @@ enum mislistTabsOrder {
     return gm == GM_DOMINATION || gm == GM_SKIRMISH
   }
 
-  isMissionFavorite = function(mission) { return ::is_mission_favorite(mission.id) }
-  toggleFavorite = function(mission) { ::toggle_fav_mission(mission.id) }
+  isMissionFavorite = function(mission) { return is_mission_favorite(mission.id) }
+  toggleFavorite = function(mission) { toggle_fav_mission(mission.id) }
 
   getCurMission = function() { return null }
   getMissionNameText = ::g_mislist_type._getMissionNameText
@@ -315,7 +316,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
     requestMissionsList = function(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
       let fn = function() { this.getMissionsListImpl(isShowCampaigns, callback, customChapterId, customChapters); }
-      ::scan_user_missions(this, fn.bindenv(this))
+      scan_user_missions(this, fn.bindenv(this))
     }
     getMissionsListImpl = ::g_mislist_type._getMissionsList
     getMissionsByBlkArray = ::g_mislist_type._getMissionsByBlkArray
@@ -390,7 +391,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
           return this.getMissionConfig(urlMission.name)
       }
 
-      let lastPlayed = ::get_last_played("url", get_game_mode())
+      let lastPlayed = get_last_played("url", get_game_mode())
       if (!lastPlayed)
         return null
 

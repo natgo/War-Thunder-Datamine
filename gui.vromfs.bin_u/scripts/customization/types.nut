@@ -1,10 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, get_skin_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_skin_cost_gold, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, char_send_blk, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock = require("DataBlock")
 let { floor } = require("math")
 let { format } = require("string")
@@ -31,6 +30,7 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -74,7 +74,7 @@ let decoratorTypes = {
     getLocParamsDesc = @(_decorator) ""
 
     function getTypeDesc(decorator) {
-      local text = loc("trophy/unlockables_names/" + this.resourceType)
+      local text = loc($"trophy/unlockables_names/{this.resourceType}")
       if (decorator.category != "" && this.categoryPathPrefix != "")
         text += loc("ui/comma") + loc(this.categoryPathPrefix + decorator.category)
       if (decorator.group != "" && this.groupPathPrefix != "")
@@ -107,7 +107,7 @@ let decoratorTypes = {
         return false
       if (block?.ps_plus && !require("sony.user").hasPremium())
         return false
-      if (block?.showByEntitlement && !::has_entitlement(block.showByEntitlement))
+      if (block?.showByEntitlement && !has_entitlement(block.showByEntitlement))
         return false
       if ((block % "hideForLang").indexof(getLanguageName()) != null)
         return false
@@ -176,11 +176,17 @@ enums.addTypes(decoratorTypes, {
     getCost = @(decorator) Cost().setGold(decorator?.unlockBlk.costGold ?? 0)
     getDecoratorNameInSlot = @(_slotIdx, unitName, skinId, _checkPremium = false) get_ship_flag_in_slot(unitName, skinId)
 
-    isAllowed = @(decoratorName) ::is_decal_allowed(decoratorName, "")
+    isAllowed = @(decoratorName) is_decal_allowed(decoratorName, "")
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = @(id) isUnlockOpened(id) || id == get_default_ship_flag()
-    isVisible = @(_block, _decorator) true
+    isVisible = function(block, _decorator) {
+      let unlock = getUnlockById(block.unlockId)
+      if(unlock?.hideUntilUnlocked == true && !isUnlockOpened(block.unlockId))
+        return false
+      return true
+    }
+
     function getBlk() {
       let resBlk = DataBlock()
       let flagsBlk = get_avail_ship_flags_blk() ?? getShipFlags()
@@ -245,17 +251,17 @@ enums.addTypes(decoratorTypes, {
     getLocDesc = function(decoratorName) { return loc("decals/" + decoratorName + "/desc", "") }
 
     getCost = function(decorator) {
-      return Cost(max(0, ::get_decal_cost_wp(decorator.id)),
-                    max(0, ::get_decal_cost_gold(decorator.id)))
+      return Cost(max(0, get_decal_cost_wp(decorator.id)),
+                    max(0, get_decal_cost_gold(decorator.id)))
     }
     getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false) {
       return get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) //slow function
     }
 
-    isAllowed = function(decoratorName) { return ::is_decal_allowed(decoratorName, "") }
+    isAllowed = function(decoratorName) { return is_decal_allowed(decoratorName, "") }
     isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("DecalsUse")
       && (!checkUnitUsable || unit.isUsable())
-    isPlayerHaveDecorator = memoizeByProfile(::player_have_decal)
+    isPlayerHaveDecorator = memoizeByProfile(player_have_decal)
 
     getBlk = function() {
       let decalsBlk = DataBlock()
@@ -299,7 +305,7 @@ enums.addTypes(decoratorTypes, {
       blk["cost"] = cost.wp
       blk["costGold"] = cost.gold
 
-      let taskId = ::char_send_blk("cln_buy_resource", blk)
+      let taskId = char_send_blk("cln_buy_resource", blk)
       let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
       addTask(taskId, taskOptions, afterSuccessFunc)
     }
@@ -336,8 +342,8 @@ enums.addTypes(decoratorTypes, {
     prizeTypeIcon = "#ui/gameuiskin#item_type_attachable.svg"
     defaultStyle = "reward_attachable"
 
-    getAvailableSlots = function(unit) { return ::get_num_attachables_slots(unit.name) }
-    getMaxSlots = function() { return ::get_max_num_attachables_slots() }
+    getAvailableSlots = function(unit) { return get_num_attachables_slots(unit.name) }
+    getMaxSlots = function() { return get_max_num_attachables_slots() }
 
     getImage = @(decorator) decorator
         ? (decorator?.blk.image ?? $"#ui/images/attachables/{decorator.id}")
@@ -356,8 +362,8 @@ enums.addTypes(decoratorTypes, {
     }
 
     getCost = function(decorator) {
-      return Cost(max(0, ::get_attachable_cost_wp(decorator.id)),
-                    max(0, ::get_attachable_cost_gold(decorator.id)))
+      return Cost(max(0, get_attachable_cost_wp(decorator.id)),
+                    max(0, get_attachable_cost_gold(decorator.id)))
     }
     getDecoratorNameInSlot = function(slotIdx, ...) { return get_attachable_name(slotIdx) }
     getDecoratorGroupInSlot = function(slotIdx, ...) { return get_attachable_group(slotIdx) }
@@ -365,7 +371,7 @@ enums.addTypes(decoratorTypes, {
     isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("AttachablesUse")
       && (unit.isTank() || unit.isShipOrBoat())
       && (!checkUnitUsable || unit.isUsable())
-    isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
+    isPlayerHaveDecorator = memoizeByProfile(player_have_attachable)
 
     getBlk = function() { return get_attachable_blk() }
 
@@ -391,7 +397,7 @@ enums.addTypes(decoratorTypes, {
       blk["cost"] = cost.wp
       blk["costGold"] = -cost.gold
 
-      let taskId = ::char_send_blk("cln_buy_resource", blk)
+      let taskId = char_send_blk("cln_buy_resource", blk)
       let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
       addTask(taskId, taskOptions, afterSuccessFunc)
     }
@@ -400,7 +406,7 @@ enums.addTypes(decoratorTypes, {
       if (!hasFeature("AttachablesUse"))
         return
 
-      let taskId = ::save_attachables(unitName)
+      let taskId = save_attachables(unitName)
       let taskOptions = { showProgressBox = showProgressBox }
       addTask(taskId, taskOptions)
     }
@@ -417,6 +423,12 @@ enums.addTypes(decoratorTypes, {
     getImage = function(decorator) {
       if (!decorator)
         return ""
+
+      let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+      let itemIconName = (item?.getIconName() ?? "")
+      if (itemIconName != "")
+        return itemIconName
+
       let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this)
       let iconType = skinLocations.getIconTypeByMask(mask)
       let suffix =  iconType == "forest" ? "" : $"_{iconType}"
@@ -488,8 +500,8 @@ enums.addTypes(decoratorTypes, {
 
     getCost = function(decorator) {
       let unitName = getPlaneBySkinId(decorator.id)
-      return Cost(max(0, ::get_skin_cost_wp(unitName, decorator.id)),
-                    max(0, ::get_skin_cost_gold(unitName, decorator.id)))
+      return Cost(max(0, get_skin_cost_wp(unitName, decorator.id)),
+                    max(0, get_skin_cost_gold(unitName, decorator.id)))
     }
 
     getFreeSlotIdx = @(...) 0
@@ -500,7 +512,7 @@ enums.addTypes(decoratorTypes, {
       if (isDefaultSkin(decoratorName))
         return true
 
-      return ::player_have_skin(getPlaneBySkinId(decoratorName),
+      return player_have_skin(getPlaneBySkinId(decoratorName),
                                 getSkinNameBySkinId(decoratorName))
     })
 
@@ -514,7 +526,7 @@ enums.addTypes(decoratorTypes, {
       blk["cost"] = cost.wp
       blk["costGold"] = cost.gold
 
-      let taskId = ::char_send_blk("cln_buy_resource", blk)
+      let taskId = char_send_blk("cln_buy_resource", blk)
       let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
       addTask(taskId, taskOptions, afterSuccessFunc)
     }

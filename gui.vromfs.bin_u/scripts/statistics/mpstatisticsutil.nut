@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team, get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { INVALID_SQUAD_ID } = require("matching.errors")
@@ -24,6 +25,7 @@ let { isInFlight } = require("gameplayBinding")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -45,13 +47,10 @@ let cachedBonusTooltips = {}
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
-  let handler = handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
+  handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
     {
       backSceneParams = isFromGame ? null : handlersManager.getLastBaseHandlerStartParams(),
     }.__update(params))
-
-  if (isFromGame)
-    ::statscreen_handler = handler
 }
 
 
@@ -143,42 +142,51 @@ let function guiStartMPStatScreenFromGame() {
 
 ::gui_start_mpstatscreen_from_game <- @() guiStartMPStatScreenFromGame() // used from native code
 ::gui_start_flight_menu_stat <- @() guiStartMPStatScreenFromGame() // used from native code
+
+local time_to_kick_show_timer = null
+local time_to_kick_show_alert = null
+local in_battle_time_to_kick_show_timer = null
+local in_battle_time_to_kick_show_alert = null
+
+function get_time_to_kick_show_timer() {
+  if (time_to_kick_show_timer == null) {
+    time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
+  }
+  return time_to_kick_show_timer
+}
+let set_time_to_kick_show_timer = @(v) time_to_kick_show_alert = v
+
+function get_time_to_kick_show_alert() {
+  if (time_to_kick_show_alert == null) {
+    time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
+  }
+  return time_to_kick_show_alert
+}
+
+let set_time_to_kick_show_alert = @(v) time_to_kick_show_alert = v
+
+function get_in_battle_time_to_kick_show_timer() {
+  if (in_battle_time_to_kick_show_timer == null) {
+    in_battle_time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
+  }
+  return in_battle_time_to_kick_show_timer
+}
+
+let set_in_battle_time_to_kick_show_timer = @(v) in_battle_time_to_kick_show_timer = v
+
+function get_in_battle_time_to_kick_show_alert() {
+  if (in_battle_time_to_kick_show_alert == null) {
+    in_battle_time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
+  }
+  return in_battle_time_to_kick_show_alert
+}
+
+let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_alert = v
+
 //!!!FIX Rebuild global functions below to local
-::time_to_kick_show_timer <- null
-::time_to_kick_show_alert <- null
-::in_battle_time_to_kick_show_timer <- null
-::in_battle_time_to_kick_show_alert <- null
-
-::get_time_to_kick_show_timer <- function get_time_to_kick_show_timer() {
-  if (::time_to_kick_show_timer == null) {
-    ::time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
-  }
-  return ::time_to_kick_show_timer
-}
-
-::get_time_to_kick_show_alert <- function get_time_to_kick_show_alert() {
-  if (::time_to_kick_show_alert == null) {
-    ::time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
-  }
-  return ::time_to_kick_show_alert
-}
-
-::get_in_battle_time_to_kick_show_timer <- function get_in_battle_time_to_kick_show_timer() {
-  if (::in_battle_time_to_kick_show_timer == null) {
-    ::in_battle_time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
-  }
-  return ::in_battle_time_to_kick_show_timer
-}
-
-::get_in_battle_time_to_kick_show_alert <- function get_in_battle_time_to_kick_show_alert() {
-  if (::in_battle_time_to_kick_show_alert == null) {
-    ::in_battle_time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
-  }
-  return ::in_battle_time_to_kick_show_alert
-}
 
 ::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
-  return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
+  return (team ?? get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
 }
 
 
@@ -317,7 +325,7 @@ let function createExpSkillBonusIcon(tooltipFunction) {
         let width = "width:t='" + getTblValue("width", markup[hdr[j]], "1") + "'; "
         tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
-      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
+      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
         let txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
@@ -480,19 +488,17 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       if (hdr == "team") {
         local teamText = ""
         local teamStyle = ""
-        switch (item) {
-          case 1:
-            teamText = "A"
-            teamStyle = "a"
-            break
-          case 2:
-            teamText = "B"
-            teamStyle = "b"
-            break
-          default:
-            teamText = "?"
-            teamStyle = ""
-            break
+        if (item == 1) {
+          teamText = "A"
+          teamStyle = "a"
+        }
+        else if ( item == 2) {
+          teamText = "B"
+          teamStyle = "b"
+        }
+        else {
+          teamText = "?"
+          teamStyle = ""
         }
         objTd.getChild(0).setValue(teamText)
         objTd["team"] = teamStyle
@@ -559,7 +565,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
 
         if (!table[i].isBot
           && get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
-          && !::g_mis_custom_state.getCurMissionRules().isWorldWar) {
+          && !getCurMissionRules().isWorldWar) {
           let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
           if (data) {
             let squadInfo = getSquadInfo(data.squad)
@@ -672,7 +678,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       else if (hdr == "place") {
         objTd.getChild(0).setValue(item)
       }
-      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
+      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
         let paramType = ::g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
@@ -708,7 +714,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
               + (isTopSquad ? ("\n" + loc("streaks/squad_best")) : "")
 
             if (isReplay)
-              objTd.team = squadInfo.teamId == ::get_player_army_for_hud() ? "blue" : "red"
+              objTd.team = squadInfo.teamId == get_player_army_for_hud() ? "blue" : "red"
           }
         }
       }
@@ -729,7 +735,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
 ::getCurMpTitle <- function getCurMpTitle() {
   local text = ""
 
-  if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
+  if (getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
     text = ::g_world_war.getCurMissionWWBattleName()
     text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, locCurrentMissionName())
   }
@@ -765,13 +771,6 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
   }
   return unitName == "" ? ""
     : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
-}
-
-::getUnitClassColor <- function getUnitClassColor(unit) {
-  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
-  if (role == null || role == "" || role == "none")
-    return "white";
-  return role + "Color"
 }
 
 ::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {
@@ -816,7 +815,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       col.width <- width.tostring()
       freeWidth -= width
       relWidthTotal -= col.relWidth
-      delete col.relWidth
+      col.$rawdelete("relWidth")
     }
   }
 }
@@ -832,4 +831,12 @@ return {
   guiStartMPStatScreenFromGame
   getWeaponTypeIcoByWeapon
   getSkillBonusTooltipText
+  set_time_to_kick_show_alert
+  get_time_to_kick_show_alert
+  set_in_battle_time_to_kick_show_alert
+  get_in_battle_time_to_kick_show_alert
+  get_in_battle_time_to_kick_show_timer
+  set_in_battle_time_to_kick_show_timer
+  get_time_to_kick_show_timer
+  set_time_to_kick_show_timer
 }

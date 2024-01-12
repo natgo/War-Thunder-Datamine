@@ -1,7 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
+let { init_postfx } = require("%scripts/postFxSettings.nut")
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let Unit = require("%scripts/unit/unit.nut")
@@ -17,6 +19,8 @@ let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 let { floor } = require("math")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
+let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
+let { update_aircraft_warpoints } = require("%scripts/ranks.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -26,7 +30,7 @@ if (showedUnit.value != null)
   showedUnit(allUnits?[showedUnit.value.name])
 
 ::init_options <- function init_options() {
-  if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || ::disable_network()))
+  if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || disable_network()))
     return
 
   local stepStatus
@@ -38,7 +42,7 @@ if (showedUnit.value != null)
 
 let function init_all_units() { //Not moved to allUnits.nut due to "require loops"
   allUnits.clear()
-  let all_units_array = ::gather_and_build_aircrafts_list()
+  let all_units_array = gather_and_build_aircrafts_list()
   foreach (unitTbl in all_units_array) {
     local unit = Unit(unitTbl)
     allUnits[unit.name] <- unit
@@ -50,7 +54,7 @@ let function init_all_units() { //Not moved to allUnits.nut due to "require loop
   ::countUsageAmountOnce()
   generateUnitShopInfo()
 
-  log("update_all_units called, got " + allUnits.len() + " items");
+  log("update_all_units called, got", allUnits.len(), "items");
 }
 
 local usageAmountCounted = false
@@ -58,7 +62,7 @@ local usageAmountCounted = false
   if (usageAmountCounted)
     return
 
-  let statsblk = ::get_global_stats_blk()
+  let statsblk = get_global_stats_blk()
   if (!statsblk?.aircrafts)
     return
 
@@ -102,12 +106,11 @@ local usageAmountCounted = false
 ::init_options_steps <- [
   init_all_units
   ::update_all_units
-  function() { return ::update_aircraft_warpoints(10) }
+  function() { return update_aircraft_warpoints(10) }
 
   function() {
     ::tribunal.init()
-    ::game_mode_maps.clear() //to refreash maps on demand
-    ::dynamic_layouts.clear()
+    clearMapsCache() //to refreash maps on demand
     ::crosshair_icons.clear()
     ::crosshair_colors.clear()
     ::thermovision_colors.clear()
@@ -160,19 +163,7 @@ local usageAmountCounted = false
     ::init_prestige_by_rank()
   }
 
-  function() {
-    let blk = DataBlock()
-    blk.load("config/postFxOptions.blk")
-    if (blk?.lut_list) {
-      ::lut_list = []
-      ::lut_textures = []
-      foreach (lut in (blk.lut_list % "lut")) {
-        ::lut_list.append("#options/" + lut.getStr("id", ""))
-        ::lut_textures.append(lut.getStr("texture", ""))
-      }
-      ::check_cur_lut_texture()
-    }
-  }
+  init_postfx
 
   function() {
     broadcastEvent("InitConfigs")

@@ -1,7 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, inventory_generate_key
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+from "%scripts/items/itemsConsts.nut" import itemType
 
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
@@ -11,7 +13,8 @@ let { ceil } = require("math")
 let { format, split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime
+} = require("%scripts/items/exchangeRecipes.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let time = require("%scripts/time.nut")
@@ -28,17 +31,23 @@ let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { showBuyAndOpenChestWndWhenReceive } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let emptyBlk = DataBlock()
 
 let defaultLocIdsList = {
   assemble                              = "item/assemble"
   disassemble                           = "item/disassemble"
+  consumeSeveral                        = "item/consume/several"
   recipes                               = "item/recipes"
   modify                                = "item/modify"
   descReceipesListHeaderPrefix          = ""
   msgBoxCantUse                         = "msgBox/assembleItem/cant"
   msgBoxConfirm                         = ""
+  msgBoxSeveralConfirm                  = ""
   msgBoxConfirmWhithItemName            = "msgBox/assembleItem/confirm"
   msgBoxConfirmWhithItemNameDisassemble = "msgBox/disassembleItem/confirmWhithItemName"
   craftCountdown                        = "items/craft_process/countdown"
@@ -52,14 +61,16 @@ let defaultLocIdsList = {
   inventoryErrorPrefix                  = "inventoryError/"
   maxAmountIcon                         = "check_mark/green"
   reUseItemLocId                        = "item/consume/again"
+  reUseItemSeveralLocId                 = "item/consume/several/again"
   openingRewardTitle                    = "mainmenu/itemConsumed/title"
   rewardTitle                           = "mainmenu/itemCreated/title"
   disassembledRewardTitle               = "mainmenu/itemDisassembled/title"
   cantConsumeYet                        = "item/cant_consume_yet"
 }
 
-local ItemExternal = class extends ::BaseItem {
+let ItemExternal = class (BaseItem) {
   static defaultLocId = ""
+  static name = "ItemExternal"
   static combinedNameLocId = null
   static descHeaderLocId = ""
   static linkActionLocId = "msgbox/btn_find_on_marketplace"
@@ -341,7 +352,7 @@ local ItemExternal = class extends ::BaseItem {
     else
       recipes = this.getMyRecipes()
     return ::PrizesView.getPrizesListView(content, params)
-      + ExchangeRecipes.getRequirementsMarkup(recipes, this, params)
+      + getRequirementsMarkup(recipes, this, params)
       + ::PrizesView.getPrizesListView(resultContent,
           { widthByParentParent = true,
             header = colorize("grayOptionColor", loc("mainmenu/you_will_receive")) },
@@ -472,7 +483,9 @@ local ItemExternal = class extends ::BaseItem {
     && !this.canConvertToWarbonds()
     && !this.hasMainActionDisassemble() && this.canDisassemble() && !this.isCrafting() && !this.hasCraftResult()
 
-  getAltActionName   = @(params = null) (params?.canConsume && this.amount && this.canConsume()) ? loc("item/consume")
+  getAltActionName   = @(params = null) (this.amount && this.canConsume() && this.getAllowToUseAmount() > 1
+      && this.getRelatedRecipes().len() > 0) ? loc(this.getLocIdsList().consumeSeveral)
+    : (params?.canConsume && this.amount && this.canConsume()) ? loc("item/consume")
     : (this.amount && this.canConsume() && this.canAssemble()) ? loc(this.getLocIdsList().assemble)
     : this.canConvertToWarbonds() ? loc("items/exchangeTo", { currency = this.getWarbondExchangeAmountText() })
     : (!this.hasMainActionDisassemble() && this.canDisassemble() && this.amount > 0 && !this.isCrafting() && !this.hasCraftResult())
@@ -480,7 +493,8 @@ local ItemExternal = class extends ::BaseItem {
     : (this.canBeModified() && this.amount > 0) ? this.getModifiedText()
     : (params?.canRunCustomMission ?? false) && this.canRunCustomMission() ? this.getCustomMissionButtonText()
     : ""
-  doAltAction        = @(params = null) (params?.canConsume && this.canConsume() && this.consume(null, params))
+  doAltAction        = @(params = null) this.consumeSeveral(params)
+    || (params?.canConsume && this.canConsume() && this.consume(null, params))
     || (this.canConsume() && this.assemble(null, params))
     || this.convertToWarbonds(params)
     || (!this.hasMainActionDisassemble() && this.disassemble(params))
@@ -505,7 +519,7 @@ local ItemExternal = class extends ::BaseItem {
       + "\n" + loc("msgBox/coupon_exchange")
     let msgboxParams = {
       cancel_fn = @() null
-      baseHandler = ::get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
+      baseHandler = get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
       data_below_text = ::PrizesView.getPrizesListView([ this.metaBlk ],
         { showAsTrophyContent = true, receivedPrizes = false, widthByParentParent = true })
       data_below_buttons = hasFeature("Marketplace") && this.itemDef?.marketable
@@ -546,30 +560,25 @@ local ItemExternal = class extends ::BaseItem {
         cb({ success = true })
     }
     let itemId = this.id
-    let taskId = ::char_send_blk("cln_consume_inventory_item", blk)
+    let taskId = char_send_blk("cln_consume_inventory_item", blk)
     addTask(taskId, { showProgressBox = !this.shouldAutoConsume }, taskCallback,
       @() cb?({ success = false, itemId = itemId }))
   }
 
-  getAssembleHeader       = @() loc(this.getLocIdsList().headerRecipesList, { itemName = this.getName() })
-  getAssembleText         = @() loc(this.getLocIdsList().assemble)
-  getAssembleButtonText   = @() this.getVisibleRecipes().len() > 1 ? loc(this.getLocIdsList().recipes) : this.getAssembleText()
-  getCantUseLocId         = @() this.getLocIdsList().msgBoxCantUse
-  getConfirmMessageData   = @(recipe) this.getEmptyConfirmMessageData().__update({
-    text = loc(recipe.getConfirmMessageLocId(this.getLocIdsList()),
-        { itemName = colorize("activeTextColor", this.getName()) })
-      + (recipe.hasCraftTime() ? "\n" + recipe.getCraftTimeText() : "")
-    headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
-    needRecipeMarkup = true
-  })
-
-  function assemble(_cb = null, params = null) {
-    if (!this.canAssemble())
+  function consumeSeveral(params = null) {
+    if ((this.uids?.len() ?? 0) == 0 || !this.canConsume())
       return false
 
-    let recipesList = params?.recipes ?? this.getVisibleRecipes()
+    let allowToUseAmount = this.getAllowToUseAmount()
+    if (allowToUseAmount <= 1)
+      return false
+
+    let recipesList = this.getRelatedRecipes()
+    if (recipesList.len() == 0)
+      return false
+
     if (recipesList.len() == 1) {
-      ExchangeRecipes.tryUse(recipesList, this, params)
+      tryUseRecipeSeveralTime(recipesList[0], this, allowToUseAmount, params)
       return true
     }
 
@@ -581,7 +590,44 @@ local ItemExternal = class extends ::BaseItem {
       alignObj = params?.obj
       showTutorial = params?.showTutorial
       onAcceptCb = function(recipe) {
-        ExchangeRecipes.tryUse([recipe], item, params)
+        tryUseRecipeSeveralTime(recipe, item, allowToUseAmount, params)
+        return !recipe.isUsable
+      }
+    })
+    return true
+  }
+
+  getAssembleHeader       = @() loc(this.getLocIdsList().headerRecipesList, { itemName = this.getName() })
+  getAssembleText         = @() loc(this.getLocIdsList().assemble)
+  getAssembleButtonText   = @() this.getVisibleRecipes().len() > 1 ? loc(this.getLocIdsList().recipes) : this.getAssembleText()
+  getCantUseLocId         = @() this.getLocIdsList().msgBoxCantUse
+  getConfirmMessageData   = @(recipe, quantity) this.getEmptyConfirmMessageData().__update({
+    text = loc(recipe.getConfirmMessageLocId(this.getLocIdsList()),
+        { itemName = colorize("activeTextColor", quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity})") })
+      + (recipe.hasCraftTime() ? "\n" + recipe.getCraftTimeText() : "")
+    headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
+    needRecipeMarkup = true
+  })
+
+  function assemble(_cb = null, params = null) {
+    if (!this.canAssemble())
+      return false
+
+    let recipesList = params?.recipes ?? this.getVisibleRecipes()
+    if (recipesList.len() == 1) {
+      tryUseRecipes(recipesList, this, params)
+      return true
+    }
+
+    let item = this
+    recipesListWnd.open({
+      recipesList = recipesList
+      headerText = this.getAssembleHeader()
+      buttonText = this.getAssembleText()
+      alignObj = params?.obj
+      showTutorial = params?.showTutorial
+      onAcceptCb = function(recipe) {
+        tryUseRecipes([recipe], item, params)
         return !recipe.isUsable
       }
     })
@@ -607,7 +653,7 @@ local ItemExternal = class extends ::BaseItem {
       return false
 
     let content = this.getDisassembleResultContent(recipe)
-    ExchangeRecipes.tryUse([ recipe ], this,
+    tryUseRecipes([ recipe ], this,
       { rewardListLocId = this.getItemsListLocId()
         bundleContent = content
       })
@@ -623,7 +669,7 @@ local ItemExternal = class extends ::BaseItem {
     if (recipe == null)
       return false
 
-    ExchangeRecipes.tryUse([ recipe ], this, params)
+    tryUseRecipes([ recipe ], this, params)
     return true
   }
 
@@ -812,9 +858,10 @@ local ItemExternal = class extends ::BaseItem {
 
   isMultiPurchaseAvailable = @() this.allowToBuyAmount > 1
 
-  onCheckLegalRestrictions = @(cb, handler, params) this.isMultiPurchaseAvailable()
-    ? this.showChooseAmountWnd(cb, handler, params)
-    : this.showBuyConfirm(cb, handler, params)
+  onCheckLegalRestrictions = @(cb, handler, params)
+    this.isMultiPurchaseAvailable() && params?.amount == null
+      ? this.showChooseAmountWnd(cb, handler, params)
+      : this.showBuyConfirm(cb, handler, params)
 
   function showChooseAmountWnd(cb, handler, params) {
     let item = this
@@ -836,7 +883,7 @@ local ItemExternal = class extends ::BaseItem {
 
   function onAmountAccept(cb, handler, params) {
     let cost = (Cost() + this.getCost()).multiply(params.amount)
-    if (::check_balance_msgBox(cost))
+    if (checkBalanceMsgBox(cost))
       this.showBuyConfirm(cb, handler, params)
   }
 
@@ -850,20 +897,22 @@ local ItemExternal = class extends ::BaseItem {
     }
     let cost = this.getCost()
     let blk = DataBlock()
-    blk.key = ::inventory_generate_key()
+    blk.key = inventory_generate_key()
     blk.itemDefId = this.id
     blk.goldCost = cost.gold
     blk.wpCost = cost.wp
     if ("amount" in params)
       blk.amount = params.amount
 
+    let item = this
     let onSuccess = function() {
       if (cb)
         cb({ success = true })
+      showBuyAndOpenChestWndWhenReceive(item)
     }
     let onError = @(_errCode) cb ? cb({ success = false }) : null
 
-    let taskId = ::char_send_blk("cln_inventory_purchase_item", blk)
+    let taskId = char_send_blk("cln_inventory_purchase_item", blk)
     addTask(taskId, { showProgressBox = true }, onSuccess, onError)
     return true
   }
@@ -987,7 +1036,7 @@ local ItemExternal = class extends ::BaseItem {
     // prevent infinite recursion on incorrectly configured delayedexchange
     if (craftingItem == this) {
       logerr("Inventory: delayedexchange " + this.id + " instance has type " +
-        getEnumValName("itemType", this.iType) + " which does not implement cancelCrafting()")
+        getEnumValName("itemType", itemType, this.iType) + " which does not implement cancelCrafting()")
       return false
     }
 
@@ -1120,7 +1169,7 @@ local ItemExternal = class extends ::BaseItem {
       : "msgBox/assembleItem/cant"
     craftCountdown               = "items/craft_process/countdown"
       + (this.needShowAsDisassemble() ? "/disassemble" : "")
-    headerRecipesList            = ExchangeRecipes.hasFakeRecipes(this.getVisibleRecipes())
+    headerRecipesList            = hasFakeRecipesInList(this.getVisibleRecipes())
       ? "item/create_header/findTrue"
       : "item/create_header"
     craftingIconInAmmount        = this.needShowAsDisassemble() ? "hud/iconRepair" : "icon/gear"
@@ -1133,7 +1182,7 @@ local ItemExternal = class extends ::BaseItem {
   hasUsableRecipe = @() this.getVisibleRecipes().findindex(@(r) r.isUsable) != null
   needOfferBuyAtExpiration = @() !this.isHiddenItem() && this.itemDef?.tags?.offerToBuyAtExpiration
   isVisibleInWorkshopOnly = @() this.itemDef?.tags?.showInWorkshopOnly ?? false
-  getDescRecipesMarkup = @(params) ExchangeRecipes.getRequirementsMarkup(this.getMyRecipes(), this, params)
+  getDescRecipesMarkup = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
   getIconName = @() this.isDisguised ? this.getSmallIconName() : this.itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function () {
     let recipes = this.getVisibleRecipes()
@@ -1159,6 +1208,7 @@ local ItemExternal = class extends ::BaseItem {
   showAlwaysAsEnabledAndUnlocked = @() this.itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
   showAsEmptyItem = @() (this.getSubstitutionItem() ?? this).itemDef?.tags.showAsEmptyItem
   showDescInRewardWndOnly = @() this.itemDef?.tags.showDescInRewardWndOnly ?? false
+  getAllowToUseAmount = @() (this.itemDef?.tags.allowToUseAmount ?? 0).tointeger()
 
   function getCountriesWithBuyRestrict() {
     let countryDenyPurchase = this.itemDef?.tags.countryDenyPurchase ?? ""

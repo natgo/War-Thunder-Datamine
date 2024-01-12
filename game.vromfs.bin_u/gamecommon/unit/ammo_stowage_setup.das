@@ -22,7 +22,7 @@ def setup_cluster(var unit : Unit?; cluster_id : int; var num_ammos : int&; num_
                     ammo_slots__numAmmo : IPoint2List- const
                   >) : bool
   var is_changed = false
-  set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EMPTY, num_ammos == 0)
+  set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EMPTY, num_ammos <= 0)
   let cluster_state = v.ammo_clusters__state[cluster_id]
   let reverse_fill = get_flag(cluster_state, AmmoClusterState REVERSE_FILL)
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
@@ -140,7 +140,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
             num_ammo_loaded += 1
             max_ammo_loaded += 1
 
-    if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO)
+    if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech
       num_ammo -= num_ammo_loaded
 
     if is_refill || num_ammo > stowage_num_ammo.x
@@ -154,14 +154,13 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 
       if stowage_num_ammo_first_stage.z > 0
         if is_refill
-          stowage_num_ammo_first_stage.x = min(num_ammo, stowage_num_ammo_first_stage.z)
+          stowage_num_ammo_first_stage.x = max(0, min(num_ammo, stowage_num_ammo_first_stage.z))
         else
-          stowage_num_ammo_first_stage.x = min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z)
+          stowage_num_ammo_first_stage.x = max(0, min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z))
         is_sync_required = true
 
     if stowage_num_ammo_first_stage.z > 0 && num_ammo < stowage_num_ammo.x
-      stowage_num_ammo_first_stage.x = max(get_flag(state, AmmoStowageState HAS_AUTO_LOAD) && get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech ? -1 : 0,
-                                            stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x)
+      stowage_num_ammo_first_stage.x = max(0, stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x)
       is_sync_required = true
 
     stowage_num_ammo.x = num_ammo
@@ -287,6 +286,17 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
     apply_slot_effect_by_part_id(unit, evt.partId, evt.effect) <| v
     setup_ammo_stowage(unit, false, false) <| v
 
+[es]
+def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; uid : int)
+  var unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+  for weapon in unit.weap.Weapons |> get_weapons_by_trigger(evt.triggerId)
+    var gun = weapon |> as_gun()
+    if gun == null
+      continue
+    start_reloading_gun(*gun)
+
 
 [with_bundle(v)]
 def ammo_stowage_send_net_sync(eid : EntityId; v : tuple<
@@ -330,3 +340,28 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
     else
       v.ammo_stowages__replenishmentStartEnd[stowage_id] = float2(-1.0f)
   sendEvent(eid, [[EventBulletsAmountChanged isRefill=false]])
+
+
+[es]
+def ammo_stowage_gun_net_sync_es(act : UpdateStageInfoAct;
+                                 uid : int;
+                                 var ammo_stowages__state : UInt32List&;
+                                 ammo_stowages__weaponTriggersRange : IPoint2List;
+                                 ammo_stowage__weaponTriggers : IntList)
+  for stowage_id, state in iter_range(ammo_stowages__state), ammo_stowages__state
+    if get_flag(state, AmmoStowageState NEED_SYNC_BULLET_COUNT)
+      set_flag(state, AmmoStowageState NEED_SYNC_BULLET_COUNT, false)
+
+      let unit = get_unit(uid)
+      if unit == null || unit.isDelayed
+        return
+
+      let triggers_range = ammo_stowages__weaponTriggersRange[stowage_id]
+      for trigger_id_idx in triggers_range.x..triggers_range.y
+        let trigger_id = ammo_stowage__weaponTriggers[trigger_id_idx]
+        for weapon in unit.weap.Weapons |> get_weapons_by_trigger(trigger_id)
+          let gun = weapon |> as_gun()
+          if gun == null
+            continue
+          send_bullet_rearm_event(*gun, false)
+

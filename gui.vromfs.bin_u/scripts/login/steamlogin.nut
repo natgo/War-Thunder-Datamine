@@ -1,6 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_login_pass
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
+let { set_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -14,7 +17,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 
-gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler {
+gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -24,7 +27,7 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-    let lp = ::get_login_pass()
+    let lp = get_login_pass()
     this.defaultSaveLoginFlagVal = lp.login != ""
     this.defaultSavePasswordFlagVal = lp.password != ""
     this.defaultSaveAutologinFlagVal = ::is_autologin_enabled()
@@ -43,23 +46,21 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
   }
 
   function proceedAuthorizationResult(result, no_dump_login) {
-    switch (result) {
-      case YU2_NOT_FOUND:
-        openEulaWnd({
-          isForView = false
-          onAcceptCallback = Callback(function() {
-            this.steamAuthorization("steam")
-          }, this),
-        })
-        break
-      case YU2_OK:
-        if (is_running()) {
-          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
-        }
-        ;;  //warning disable: -missed-break
-      default: // -missed-break
-        base.proceedAuthorizationResult(result, no_dump_login)
+    if (YU2_NOT_FOUND == result) {
+      openEulaWnd({
+        isForView = false
+        onAcceptCallback = Callback(function() {
+          this.steamAuthorization("steam")
+        }, this),
+      })
+      return
     }
+    if ( result == YU2_OK) {
+      if (is_running()) {
+        saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
+      }
+    }
+    base.proceedAuthorizationResult(result, no_dump_login)
   }
 
   function onLoginErrorTryAgain() {
@@ -68,7 +69,7 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
 
   function goToLoginWnd(disableAutologin = true) {
     if (disableAutologin)
-      ::disable_autorelogin_once <- true
+      set_disable_autorelogin_once(true)
     handlersManager.loadHandler(gui_handlers.LoginWndHandler)
   }
 

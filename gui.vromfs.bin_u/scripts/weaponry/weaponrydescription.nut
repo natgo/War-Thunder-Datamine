@@ -1,7 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToString } = require("%scripts/time.nut")
@@ -18,6 +20,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
@@ -284,7 +287,7 @@ let function getReqModsText(unit, item) {
   foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in item)
         foreach (req in item[rp])
-          if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
+          if (rp == "reqWeapon" && !shop_is_weapon_purchased(unit.name, req))
             reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
           else if (rp == "reqModification" && !shopIsModificationPurchased(unit.name, req))
             reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon")
@@ -317,7 +320,7 @@ let function getBulletsListHeader(unit, bulletsList) {
 let function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   local res = ""
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = getCurMissionRules()
 
   if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()

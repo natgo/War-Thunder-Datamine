@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
@@ -9,16 +11,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 
 
-global enum WW_MAP_TOOLTIP_TYPE {
-  BATTLE,
-  ARMY,
-  NONE,
-  TOTAL
-}
-
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-gui_handlers.wwMapTooltip <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   controllerScene = null
 

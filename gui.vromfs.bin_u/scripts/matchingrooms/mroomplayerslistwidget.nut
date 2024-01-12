@@ -18,9 +18,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 
-gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/playersList.tpl"
@@ -194,7 +195,7 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
   function setFullRoomInfo() {
     if (!this.room)
       return
-    let fullRoom = ::g_mroom_info.get(this.room.roomId).getFullRoomData()
+    let fullRoom = getMroomInfo(this.room.roomId).getFullRoomData()
     if (fullRoom)
       this.room = fullRoom
   }
@@ -208,6 +209,6 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
 
   function moveMouse() {
     if (this.scene.childrenCount() > 0)
-      ::move_mouse_on_child(this.scene.getChild(0), 0)
+      move_mouse_on_child(this.scene.getChild(0), 0)
   }
 }

@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -9,7 +10,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
-gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/objectivesInfoWindow.tpl"
@@ -36,7 +37,7 @@ gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     this.teamObjectiveHandlersArray = []
     foreach (side in ::g_world_war.getSidesOrder())
-      this.initSideBlock(side, ::ww_side_val_to_name(side))
+      this.initSideBlock(side, ww_side_val_to_name(side))
     this.markSeenCurObjective()
     this.guiScene.playSound("ww_globe_battle_select")
   }
@@ -72,7 +73,7 @@ gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
     let teams = []
     foreach (side in ::g_world_war.getSidesOrder()) {
       teams.append({
-        teamName = ::ww_side_val_to_name(side)
+        teamName = ww_side_val_to_name(side)
         teamColor = side == mySide ? "blue" : "red"
       })
     }

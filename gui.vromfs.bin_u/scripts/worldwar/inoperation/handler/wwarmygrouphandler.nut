@@ -1,6 +1,5 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
-
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -31,7 +30,7 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
       return
 
     local isSelectedGroupArmy = false
-    foreach (armyName in ::ww_get_selected_armies_names())
+    foreach (armyName in ww_get_selected_armies_names())
       if (this.group.isMyArmy(::g_world_war.getArmyByName(armyName))) {
         isSelectedGroupArmy = true
         break

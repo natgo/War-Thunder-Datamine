@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -153,13 +155,17 @@ let function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
-  switch (getEsUnitType(unit)) {
-    case ES_UNIT_TYPE_AIRCRAFT:       return $"!ui/aircrafts/{unit.name}"
-    case ES_UNIT_TYPE_HELICOPTER:     return $"!ui/aircrafts/{unit.name}"
-    case ES_UNIT_TYPE_TANK:           return $"!ui/tanks/{unit.name}"
-    case ES_UNIT_TYPE_BOAT:           return $"!ui/ships/{unit.name}"
-    case ES_UNIT_TYPE_SHIP:           return $"!ui/ships/{unit.name}"
-  }
+  let unitType = getEsUnitType(unit)
+  if (unitType == ES_UNIT_TYPE_AIRCRAFT)
+    return $"!ui/aircrafts/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_HELICOPTER)
+    return $"!ui/aircrafts/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_TANK)
+    return $"!ui/tanks/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_BOAT)
+    return $"!ui/ships/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_SHIP)
+    return $"!ui/ships/{unit.name}"
   return ""
 }
 
@@ -210,7 +216,7 @@ let function getShipMaterialTexts(unitId) {
     let material  = blk?[part + "Material"]  ?? ""
     let thickness = blk?[part + "Thickness"] ?? 0.0
     if (thickness && material) {
-      res[part + "Label"] <- loc("info/ship/part/" + part)
+      res[part + "Label"] <- loc($"info/ship/part/{part}")
       res[part + "Value"] <- loc("armor_class/" + material + "/short", loc("armor_class/" + material)) +
         loc("ui/comma") + round(thickness) + " " + loc("measureUnits/mm")
     }
@@ -218,8 +224,8 @@ let function getShipMaterialTexts(unitId) {
   if (res?.superstructureValue && res?.superstructureValue == res?.hullValue) {
     res.hullLabel += " " + loc("clan/rankReqInfoCondType_and") + " " +
       utf8ToLower(res.superstructureLabel)
-    res.rawdelete("superstructureLabel")
-    res.rawdelete("superstructureValue")
+    res.$rawdelete("superstructureLabel")
+    res.$rawdelete("superstructureValue")
   }
   return res
 }
@@ -256,13 +262,20 @@ let function getUnitItemStatusText(bitStatus, isGroup = false) {
 let function getUnitRarity(unit) {
   if (isUnitDefault(unit))
     return "reserve"
-  if (::isUnitSpecial(unit))
+  if (isUnitSpecial(unit))
     return "premium"
   if (isUnitGift(unit))
     return "gift"
   if (unit.isSquadronVehicle())
     return "squadron"
   return "common"
+}
+
+function getUnitClassColor(unit) {
+  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+  if (role == null || role == "" || role == "none")
+    return "white";
+  return $"{role}Color"
 }
 
 return {
@@ -276,4 +289,5 @@ return {
   getShipMaterialTexts
   getUnitItemStatusText
   getUnitRarity
+  getUnitClassColor
 }

@@ -1,9 +1,10 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -15,7 +16,7 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
 let { utf8ToLower, trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
+local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false
@@ -55,7 +56,7 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     itemsListObj.setValue(selectedIdx)
 
-    ::move_mouse_on_child_by_value(itemsListObj)
+    move_mouse_on_child_by_value(itemsListObj)
   }
 
   function updateListItems() {
@@ -76,7 +77,7 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    let isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    let isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
     let isUnlocked = isBgUnlocked(this.selectedId)
     let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
     let isBanBtnVisible = isUnlocked && isBtnVisible

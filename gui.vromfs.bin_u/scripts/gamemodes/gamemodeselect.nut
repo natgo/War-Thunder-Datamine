@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -20,10 +23,12 @@ let { getEventPVETrophyName, hasNightGameModes } = require("%scripts/events/even
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 dagui_propid_add_name_id("modeId")
 
-gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
@@ -60,7 +65,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   ]
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.GameModeSelect)
+    loadHandler(gui_handlers.GameModeSelect)
   }
 
   function getSceneTplView() {
@@ -126,7 +131,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let index = this.filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
-    ::move_mouse_on_child(curGameModeObj, index)
+    move_mouse_on_child(curGameModeObj, index)
   }
 
   function registerNewIconWidgets() {
@@ -326,7 +331,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       crossplayTooltip = this.getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
-      isTrophyReceived = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
+      isTrophyReceived = trophyName == "" ? false : !can_receive_pve_trophy(-1, trophyName)
       settingsButtons
     }
   }
@@ -585,7 +590,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function isShowMapPreferences(curEvent) {
-    return hasFeature("MapPreferences") && !::is_me_newbie()
+    return hasFeature("MapPreferences") && !isMeNewbie()
       && isMultiplayerPrivilegeAvailable.value
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)

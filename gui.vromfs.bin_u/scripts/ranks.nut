@@ -1,8 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, is_online_available, shop_get_free_exp, clan_get_my_clan_type, disable_network, get_mp_local_team, shop_get_premium_account_ent_name, clan_get_my_clan_name, clan_get_my_clan_id, get_cur_rank_info, has_entitlement
 from "%scripts/dagui_library.nut" import *
+
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%appGlobals/ranks_common_shared.nut")
 let { get_time_msec } = require("dagor.time")
@@ -15,9 +16,13 @@ let { get_mp_session_info } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::max_player_rank <- 100
 ::max_country_rank <- 8
+
+let ranksPersist = persist("ranksPersist", @() { max_player_rank = 100 })
+let exp_per_rank = persist("exp_per_rank", @() [])
+let prestige_by_rank = persist("prestige_by_rank", @() [])
 
 ::discounts <- { //count from const in warpointsBlk by (name + "Mul")
 }
@@ -44,48 +49,43 @@ let current_user_profile = {
   ranks = {}
 }
 
-::exp_per_rank <- []
-::prestige_by_rank <- []
 
 registerPersistentData("RanksGlobals", getroottable(),
-  [
-    "discounts", "event_muls",
-    "exp_per_rank", "max_player_rank", "prestige_by_rank"
-  ])
+  [ "discounts", "event_muls" ])
 
 ::load_player_exp_table <- function load_player_exp_table() {
   let ranks_blk = get_ranks_blk()
   let efr = ranks_blk?.exp_for_playerRank
 
-  ::exp_per_rank = []
+  exp_per_rank.clear()
 
   if (efr)
     for (local i = 0; i < efr.paramCount(); i++)
-      ::exp_per_rank.append(efr.getParamValue(i))
+      exp_per_rank.append(efr.getParamValue(i))
 
-  ::max_player_rank = ::exp_per_rank.len()
+  ranksPersist.max_player_rank = exp_per_rank.len()
 }
 
 ::init_prestige_by_rank <- function init_prestige_by_rank() {
   let blk = get_ranks_blk()
   let prestigeByRank = blk?.prestige_by_rank
 
-  ::prestige_by_rank = []
+  prestige_by_rank.clear()
   if (!prestigeByRank)
     return
 
   for (local i = 0; i < prestigeByRank.paramCount(); i++)
-    ::prestige_by_rank.append(prestigeByRank.getParamValue(i))
+    prestige_by_rank.append(prestigeByRank.getParamValue(i))
 }
 
 ::get_cur_exp_table <- function get_cur_exp_table(country = "", profileData = null, rank = null, exp = null) {
   local res = null //{ exp, rankExp }
   if (rank == null)
     rank = ::get_player_rank_by_country(country, profileData)
-  let maxRank = (country == "") ? ::max_player_rank : ::max_country_rank
+  let maxRank = (country == "") ? ranksPersist.max_player_rank : ::max_country_rank
 
   if (rank < maxRank) {
-    let expTbl = ::exp_per_rank
+    let expTbl = exp_per_rank
     if (rank >= expTbl.len())
       return res
 
@@ -125,7 +125,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 
 ::get_rank_by_exp <- function get_rank_by_exp(exp) {
   local rank = 0
-  let rankTbl = ::exp_per_rank
+  let rankTbl = exp_per_rank
   for (local i = 0; i < rankTbl.len(); i++)
     if (exp >= rankTbl[i])
       rank++
@@ -133,7 +133,7 @@ registerPersistentData("RanksGlobals", getroottable(),
   return rank
 }
 
-::calc_rank_progress <- function calc_rank_progress(profileData = null) {
+function calc_rank_progress(profileData = null) {
   let rankTbl = ::get_cur_exp_table("", profileData)
   if (rankTbl)
     return (1000.0 * rankTbl.exp.tofloat() / rankTbl.rankExp.tofloat()).tointeger()
@@ -141,8 +141,8 @@ registerPersistentData("RanksGlobals", getroottable(),
 }
 
 ::get_prestige_by_rank <- function get_prestige_by_rank(rank) {
-  for (local i = ::prestige_by_rank.len() - 1; i >= 0; i--)
-    if (rank >= ::prestige_by_rank[i])
+  for (local i = prestige_by_rank.len() - 1; i >= 0; i--)
+    if (rank >= prestige_by_rank[i])
       return i
   return 0
 }
@@ -150,7 +150,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 let function get_cur_session_country() {
   if (::is_multiplayer()) {
     let sessionInfo = get_mp_session_info()
-    let team = ::get_mp_local_team()
+    let team = get_mp_local_team()
     if (team == 1)
       return sessionInfo.alliesCountry
     if (team == 2)
@@ -160,9 +160,9 @@ let function get_cur_session_country() {
 }
 
 ::get_profile_info <- function get_profile_info() {
-  let info = ::get_cur_rank_info()
+  let info = get_cur_rank_info()
 
-  current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
+  current_user_profile.name = info.name //is_online_available() ? info.name : "" ;
   if (userName.value != info.name && info.name != "")
     userName.set(info.name)
 
@@ -184,28 +184,19 @@ let function get_cur_session_country() {
   if (current_user_profile.country != "country_0")
     current_user_profile.countryRank <- ::get_player_rank_by_country(current_user_profile.country)
 
-  let isInClan = ::clan_get_my_clan_id() != "-1"
-  current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
-  current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
-  current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
+  let isInClan = clan_get_my_clan_id() != "-1"
+  current_user_profile.clanTag <- isInClan ? clan_get_my_clan_tag() : ""
+  current_user_profile.clanName <- isInClan  ? clan_get_my_clan_name() : ""
+  current_user_profile.clanType <- isInClan  ? clan_get_my_clan_type() : ""
   ::clanUserTable[userName.value] <- current_user_profile.clanTag
 
   current_user_profile.exp <- info.exp
-  current_user_profile.free_exp <- ::shop_get_free_exp()
+  current_user_profile.free_exp <- shop_get_free_exp()
   current_user_profile.rank <- ::get_rank_by_exp(current_user_profile.exp)
   current_user_profile.prestige <- ::get_prestige_by_rank(current_user_profile.rank)
-  current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
+  current_user_profile.rankProgress <- calc_rank_progress(current_user_profile)
 
   return current_user_profile
-}
-
-::on_mission_started_mp <- function on_mission_started_mp() {
-  log("on_mission_started_mp - CLIENT")
-  ::g_streaks.clear()
-  ::before_first_flight_in_session = true;
-  ::clear_spawn_score();
-  ::cur_mission_mode = -1
-  broadcastEvent("MissionStarted")
 }
 
 let airTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
@@ -248,7 +239,7 @@ let function haveCountryRankAir(country, rank) {
 }
 
 //!!FIX ME: should to remove from this function all what not about unit.
-::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0) {
+function update_aircraft_warpoints(maxCallTimeMsec = 0) {
   let startTime = get_time_msec()
   let errorsTextArray = []
   foreach (unit in getAllUnits()) {
@@ -287,8 +278,8 @@ let function haveCountryRankAir(country, rank) {
   return PT_STEP_STATUS.NEXT_STEP
 }
 
-::checkAllowed <- function checkAllowed(tbl) {
-  if (::disable_network())
+function isRanksAllowed(tbl) {
+  if (disable_network())
     return true
 
   let silent = tbl?.silent ?? false
@@ -333,16 +324,16 @@ let function haveCountryRankAir(country, rank) {
 
   //check entitlement - this is always last
   if ("entitlement" in tbl) {
-    if (::has_entitlement(tbl.entitlement))
+    if (has_entitlement(tbl.entitlement))
       return true
-    else if (!silent && (tbl.entitlement == ::shop_get_premium_account_ent_name())) {
+    else if (!silent && (tbl.entitlement == shop_get_premium_account_ent_name())) {
       let guiScene = get_gui_scene()
       local handler = this
       if (!handler || handler == getroottable())
-        handler = ::get_cur_base_gui_handler()
+        handler = get_cur_base_gui_handler()
       let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
-          let text = loc("charServer/noEntitlement/" + locText)
+          let text = loc($"charServer/noEntitlement/{locText}")
           handler.msgBox("no_entitlement", text,
           [
             ["yes", function() { guiScene.performDelayed(handler, function() {
@@ -379,4 +370,8 @@ return {
   updatePlayerRankByCountries
   updatePlayerRankByCountry
   playerRankByCountries
+  isRanksAllowed
+  update_aircraft_warpoints
+  calc_rank_progress
+
 }

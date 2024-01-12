@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mouse_available, get_option_mouse_joystick_square
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
+
 let globalEnv = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
@@ -14,8 +16,6 @@ let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
-} = require("%scripts/controls/controlsConsts.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
@@ -25,6 +25,7 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
   USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL,
   USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
 } = require("%scripts/options/optionsExtNames.nut")
+let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
@@ -308,11 +309,14 @@ return [
   }
   {
     id = "ID_FIRE_PRIMARY"
+    conflictGroup = ConflictGroups.PLANE_FIRE
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_FIRE_SECONDARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_JETTISON_SECONDARY"
@@ -326,6 +330,7 @@ return [
   {
     id = "ID_BOMBS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_BOMBS_SERIES"
@@ -334,6 +339,7 @@ return [
   {
     id = "ID_ROCKETS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_ROCKETS_SERIES"
@@ -342,14 +348,17 @@ return [
   {
     id = "ID_AGM"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_AAM"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_GUIDED_BOMBS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_FUEL_TANKS"
@@ -371,22 +380,27 @@ return [
   {
     id = "ID_GUIDED_BOMBS_LOCK"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_PRIMARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_RESIZE_SECONDARY_WEAPON_SERIES"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_IRCM_SWITCH_PLANE"
@@ -396,6 +410,7 @@ return [
   {
     id = "ID_FLARES"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_TOGGLE_PERIODIC_FLARES"
@@ -418,6 +433,7 @@ return [
   {
     id = "ID_TOGGLE_LASER_DESIGNATOR"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SWITCH"
@@ -427,22 +443,27 @@ return [
   {
     id = "ID_SENSOR_TYPE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_MODE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_ACM_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_RANGE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_TARGET_SWITCH"
@@ -727,6 +748,7 @@ return [
   {
     id = "ID_PLANE_NIGHT_VISION"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_PLANE_SMOKE_SCREEN_GENERATOR"
@@ -927,13 +949,13 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) ::get_option_mouse_joystick_square()
-    setValue = @(_joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
+    value = @(_joyParams) get_option_mouse_joystick_square()
+    setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_CENTER_MOUSE_JOYSTICK"
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
+    showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
 //-------------------------------------------------------

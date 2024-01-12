@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,10 +10,10 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -242,7 +243,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  focusSheetsList = @() ::move_mouse_on_child_by_value(this.getSheetsListObj())
+  focusSheetsList = @() move_mouse_on_child_by_value(this.getSheetsListObj())
 
   function findLastValue(prevValue) {
     let offset = this.curPage * this.itemsPerPage
@@ -499,7 +500,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   getSheetsListObj = @() this.scene.findObject("nav_list")
   getSortListObj = @() this.scene.findObject(this.sortBoxId)
   getItemsListObj = @() this.scene.findObject("items_list")
-  moveMouseToMainList = @() ::move_mouse_on_child_by_value(this.getItemsListObj())
+  moveMouseToMainList = @() move_mouse_on_child_by_value(this.getItemsListObj())
 
   function goBack() {
     this.markCurrentPageSeen()
@@ -521,9 +522,9 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
-      ::move_mouse_on_obj(this.getCurItemObj())
+      move_mouse_on_obj(this.getCurItemObj())
     else
-      ::move_mouse_on_obj(containerObj)
+      move_mouse_on_obj(containerObj)
   }
 
   function onItemHover(obj) {
@@ -547,7 +548,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
     }.bindenv(this))
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

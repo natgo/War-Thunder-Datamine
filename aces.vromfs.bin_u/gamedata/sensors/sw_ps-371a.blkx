@@ -227,12 +227,31 @@
         "width": 150.0
       }
     },
+    "mprfAcm": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "mainBeamNotchWidth": 50.0,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -1500.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 2.0,
+        "width": 25.0
+      }
+    },
     "mprfTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 50.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -521,7 +540,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "mprfTrack"
+            "signal": "mprfSearch"
           },
           "setModeName": {
             "name": "PD acquisition"
@@ -548,7 +567,7 @@
             "transiver": "pulse"
           },
           "setSignal": {
-            "signal": "pulseTrack"
+            "signal": "pulseSearch"
           },
           "setModeName": {
             "name": "acquisition"
@@ -577,7 +596,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "mprfTrack"
+            "signal": "mprfSearch"
           },
           "setModeName": {
             "name": "acquisition"
@@ -602,51 +621,57 @@
             "sensorIndex": 0
           }
         },
-        "setMprfTrackModeNameTrack": {
+        "setMprfTrackModeParamsTrack": {
+          "setSignal": {
+            "signal": "mprfTrack"
+          },
           "setModeName": {
             "name": "PD track"
           }
         },
-        "setPulseTrackModeNameTrack": {
+        "setPulseTrackModeParamsTrack": {
           "setModeName": {
             "name": "track"
           }
         },
-        "setMprfTrackModeNameLock": {
+        "setMprfTrackModeParamsLock": {
+          "setSignal": {
+            "signal": "mprfAcm"
+          },
           "setModeName": {
             "name": "PD ACM"
           }
         },
-        "setPulseTrackModeNameLock": {
+        "setPulseTrackModeParamsLock": {
           "setModeName": {
             "name": "ACM"
           }
         },
-        "setTrackModeNameTrack": {
+        "setTrackModeParamsTrack": {
           "setCustomActionTemplate": [
             {
               "fsm": "main",
-              "name": "setMprfTrackModeName",
-              "actionTemplateName": "setMprfTrackModeNameTrack"
+              "name": "setMprfTrackModeParams",
+              "actionTemplateName": "setMprfTrackModeParamsTrack"
             },
             {
               "fsm": "main",
-              "name": "setPulseTrackModeName",
-              "actionTemplateName": "setPulseTrackModeNameTrack"
+              "name": "setPulseTrackModeParams",
+              "actionTemplateName": "setPulseTrackModeParamsTrack"
             }
           ]
         },
-        "setTrackModeNameLock": {
+        "setTrackModeParamsLock": {
           "setCustomActionTemplate": [
             {
               "fsm": "main",
-              "name": "setMprfTrackModeName",
-              "actionTemplateName": "setMprfTrackModeNameLock"
+              "name": "setMprfTrackModeParams",
+              "actionTemplateName": "setMprfTrackModeParamsLock"
             },
             {
               "fsm": "main",
-              "name": "setPulseTrackModeName",
-              "actionTemplateName": "setPulseTrackModeNameLock"
+              "name": "setPulseTrackModeParams",
+              "actionTemplateName": "setPulseTrackModeParamsLock"
             }
           ]
         },
@@ -683,7 +708,7 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setTrackModeNameLock": {},
+          "setTrackModeParamsLock": {},
           "enableTrackModes": {}
         },
         "resetLockMode": {
@@ -727,7 +752,7 @@
               "active": true
             }
           ],
-          "setTrackModeNameTrack": {},
+          "setTrackModeParamsTrack": {},
           "enableTrackModes": {}
         },
         "resetTrackMode": {
@@ -747,12 +772,9 @@
           "setTransiver": {
             "transiver": "mprf"
           },
-          "setSignal": {
-            "signal": "mprfTrack"
-          },
           "doCustomActionTemplate": {
             "fsm": "main",
-            "name": "setMprfTrackModeName"
+            "name": "setMprfTrackModeParams"
           }
         },
         "setPulseTrackParams": {
@@ -764,7 +786,7 @@
           },
           "doCustomActionTemplate": {
             "fsm": "main",
-            "name": "setPulseTrackModeName"
+            "name": "setPulseTrackModeParams"
           }
         }
       },
@@ -1508,15 +1530,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

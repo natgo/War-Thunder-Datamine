@@ -1,8 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_player_public_stats
 from "%scripts/dagui_library.nut" import *
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -11,6 +12,7 @@ let { convertBlk, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { calc_rank_progress } = require("%scripts/ranks.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -35,7 +37,7 @@ let statsConfig = [
   {
     id = "victories"
     name = "stats/missions_wins"
-    mode = "pvp_played"  //!! mode incoming by ::get_player_public_stats
+    mode = "pvp_played"  //!! mode incoming by get_player_public_stats
   }
   {
     id = "missionsComplete"
@@ -313,7 +315,7 @@ let function getPlayerStatsFromBlk(blk) {
     player.uid <- blk.userid
 
   player.rank = ::get_rank_by_exp(player.exp)
-  player.rankProgress = ::calc_rank_progress(player)
+  player.rankProgress = calc_rank_progress(player)
 
   player.prestige = ::get_prestige_by_rank(player.rank)
 

@@ -1,6 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_is_in_flight_menu, in_flight_menu
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/items/itemsConsts.nut" import itemsTab
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -14,7 +14,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
   handlersManager.loadHandler(gui_handlers.OrderActivationWindow, params)
 }
 
-gui_handlers.OrderActivationWindow <- class extends gui_handlers.ItemsList {
+gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
   function initScreen() {
@@ -44,8 +44,8 @@ gui_handlers.OrderActivationWindow <- class extends gui_handlers.ItemsList {
   function goBack() {
     base.goBack()
 
-    if (::get_is_in_flight_menu())
-      ::in_flight_menu(false)
+    if (get_is_in_flight_menu())
+      in_flight_menu(false)
   }
 
   /*override*/ function onTimer(obj, dt) {

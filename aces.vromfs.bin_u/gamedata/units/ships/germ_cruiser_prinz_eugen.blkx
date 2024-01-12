@@ -30,23 +30,6 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakFxTimeout": [
-    1.0,
-    5.0
-  ],
-  "shipFuelLeakLifetime": [
-    30.0,
-    10.0,
-    8.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    5.0,
-    3.5
-  ],
-  "fuelLeakTimeAfterExtinguish": 30.0,
   "shipsDisableDeadCoverParts": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
@@ -4589,10 +4572,10 @@
       "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
-      "oneSided": true,
       "genericDamageMult": 0.15,
       "armorThrough": 25.0,
       "fireDamageMult": 1.5,
+      "oneSided": true,
       "compartment_01_dm": {
         "hp": 3300.0
       },
@@ -4613,9 +4596,9 @@
       "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
-      "oneSided": true,
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
+      "oneSided": true,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
         "hp": 660.0
@@ -4679,7 +4662,6 @@
       "fireParamsPreset": "ship_superstructure",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
-      "oneSided": false,
       "genericDamageMult": 0.5,
       "superstructure_back_dm": {
         "hp": 10000.0
@@ -4700,7 +4682,7 @@
     "hull_construction": {
       "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
-      "armorThickness": 37.63,
+      "armorThickness": 25.4,
       "fireDamageMult": 0.1,
       "genericDamageMult": 0.1,
       "mid_bottom_dm": {
@@ -4710,7 +4692,7 @@
     "bulkheads": {
       "stopChanceOnDeadPart": 0.65,
       "armorClass": "ship_structural_steel",
-      "armorThickness": 37.63,
+      "armorThickness": 25.4,
       "fireDamageMult": 0.1,
       "bulkhead_01_dm": {
         "hp": 8000.0
@@ -4769,7 +4751,7 @@
       "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
-      "armorThrough": 180.0,
+      "armorThrough": 500.0,
       "fireDamageMult": 1.45,
       "genericDamageMult": 0.5,
       "explosionDamageMult": 1.5,
@@ -4788,7 +4770,7 @@
       "armorThickness": 16.0,
       "genericDamageMult": 0.5,
       "explosionDamageMult": 1.5,
-      "armorThrough": 180.0,
+      "armorThrough": 500.0,
       "transmission_01_dm": {
         "hp": 3648.0
       },
@@ -4840,6 +4822,7 @@
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
       "ignoreDeadWithSplash": true,
+      "oneSided": true,
       "fuel_tank_01_dm": {
         "hp": 3896.0
       },
@@ -4856,8 +4839,10 @@
     "coal_bunkers": {
       "armorClass": "ships_coal_bunker",
       "armorThickness": 10.0,
-      "stopChanceOnDeadPart": 0.05,
-      "fireProtectionHp": 30.0
+      "fireProtectionHp": 30.0,
+      "stopChanceOnDeadPart": 0.0,
+      "variableThickness": true,
+      "kineticProtectionEquivalentPerMeter": 27.3
     },
     "citadel_armor": {
       "fireProtectionHp": 120.0,
@@ -5650,7 +5635,6 @@
       "fireParamsPreset": "ship_heavy_turrets",
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
-      "oneSided": true,
       "pressureDamageMult": 9.0,
       "main_caliber_turret_01_dm": {
         "hp": 385.0
@@ -5669,7 +5653,6 @@
       "fireParamsPreset": "ship_aux_turrets",
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
-      "oneSided": true,
       "pressureDamageMult": 5.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
@@ -5695,7 +5678,6 @@
       "fireParamsPreset": "ship_aux_turrets",
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
-      "oneSided": true,
       "fireDamageMult": 2.0,
       "pressureDamageMult": 2.5,
       "napalmDamageMult": 1.0,
@@ -5948,9 +5930,8 @@
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThickness": 2.2,
-      "oneSided": true,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "ammunition_storage_shells_01_dm": {
         "hp": 1800.0
       },
@@ -5968,9 +5949,8 @@
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThickness": 2.2,
-      "oneSided": true,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "ammunition_storage_charges_01_dm": {
         "hp": 2433.0
       },
@@ -5988,9 +5968,8 @@
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_aux",
       "armorThickness": 2.2,
-      "oneSided": true,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
         "hp": 1000.0
       },
@@ -6008,9 +5987,8 @@
       "shatterArmorQuality": 2.0,
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_aux",
-      "armorThrough": 100.0,
+      "armorThrough": 200.0,
       "armorThickness": 2.2,
-      "oneSided": true,
       "fireProtectionHp": 5.0
     },
     "depth_charges": {
@@ -6112,7 +6090,6 @@
       "genericDamageMult": 0.5,
       "armorThickness": 2.2,
       "fireProtectionHp": 11.0,
-      "oneSided": true,
       "elevator_01_dm": {
         "hp": 1500.0
       },
@@ -7253,8 +7230,8 @@
           "fire_director_03_dm"
         ],
         "measureAccuracy": 1.0,
-        "targetLockTime": 18.0,
-        "calcTime": 10.0,
+        "targetLockTime": 15.0,
+        "calcTime": 8.0,
         "rotationSpeed": 6.0,
         "triggerGroupUse": {
           "primary": true,
@@ -7276,8 +7253,8 @@
           "fire_director_09_dm"
         ],
         "measureAccuracy": 1.0,
-        "targetLockTime": 18.0,
-        "calcTime": 10.0,
+        "targetLockTime": 15.0,
+        "calcTime": 8.0,
         "rotationSpeed": 6.0,
         "triggerGroupUse": {
           "primary": true,
@@ -7295,8 +7272,8 @@
           "rangefinder_02_dm"
         ],
         "measureAccuracy": 0.85,
-        "targetLockTime": 24.0,
-        "calcTime": 14.0,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
         "rotationSpeed": 20.0,
         "triggerGroupUse": {
           "primary": true,
@@ -7314,8 +7291,8 @@
           "rangefinder_04_dm"
         ],
         "measureAccuracy": 0.85,
-        "targetLockTime": 24.0,
-        "calcTime": 14.0,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
         "rotationSpeed": 20.0,
         "triggerGroupUse": {
           "primary": true,
@@ -14013,6 +13990,25 @@
     },
     "ship_supportPlane": {}
   },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakFxTimeout": [
+      1.0,
+      5.0
+    ],
+    "fuelLeakLifetime": [
+      30.0,
+      10.0,
+      8.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      5.0,
+      3.5
+    ],
+    "fuelLeakTimeAfterExtinguish": 30.0
+  },
   "unitFx": {
     "event": [
       {
@@ -14251,70 +14247,6 @@
           {
             "name": "ship_smoke_big",
             "emitter": "emtr_smoke_dmg_02"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_01"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_02"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_03"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_04"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_05"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_06"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_07"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_08"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_09"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_10"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_11"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_12"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_13"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_14"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_15"
-          },
-          {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_small_dmg_16"
           },
           {
             "name": "ship_fire_huge",
@@ -17696,6 +17628,78 @@
       "nameLocId": "ship_flag_northern_ireland_01/name",
       "texture": "flag_northern_ireland_01_c*"
     },
+    "ship_flag_pirate_01": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_01",
+      "nameLocId": "ship_flag_pirate_01/name",
+      "texture": "flag_pirate_01_c*"
+    },
+    "ship_flag_pirate_02": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_02",
+      "nameLocId": "ship_flag_pirate_02/name",
+      "texture": "flag_pirate_02_c*"
+    },
+    "ship_flag_pirate_03": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_03",
+      "nameLocId": "ship_flag_pirate_03/name",
+      "texture": "flag_pirate_03_c*"
+    },
+    "ship_flag_pirate_04": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_04",
+      "nameLocId": "ship_flag_pirate_04/name",
+      "texture": "flag_pirate_04_c*"
+    },
+    "ship_flag_pirate_05": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_05",
+      "nameLocId": "ship_flag_pirate_05/name",
+      "texture": "flag_pirate_05_c*"
+    },
+    "ship_flag_pirate_06": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_06",
+      "nameLocId": "ship_flag_pirate_06/name",
+      "texture": "flag_pirate_06_c*"
+    },
+    "ship_flag_pirate_07": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_07",
+      "nameLocId": "ship_flag_pirate_07/name",
+      "texture": "flag_pirate_07_c*"
+    },
+    "ship_flag_pirate_08": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_08",
+      "nameLocId": "ship_flag_pirate_08/name",
+      "texture": "flag_pirate_08_c*"
+    },
+    "ship_flag_pirate_09": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_09",
+      "nameLocId": "ship_flag_pirate_09/name",
+      "texture": "flag_pirate_09_c*"
+    },
+    "ship_flag_pirate_10": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_10",
+      "nameLocId": "ship_flag_pirate_10/name",
+      "texture": "flag_pirate_10_c*"
+    },
+    "ship_flag_pirate_11": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_11",
+      "nameLocId": "ship_flag_pirate_11/name",
+      "texture": "flag_pirate_11_c*"
+    },
+    "ship_flag_pirate_12": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_12",
+      "nameLocId": "ship_flag_pirate_12/name",
+      "texture": "flag_pirate_12_c*"
+    },
     "ship_flag_cardsuit_01": {
       "category": "other",
       "unlockId": "ship_flag_cardsuit_01",
@@ -17719,78 +17723,6 @@
       "unlockId": "ship_flag_cardsuit_04",
       "nameLocId": "ship_flag_cardsuit_04/name",
       "texture": "flag_cardsuit_04_c*"
-    },
-    "ship_flag_pirate_01": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_01",
-      "nameLocId": "ship_flag_pirate_01/name",
-      "texture": "flag_pirate_01_c*"
-    },
-    "ship_flag_pirate_02": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_02",
-      "nameLocId": "ship_flag_pirate_02/name",
-      "texture": "flag_pirate_02_c*"
-    },
-    "ship_flag_pirate_03": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_03",
-      "nameLocId": "ship_flag_pirate_03/name",
-      "texture": "flag_pirate_03_c*"
-    },
-    "ship_flag_pirate_04": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_04",
-      "nameLocId": "ship_flag_pirate_04/name",
-      "texture": "flag_pirate_04_c*"
-    },
-    "ship_flag_pirate_05": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_05",
-      "nameLocId": "ship_flag_pirate_05/name",
-      "texture": "flag_pirate_05_c*"
-    },
-    "ship_flag_pirate_06": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_06",
-      "nameLocId": "ship_flag_pirate_06/name",
-      "texture": "flag_pirate_06_c*"
-    },
-    "ship_flag_pirate_07": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_07",
-      "nameLocId": "ship_flag_pirate_07/name",
-      "texture": "flag_pirate_07_c*"
-    },
-    "ship_flag_pirate_08": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_08",
-      "nameLocId": "ship_flag_pirate_08/name",
-      "texture": "flag_pirate_08_c*"
-    },
-    "ship_flag_pirate_09": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_09",
-      "nameLocId": "ship_flag_pirate_09/name",
-      "texture": "flag_pirate_09_c*"
-    },
-    "ship_flag_pirate_10": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_10",
-      "nameLocId": "ship_flag_pirate_10/name",
-      "texture": "flag_pirate_10_c*"
-    },
-    "ship_flag_pirate_11": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_11",
-      "nameLocId": "ship_flag_pirate_11/name",
-      "texture": "flag_pirate_11_c*"
-    },
-    "ship_flag_pirate_12": {
-      "category": "other",
-      "unlockId": "ship_flag_pirate_12",
-      "nameLocId": "ship_flag_pirate_12/name",
-      "texture": "flag_pirate_12_c*"
     },
     "ship_flag_racing_01": {
       "category": "other",
@@ -17825,6 +17757,20 @@
       "nameLocId": "ship_flag_duke_01/name",
       "descLocId": "ship_flag_duke_01/desc",
       "texture": "flag_duke_01_c*"
+    },
+    "ship_flag_christmas_01": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_01",
+      "nameLocId": "ship_flag_christmas_01/name",
+      "descLocId": "ship_flag_christmas_01/desc",
+      "texture": "flag_christmas_01_c*"
+    },
+    "ship_flag_christmas_02": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_02",
+      "nameLocId": "ship_flag_christmas_02/name",
+      "descLocId": "ship_flag_christmas_02/desc",
+      "texture": "flag_christmas_02_c*"
     }
   }
 }

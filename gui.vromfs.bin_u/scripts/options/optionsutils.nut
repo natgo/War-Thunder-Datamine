@@ -1,8 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_thermovision_index, set_thermovision_index
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
@@ -11,6 +14,7 @@ let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
 } = require("%scripts/options/optionsExtNames.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
 
@@ -50,28 +54,24 @@ let createDefaultOption = function() {
     getCurrentValueLocText = @() this.getValueLocText(this.value)
 
     getValueLocText = function(val) {
-      switch (this.controlType) {
-        case optionControlType.CHECKBOX:
-          if (val == true)
-            return loc("options/yes")
-          else if (val == false)
-            return loc("options/no")
-          break
+      let ctype = this.controlType
+      if (ctype == optionControlType.CHECKBOX) {
+        if (val == true)
+          return loc("options/yes")
+        else if (val == false)
+          return loc("options/no")
+      }
 
-        case optionControlType.LIST:
-          let result = getTblValue(this.values.indexof(val), this.items)
-          local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
-          if (startsWith(locKey, "#"))
-            locKey = locKey.slice(1)
-          return loc(locKey)
-
-        case optionControlType.SLIDER:
-        case optionControlType.EDITBOX:
-        case optionControlType.BIT_LIST:
-        default:
-          if (val != null)
-            return val.tostring()
-          break
+      else if ( ctype == optionControlType.LIST) {
+        let result = getTblValue(this.values.indexof(val), this.items)
+        local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
+        if (startsWith(locKey, "#"))
+          locKey = locKey.slice(1)
+        return loc(locKey)
+      }
+      else {
+        if (val != null)
+          return val.tostring()
       }
       return ""
     }
@@ -89,7 +89,7 @@ let fillBoolOption = function(descr, id, optionIdx) {
 }
 
 let setHSVOption_ThermovisionColor = function(_desrc, value) {
-  ::set_thermovision_index(value)
+  set_thermovision_index(value)
 }
 
 let fillHSVOption_ThermovisionColor = function(descr) {
@@ -104,7 +104,7 @@ let fillHSVOption_ThermovisionColor = function(descr) {
     idx++
   }
 
-  descr.value = ::get_thermovision_index()
+  descr.value = get_thermovision_index()
 }
 
 let function addHueParamsToOptionDescr(descr, hue, text = null, sat = null, val = null) {
@@ -137,7 +137,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
   }
 
   if ((defSat ?? 0) >= 0.000001) //create white (in case it's not default)
-    addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.9)
+    addHueParamsToOptionDescr(descr, 10.0, null, 0.0, 0.9)
 
   //now black
   addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.0)
@@ -201,7 +201,7 @@ let function fillMultipleHueOption(descr, id, currentHueIndex) {
 
 let fillDynMapOption = function(descr) {
   let curMap = getTblValue("layout", ::mission_settings)
-  let dynLayouts = ::get_dynamic_layouts()
+  let dynLayouts = getDynamicLayouts()
   foreach (layout in dynLayouts) {
     if (get_game_mode() == GM_BUILDER) {
       let db = blkFromPath(layout.mis_file)

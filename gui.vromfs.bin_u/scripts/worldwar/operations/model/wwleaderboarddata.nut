@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
@@ -7,13 +8,14 @@ let { round } = require("math")
 let { requestLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let modes = [
   {
     mode  = "ww_users"
     appId = "1134"
     mask  = WW_LB_MODE.WW_USERS
-    field = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field
+    field = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field
     isInLeaderboardModes = true
     hasDaysData = true
     rewardsTableName = "user_leaderboards"
@@ -32,7 +34,7 @@ let modes = [
     mode  = "ww_clans"
     appId = "1135"
     mask  = WW_LB_MODE.WW_CLANS
-    field = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field
+    field = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field
     isInLeaderboardModes = true
     hasDaysData = false
     rewardsTableName = "clan_leaderboards"
@@ -41,7 +43,7 @@ let modes = [
     mode  = "ww_countries"
     appId = "1136"
     mask  = WW_LB_MODE.WW_COUNTRIES
-    field = ::g_lb_category.OPERATION_COUNT.field
+    field = lbCategoryTypes.OPERATION_COUNT.field
     isInLeaderboardModes = true
     hasDaysData = false
     needFeature = "WorldWarCountryLeaderboard"
@@ -63,7 +65,7 @@ dataParams = {
   table    = day && day > 0 ? "day" + day : "season"
   start    = 1  // start position lb request
   count    = 0  // count of records
-  category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
+  category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
   platformFilter = "" //"ps4" for ps4 only players
 }
 headersParams = {
@@ -138,7 +140,7 @@ let function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
       table    = "season"
       start    = null
       count    = 0
-      category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field
+      category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field
     },
     function (response) {
       let lbData = response?[clanInfo.tag]
@@ -158,7 +160,7 @@ let function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
 return {
   modes = modes
   getSeasonDay = getSeasonDay
-  getDayIdByNumber = @(number) "day" + number
+  getDayIdByNumber = @(number) $"day{number}"
   getModeByName = getModeByName
   requestWwLeaderboardData = requestWwLeaderboardData
   requestWwLeaderboardModes = requestWwLeaderboardModes

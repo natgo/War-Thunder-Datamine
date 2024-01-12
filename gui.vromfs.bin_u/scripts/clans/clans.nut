@@ -1,6 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_role_rank, ps4_is_ugc_enabled, clan_request_edit_black_list, clan_get_my_clan_type, sync_handler_simulate_signal, clan_action_blk, clan_get_my_role, set_char_cb, clan_request_log, clan_request_accept_membership_request, clan_request_membership_request, clan_request_change_info_blk, clan_get_my_clan_tag, clan_request_my_info, clan_request_disband, clan_get_my_clan_name, clan_request_reject_membership_request, clan_get_clan_log, clan_request_dismiss_member, clan_get_clan_info, char_send_blk, clan_get_membership_requirements, char_send_clan_oneway_blk, clan_get_exp, clan_request_info, clan_get_role_rights, clan_get_requested_clan_id, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,6 +27,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
+let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -33,7 +37,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 
 ::my_clan_info <- null
 ::last_update_my_clan_time <- MY_CLAN_UPDATE_DELAY_MSEC
-::get_my_clan_data_free <- true
+local get_my_clan_data_free = true
 
 registerPersistentData("ClansGlobals", getroottable(),
   [
@@ -67,18 +71,18 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.getMyClanType <- function getMyClanType() {
-  let code = ::clan_get_my_clan_type()
+  let code = clan_get_my_clan_type()
   return ::g_clan_type.getTypeByCode(code)
 }
 
 ::g_clans.createClan <- function createClan(params, handler) {
-  handler.taskId = ::char_send_blk("cln_clan_create", params)
+  handler.taskId = char_send_blk("cln_clan_create", params)
   if (handler.taskId < 0)
     return
 
-  ::set_char_cb(handler, handler.slotOpCb)
+  set_char_cb(handler, handler.slotOpCb)
   handler.showTaskProgressBox()
-  ::sync_handler_simulate_signal("clan_info_reload")
+  sync_handler_simulate_signal("clan_info_reload")
   handler.afterSlotOp = function() {
     ::requestMyClanData()
     ::update_gamercards()
@@ -96,17 +100,17 @@ registerPersistentData("ClansGlobals", getroottable(),
  */
 ::g_clans.editClan <- function editClan(clanId, params, handler) {
   let isMyClan = ::my_clan_info != null && clanId == "-1"
-  handler.taskId = ::clan_request_change_info_blk(clanId, params)
+  handler.taskId = clan_request_change_info_blk(clanId, params)
   if (handler.taskId < 0)
     return
 
-  ::set_char_cb(handler, handler.slotOpCb)
+  set_char_cb(handler, handler.slotOpCb)
   handler.showTaskProgressBox()
   if (isMyClan)
-    ::sync_handler_simulate_signal("clan_info_reload")
+    sync_handler_simulate_signal("clan_info_reload")
   handler.afterSlotOp =  function() {
     let owner = getTblValue("owner", handler, null)
-    if (::clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
+    if (clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
       owner.reinitClanWindow()
     else
       ::update_gamercards()
@@ -119,17 +123,17 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::g_clans.upgradeClan <- function upgradeClan(clanId, params, handler) {
   let isMyClan = ::my_clan_info != null && clanId != "-1"
-  handler.taskId = ::clan_action_blk(clanId, "cln_clan_upgrade", params, true)
+  handler.taskId = clan_action_blk(clanId, "cln_clan_upgrade", params, true)
   if (handler.taskId < 0)
     return
 
-  ::set_char_cb(handler, handler.slotOpCb)
+  set_char_cb(handler, handler.slotOpCb)
   handler.showTaskProgressBox()
   if (isMyClan)
-    ::sync_handler_simulate_signal("clan_info_reload")
+    sync_handler_simulate_signal("clan_info_reload")
   handler.afterSlotOp =  function() {
     let owner = getTblValue("owner", handler, null)
-    if (::clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
+    if (clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
       owner.reinitClanWindow()
     else
       ::update_gamercards()
@@ -143,7 +147,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::g_clans.upgradeClanMembers <- function upgradeClanMembers(clanId) {
   let isMyClan = ::my_clan_info != null && clanId != "-1"
   let params = DataBlock()
-  let taskId = ::clan_action_blk(clanId, "cln_clan_members_upgrade", params, true)
+  let taskId = clan_action_blk(clanId, "cln_clan_members_upgrade", params, true)
 
   let cb = Callback(
        function() {
@@ -154,19 +158,19 @@ registerPersistentData("ClansGlobals", getroottable(),
       this)
 
   if (addTask(taskId, { showProgressBox = true }, cb) && isMyClan)
-    ::sync_handler_simulate_signal("clan_info_reload")
+    sync_handler_simulate_signal("clan_info_reload")
 }
 
 ::g_clans.disbandClan <- function disbandClan(clanId, handler) {
-  ::gui_modal_comment(handler, loc("clan/writeCommentary"), loc("clan/btnDisbandClan"),
+  openCommentModal(handler, loc("clan/writeCommentary"), loc("clan/btnDisbandClan"),
                        function(comment) {
-                        handler.taskId = ::clan_request_disband(clanId, comment);
+                        handler.taskId = clan_request_disband(clanId, comment);
 
                         if (handler.taskId >= 0) {
-                          ::set_char_cb(handler, this.slotOpCb)
+                          set_char_cb(handler, this.slotOpCb)
                           handler.showTaskProgressBox()
                           if (this.isMyClan)
-                            ::sync_handler_simulate_signal("clan_info_reload")
+                            sync_handler_simulate_signal("clan_info_reload")
                           handler.afterSlotOp = function() {
                               ::requestMyClanData()
                               ::update_gamercards()
@@ -258,12 +262,12 @@ registerPersistentData("ClansGlobals", getroottable(),
   params.count = rowsCount
 
   //Allow to display only clan info changes
-  if ((::clan_get_my_clan_id() != clanId) && !::clan_get_admin_editor_mode())
+  if ((::clan_get_my_clan_id() != clanId) && !clan_get_admin_editor_mode())
     params.events = "create;info"
 
   if (requestMarker != null)
     params.last = requestMarker
-  let taskId = ::clan_request_log(clanId, params)
+  let taskId = clan_request_log(clanId, params)
   let successCb = Callback(callbackFnSuccess, handler)
   let errorCb = Callback(callbackFnError, handler)
 
@@ -272,7 +276,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     null,
     function () {
       let logData = {}
-      let logDataBlk = ::clan_get_clan_log()
+      let logDataBlk = clan_get_clan_log()
 
       logData.requestMarker <- logDataBlk?.lastMark
       logData.logEntries <- []
@@ -320,7 +324,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     return false
   if (!hasFeature("WorldWarClansQueue"))
     return false
-  let myRights = ::clan_get_role_rights(::clan_get_my_role())
+  let myRights = ::clan_get_role_rights(clan_get_my_role())
   return isInArray("WW_REGISTER", myRights)
 }
 
@@ -331,11 +335,11 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.checkClanChangedEvent <- function checkClanChangedEvent() {
-  if (this.lastClanId == ::clan_get_my_clan_id())
+  if (this.lastClanId == clan_get_my_clan_id())
     return
 
   let needEvent = this.lastClanId != CLAN_ID_NOT_INITED
-  this.lastClanId = ::clan_get_my_clan_id()
+  this.lastClanId = clan_get_my_clan_id()
   if (needEvent)
     broadcastEvent("MyClanIdChanged")
 }
@@ -406,7 +410,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::g_clans.isHaveRightsToReviewCandidates <- function isHaveRightsToReviewCandidates() {
   if (!::is_in_clan() || !hasFeature("Clans"))
     return false
-  let rights = ::clan_get_role_rights(::clan_get_my_role())
+  let rights = ::clan_get_role_rights(clan_get_my_role())
   return isInArray("MEMBER_ADDING", rights) || isInArray("MEMBER_REJECT", rights)
 }
 
@@ -454,7 +458,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       " " + extraText,
       function() {
         if (this.getMyClanCandidates().len())
-          ::showClanRequests(this.getMyClanCandidates(), ::clan_get_my_clan_id(), null)
+          openClanRequestsWnd(this.getMyClanCandidates(), clan_get_my_clan_id(), null)
       },
       null,
       ::g_clans)
@@ -521,14 +525,14 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.haveRankToChangeRoles <- function haveRankToChangeRoles(clanData) {
-  if (clanData?.id != ::clan_get_my_clan_id())
+  if (clanData?.id != clan_get_my_clan_id())
     return false
 
-  let myRank = ::clan_get_role_rank(::clan_get_my_role())
+  let myRank = ::clan_get_role_rank(clan_get_my_role())
 
   local rolesNumber = 0
   for (local role = 0; role < ECMR_MAX_TOTAL; role++) {
-     let rank = ::clan_get_role_rank(role)
+     let rank = clan_get_role_rank(role)
      if (rank != 0 && rank < myRank)
        rolesNumber++
   }
@@ -537,13 +541,13 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.getMyClanRights <- function getMyClanRights() {
-  return ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : ::clan_get_my_role())
+  return ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : clan_get_my_role())
 }
 
 ::g_clans.getClanMemberRank <- function getClanMemberRank(clanData, name) {
   foreach (member in (clanData?.members ?? []))
     if (member.nick == name)
-      return ::clan_get_role_rank(member.role)
+      return clan_get_role_rank(member.role)
 
   return 0
 }
@@ -551,7 +555,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::g_clans.getLeadersCount <- function getLeadersCount(clanData) {
   local count = 0
   foreach (member in clanData.members) {
-    let rights = ::clan_get_role_rights(member.role)
+    let rights = clan_get_role_rights(member.role)
     if (isInArray("LEADER", rights) ||
         isInArray("DEPUTY", rights))
       count++
@@ -560,13 +564,13 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.dismissMember <- function dismissMember(contact, clanData) {
-  let isMyClan = clanData?.id == ::clan_get_my_clan_id()
+  let isMyClan = clanData?.id == clan_get_my_clan_id()
   let myClanRights = ::g_clans.getMyClanRights()
 
-  if ((!isMyClan || !isInArray("MEMBER_DISMISS", myClanRights)) && !::clan_get_admin_editor_mode())
+  if ((!isMyClan || !isInArray("MEMBER_DISMISS", myClanRights)) && !clan_get_admin_editor_mode())
     return
 
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("clan/btnDismissMember"),
@@ -576,14 +580,14 @@ registerPersistentData("ClansGlobals", getroottable(),
         ::g_popups.add("", loc("clan/memberDismissed"))
       }
 
-      let taskId = ::clan_request_dismiss_member(contact.uid, comment)
+      let taskId = clan_request_dismiss_member(contact.uid, comment)
       addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
 }
 
 ::g_clans.requestMembership <- function requestMembership(clanId) {
-  if (::clan_get_requested_clan_id() == "-1" || ::clan_get_my_clan_name() == "") {
+  if (::clan_get_requested_clan_id() == "-1" || clan_get_my_clan_name() == "") {
     this.membershipRequestSend(clanId)
     return
   }
@@ -591,7 +595,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   scene_msg_box("new_request_cancels_old",
                   null,
                   loc("msg/clan/clan_request_cancel_previous",
-                    { prevClanName = colorize("hotkeyColor", ::clan_get_my_clan_name()) }),
+                    { prevClanName = colorize("hotkeyColor", clan_get_my_clan_name()) }),
                   [
                     ["ok", @() ::g_clans.membershipRequestSend(clanId) ],
                     ["cancel", @() null ]
@@ -603,7 +607,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.membershipRequestSend <- function membershipRequestSend(clanId) {
-  let taskId = ::clan_request_membership_request(clanId, "", "", "")
+  let taskId = clan_request_membership_request(clanId, "", "", "")
   let onSuccess = function() {
     if (clanId == "") { //Means that membership was canceled
       broadcastEvent("ClanMembershipCanceled")
@@ -625,8 +629,8 @@ registerPersistentData("ClansGlobals", getroottable(),
     broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
   }
 
-  let taskId = ::clan_request_accept_membership_request(clanId, playerUid, "REGULAR", false)
-  ::sync_handler_simulate_signal("clan_info_reload")
+  let taskId = clan_request_accept_membership_request(clanId, playerUid, "REGULAR", false)
+  sync_handler_simulate_signal("clan_info_reload")
   addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
@@ -634,7 +638,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if (u.isEmpty(playerUid))
     return
 
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("clan/requestReject"),
@@ -644,15 +648,15 @@ registerPersistentData("ClansGlobals", getroottable(),
         broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
       }
 
-      let taskId = ::clan_request_reject_membership_request(playerUid, comment, clanId)
-      ::sync_handler_simulate_signal("clan_info_reload")
+      let taskId = clan_request_reject_membership_request(playerUid, comment, clanId)
+      sync_handler_simulate_signal("clan_info_reload")
       addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
 }
 
 ::g_clans.blacklistAction <- function blacklistAction(playerUid, actionAdd, clanId) {
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("msgbox/btn_ok"),
@@ -663,8 +667,8 @@ registerPersistentData("ClansGlobals", getroottable(),
         broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
       }
 
-      let taskId = ::clan_request_edit_black_list(playerUid, actionAdd, comment, clanId)
-      ::sync_handler_simulate_signal("clan_info_reload")
+      let taskId = clan_request_edit_black_list(playerUid, actionAdd, comment, clanId)
+      sync_handler_simulate_signal("clan_info_reload")
       addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
@@ -674,7 +678,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if (!::tribunal.canComplaint())
     return
 
-  let taskId = ::clan_request_info(clanId, "", "")
+  let taskId = clan_request_info(clanId, "", "")
   let onSuccess = function() {
     let clanData = ::get_clan_info_table()
     ::g_clans.openComplainWnd(clanData)
@@ -691,7 +695,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent() {
-  let curSquadronExp = ::clan_get_exp()
+  let curSquadronExp = clan_get_exp()
   if (this.squadronExp == curSquadronExp)
     return
 
@@ -702,13 +706,13 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::ranked_column_prefix <- "dr_era5"  //really used only rank 5, but in lb exist 5
 
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {
-  if (!::get_my_clan_data_free)
+  if (!get_my_clan_data_free)
     return
 
   ::g_clans.checkClanChangedEvent()
   ::g_clans.checkSquadronExpChangedEvent()
 
-  let myClanId = ::clan_get_my_clan_id()
+  let myClanId = clan_get_my_clan_id()
   if (myClanId == "-1") {
     if (::my_clan_info) {
       ::my_clan_info = null
@@ -725,13 +729,13 @@ registerPersistentData("ClansGlobals", getroottable(),
       return
 
   ::last_update_my_clan_time = get_time_msec()
-  let taskId = ::clan_request_my_info()
-  ::get_my_clan_data_free = false
+  let taskId = clan_request_my_info()
+  get_my_clan_data_free = false
   ::add_bg_task_cb(taskId, function() {
     let wasCreated = !::my_clan_info
     ::my_clan_info = ::get_clan_info_table()
     ::handle_new_my_clan_data()
-    ::get_my_clan_data_free = true
+    get_my_clan_data_free = true
     broadcastEvent("ClanInfoUpdate")
     ::update_gamercards()
     if (wasCreated)
@@ -740,7 +744,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::is_in_clan <- function is_in_clan() {
-  return ::clan_get_my_clan_id() != "-1"
+  return clan_get_my_clan_id() != "-1"
 }
 
 ::handle_new_my_clan_data <- function handle_new_my_clan_data() {
@@ -868,7 +872,7 @@ registerPersistentData("ClansGlobals", getroottable(),
  */
 ::get_clan_info_table <- function get_clan_info_table(clanInfo = null) {
   if (!clanInfo)
-    clanInfo = ::clan_get_clan_info()
+    clanInfo = clan_get_clan_info()
 
   if (!clanInfo?._id)
     return null
@@ -895,7 +899,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   clan.clanType   <- ::g_clan_type.getTypeByName(clanInfo?.type ?? "")
   clan.autoAcceptMembership <- getTblValue("autoaccept",   clanInfo, false)
   clan.membershipRequirements <- DataBlock()
-  let membReqs = ::clan_get_membership_requirements(clanInfo)
+  let membReqs = clan_get_membership_requirements(clanInfo)
   if (membReqs)
     clan.membershipRequirements.setFrom(membReqs);
 
@@ -1032,10 +1036,10 @@ let function getSeasonName(blk) {
   }
 
   function getUpdatedClanInfo(unlockBlk) {
-    local isMyClan = ::is_in_clan() && (unlockBlk?.clanId ?? "").tostring() == ::clan_get_my_clan_id()
+    local isMyClan = ::is_in_clan() && (unlockBlk?.clanId ?? "").tostring() == clan_get_my_clan_id()
     return {
-      clanTag  = isMyClan ? ::clan_get_my_clan_tag()  : unlockBlk?.clanTag
-      clanName = isMyClan ? ::clan_get_my_clan_name() : unlockBlk?.clanName
+      clanTag  = isMyClan ? clan_get_my_clan_tag()  : unlockBlk?.clanTag
+      clanName = isMyClan ? clan_get_my_clan_name() : unlockBlk?.clanName
     }
   }
 
@@ -1046,7 +1050,7 @@ let function getSeasonName(blk) {
 }
 
 
-::ClanSeasonPlaceTitle <- class extends ::ClanSeasonTitle {
+::ClanSeasonPlaceTitle <- class (::ClanSeasonTitle) {
   place = ""
   seasonType = ""
   seasonTag = null
@@ -1121,7 +1125,7 @@ let function getSeasonName(blk) {
 
   function getPlaceTitle() {
     if (this.isWinner())
-      return loc("clan/season_award/place/" + this.place)
+      return loc($"clan/season_award/place/{this.place}")
     else
       return loc("clan/season_award/place/top", { top = slice(this.place, 3) })
   }
@@ -1223,7 +1227,7 @@ let function getSeasonName(blk) {
 }
 
 ::ps4CheckAndReplaceContentDisabledText <- function ps4CheckAndReplaceContentDisabledText(processingString, forceReplace = false) {
-  if (!::ps4_is_ugc_enabled() || forceReplace) {
+  if (!ps4_is_ugc_enabled() || forceReplace) {
     let pattern = "[^ ]"
     let replacement = "*"
 
@@ -1260,23 +1264,7 @@ let function getSeasonName(blk) {
   blk["_id"] = clanIdStr
   if (autoAccept)
     blk["autoaccept"] = true
-  return ::char_send_clan_oneway_blk("cln_clan_set_membership_requirements", blk)
-}
-
-::gui_modal_new_clan <- function gui_modal_new_clan() {
-  ::gui_start_modal_wnd(gui_handlers.CreateClanModalHandler)
-}
-
-::gui_modal_edit_clan <- function gui_modal_edit_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.EditClanModalhandler, { clanData = clanData, owner = owner })
-}
-
-::gui_modal_upgrade_clan <- function gui_modal_upgrade_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.UpgradeClanModalHandler, { clanData = clanData, owner = owner })
-}
-
-::gui_modal_clans <- function gui_modal_clans(startPage = "") {
-  ::gui_start_modal_wnd(gui_handlers.ClansModalHandler, { startPage = startPage })
+  return char_send_clan_oneway_blk("cln_clan_set_membership_requirements", blk)
 }
 
 // Independent Modules

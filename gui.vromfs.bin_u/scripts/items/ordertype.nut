@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -73,7 +74,7 @@ let getUnitClassNamesByEsUnitTypes = @(esUnitTypes) esUnitTypes
   }
 
   /** Returns localized text to form proper award mode description. */
-  getAwardUnitText = @() loc("items/order/awardUnit/" + this.awardUnit)
+  getAwardUnitText = @() loc($"items/order/awardUnit/{this.awardUnit}")
 
   /** Standard comparator for players' score data. */
   function sortPlayerScores(data1, data2) {
@@ -121,7 +122,7 @@ let getUnitClassNamesByEsUnitTypes = @(esUnitTypes) esUnitTypes
       if (targetPlayerUserId == userIdStr.value)
         statusDescriptionKeyPostfix = "/self"
       else {
-        let myTeam = ::get_mp_local_team()
+        let myTeam = get_mp_local_team()
         let myTeamPlayers = get_mplayers_list(myTeam, true)
         statusDescriptionKeyPostfix = "/enemy"
         foreach (_idx, teamMember in myTeamPlayers) {

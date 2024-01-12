@@ -1,5 +1,8 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_autosave_replays, is_mouse_last_time_used, rename_file
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -17,6 +20,7 @@ let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -30,13 +34,12 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 ::autosave_replay_prefix <- "#"
 
 ::current_replay <- ""
-::current_replay_author <- null
 ::back_from_replays <- null
 
-registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
+registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"])
 
 ::gui_start_replays <- function gui_start_replays() {
-  ::gui_start_modal_wnd(gui_handlers.ReplayScreen)
+  loadHandler(gui_handlers.ReplayScreen)
 }
 
 ::gui_start_menuReplays <- function gui_start_menuReplays() {
@@ -51,7 +54,6 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   }
   reqUnlockByClient("view_replay")
   ::current_replay = ::get_replay_url_by_session_id(sessionId)
-  ::current_replay_author = null
   on_view_replay(::current_replay)
 }
 
@@ -61,7 +63,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
 }
 
 ::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
-  ::gui_start_modal_wnd(gui_handlers.RenameReplayHandler, {
+  loadHandler(gui_handlers.RenameReplayHandler, {
                                                               baseName = base_name
                                                               basePath = base_path
                                                               funcOwner = func_owner
@@ -79,7 +81,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
 ::autosave_replay <- function autosave_replay() {
   if (is_replay_saved())
     return;
-  if (!::get_option_autosave_replays())
+  if (!get_option_autosave_replays())
     return;
   if (is_benchmark_game_mode())
     return;
@@ -127,7 +129,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   on_save_replay(name); //ignore errors
 }
 
-gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navReplays.blk"
@@ -153,7 +155,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
     this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnReplays"))
     this.scene.findObject("chapter_include_block").show(true)
     this.showSceneBtn("btn_open_folder", is_platform_windows)
@@ -170,7 +172,6 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
           break
         }
       ::current_replay = ""
-      ::current_replay_author = null
     }
     this.calculateReplaysPerPage()
     this.updateMouseMode()
@@ -518,10 +519,10 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
-  doSelectList = @() ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+  doSelectList = @() move_mouse_on_child_by_value(this.scene.findObject("items_list"))
 
   function goBack() {
     if (this.isReplayPressed)
@@ -541,7 +542,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!::g_squad_utils.canJoinFlightMsgBox())
       return
 
-    ::set_presence_to_player("replay")
+    set_presence_to_player("replay")
     this.guiScene.performDelayed(this, function() {
       if (this.isReplayPressed)
         return
@@ -553,9 +554,6 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
       }
       reqUnlockByClient("view_replay")
       ::current_replay = this.replays[index].path
-      let replayInfo = get_replay_info(::current_replay)
-      let comments = getTblValue("comments", replayInfo)
-      ::current_replay_author = comments ? getTblValue("authorUserId", comments, null) : null
       on_view_replay(::current_replay)
       this.isReplayPressed = false
     })
@@ -606,7 +604,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     if (!this.scene)
       return this.goBack();
@@ -620,7 +618,7 @@ gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     editBoxObj.show(true)
     editBoxObj.enable(true)
     editBoxObj.setValue(this.baseName)
-    ::select_editbox(editBoxObj)
+    select_editbox(editBoxObj)
   }
 
   function checkName(newName) {
@@ -650,7 +648,7 @@ gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     }
     if (newName && newName != "") {
       if (this.afterRenameFunc && newName != this.baseName) {
-        if (::rename_file(this.basePath, newName))
+        if (rename_file(this.basePath, newName))
           this.afterRenameFunc.call(this.funcOwner, newName);
         else
           this.msgBox("RenameReplayHandler_error", loc("msgbox/cantRenameReplayFile"),

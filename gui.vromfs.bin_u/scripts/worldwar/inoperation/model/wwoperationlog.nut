@@ -1,10 +1,15 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
-
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 ::g_ww_logs <- {
   loaded = []
@@ -81,11 +86,11 @@ let { wwGetPlayerSide } = require("worldwar")
 }
 
 ::g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = false) {
-  ::ww_event("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
+  wwEvent("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
 }
 
 ::g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler) {
-  let logsBlk = ::ww_operation_get_log()
+  let logsBlk = ww_operation_get_log()
   if (useLogMark)
     ::g_ww_logs.lastMark = logsBlk?.lastMark ?? ""
 
@@ -96,7 +101,7 @@ let { wwGetPlayerSide } = require("worldwar")
   if (!this.objectivesStaticBlk)
     this.objectivesStaticBlk = this.getObjectivesBlk()
 
-  ::ww_event("NewLogsLoaded")
+  wwEvent("NewLogsLoaded")
 
   local addedLogsNumber = 0
   if (!loadedLogsBlk)
@@ -155,7 +160,7 @@ let { wwGetPlayerSide } = require("worldwar")
     ::g_ww_logs.loaded.extend(freshLogs)
 
   if (!addedLogsNumber) {
-    ::ww_event("NoLogsAdded")
+    wwEvent("NoLogsAdded")
     return
   }
 
@@ -172,11 +177,11 @@ let { wwGetPlayerSide } = require("worldwar")
   }
 
   this.applyLogsFilter()
-  ::ww_event("NewLogsAdded", {
+  wwEvent("NewLogsAdded", {
     isLogMarkUsed = useLogMark
     isStrengthUpdateNeeded = isStrengthUpdateNeeded
     isToBattleUpdateNeeded = isToBattleUpdateNeeded })
-  ::ww_event("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
+  wwEvent("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
 }
 
 ::g_ww_logs.saveLogView <- function saveLogView(logObj) {
@@ -194,7 +199,7 @@ let { wwGetPlayerSide } = require("worldwar")
     return
 
   this.logsBattles[blk.battle.id] <- {
-    battle = ::WwBattle(blk.battle)
+    battle = WwBattle(blk.battle)
     time = logTime
     logBlk = blk
   }
@@ -205,7 +210,7 @@ let { wwGetPlayerSide } = require("worldwar")
     foreach (armyBlk in blk.armies) {
       let armyId = this.getLogArmyId(logId, armyBlk?.name)
       if (!(armyId in this.logsArmies))
-        this.logsArmies[armyId] <- ::WwArmy(armyBlk?.name, armyBlk)
+        this.logsArmies[armyId] <- WwArmy(armyBlk?.name, armyBlk)
     }
 }
 
@@ -239,32 +244,32 @@ let { wwGetPlayerSide } = require("worldwar")
 }
 
 ::g_ww_logs.playLogSound <- function playLogSound(logBlk) {
-  switch (logBlk?.type) {
-    case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
-      let wwArmy = this.getLogArmy(logBlk)
-      if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
-        get_cur_gui_scene()?.playSound("ww_artillery_enemy")
-      break
+  let logBlkType = logBlk?.type
 
-    case WW_LOG_TYPES.ARMY_FLYOUT:
-      let wwArmy = this.getLogArmy(logBlk)
-      if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
-        get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
-      break
+  if (logBlkType == WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE) {
+    let wwArmy = this.getLogArmy(logBlk)
+    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
+      get_cur_gui_scene()?.playSound("ww_artillery_enemy")
+  }
 
-    case WW_LOG_TYPES.BATTLE_STARTED:
-      get_cur_gui_scene()?.playSound("ww_battle_start")
-      break
+  else if (logBlkType == WW_LOG_TYPES.ARMY_FLYOUT) {
+    let wwArmy = this.getLogArmy(logBlk)
+    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
+      get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
+  }
 
-    case WW_LOG_TYPES.BATTLE_FINISHED:
-      get_cur_gui_scene()?.playSound(this.isPlayerWinner(logBlk) ?
-        "ww_battle_end_win" : "ww_battle_end_fail")
-      break
+  else if (WW_LOG_TYPES.BATTLE_STARTED == logBlkType) {
+    get_cur_gui_scene()?.playSound("ww_battle_start")
+  }
+
+  else if (WW_LOG_TYPES.BATTLE_FINISHED == logBlkType) {
+    get_cur_gui_scene()?.playSound(this.isPlayerWinner(logBlk) ?
+      "ww_battle_end_win" : "ww_battle_end_fail")
   }
 }
 
 ::g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk) {
-  let mySideName = ::ww_side_val_to_name(wwGetPlayerSide())
+  let mySideName = ww_side_val_to_name(wwGetPlayerSide())
   if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
     for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
       if (logBlk.battle.teams.getBlock(i).side == mySideName)

@@ -1,13 +1,15 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
-
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let DataBlock = require("DataBlock")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
                                  //param name in tournament configs //param name in userlogs configs
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -23,7 +25,7 @@ let getConditionIcon = @(condition) condition?.icon ?? ""
 
 let function getTournamentInfoBlk(eventEconomicName) {
   let blk = DataBlock()
-  ::get_tournament_info_blk(eventEconomicName, blk)
+  get_tournament_info_blk(eventEconomicName, blk)
   return blk
 }
 
@@ -69,7 +71,7 @@ let rewardConditionsList = {
         function (value) {
           local progress = "0"
           if (value != null) {
-            let { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
+            let { lbDataType } = getLbCategoryTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)
@@ -91,7 +93,7 @@ let rewardConditionsList = {
           local progress = "0"
           if (value != null) {
             value = value % getConditionValue(reward_blk)
-            let { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
+            let { lbDataType } = getLbCategoryTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)
@@ -236,7 +238,7 @@ let function initConfigs() {
 initConfigs()
 
 let function getRewardsBlk(event) {
-  return get_blk_value_by_path(::get_tournaments_blk(), getEventEconomicName(event) + "/awards")
+  return getBlkValueByPath(get_tournaments_blk(), getEventEconomicName(event) + "/awards")
 }
 
 let function haveRewards(event) {
@@ -245,7 +247,7 @@ let function haveRewards(event) {
 }
 
 let function getBaseVictoryReward(event) {
-  let rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), getEventEconomicName(event))
+  let rewardsBlk = getBlkValueByPath(get_tournaments_blk(), getEventEconomicName(event))
   if (!rewardsBlk)
     return null
 

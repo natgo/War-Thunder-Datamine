@@ -417,7 +417,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                            ammo_stowage__detonateProb : float;
                            ammo_stowage__detonatePortion : float2;
                            ammo_stowage__detonateMinCaliber : float;
-                           ammo_stowage__damagePropsId : int;
+                           ammo_stowage__explosiveProperties : ExplosiveProps;
                            ammo_stowage__fxEvAmmoFireId : int;
                            ammo_stowage__partIdRemap : IPoint4List;
                            ammo_stowage__triggerIdRemap : IntList;
@@ -453,7 +453,9 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                            ammo_slots__state : UInt32List;
                            ammo_slots__partId : PartIdList;
                            ammo_slots__numAmmo : IPoint2List;
-                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
+                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
+
+                           ammo_stowage__splashProperties : SplashProps
                          >)
   var unit = get_unit(uid)
   assert(unit != null)
@@ -476,7 +478,8 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
     v.ammo_stowage__detonateProb = ammo_blk |> datablock_getReal("detonateProb", v.ammo_stowage__detonateProb)
     v.ammo_stowage__detonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__detonatePortion)
     v.ammo_stowage__detonateMinCaliber = ammo_blk |> datablock_getReal("ammoMinCaliberForDetonate", v.ammo_stowage__detonateMinCaliber)
-    v.ammo_stowage__damagePropsId = dm_register_props_ex(model_name + "^ammo", ammo_blk, "damage")
+    v.ammo_stowage__explosiveProperties |> explosive_props_load(ammo_blk)
+    v.ammo_stowage__splashProperties |> splash_props_load(ammo_blk)
 
   if !unit.isHumanPlayer && !unit_change_data_has_any_bullets(unit)
     return

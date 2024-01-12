@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mouse_available, get_option_mouse_joystick_square
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
+
 let globalEnv = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
@@ -16,12 +18,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
   USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER,
   USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,
   USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
 } = require("%scripts/options/optionsExtNames.nut")
+let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 
 return [
   {
@@ -216,6 +218,7 @@ return [
   {
     id = "ID_BOMBS_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_BOMBS_SERIES_HELICOPTER"
@@ -224,6 +227,7 @@ return [
   {
     id = "ID_ROCKETS_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_ROCKETS_SERIES_HELICOPTER"
@@ -335,10 +339,12 @@ return [
   {
     id = "ID_ATGM_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_AAM_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_GUIDED_BOMBS_HELICOPTER"
@@ -759,13 +765,13 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) ::get_option_mouse_joystick_square()
-    setValue = @(_joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
+    value = @(_joyParams) get_option_mouse_joystick_square()
+    setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_HELICOPTER_CENTER_MOUSE_JOYSTICK"
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
+    showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
 //-------------------------------------------------------

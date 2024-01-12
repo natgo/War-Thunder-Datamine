@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import disable_network, copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -27,6 +28,9 @@ let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut"
 let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
+let { searchAndRepairInvalidPresets } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
+let { checkDecalsOnOtherPlayersOptions }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -39,7 +43,7 @@ let function showGblkErrorPopup(errCode, path) {
   let msg = loc(format("gblk/saveError/text/%d", errCode), { path = path })
   ::g_popups.add(title, msg, null, [{ id = "copy_button",
                               text = loc("gblk/saveError/copy"),
-                              func = @() ::copy_to_clipboard(msg) }])
+                              func = @() copy_to_clipboard(msg) }])
 }
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
@@ -66,9 +70,9 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     checkReconnect()
 
   if (!isAfterLogin) {
-    ::checkUnlockedCountriesByAirs()
+    checkUnlockedCountriesByAirs()
     penalties.showBannedStatusMsgBox(true)
-    if (isAllowPopups && !::disable_network()) {
+    if (isAllowPopups && !disable_network()) {
       handler.doWhenActive(checkShowRateWnd)
       handler.doWhenActive(checkJoystickThustmasterHotas)
     }
@@ -127,11 +131,16 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(checkShowPersonalOffers)
     handler.doWhenActive(@() claimRegionalUnlockRewards())
     handler.doWhenActiveOnce("checkShowDynamicLutSuggestion")
+    handler.doWhenActive(checkDecalsOnOtherPlayersOptions)
   }
 
   if (!isAfterLogin && isAllowPopups) {
     handler.doWhenActive(@() ::dmViewer.checkShowViewModeTutor(DM_VIEWER_XRAY))
     handler.doWhenActive(@() ::dmViewer.checkShowViewModeTutor(DM_VIEWER_ARMOR))
+  }
+
+  if (isAfterLogin && isAllowPopups) {
+    searchAndRepairInvalidPresets()
   }
 
   handler.doWhenActive(popGblkErrorPopups)

@@ -1,14 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { Point2 } = require("dagor.math")
 
 
-local ModificationBase = class extends ::BaseItem {
+let ModificationBase = class (BaseItem) {
   modsList = null
   unitTypes = null
   countries = null
@@ -58,7 +58,7 @@ local ModificationBase = class extends ::BaseItem {
       let locMods = this.modsList.map(function(mod) {
           local res = loc("modification/" + mod + "/short", "")
           if (!res.len())
-            res = loc("modification/" + mod)
+            res = loc($"modification/{mod}")
           return res
         })
       textParts.append(loc("multiAward/type/modification") + loc("ui/colon")

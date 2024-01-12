@@ -1,11 +1,13 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { canResearchUnit, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { canResearchUnit, bit_unit_status, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
 
@@ -49,7 +51,7 @@ let function getBitStatus(unit, params = {}) {
   let shopResearchMode    = params?.shopResearchMode ?? false
   let isSquadronResearchMode  = params?.isSquadronResearchMode ?? false
 
-  let isMounted      = ::isUnitInSlotbar(unit)
+  let isMounted      = isUnitInSlotbar(unit)
   let isOwn          = unit.isBought()
   let isSquadVehicle = unit.isSquadronVehicle()
   let researched     = unit.isResearched()
@@ -59,7 +61,7 @@ let function getBitStatus(unit, params = {}) {
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
-    ? min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
+    ? min(clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 
@@ -72,7 +74,7 @@ let function getBitStatus(unit, params = {}) {
     bitStatus = bit_unit_status.mounted
   else if (isOwn)
     bitStatus = bit_unit_status.owned
-  else if (::canBuyUnit(unit) || ::canBuyUnitOnline(unit) || ::canBuyUnitOnMarketplace(unit))
+  else if (canBuyUnit(unit) || ::canBuyUnitOnline(unit) || ::canBuyUnitOnMarketplace(unit))
     bitStatus = bit_unit_status.canBuy
   else if (isLockedSquadronVehicle && (!unit.unitType.canSpendGold() || !canBuyNotResearched(unit)))
     bitStatus = bit_unit_status.locked

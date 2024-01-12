@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -670,7 +672,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     }.bindenv(this))
   }
 
-  isCapturingZoneMy = @(eventData) (::get_mp_local_team() == Team.A) == (eventData.captureProgress < 0)
+  isCapturingZoneMy = @(eventData) (get_mp_local_team() == Team.A) == (eventData.captureProgress < 0)
 
   function isValid() {
     return checkObj(this.scene)

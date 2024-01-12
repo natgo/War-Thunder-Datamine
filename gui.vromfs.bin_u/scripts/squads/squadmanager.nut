@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, gchat_is_connected, get_cyber_cafe_id, is_eac_inited
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
@@ -27,6 +29,7 @@ let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId } = require("worldwar")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -118,7 +121,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   canStartStateChanging = @() !this.isStateInTransition()
   canJoinSquad = @() !this.isInSquad() && this.canStartStateChanging()
   canLeaveSquad = @() this.isInSquad() && this.canManageSquad()
-  canManageSquad = @() hasFeature("Squad") && ::isInMenu()
+  canManageSquad = @() hasFeature("Squad") && isInMenu()
   canChangeReceiveApplications = @(shouldCheckLeader = true) hasFeature("ClanSquads")
     && (!shouldCheckLeader || this.isSquadLeader())
 
@@ -178,8 +181,8 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       return this.cyberCafeSquadMembersNum
 
     local num = 0
-    if (this.isInSquad() && this.squadData.members && ::get_cyber_cafe_level() > 0) {
-      let myCyberCafeId = ::get_cyber_cafe_id()
+    if (this.isInSquad() && this.squadData.members && get_cyber_cafe_level() > 0) {
+      let myCyberCafeId = get_cyber_cafe_id()
       foreach (_uid, memberData in this.squadData.members)
         if (myCyberCafeId == memberData.cyberCafeId)
           num++
@@ -464,7 +467,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       isCrewsReady = this.isMyCrewsReady
       canPlayWorldWar = isWorldwarEnabled
       isWorldWarAvailable = isWorldwarEnabled
-      isEacInited = ::is_eac_inited()
+      isEacInited = is_eac_inited()
       squadsVersion = SQUADS_VERSION
       platform = platformModule.targetPlatform
     })
@@ -676,7 +679,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (!this.isNotAloneOnline())
       return
 
-    if (!::gchat_is_connected())
+    if (!gchat_is_connected())
       return
 
     if (::g_chat.isSquadRoomJoined())
@@ -1109,7 +1112,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (!(uid in this.squadData.invitedPlayers))
       return
 
-    this.squadData.invitedPlayers.rawdelete(uid)
+    this.squadData.invitedPlayers.$rawdelete(uid)
     broadcastEvent(squadEvent.INVITES_CHANGED)
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
@@ -1137,7 +1140,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     foreach (uid in applications) {
       if (!(uid in this.squadData.applications))
         continue
-      this.squadData.applications.rawdelete(uid)
+      this.squadData.applications.$rawdelete(uid)
       isApplicationsChanged = true
     }
 
@@ -1185,7 +1188,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (memberData == null)
       return
 
-    this.squadData.members.rawdelete(memberData.uid)
+    this.squadData.members.$rawdelete(memberData.uid)
     ::update_contacts_by_list([memberData.getData()])
 
     broadcastEvent(squadEvent.STATUS_CHANGED)
@@ -1358,11 +1361,11 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   onEventPresetsByGroupsChanged = @(_params) this.updateMyMemberData()
   onEventBeforeProfileInvalidation = @(_p) this.reset()
   onEventUpdateEsFromHost = @(_p) this.checkUpdateStatus(squadStatusUpdateState.BATTLE)
-  onEventNewSceneLoaded = @(_p) ::isInMenu()
+  onEventNewSceneLoaded = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventBattleEnded = @(_p) ::isInMenu()
+  onEventBattleEnded = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventSessionDestroyed = @(_p) ::isInMenu()
+  onEventSessionDestroyed = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
   onEventChatConnected = @(_params) this.joinSquadChatRoom()
   onEventAvatarChanged = @(_p) this.updateMyMemberData()

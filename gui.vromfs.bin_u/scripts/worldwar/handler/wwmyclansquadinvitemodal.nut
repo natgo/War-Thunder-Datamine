@@ -1,9 +1,9 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
@@ -11,7 +11,7 @@ enum wwClanSquadInviteColors {
   MATCH_GAME = "successTextColor"
 }
 
-gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquadsListModal {
+gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListModal) {
   operationId = null
   battleId = null
   country = null
@@ -43,7 +43,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquads
   ]
 
   static function open(operationId, battleId, country) {
-    ::gui_start_modal_wnd(gui_handlers.WwMyClanSquadInviteModal,
+    loadHandler(gui_handlers.WwMyClanSquadInviteModal,
       { operationId = operationId, battleId = battleId, country = country })
   }
 
@@ -74,7 +74,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquads
       mail = {
         inviteClassName = "WwOperationBattle"
         params = {
-          squadronId = ::clan_get_my_clan_id()
+          squadronId = clan_get_my_clan_id()
           operationId = this.operationId
           battleId = this.battleId
         }

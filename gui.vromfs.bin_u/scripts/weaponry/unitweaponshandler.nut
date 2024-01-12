@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
@@ -14,8 +16,9 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
-gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   unit = null
@@ -239,12 +242,12 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     return this.bulletsIdPrefix + groupIdx
   }
 
-  function getCellConfig(id = "", header = null, itemType = weaponsItem.unknown, bulGroupIdx = 0) {
+  function getCellConfig(id = "", header = null, item_type = weaponsItem.unknown, bulGroupIdx = 0) {
     return {
-      id = id
-      header = header
-      itemType = itemType
-      bulGroupIdx = bulGroupIdx
+      id
+      header
+      itemType = item_type
+      bulGroupIdx
     }
   }
 
@@ -394,7 +397,7 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function hasWeaponsToChooseFrom() {
     local count = 0
-    let hasOnlySelectable = !isInFlight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+    let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
     foreach (weapon in this.unit.getWeapons()) {
       if (!this.isForcedAvailable
           && (!this.forceShowDefaultTorpedoes || !isDefaultTorpedoes(weapon))
@@ -481,7 +484,7 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getSelectionItemParams() {
     let res = clone this.showItemParams
-    delete res.selectBulletsByManager
+    res.$rawdelete("selectBulletsByManager")
     return res
   }
 

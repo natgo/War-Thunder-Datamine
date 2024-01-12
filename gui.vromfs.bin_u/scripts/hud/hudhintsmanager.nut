@@ -1,5 +1,7 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_charserver_time_sec } = require("chard")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -13,7 +15,7 @@ let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isInFlight } = require("gameplayBinding")
-let { getHintSeenCount, updateHintEventTime, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
+let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
   getHintByShowEvent} = require("%scripts/hud/hudHints.nut")
 let { register_command } = require("console")
 let { subscribe } = require("eventbus")
@@ -91,7 +93,7 @@ let function isHintDisabledByUnitTags(hint) {
       let hintOptionsBlk = DataBlock()
       foreach (hint in ::g_hud_hints.types)
         hint.updateHintOptionsBlk(hintOptionsBlk)
-      ::set_hint_options_by_blk(hintOptionsBlk)
+      set_hint_options_by_blk(hintOptionsBlk)
     }
     this.animatedRemovedHints.clear()
   }
@@ -214,7 +216,8 @@ let function isHintDisabledByUnitTags(hint) {
     }, this)
 
     foreach (hintType in ::g_hud_hints.types) {
-      if (!hintType.isEnabled() || (this.isHintShowCountExceeded(hintType, true) && hintType.secondsOfForgetting == 0)) {
+      let isExceeded = this.isHintShowCountExceeded(hintType, { dontWriteLog=true })
+      if (!hintType.isEnabled() || (hintType.totalCount > 0 && isExceeded && hintType.secondsOfForgetting == 0)) {
         log($"Hints: {(hintType?.showEvent ?? "_")} is disabled")
         continue
       }
@@ -231,14 +234,13 @@ let function isHintDisabledByUnitTags(hint) {
       if (hint.showEvent != "")
         ::g_hud_event_manager.subscribe(hint.showEvent, function (eventData) {
 
+          let hintUid = this.getUidForSeenCount(hint, eventData)
           if (eventData?.hidden) {
-            increaseHintShowCount(hint.uid)
+            increaseHintShowCount(hintUid)
             return
           }
 
-          if (this.isHintShowCountExceeded(hint)) {
-            if (hint.secondsOfForgetting > 0)
-              updateHintEventTime(hint.uid)
+          if (this.isHintShowCountExceeded(hint, { eventData })) {
             return
           }
 
@@ -323,7 +325,7 @@ let function isHintDisabledByUnitTags(hint) {
   function removeDelayedShowTimer(hint) {
     if (this.delayedShowTimers?[hint.name]) {
       this.timers.removeTimer(this.delayedShowTimers[hint.name])
-      delete this.delayedShowTimers[hint.name]
+      this.delayedShowTimers.$rawdelete(hint.name)
     }
   }
 
@@ -338,15 +340,18 @@ let function isHintDisabledByUnitTags(hint) {
       this.activeHints.remove(idx)
   }
 
-  function isHintShowAllowed(eventName, eventData) {
+  function isHintShowAllowed(eventName, eventData, params = null) {
     let hint = getHintByShowEvent(eventName)
     if (!hint)
       return false
 
-    if (isHintDisabledByUnitTags(hint))
+    if (this.isHintShowCountExceeded(hint, { eventData, dontWriteLog = true }))
       return false
 
-    if (this.isHintShowCountExceeded(hint, true))
+    if (params?.needCheckCountOnly)
+      return true
+
+    if (isHintDisabledByUnitTags(hint))
       return false
 
     if (eventData && !hint.isCurrent(eventData, false))
@@ -378,7 +383,7 @@ let function isHintDisabledByUnitTags(hint) {
     let res = this.checkHintInterval(hint)
     if (res == HintShowState.DISABLE) {
       if (hint.secondsOfForgetting == 0)
-        ::disable_hint(hint.mask)
+        disable_hint(hint.mask)
       return
     }
     else if (res == HintShowState.NOT_MATCH)
@@ -414,7 +419,7 @@ let function isHintDisabledByUnitTags(hint) {
   }
 
   function showHint(hintData) {
-    if (!checkObj(this.nest))
+    if (!checkObj(this.nest) || !this.guiScene)
       return
 
     let hintNestObj = this.nest.findObject(hintData.hint.getHintNestId())
@@ -430,8 +435,9 @@ let function isHintDisabledByUnitTags(hint) {
     hintData.hintObj = hintNestObj.findObject(id)
     this.setCoutdownTimer(hintData)
 
-    this.lastShowedTimeDict[hintData.hint.uid] <- get_time_msec()
-    increaseHintShowCount(hintData.hint.uid)
+    let uid = this.getUidForSeenCount(hintData.hint, hintData.eventData)
+    this.lastShowedTimeDict[uid] <- get_time_msec()
+    increaseHintShowCount(uid)
   }
 
   function setCoutdownTimer(hintData) {
@@ -538,19 +544,34 @@ let function isHintDisabledByUnitTags(hint) {
     return HintShowState.NOT_MATCH
   }
 
+  function getUidForSeenCount(hint, e) {
+    if (e?.conditionSeenCountType == null)
+      return hint.uid
+    return (hint.uid << 14) | e.conditionSeenCountType
+  }
 
-  function isHintShowCountExceeded(hint, dontWriteLog = false) {
+  function isHintShowCountExceeded(hint, params = {}) {
+    let {eventData = null, dontWriteLog = false} = params
     if ( hint.uid == -1 )
       return false
-    local seenCount = getHintSeenCount(hint.uid)
-    if ( !dontWriteLog && (hint.uid >= 0 || (hint?.totalCount ?? 0) > 0))
-      log("Hints: " + (hint.showEvent == "" ? "_" : hint.showEvent)
-      + " uid = " + hint.uid
-      + " totalCount = " + (hint?.totalCount ?? "_")
-      + " showedCount = " + seenCount)
+    let uid = this.getUidForSeenCount(hint, eventData)
+    let seenCount = getHintSeenCount(uid)
 
-    return (hint.totalCount > 0
-      && seenCount >= hint.totalCount)
+    if ( !dontWriteLog && (hint.uid >= 0 || hint.totalCount > 0 || hint.totalCountByCondition > 0))
+      log(" ".concat(
+        $"Hints: {hint.showEvent == "" ? "_" : hint.showEvent}",
+        $"uid = {hint.uid}",
+        eventData?.conditionSeenCountType != null
+          ? $"conditionSeenCountType = {eventData.conditionSeenCountType}"
+          : "",
+        $"totalCount = {hint.totalCount}",
+        $"totalCountByCondition = {hint.totalCountByCondition}",
+        $"showedCount = {seenCount}"
+      ))
+
+    let isCountExced = hint.totalCount > 0 && seenCount >= hint.totalCount
+    let isCountByCondExceed = hint.totalCountByCondition > 0 && seenCount >= hint.totalCountByCondition
+    return isCountExced || isCountByCondExceed
   }
 
 

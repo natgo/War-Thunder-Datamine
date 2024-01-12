@@ -1,10 +1,13 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { WwBattleView } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
@@ -39,7 +42,7 @@ let wwTooltipTypes = {
   WW_LOG_BATTLE_TOOLTIP = {
     getTooltipContent = function(_id, params) {
       let battle = ::g_world_war.getBattleById(params.currentId)
-      let battleView = battle.isValid() ? battle.getView() : ::WwBattleView()
+      let battleView = battle.isValid() ? battle.getView() : WwBattleView()
       return handyman.renderCached("%gui/worldWar/wwControlHelp.tpl", battleView)
     }
   }
@@ -64,8 +67,8 @@ let wwTooltipTypes = {
       }
 
       if (::is_in_clan() &&
-          (::clan_get_my_clan_id() == clanId
-          || ::clan_get_my_clan_tag() == clanTag)
+          (clan_get_my_clan_id() == clanId
+          || clan_get_my_clan_tag() == clanTag)
          ) {
         ::requestMyClanData()
         if (!::my_clan_info)
@@ -75,7 +78,7 @@ let wwTooltipTypes = {
         return true
       }
 
-      let taskId = ::clan_request_info(clanId, "", "")
+      let taskId = clan_request_info(clanId, "", "")
       let onTaskSuccess = function() {
         if (!checkObj(obj))
           return

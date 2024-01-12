@@ -1,5 +1,6 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import epic_is_running, epic_update_purchases_on_auth, epic_get_shop_item_async, epic_get_shop_items_async
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 const LOG_PREFIX = "[EpicStore] "
 let logS = log_with_prefix(LOG_PREFIX)
@@ -12,7 +13,7 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
-let canUseIngameShop = ::epic_is_running
+let canUseIngameShop = epic_is_running
 
 let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null) //DataBlock
 let isLoadingInProgress = Watched(false)
@@ -30,7 +31,7 @@ let function requestData(cb = null) {
 
   onItemsReceivedCb = cb
 
-  ::epic_get_shop_items_async()
+  epic_get_shop_items_async()
 }
 
 isInitedOnce.subscribe(function(val) {
@@ -100,11 +101,11 @@ let function updateSpecificItemInfo(itemId) {
   if (!itemId)
     return
 
-  ::epic_get_shop_item_async(itemId)
+  epic_get_shop_item_async(itemId)
 }
 
 let function onUpdateItemCb(blk) {
-  ::epic_update_purchases_on_auth()
+  epic_update_purchases_on_auth()
   addTask(::update_entitlements_limited(true))
 
   let itemId = blk.id

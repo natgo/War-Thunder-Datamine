@@ -1,5 +1,7 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import select_current_title
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
@@ -7,15 +9,16 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getTitles, getStats, clearStats } = require("%scripts/myStats.nut")
 
-gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle.tpl"
 
@@ -24,22 +27,22 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   titlesList = null
 
   static function open() {
-    if (!::isInMenu() || !::my_stats.getStats())
+    if (!isInMenu() || !getStats())
       return
 
     handlersManager.loadHandler(gui_handlers.ChooseTitle)
   }
 
   function getSceneTplView() {
-    this.ownTitles = ::my_stats.getTitles()
+    this.ownTitles = getTitles()
     this.titlesList = getAllUnlocksWithBlkOrder()
       .filter(@(u) u?.type == "title" && isUnlockVisible(u))
       .map(@(u) u.id)
-    this.curTitle = ::my_stats.getStats().title
+    this.curTitle = getStats().title
 
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = this.titlesList.map(function(name) {
-      let locText = loc("title/" + name)
+      let locText = loc($"title/{name}")
       let isOwn = this.isOwnTitle(name)
       return {
         name
@@ -83,7 +86,7 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    ::move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
     this.updateButtons()
   }
 
@@ -162,14 +165,14 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
       return this.goBack()
 
     addTask(
-      ::select_current_title(titleName),
+      select_current_title(titleName),
       {
         showProgressBox = true
         progressBoxText = loc("charServer/checking")
       },
       function() {
-       ::my_stats.clearStats()
-       ::my_stats.getStats()
+        clearStats()
+        getStats()
       })
 
     this.goBack()

@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
-
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
+let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,10 +10,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   if (!params?.okFunc)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.EditBoxHandler, params)
+  loadHandler(gui_handlers.EditBoxHandler, params)
 }
 
-gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler {
+gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
   okFunc = null
@@ -77,7 +76,7 @@ gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler {
 
     if (isEnabled) {
       this.guiScene.applyPendingChanges(false)
-      ::select_editbox(this.editBoxObj)
+      select_editbox(this.editBoxObj)
     }
   }
 

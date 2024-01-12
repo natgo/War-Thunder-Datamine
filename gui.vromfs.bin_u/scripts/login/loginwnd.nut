@@ -1,13 +1,16 @@
 //-file:plus-string
-//checked for explicitness
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, steam_is_running, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
+let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
+let { getLocalLanguage } = require("language")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -29,7 +32,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getGameLocalizationInfo, setGameLocalization, isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
+let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_network_block } = require("blkGetters")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
@@ -50,7 +53,7 @@ let function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
-gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
@@ -85,18 +88,14 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     this.checkShardingCircuits()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-    ::enable_keyboard_layout_change_tracking(true)
-    ::enable_keyboard_locks_change_tracking(true)
+    enable_keyboard_layout_change_tracking(true)
+    enable_keyboard_locks_change_tracking(true)
 
     let bugDiscObj = this.scene.findObject("browser_bug_disclaimer")
     if (checkObj(bugDiscObj))
-      bugDiscObj.show(platformId == "linux64" && ::is_steam_big_picture()) //STEAM_OS
+      bugDiscObj.show(platformId == "linux64" && is_steam_big_picture()) //STEAM_OS
 
-    let lp = ::get_login_pass()
-    let isVietnamese = isVietnameseVersion()
-    if (isVietnamese)
-      lp.autoSave = lp.autoSave & AUTO_SAVE_FLG_LOGIN
-
+    let lp = get_login_pass()
     let disableSSLCheck = lp.autoSave & AUTO_SAVE_FLG_NOSSLCERT
 
     let unObj = this.scene.findObject("loginbox_username")
@@ -115,9 +114,9 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
     let spObj = this.scene.findObject("loginbox_autosave_password")
     if (checkObj(spObj)) {
-      spObj.show(!isVietnamese)
+      spObj.show(true)
       spObj.setValue(lp.autoSave & AUTO_SAVE_FLG_PASS)
-      spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 && !isVietnamese)
+      spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 )
       local text = loc("mainmenu/savePassword")
       if (!isPlatformShieldTv())
         text += " " + loc("mainmenu/savePassword/unsecure")
@@ -125,9 +124,9 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     }
 
     this.setDisableSslCertBox(disableSSLCheck)
-    let isSteamRunning = ::steam_is_running()
+    let isSteamRunning = steam_is_running()
     let showSteamLogin = isSteamRunning
-    let showWebLogin = !isSteamRunning && ::webauth_start(this, this.onSsoAuthorizationComplete)
+    let showWebLogin = !isSteamRunning && webauth_start(this, this.onSsoAuthorizationComplete)
     this.showSceneBtn("steam_login_action_button", showSteamLogin)
     this.showSceneBtn("sso_login_action_button", showWebLogin)
     this.showSceneBtn("btn_signUp_link", !showSteamLogin)
@@ -139,7 +138,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     local autoLogin = (this.initial_autologin && autoLoginEnable) || (dgs_get_settings()?.yunetwork.forceAutoLogin ?? false)
     let autoLoginObj = this.scene.findObject("loginbox_autologin")
     if (checkObj(autoLoginObj)) {
-      autoLoginObj.show(!isVietnamese)
+      autoLoginObj.show(true)
       autoLoginObj.enable(autoLoginEnable)
       autoLoginObj.setValue(autoLogin)
     }
@@ -147,13 +146,13 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     this.showSceneBtn("links_block", !isPlatformShieldTv())
 
     if ("dgs_get_argv" in getroottable()) {
-      let s = ::dgs_get_argv("stoken")
+      let s = dgs_get_argv("stoken")
       if (!u.isEmpty(s))
         lp.stoken <- s
     }
     else if ("dgs_argc" in getroottable())
-      for (local i = 1; i < ::dgs_argc(); i++) {
-        let str = ::dgs_argv(i);
+      for (local i = 1; i < dgs_argc(); i++) {
+        let str = dgs_argv(i);
         let idx = str.indexof("-stoken:")
         if (idx != null)
           lp.stoken <- str.slice(idx + 8)
@@ -165,20 +164,20 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       return
     }
 
-    let disableAutoRelogin = getroottable()?.disable_autorelogin_once ?? false
+    let disableAutoRelogin = get_disable_autorelogin_once()
     autoLogin = autoLogin && !disableAutoRelogin
     if (autoLogin) {
       this.doLoginDelayed()
       return
     }
 
-    ::select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
+    select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
   }
 
   function onDestroy() {
-    ::webauth_stop()
-    ::enable_keyboard_layout_change_tracking(false)
-    ::enable_keyboard_locks_change_tracking(false)
+    webauth_stop()
+    enable_keyboard_layout_change_tracking(false)
+    enable_keyboard_locks_change_tracking(false)
   }
 
   function setDisableSslCertBox(value) {
@@ -192,10 +191,10 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     let networkBlk = get_network_block()
     let avCircuits = networkBlk.getBlockByName(this.availableCircuitsBlockName)
 
-    let configCircuitName = ::get_cur_circuit_name()
+    let configCircuitName = get_cur_circuit_name()
     this.shardItems = [{
                     item = configCircuitName
-                    text = loc("circuit/" + configCircuitName)
+                    text = loc($"circuit/{configCircuitName}")
                  }]
 
     if (avCircuits && avCircuits.paramCount() > 0) {
@@ -213,7 +212,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
           this.shardItems.append({
                               item = value
-                              text = loc("circuit/" + value)
+                              text = loc($"circuit/{value}")
                            })
         }
       }
@@ -251,7 +250,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     this.setDisableSslCertBox(disableCertObj.getValue())
 
     saveLoginObj.enable(!isRemoteComp)
-    savePassObj.enable(!isRemoteComp && isAutosaveLogin && !isVietnameseVersion())
+    savePassObj.enable(!isRemoteComp && isAutosaveLogin)
     autoLoginObj.enable(!isRemoteComp && isAutosaveLogin && isAutosavePass)
 
     if (isRemoteComp)
@@ -269,7 +268,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       return
 
     this.localizationInfo = this.localizationInfo || getGameLocalizationInfo()
-    let curLangId = getCurrentLanguage()
+    let curLangId = getLocalLanguage()
     local lang = this.localizationInfo[0]
     foreach (l in this.localizationInfo)
       if (l.id == curLangId)
@@ -298,7 +297,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     if (!checkObj(obj) || this.localizationInfo.len() < 2)
       return
 
-    let curLangId = getCurrentLanguage()
+    let curLangId = getLocalLanguage()
     let menu = {
       handler = this
       closeOnUnhover = true
@@ -360,7 +359,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function requestLoginWithCode(no_dump_login, code) {
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
-    return ::check_login_pass(no_dump_login,
+    return check_login_pass(no_dump_login,
                               getObjValue(this.scene, "loginbox_password", ""),
                               this.check2StepAuthCode ? "" : this.stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
                               code,
@@ -374,9 +373,9 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function continueLogin(no_dump_login) {
     if (this.shardItems) {
       if (this.shardItems.len() == 1)
-        ::set_network_circuit(this.shardItems[0].item)
+        set_network_circuit(this.shardItems[0].item)
       else if (this.shardItems.len() > 1)
-        ::set_network_circuit(this.shardItems[this.scene.findObject("sharding_list").getValue()].item)
+        set_network_circuit(this.shardItems[this.scene.findObject("sharding_list").getValue()].item)
     }
 
     let autoSaveLogin = getObjValue(this.scene, "loginbox_autosave_login", this.defaultSaveLoginFlagVal)
@@ -392,7 +391,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     if (this.isGuestLogin)
       saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
 
-    ::set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
+    set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
     if (!checkObj(this.scene)) //set_login_pass start onlineJob
       return
 
@@ -401,7 +400,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
                 : false
     ::set_autologin_enabled(autoLogin)
     if (this.initial_autologin != autoLogin)
-      ::save_profile(false)
+      save_profile(false)
 
     ::g_login.addState(LOGIN_STATE.AUTHORIZED)
   }
@@ -421,7 +420,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   }
 
   function doLoginWaitJob() {
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
     local result = this.requestLogin(no_dump_login)
     this.proceedAuthorizationResult(result, no_dump_login)
@@ -430,10 +429,10 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function steamAuthorization(steamSpecCode = "steam") {
     this.isSteamAuth = true
     this.isLoginRequestInprogress = true
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
     log("Steam Login: check_login_pass with code " + steamSpecCode)
-    let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
+    let result = check_login_pass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
@@ -441,7 +440,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
   function onSsoAuthorization() {
     let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
-    let no_dump_url = ::webauth_get_url(no_dump_login)
+    let no_dump_url = webauth_get_url(no_dump_login)
     openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
   }
@@ -451,7 +450,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
     if (params.success) {
       let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
-      ::load_local_settings()
+      load_local_settings()
       this.continueLogin(no_dump_login);
     }
   }
@@ -490,80 +489,76 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
     this.was_using_stoken = (this.stoken != "")
     this.stoken = ""
-    switch (result) {
-      case YU2_OK:
-        if (::steam_is_running())
-          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
-        this.continueLogin(no_dump_login)
-        break
+    if (result == YU2_OK) {
+      if (steam_is_running())
+        saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
+      this.continueLogin(no_dump_login)
+    }
 
-      case YU2_2STEP_AUTH: {
-        //error, received if user not logged, because he have 2step authorization activated
-          this.check2StepAuthCode = true
-          this.showSceneBtn("loginbox_code_remember_this_device", true)
-          this.showSceneBtn("loginbox_remote_comp", false)
-          twoStepModal.open({
-            loginScene           = this.scene,
-            continueLogin        = this.continueLogin.bindenv(this)
-          })
-          this.onChangeAutosave()
-          this.guiScene.performDelayed(this, (@(scene) function() {
-            if (!checkObj(scene))
-              return
-
-            ::get_two_step_code_async2("ProceedGetTwoStepCode")
-          })(this.scene))
-        }
-        break
-
-      case YU2_PSN_RESTRICTED: {
-          this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
-             [["exit", exitGame ]], "exit")
-        }
-        break;
-
-      case YU2_WRONG_LOGIN:
-      case YU2_WRONG_PARAMETER:
-        if (this.was_using_stoken)
-          return;
-        ::error_message_box("yn1/connect_error", result, // auth error
-        [
-          ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
-        break
-
-      case YU2_SSL_CACERT:
-        if (this.was_using_stoken)
-          return;
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
-        break
-
-      case YU2_DOI_INCOMPLETE:
-        showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
-        break
-
-      case YU2_NOT_FOUND:
-        if (!this.isGuestLogin) {
-          this.showConnectionErrorMessageBox(result)
-          return
-        }
-
-        saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
-        this.onGuestAuthorization()
-        break
-
-      default:
-        if (this.was_using_stoken)
+    else if ( result == YU2_2STEP_AUTH) {
+      //error, received if user not logged, because he have 2step authorization activated
+      this.check2StepAuthCode = true
+      this.showSceneBtn("loginbox_code_remember_this_device", true)
+      this.showSceneBtn("loginbox_remote_comp", false)
+      twoStepModal.open({
+        loginScene           = this.scene,
+        continueLogin        = this.continueLogin.bindenv(this)
+      })
+      this.onChangeAutosave()
+      this.guiScene.performDelayed(this, function() {
+        if (!checkObj(this.scene))
           return
 
+        get_two_step_code_async2("ProceedGetTwoStepCode")
+      })
+    }
+
+    else if ( result == YU2_PSN_RESTRICTED) {
+      this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
+         [["exit", exitGame ]], "exit")
+    }
+
+    else if ( result == YU2_WRONG_LOGIN || result == YU2_WRONG_PARAMETER) {
+      if (this.was_using_stoken)
+        return;
+      ::error_message_box("yn1/connect_error", result, // auth error
+      [
+        ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
+        ["exit", exitGame],
+        ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
+    }
+
+    else if ( result == YU2_SSL_CACERT) {
+      if (this.was_using_stoken)
+        return;
+      ::error_message_box("yn1/connect_error", result,
+      [
+        ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
+        ["exit", exitGame],
+        ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
+    }
+
+    else if ( result == YU2_DOI_INCOMPLETE) {
+      showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
+    }
+
+    else if ( result == YU2_NOT_FOUND) {
+      if (!this.isGuestLogin) {
         this.showConnectionErrorMessageBox(result)
+        return
+      }
+
+      saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
+      this.onGuestAuthorization()
+    }
+
+    else {
+      if (this.was_using_stoken)
+        return
+
+      this.showConnectionErrorMessageBox(result)
     }
   }
 
@@ -595,7 +590,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
   function onSignUp() {
     local urlLocId
-    if (::steam_is_running())
+    if (steam_is_running())
       urlLocId = "url/signUpSteam"
     else if (isPlatformShieldTv())
       urlLocId = "url/signUpShieldTV"
@@ -653,10 +648,10 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function guestProceedAuthorization(guestLoginId, nick = "", known = false) {
     this.isGuestLogin = true
     this.isLoginRequestInprogress = true
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
-    let result = ::check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
+    let result = check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
     this.proceedAuthorizationResult(result, "")
   }
 

@@ -1,6 +1,6 @@
+from "%scripts/dagui_natives.nut" import get_difficulty_name, package_request, package_get_status, has_entitlement, ps4_update_gui
 from "%scripts/dagui_library.nut" import *
-
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
@@ -15,6 +15,7 @@ let DataBlock = require("DataBlock")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let function get_pkg_loc_name(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -37,7 +38,7 @@ let function check_members_pkg(pack) {
 let function have_package(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
-  return ::package_get_status(packName) == PACKAGE_STATUS_OK
+  return package_get_status(packName) == PACKAGE_STATUS_OK
 }
 
 let function check_package_full(pack, silent = false) {
@@ -60,15 +61,15 @@ let function check_gamemode_pkg(gm, silent = false) {
 
 let function check_diff_pkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
-    if (diff == d || ::get_difficulty_name(d) == diff)
+    if (diff == d || get_difficulty_name(d) == diff)
       return check_package_full("pkg_main", silent)
   return true
 }
 
 let function checkReqContentByName(ename, pack) {
-  if (::has_entitlement(ename) || hasFeature(ename)) {
+  if (has_entitlement(ename) || hasFeature(ename)) {
     log($"[PACK] has entitlement {ename }, checking for pack {pack}");
-    let status = ::package_get_status(pack)
+    let status = package_get_status(pack)
     if (status == PACKAGE_STATUS_NOT_EXIST)
       return pack
   }
@@ -86,7 +87,7 @@ let function checkReqContent(ename, blk) {
 
 let function request_packages(packList) {
   foreach (pack in packList)
-    ::package_request(pack)
+    package_request(pack)
 }
 
 let function request_packages_and_restart(packList) {
@@ -119,7 +120,7 @@ let function request_packages_and_restart(packList) {
     if (have_package(reqPacksList[i]))
       reqPacksList.remove(i)
 
-  eachBlock(::OnlineShopModel.getPriceBlk(),
+  eachBlock(getShopPriceBlk(),
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
   eachBlock(get_game_settings_blk()?.features,
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
@@ -129,7 +130,7 @@ let function request_packages_and_restart(packList) {
   u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 
   local text = ""
-  let langId = getCurrentLanguage()
+  let langId = getLocalLanguage()
   let langPack = $"pkg_{langId}"
   if (!have_package(langPack) && is_fully_translated(langId)) {
     if (!reqPacksList.len())
@@ -216,7 +217,7 @@ let function set_asked_pack(pack, askTag = null) {
 
   if (isPlatformSony) {
     if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded()) {
-      buttons.insert(0, ["apply", function() { ::ps4_update_gui() }])
+      buttons.insert(0, ["apply", function() { ps4_update_gui() }])
       defButton = "apply"
     }
   }
@@ -243,7 +244,7 @@ let function set_asked_pack(pack, askTag = null) {
 }
 
 ::check_localization_package_and_ask_download <- function check_localization_package_and_ask_download(langId = null) {
-  langId = langId ?? getCurrentLanguage()
+  langId = langId ?? getLocalLanguage()
   let pack = $"pkg_{langId}"
   if (have_package(pack) || !is_fully_translated(langId))
     return

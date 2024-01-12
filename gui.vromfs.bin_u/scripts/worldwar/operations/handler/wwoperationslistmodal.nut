@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,9 +10,9 @@ let { getOperationById, getOperationGroupByMapId
 let { actionWithGlobalStatusRequest,
   setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
-
-gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
@@ -258,7 +260,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
       let cantJoinReasonData = this.selOperation.getCantJoinReasonDataBySide(side)
 
-      let sideName = ::ww_side_val_to_name(side)
+      let sideName = ww_side_val_to_name(side)
       let joinBtn = this.scene.findObject("btn_join_" + sideName)
       joinBtn.inactiveColor = cantJoinReasonData.canJoin ? "no" : "yes"
       joinBtn.findObject("is_clan_participate_img").show(this.selOperation.isMyClanSide(side))
@@ -274,7 +276,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
 
   function onCreateOperation() {
     this.goBack()
-    ::ww_event("CreateOperation")
+    wwEvent("CreateOperation")
   }
 
   function onJoinOperationSide1() {
@@ -321,7 +323,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
 
   function onModalWndDestroy() {
     base.onModalWndDestroy()
-    ::ww_stop_preview()
+    ww_stop_preview()
     setDeveloperMode(false)
   }
 }

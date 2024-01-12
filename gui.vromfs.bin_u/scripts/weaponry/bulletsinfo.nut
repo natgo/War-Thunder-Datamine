@@ -1,10 +1,12 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -18,7 +20,6 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = u
-let { eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { set_last_bullets } = require("unitCustomization")
 let { startsWith, slice } = require("%sqstd/string.nut")
@@ -79,7 +80,7 @@ let function isBullets(item) {
 }
 
 let function isWeaponTierAvailable(unit, tierNum) {
-  local isAvailable = ::is_tier_available(unit.name, tierNum)
+  local isAvailable = is_tier_available(unit.name, tierNum)
 
   if (!isAvailable && tierNum > 1) { //make force check
     local reqMods = unit.needBuyToOpenNextInTier[tierNum - 2]
@@ -612,7 +613,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
   let groupName = getModificationBulletsGroup(modifName)
   if (groupName == "") { //not bullets
     if (!isShortDesc && itemDescrRewriteFunc)
-      res.delayed = ::calculate_mod_or_weapon_effect(air.name, modifName, true, obj,
+      res.delayed = calculate_mod_or_weapon_effect(air.name, modifName, true, obj,
         itemDescrRewriteFunc, null) ?? true
 
     local locId = modifName
