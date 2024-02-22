@@ -17,7 +17,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
+let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder
 } = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
@@ -44,7 +44,6 @@ let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-let { havePlayerTag, isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
@@ -78,7 +77,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
@@ -111,7 +110,7 @@ let function getSkinCountry(skinName) {
 
 let function getUnlockFiltersList(uType, getCategoryFunc) {
   let categories = []
-  let unlocks = getUnlocksByType(uType)
+  let unlocks = getUnlocksByTypeInBlkOrder(uType)
   foreach (unlock in unlocks)
     if (isUnlockVisible(unlock))
       u.appendOnce(getCategoryFunc(unlock), categories, true)

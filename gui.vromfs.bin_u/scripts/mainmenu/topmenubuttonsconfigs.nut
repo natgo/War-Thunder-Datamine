@@ -30,7 +30,7 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
 let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
-let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
@@ -42,8 +42,6 @@ let list = {
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
     onClickFunc = function(_obj, handler) {
-      if (!::is_custom_battles_enabled())
-        return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(GM_SKIRMISH))
         return
 
@@ -62,7 +60,6 @@ let list = {
       )
     }
 
-    isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance()
