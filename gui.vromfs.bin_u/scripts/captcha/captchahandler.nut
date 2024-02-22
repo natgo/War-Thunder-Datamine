@@ -16,7 +16,7 @@ let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlock
   captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter,
   captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let Rectangle = class {
@@ -57,7 +57,7 @@ let captchaImages = [
 ]
 
 const CAPTCHA_MAX_TRIES = 3
-const SHOW_CAPTCHA_ITEM_ID = "show_captcha_item"
+const SHOW_CAPTCHA_ITEM_ID = 10000
 const CAPTCHA_DISPLAY_TIME_SEC = 60
 const TRIES_BEFORE_TEMP_BLOCK = 6
 const TRIES_BEFORE_BAN = 10
