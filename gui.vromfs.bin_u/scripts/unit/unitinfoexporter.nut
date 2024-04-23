@@ -330,7 +330,7 @@ let class UnitInfoExporter {
       return ::check_unit_mods_update(curUnit, null, true, true)
     }
 
-    let groupId = curUnit.showOnlyWhenBought ? EXTENDED_GROUP : BASE_GROUP
+    let groupId = curUnit.showOnlyWhenBought || curUnit.showOnlyWhenResearch ? EXTENDED_GROUP : BASE_GROUP
 
     let armyId = curUnit.unitType.armyId
 
@@ -368,7 +368,7 @@ let class UnitInfoExporter {
   }
 }
 
-let function exportUnitInfo(params) {
+function exportUnitInfo(params) {
   UnitInfoExporter(params["langs"], params["path"])
   return "ok"
 }

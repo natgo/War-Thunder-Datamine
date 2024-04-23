@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -27,6 +27,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
   USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { steam_is_overlay_active } = require("steam")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"
@@ -320,7 +321,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
   loadHandler(gui_handlers.controlsWizardModalHandler)
 }
 
-let function isInArrayRecursive(v, arr) {
+function isInArrayRecursive(v, arr) {
   foreach (i in arr) {
     if (v == i)
       return true
@@ -557,8 +558,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.prevItems.append(this.curIdx)
 
     this.updateButtons()
-    this.showSceneBtn("btn_prevItem", this.prevItems.len() > 0)
-    this.showSceneBtn("btn_controlsWizard", this.prevItems.len() == 0)
+    showObjById("btn_prevItem", this.prevItems.len() > 0, this.scene)
+    showObjById("btn_controlsWizard", this.prevItems.len() == 0, this.scene)
   }
 
   function onPrevItem() {
@@ -635,7 +636,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function enableListenerObj(isEnable) {
-    let obj = this.showSceneBtn("input-listener", isEnable)
+    let obj = showObjById("input-listener", isEnable, this.scene)
     if (isEnable)
       obj.select()
   }
@@ -652,7 +653,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       textObj.show(true)
     }
     this.scene.findObject("shortcut_image")["background-image"] = ""
-    this.showSceneBtn("btn-reset-axis-input", false)
+    showObjById("btn-reset-axis-input", false, this.scene)
     this.clearShortcutInfo()
 
     this.isButtonsListenInCurBox = true
@@ -748,7 +749,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.switchListenButton(false)
     }
 
-    this.showSceneBtn("btn-reset-axis-input", this.selectedAxisNum >= 0 || this.axisMaxChoosen)
+    showObjById("btn-reset-axis-input", this.selectedAxisNum >= 0 || this.axisMaxChoosen, this.scene)
   }
 
   function switchListenButton(value) {
@@ -776,12 +777,12 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       if (reinitPresetup)
         this.initAxisPresetup()
     }
-    this.showSceneBtn("btn-reset-axis-input", this.axisMaxChoosen)
+    showObjById("btn-reset-axis-input", this.axisMaxChoosen, this.scene)
   }
 
   function updateSwitchModesButton() {
     let isShow = this.curDivName == "shortcut-wnd" && this.selectedAxisNum < 0 && !this.axisMaxChoosen
-    this.showSceneBtn("btn_switchAllModes", isShow)
+    showObjById("btn_switchAllModes", isShow, this.scene)
 
     if (!isShow)
       return
@@ -833,9 +834,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     }
 
     this.updateSwitchModesButton()
-    this.showSceneBtn("keep_assign_btn", isInListenWnd)
-    this.showSceneBtn("btn-reset-axis-input", isInListenWnd && (this.axisMaxChoosen || this.selectedAxisNum >= 0))
-    this.showSceneBtn("btn_back", !isListening)
+    showObjById("keep_assign_btn", isInListenWnd, this.scene)
+    showObjById("btn-reset-axis-input", isInListenWnd && (this.axisMaxChoosen || this.selectedAxisNum >= 0), this.scene)
+    showObjById("btn_back", !isListening, this.scene)
   }
 
   function onButtonDone() {
@@ -1037,7 +1038,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   function onAxisDone() {
     this.switchListenAxis(false)
     foreach (name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset", "btn-reset-axis-input"])
-      this.showSceneBtn(name, false)
+      showObjById(name, false, this.scene)
 
     let config = this.presetupAxisRawValues[this.selectedAxisNum]
 
@@ -1279,7 +1280,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       return
     this.selectedAxisNum = -1
     this.axisMaxChoosen = false
-    this.showSceneBtn("btn-reset-axis-input", false)
+    showObjById("btn-reset-axis-input", false, this.scene)
     this.initAxisPresetup()
     this.askAxis()
   }
@@ -1437,13 +1438,13 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
   function askPresetsWnd() {
     this.curIdx = -1
-    this.showSceneBtn("nav-help", false)
+    showObjById("nav-help", false, this.scene)
     this.switchToDiv("options-wnd")
     let optObj = this.scene.findObject("optionlist")
     if (!checkObj(optObj))
       return
 
-    this.showSceneBtn("btn_prevItem", false)
+    showObjById("btn_prevItem", false, this.scene)
 
     let optionItems = [
       [USEROPT_CONTROLS_PRESET, "spinner"],
@@ -1466,8 +1467,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     let opdata = ::get_option(USEROPT_CONTROLS_PRESET)
     if (presetValue in opdata.values) {
       this.presetSelected = opdata.values[presetValue]
-      this.showSceneBtn("btn_controlsWizard", this.presetSelected == "")
-      this.showSceneBtn("btn_selectPreset", this.presetSelected != "")
+      showObjById("btn_controlsWizard", this.presetSelected == "", this.scene)
+      showObjById("btn_selectPreset", this.presetSelected != "", this.scene)
 
       if (this.presetSelected == "") {
         ::g_controls_manager.clearPreviewPreset()
@@ -1499,7 +1500,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function startManualSetup() {
-    this.showSceneBtn("nav-help", true)
+    showObjById("nav-help", true, this.scene)
     scene_msg_box("ask_unit_type", null, loc("mainmenu/askWizardForUnitType"),
       [
         [ "aviation", (@() this.startManualSetupForUnitType(ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],

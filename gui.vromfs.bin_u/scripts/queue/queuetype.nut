@@ -1,23 +1,24 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { request_matching } = require("%scripts/matching/api.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { isNewbieEventId } = require("%scripts/myStats.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
   COMMON
   ANY_EVENT
   UNKNOWN
 }
 
-::g_queue_type <- {
+let g_queue_type = {
   types = []
 }
 
-::g_queue_type.template <- {
+g_queue_type.template <- {
   typeName = "" //filled automatically by typeName
   bit = QUEUE_TYPE_BIT.UNKNOWN
   checkOrder = qTypeCheckOrder.COMMON
@@ -42,7 +43,7 @@ enum qTypeCheckOrder {
   isParamsCorresponds = @(_params) true
 }
 
-enums.addTypesByGlobalName("g_queue_type",
+enumsAddTypes(g_queue_type,
   {
     UNKNOWN = {
       checkOrder = qTypeCheckOrder.UNKNOWN
@@ -87,7 +88,7 @@ enums.addTypesByGlobalName("g_queue_type",
 
       //FIX ME: why it work not by queueStats and queueInfo classes?
       updateInfo = function(successCallback, errorCallback, needAllQueues = false) {
-        ::request_matching(
+        request_matching(
           "worldwar.get_queue_info",
           function(response) {
             let queuesInfo = {}
@@ -110,9 +111,9 @@ enums.addTypesByGlobalName("g_queue_type",
   "typeName"
 )
 
-::g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-::g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
+g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
   if (!params)
     return this.UNKNOWN
   foreach (qType in this.types)
@@ -120,3 +121,5 @@ enums.addTypesByGlobalName("g_queue_type",
       return qType
   return this.UNKNOWN
 }
+
+return freeze({g_queue_type})

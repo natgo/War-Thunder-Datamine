@@ -94,7 +94,8 @@
         "armorThickness": 20.0
       },
       "turret_side_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 25.0,
+        "createSecondaryShatters": false
       },
       "turret_02_bottom_dm": {
         "armorThickness": 40.0
@@ -108,10 +109,12 @@
         "createSecondaryShatters": false
       },
       "ex_armor_01_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "createSecondaryShatters": false
       },
       "turret_04_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "createSecondaryShatters": false
       },
       "turret_08_back_dm": {
         "armorThickness": 20.0
@@ -180,7 +183,8 @@
         "armorThickness": 35.0
       },
       "turret_11_side_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 45.0,
+        "createSecondaryShatters": false
       },
       "turret_front_dm": {
         "armorThickness": 45.0
@@ -272,14 +276,15 @@
         "armorThickness": 20.0,
         "createSecondaryShatters": false
       },
-      "turret_04_back_dm": {
+      "firewall_armor_01_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "armorEffectiveThicknessMax": 50.0
       },
       "ex_decor_05_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "createSecondaryShatters": false
       },
       "ex_armor_turret_r_05_dm": {
         "armorThickness": 10.0,
@@ -336,7 +341,6 @@
         "armorClass": "leopard_2a5_turret_nera"
       },
       "composite_armor_turret_02_dm": {},
-      "composite_armor_turret_03_dm": {},
       "composite_armor_turret_04_dm": {
         "armorClass": "leopard_2a5_turret_nera"
       },
@@ -426,11 +430,13 @@
       },
       "ex_armor_turret_r_01_dm": {
         "armorThickness": 10.0,
-        "armorClass": "RHA_tank_modern"
+        "armorClass": "RHA_tank_modern",
+        "createSecondaryShatters": false
       },
       "ex_armor_turret_r_02_dm": {
         "armorThickness": 10.0,
-        "armorClass": "RHA_tank_modern"
+        "armorClass": "RHA_tank_modern",
+        "createSecondaryShatters": false
       },
       "ex_armor_turret_l_08_dm": {}
     },
@@ -709,6 +715,8 @@
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
+      "genericDamageMult": 2.0,
+      "cumulativeDamageMult": 1.25,
       "hp": 300.0,
       "armorThickness": 2.0,
       "armorThrough": 10.0,
@@ -928,6 +936,7 @@
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
+      "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
       "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
@@ -1920,11 +1929,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_03_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "turret_04_back_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       }
@@ -2145,10 +2154,10 @@
     "EngineName": "engine_leclerc",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_mbt",
-    "TrackSoundNameCockpit": "tracks_mbt_interior",
+    "TrackSoundName": "tracks_leclerc",
+    "TrackSoundNameCockpit": "tracks_leclerc_interior",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_mbt",
+    "TrackSoundNameAi": "tracks_ai_leclerc",
     "turret_turn": "turret_turn_servo"
   },
   "tags": {
@@ -2261,7 +2270,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2425,7 +2434,7 @@
       "maxBrakeForce": 235000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 3.9,
-      "sideGearRatio": 1.0,
+      "sideGearRatio": 0.99,
       "neutralGearRatio": 11.0,
       "manufacturer": "sesm",
       "model": "esm_500",
@@ -2456,7 +2465,7 @@
         -0.17,
         0.13
       ],
-      "defaultGearRadius": 0.32,
+      "defaultGearRadius": 0.33,
       "topGearRadius": 0.11,
       "frontBackGearRadius": 0.27,
       "defaultDampeningForce": [
@@ -3216,15 +3225,6 @@
             "lightMult": 7.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
-          },
-          "commanderIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
           }
         }
       }
@@ -3335,7 +3335,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3440,7 +3440,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

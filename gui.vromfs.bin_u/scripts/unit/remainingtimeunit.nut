@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 from "dagor.workcycle" import clearTimer, setTimeout
@@ -12,7 +11,7 @@ let { get_charserver_time_sec } = require("chard")
 let promoteUnits = mkWatched(persist, "promoteUnits", {})
 let clearPromUnitListCache = @() promoteUnits({})
 
-let function updatePromoteUnits() {
+function updatePromoteUnits() {
   let activPromUnits = {}
 
   clearTimer(updatePromoteUnits)
@@ -46,31 +45,31 @@ let function updatePromoteUnits() {
     promoteUnits(activPromUnits)
 }
 
-let function isPromUnit(unit) {
-  return promoteUnits.value?[unit.name].isActive ?? false
+function isPromUnit(unitName) {
+  return promoteUnits.value?[unitName].isActive ?? false
 }
 
-let function fillPromUnitInfo(holderObj, unit) {
-  if (shopPromoteUnits.value?[unit.name] == null || !holderObj?.isValid())
+function fillPromUnitInfo(holderObj, unit, needShowExpiredMessage) {
+  if (!holderObj?.isValid())
     return false
 
-  if (!isPromUnit(unit)) {
+  if (shopPromoteUnits.value?[unit.name] == null || (!isPromUnit(unit.name) && !needShowExpiredMessage)) {
     showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)
     return false
   }
-  let timeEnd = promoteUnits.value[unit.name].timeEnd
+
+  let timeEnd = shopPromoteUnits.value[unit.name].timeEnd
   let t = timeEnd - get_charserver_time_sec()
 
-  if (t <= 0) {
-    showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)
-    return false
-  }
+  let color = (t > 0) ? "goodTextColor" : "redMenuButtonColor"
 
-  let locStr = t < TIME_DAY_IN_SECONDS
-    ? loc("mainmenu/timeForBuyVehicle", { time = timeBase.secondsToString(t) })
-    : loc("mainmenu/dataRemaningTime", { time = buildDateStr(timeEnd) })
+  let locStr = (t <= 0)
+    ? loc("mainmenu/dataExpiredTime", { time = buildDateStr(timeEnd) })
+    : t < TIME_DAY_IN_SECONDS
+      ? loc("mainmenu/timeForBuyVehicle", { time = timeBase.secondsToString(t) })
+      : loc("mainmenu/dataRemaningTime", { time = buildDateStr(timeEnd) })
 
-  let remTimeBuyText = colorize("goodTextColor", locStr)
+  let remTimeBuyText = colorize(color, locStr)
   let remTimeBuyObj = showObjById("aircraft-remainingTimeBuyInfo", true, holderObj)
   remTimeBuyObj.setValue(remTimeBuyText)
   return true
@@ -88,4 +87,5 @@ addListenersWithoutEnv({
 return {
   fillPromUnitInfo
   promoteUnits
+  isPromUnit
 }

@@ -1,14 +1,13 @@
-//checked for plus_string
-from "%scripts/dagui_natives.nut" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 
 let { parse_json } = require("json")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
+let { steam_is_running } = require("steam")
 
 let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
 
-let function createGuidsRequestParams(guids) {
+function createGuidsRequestParams(guids) {
   local res = guids.reduce(@(r, guid) $"{r}guids[]={guid}&", "")
   let payment = steam_is_running() ? "&payment=steam" : ""
   let token = getPlayerToken() != "" ? $"&jwt={getPlayerToken()}" : ""
@@ -16,7 +15,7 @@ let function createGuidsRequestParams(guids) {
   return res
 }
 
-let function requestMultipleItems(guids, onSuccess, onFailure = null) {
+function requestMultipleItems(guids, onSuccess, onFailure = null) {
   httpRequest({
       method = "POST"
       url = ONLINE_STORE_API_URL

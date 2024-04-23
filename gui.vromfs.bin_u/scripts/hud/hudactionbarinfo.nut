@@ -1,9 +1,11 @@
-from "%scripts/dagui_natives.nut" import get_usefull_total_time
 from "%scripts/dagui_library.nut" import *
 
+let { get_mission_time } = require("mission")
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON } = require("hudActionBarConst")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON,
+  EII_MISSION_SUPPORT_PLANE, EII_GRENADE
+} = require("hudActionBarConst")
 let { get_mission_difficulty_int } = require("guiMission")
 
 local cachedUnitId = ""
@@ -30,7 +32,7 @@ let getActionDesc = function(unitId, triggerGroup) {
   return cache?[triggerGroup] ?? ""
 }
 
-let function getActionItemAmountText(modData, isFull = false) {
+function getActionItemAmountText(modData, isFull = false) {
   let count = modData?.count ?? 0
   if (count < 0)
     return ""
@@ -45,16 +47,18 @@ let function getActionItemAmountText(modData, isFull = false) {
     if (countExText.len() > 0 && countExText.len() > (LONG_ACTIONBAR_TEXT_LEN - countStr.len()))
       countExText = loc("weapon/bigAmountNumberIcon")
     text = countExText.len() > 0 ? $"{countStr}/{countExText}" : countStr
+    if (modData.type == EII_MISSION_SUPPORT_PLANE)
+      text = $"{countStr} {loc("multiplayer/spawnScore/abbr")}"
   }
 
   return isFull ? $"{loc("options/count")}{loc("ui/colon")}{text}" : text
 }
 
-let function getActionItemModificationName(item, unit) {
+function getActionItemModificationName(item, unit) {
   if (!unit)
     return null
   let itemType = item.type
-  if (itemType == EII_ROCKET )
+  if (itemType == EII_ROCKET || itemType == EII_GRENADE)
     return getBulletSetNameByBulletName(unit, item?.bulletName)
   if (itemType == EII_SELECT_SPECIAL_WEAPON)
     return getBulletSetNameByBulletName(unit, item?.bulletName)
@@ -65,12 +69,12 @@ let function getActionItemModificationName(item, unit) {
   return null
 }
 
-let function getActionItemStatus(item) {
+function getActionItemStatus(item) {
   let { count = 0, available = true, cooldownEndTime = 0 } = item
   let isAvailable = available && count != 0
   return {
     isAvailable
-    isReady = isAvailable && cooldownEndTime <= get_usefull_total_time()
+    isReady = isAvailable && cooldownEndTime <= get_mission_time()
   }
 }
 

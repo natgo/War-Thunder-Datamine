@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 
+let { g_team } = require("%scripts/teams.nut")
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -32,6 +34,9 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
+  getActivateButtonLabel, activateSoonExpiredOrder
+} = require("%scripts/items/orders.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -84,7 +89,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   statTrSize = "pw, 1@baseTrHeight"
 
   function onActivateOrder() {
-    ::g_orders.openOrdersInventory()
+    openOrdersInventory()
   }
 
   function updateTimeToKick(dt) {
@@ -129,15 +134,15 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOrderTimerUpdate(obj, _dt) {
-    ::g_orders.updateActiveOrder()
-    let isOrderCanBeActivated = ::g_orders.orderCanBeActivated()
+    updateActiveOrder()
+    let isOrderCanBeActivated = orderCanBeActivated()
     if (checkObj(obj)) {
-      obj.text = ::g_orders.getActivateButtonLabel()
+      obj.text = getActivateButtonLabel()
       obj.inactiveColor = !isOrderCanBeActivated ? "yes" : "no"
     }
     if (isOrderCanBeActivated
       && ::get_option_in_mode(USEROPT_ORDER_AUTO_ACTIVATE, OPTIONS_MODE_GAMEPLAY).value)
-        ::g_orders.activateSoonExpiredOrder()
+        activateSoonExpiredOrder()
   }
 
   function setTeamInfoTeam(teamObj, team) {
@@ -284,7 +289,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       this.isTeamsWithCountryFlags = this.isTeamplay &&
         (get_mission_difficulty_int() > 0 || !::SessionLobby.getPublicParam("symmetricTeams", true))
 
-    this.missionObjectives = ::g_mission_type.getCurrentObjectives()
+    this.missionObjectives = g_mission_type.getCurrentObjectives()
   }
 
   function createKillsTbl(objTbl, tbl, tblConfig) {
@@ -420,7 +425,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       minRow = this.numMaxPlayers
 
     if (objTbl.id == "table_kills_team2")
-      this.showSceneBtn("team2-root", tbl && tbl.len() > 0)
+      showObjById("team2-root", tbl && tbl.len() > 0, this.scene)
 
     if (!this.isTeamplay && minRow >= 0) {
       if (minRow == 0)
@@ -508,8 +513,8 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         this.createKillsTbl(tblObj1, tbl, { showAircrafts = this.showAircrafts })
       }
       else {
-        let tbl1 = this.getMplayersList(::g_team.A.code)
-        let tbl2 = this.getMplayersList(::g_team.B.code)
+        let tbl1 = this.getMplayersList(g_team.A.code)
+        let tbl2 = this.getMplayersList(g_team.B.code)
         let showEnemyAircrafts = this.isShowEnemyAirs()
         let tblConfig1 = { tbl = tbl2, team = Team.A, showAircrafts = this.showAircrafts, invert = true }
         let tblConfig2 = { tbl = tbl1, team = Team.B, showAircrafts = showEnemyAircrafts }
@@ -747,7 +752,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.setPlayerInfo()
 
     let player = this.getSelectedPlayer()
-    this.showSceneBtn("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && showConsoleButtons.value)
+    showObjById("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && showConsoleButtons.value, this.scene)
     updateListLabelsSquad()
   }
 

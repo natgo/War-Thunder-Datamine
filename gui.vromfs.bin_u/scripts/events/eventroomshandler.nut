@@ -3,6 +3,9 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_team } = require("%scripts/teams.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -31,6 +34,8 @@ let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.n
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -123,7 +128,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = getEventEconomicName(this.event) })
     this.eventDescription = ::create_event_description(this.scene)
     this.showOnlyAvailableRooms = loadLocalAccountSettings("events/showOnlyAvailableRooms", true)
-    let obj = this.showSceneBtn("only_available_rooms", true)
+    let obj = showObjById("only_available_rooms", true, this.scene)
     obj.setValue(this.showOnlyAvailableRooms)
     this.refreshList()
     this.fillRoomsList()
@@ -147,7 +152,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
 
-    let roomsListBtn = this.showSceneBtn("btn_rooms_list", true)
+    let roomsListBtn = showObjById("btn_rooms_list", true, this.scene)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
     this.guiScene.applyPendingChanges(false)
@@ -282,17 +287,17 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let hasRoom = this.curRoomId.len() != 0
 
     let isCurItemInFocus = this.selectedIdx >= 0 && (this.isMouseMode || this.hoveredIdx == this.selectedIdx)
-    this.showSceneBtn("btn_select_console", !isCurItemInFocus && this.hoveredIdx >= 0)
+    showObjById("btn_select_console", !isCurItemInFocus && this.hoveredIdx >= 0, this.scene)
 
     let reasonData = ::events.getCantJoinReasonData(this.event, isCurItemInFocus ? this.getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = loc("multiplayer/no_room_selected")
 
     let roomMGM = ::SessionLobby.getMGameMode(this.getCurRoom())
-    let isReady = ::g_squad_manager.isMeReady()
-    let isSquadMember = ::g_squad_manager.isSquadMember()
+    let isReady = g_squad_manager.isMeReady()
+    let isSquadMember = g_squad_manager.isSquadMember()
 
-    let joinButtonObj = this.showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
+    let joinButtonObj = showObjById("btn_join_event", isCurItemInFocus && hasRoom, this.scene)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
     let availTeams = ::events.getAvailableTeams(roomMGM)
@@ -301,7 +306,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
     else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
       startText = loc("events/join_event_by_team",
-        { team = ::g_team.getTeamByCode(availTeams[0]).getShortName() })
+        { team = g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
       startText = loc("events/join_event")
 
@@ -310,13 +315,13 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       startText += format(" (%s)", battlePriceText)
 
     setColoredDoubleTextToButton(this.scene, "btn_join_event", startText)
-    let reasonTextObj = this.showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
+    let reasonTextObj = showObjById("cant_join_reason", reasonData.reasonText.len() > 0, this.scene)
     reasonTextObj.setValue(reasonData.reasonText)
 
-    this.showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(this.event))
+    showObjById("btn_create_room", ::events.canCreateCustomRoom(this.event), this.scene)
 
     let isHeader = isCurItemInFocus && this.curChapterId != "" && this.curRoomId == ""
-    let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
+    let collapsedButtonObj = showObjById("btn_collapsed_chapter", isHeader, this.scene)
     if (isHeader) {
       let isCollapsedChapter = isInArray(this.curChapterId, this.collapsedChapterNamesArray)
       startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
@@ -369,7 +374,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (::events.isAllowedByRoomBalance(mGameMode, room))
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
 
-    if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader()) {
+    if (g_squad_manager.isInSquad() && g_squad_manager.isSquadLeader()) {
       let membersTeams = ::events.getMembersTeamsData(this.event, room, teams)
       if (!(membersTeams?.haveRestrictions ?? false))
         res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
@@ -474,7 +479,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCurrentEdiff() {
     let ediff = ::events.getEDiffByEvent(this.event)
-    return ediff != -1 ? ediff : ::get_current_ediff()
+    return ediff != -1 ? ediff : getCurrentGameModeEdiff()
   }
 
   function onEventCountryChanged(_p) {
@@ -499,7 +504,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
-          itemView[$"{::g_team.getTeamByCode(side).name}Countries"] <- {
+          itemView[$"{g_team.getTeamByCode(side).name}Countries"] <- {
             country = this.getFlagsArrayByCountriesArray(countries)
         }
       }
@@ -749,7 +754,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
-    ::events.openCreateRoomWnd(this.event)
+    checkShowMultiplayerAasWarningMsg(Callback(@() ::events.openCreateRoomWnd(this.event), this))
   }
 
   function onItemDblClick() {

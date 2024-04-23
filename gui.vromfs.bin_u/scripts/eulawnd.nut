@@ -16,12 +16,22 @@ let { defer } = require("dagor.workcycle")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { read_text_from_file, file_exists } = require("dagor.fs")
-let { text_wordwrap_process } = require("%appGlobals/text_wordwrap_process.nut")
+let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
+let { get_cur_circuit_block } = require("blkGetters")
+
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" //For break auto login on PS for new user, if no EULA has been accepted on this console.
 
 local eulaVesion = -1
 
 let localAgreedEulaVersion = hardPersistWatched("localAgreedEulaVersion", 0)
+
+let shortLangToEulaLang = {
+  en = ""
+  cs = "cz"
+  ja = "jp"
+  zhhx = "zh"
+}
 
 function getEulaVersion() {
   if ( eulaVesion == -1) {
@@ -30,16 +40,27 @@ function getEulaVersion() {
   return eulaVesion
 }
 
-let function loadAndProcessText(){
-  const locId = "eula_filename"
-  local fileName = loc(locId)
-  if (!file_exists(fileName)) {
-    logerr($"no file found: '{fileName}'")
-    fileName = getLocTextForLang(locId, "English")
-    if (!file_exists(fileName))
-      return ""
-  }
-  return text_wordwrap_process(read_text_from_file(fileName))
+function getExistFileNameByPrefixAndPostfix(prefix, postfix) {
+  local fileName = $"lang/{prefix}eula{postfix}.txt"
+  if (file_exists(fileName))
+    return fileName
+
+  fileName = $"lang/{prefix}eula.txt" //check eula for EN
+  return file_exists(fileName) ? fileName : null
+}
+
+function loadAndProcessText(){
+  let shortLang = getCurLangShortName()
+  local langPostfix = shortLangToEulaLang?[shortLang] ?? shortLang
+  langPostfix = langPostfix == "" ? "" : $"_{langPostfix}"
+  let eulaPrefixForCircuit = get_cur_circuit_block()?.eulaPrefix ?? ""
+  let fileName = getExistFileNameByPrefixAndPostfix(eulaPrefixForCircuit, langPostfix)
+    ?? getExistFileNameByPrefixAndPostfix("", langPostfix)
+
+  if (fileName == null)
+    return ""
+
+  return wordHyphenation(read_text_from_file(fileName))
 }
 
 gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
@@ -74,9 +95,9 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     }
 
     let hasOneOkBtn = this.isForView || this.isNewEulaVersion
-    this.showSceneBtn("acceptNewEulaVersion", hasOneOkBtn)
-    this.showSceneBtn("accept", !hasOneOkBtn)
-    this.showSceneBtn("decline", !hasOneOkBtn)
+    showObjById("acceptNewEulaVersion", hasOneOkBtn, this.scene)
+    showObjById("accept", !hasOneOkBtn, this.scene)
+    showObjById("decline", !hasOneOkBtn, this.scene)
 
     if (this.isNewEulaVersion)
       this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))

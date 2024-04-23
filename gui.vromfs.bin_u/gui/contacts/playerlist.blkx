@@ -39,6 +39,18 @@
     "display": "hide",
     "Button_text": [
       {
+        "id": "btn_friendCreateCustomNick",
+        "tooltip": "#mainmenu/addCustomNick",
+        "on_click": "onFriendCreateCustomNick",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_edit.svg"
+        }
+      },
+      {
         "id": "btn_friendAdd",
         "tooltip": "#contacts/friendlist/add",
         "on_click": "onFriendAdd",
@@ -60,6 +72,18 @@
         "input-transparent": "yes",
         "img": {
           "background-image": "#ui/gameuiskin#btn_friend_remove.svg"
+        }
+      },
+      {
+        "id": "btn_wishlistShow",
+        "tooltip": "#mainmenu/go_to_wishlist",
+        "on_click": "onWishlistShow",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#go_to_wishlist.svg"
         }
       },
       {
@@ -147,6 +171,7 @@
   "tooltipObj": {
     "id": "tooltip",
     "uid": "",
+    "steamId": "",
     "on_tooltip_open": "onContactTooltipOpen",
     "on_tooltip_close": "onTooltipObjClose",
     "display": "hide"

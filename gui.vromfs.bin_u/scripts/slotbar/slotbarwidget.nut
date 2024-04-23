@@ -20,10 +20,9 @@ let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { isCountrySlotbarHasUnits, isUnitUnlockedInSlotbar, isUnitEnabledForSlotbar, initSelectedCrews,
+let { isCountrySlotbarHasUnits, isUnitUnlockedInSlotbar, initSelectedCrews,
   selectCrew, getSelectedCrews
 } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrew } = require("%scripts/crew/crew.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
@@ -41,9 +40,14 @@ let { bit_unit_status, isRequireUnlockForUnit } = require("%scripts/unit/unitInf
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText
+let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText,
+  isUnitEnabledForSlotbar
 } = require("%scripts/slotbar/slotbarView.nut")
 let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
+let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -268,8 +272,46 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         && !isControlledUnit)
       data.isSelectable = false
 
+    if (data.isSelectable && data.unit && !(this.missionRules?.canRespawnOnUnitByRageTokens(data.unit) ?? true))
+      data.isSelectable = false
+
     list.append(data)
     return data
+  }
+
+  function getUnitStatus(unit, crew, country) {
+    let isUnlocked = (!this.needCheckUnitUnlock || !isRequireUnlockForUnit(unit))
+      && isUnitUnlockedInSlotbar(unit, crew, country, this.missionRules, true)
+    if (unit == null)
+      return {
+        status = bit_unit_status.empty
+        isUnlocked
+      }
+
+    if (!isUnlocked)
+      return {
+        status = bit_unit_status.locked
+        isUnlocked
+      }
+    if (!is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
+      return {
+        status = bit_unit_status.broken
+        isUnlocked
+      }
+
+    local disabled = !isUnitEnabledForSlotbar(unit, this)
+    if (this.checkRespawnBases)
+      disabled = disabled || !getAvailableRespawnBases(unit.tags).len()
+    if (disabled)
+      return {
+        status = bit_unit_status.disabled
+        isUnlocked
+      }
+
+    return {
+      status = getBitStatus(unit)
+      isUnlocked
+    }
   }
 
   function gatherVisibleCrewsConfig(onlyForCountryIdx = null) {
@@ -304,33 +346,16 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let crewsList = crewsListFull[c].crews
       foreach (crew in crewsList) {
-        let unit = this.getCrewUnit(crew)
+        let unit = this.getCurCrewUnit(crew)
 
         if (!unit && !needEmptySlot)
           continue
 
-        let unitName = unit?.name || ""
-        let isUnitEnabledByRandomGroups = !this.missionRules || this.missionRules.isUnitEnabledByRandomGroups(unitName)
-        let isUnlocked = (!this.needCheckUnitUnlock || !isRequireUnlockForUnit(unit))
-          && isUnitUnlockedInSlotbar(unit, crew, country, this.missionRules, true)
-        local status = bit_unit_status.empty
+        let unitName = unit?.name ?? ""
+        let { isUnlocked, status } = this.getUnitStatus(unit, crew, country)
         let isUnitForcedVisible = this.missionRules && this.missionRules.isUnitForcedVisible(unitName)
         let isUnitForcedHiden = this.missionRules && this.missionRules.isUnitForcedHiden(unitName)
-        if (unit) {
-          status = getBitStatus(unit)
-          if (!isUnlocked)
-            status = bit_unit_status.locked
-          else if (!is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
-            status = bit_unit_status.broken
-          else {
-            local disabled = !isUnitEnabledForSlotbar(unit, this)
-            if (this.checkRespawnBases)
-              disabled = disabled || !getAvailableRespawnBases(unit.tags).len()
-            if (disabled)
-              status = bit_unit_status.disabled
-          }
-        }
-
+        let isUnitEnabledByRandomGroups = !this.missionRules || this.missionRules.isUnitEnabledByRandomGroups(unitName)
         let isAllowedByLockedSlots = isUnitForcedVisible || needShowLockedSlots
           || status == bit_unit_status.owned || status == bit_unit_status.empty
         if (unit && (!isAllowedByLockedSlots || !isUnitEnabledByRandomGroups || isUnitForcedHiden))
@@ -445,8 +470,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (!::g_crews_list.get().len()) {
-      if (::g_login.isLoggedIn() && (::isProductionCircuit() || get_cur_circuit_name() == "nightly"))
-        scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
+      if (::g_login.isLoggedIn() && (get_cur_circuit_name().indexof("production") != null
+        || get_cur_circuit_name() == "nightly"))
+          scene_msg_box("no_connection", null,
+            loc("char/no_connection"), [["ok", startLogout ]], "ok")
       return
     }
 
@@ -558,7 +585,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  getCountryBonusData = @(country) ::getBonus(
+  getCountryBonusData = @(country) getBonus(
     shop_get_first_win_xp_rate(country),
     shop_get_first_win_wp_rate(country), "item")
 
@@ -583,7 +610,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (crewData.unit) {
         let id = getSlotObjId(countryData.id, crewData.idInCountry)
         fillUnitSlotTimers(tblObj.findObject(id), crewData.unit)
-        ::showAirExpWpBonus(tblObj.findObject($"{id}-bonus"), crewData.unit.name)
+        showAirExpWpBonus(tblObj.findObject($"{id}-bonus"), crewData.unit.name)
       }
   }
 
@@ -599,7 +626,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurSlotUnit() {
-    return ::g_crew.getCrewUnit(getCrew(this.curSlotCountryId, this.curSlotIdInCountry))
+    return getCrewUnit(getCrew(this.curSlotCountryId, this.curSlotIdInCountry))
   }
 
   function getCurCrew() { //will return null when selected recruitCrew
@@ -613,7 +640,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function getCurrentEdiff() {
     if (u.isFunction(this.ownerWeak?.getCurrentEdiff))
       return this.ownerWeak.getCurrentEdiff()
-    return ::get_current_ediff()
+    return getCurrentGameModeEdiff()
   }
 
   function getSlotbarActions() {
@@ -632,7 +659,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return {
       country = this.getCurCountry()
       slotbarUnits = (::g_crews_list.get()?[this.curSlotCountryId].crews ?? [])
-        .map(@(crew) ::g_crew.getCrewUnit(crew))
+        .map(@(crew) getCrewUnit(crew))
         .filter(@(unit) unit != null)
     }
   }
@@ -725,7 +752,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function applySlotSelectionDefault(_prevSlot, restorePrevSelection) {
     let crew = getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
     if (crew) {
-      let unit = this.getCrewUnit(crew)
+      let unit = this.getCurCrewUnit(crew)
       if (unit != null || (!isCountrySlotbarHasUnits(crew.country) && this.curSlotIdInCountry == 0))
         this.setCrewUnit(unit)
       if (!unit && this.needActionsWithEmptyCrews)
@@ -1038,8 +1065,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateConsoleButtonsVisible(isVisible) {
-    this.showSceneBtn("prev_country_btn", isVisible)
-    this.showSceneBtn("next_country_btn", isVisible)
+    showObjById("prev_country_btn", isVisible, this.scene)
+    showObjById("next_country_btn", isVisible, this.scene)
   }
 
   function forceUpdate() {
@@ -1103,7 +1130,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let onTaskFail = Callback(function(_result) { this.ignoreCheckSlotbar = false }, this)
 
-    if (!::g_crew.purchaseNewSlot(country, onTaskSuccess, onTaskFail))
+    if (!purchaseNewCrewSlot(country, onTaskSuccess, onTaskFail))
       this.ignoreCheckSlotbar = false
   }
 
@@ -1129,31 +1156,36 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return ::GuiBox().setFromDaguiObj(headerCountriesObj)
   }
 
-  function getSlotsData(unitId = null, slotCrewId = -1, withEmptySlots = false) {
+  function getSlotsData(unitId = null, slotCrewId = -1, searchCountryId = -1, withEmptySlots = false) {
     let unitSlots = []
-    foreach (countryId, countryData in ::g_crews_list.get())
-      if (!this.singleCountry || countryData.country == this.singleCountry)
-        foreach (idInCountry, crew in countryData.crews) {
-          if (slotCrewId != -1 && slotCrewId != (crew?.id ?? -1))
-            continue
-          let unit = this.getCrewUnit(crew)
-          if (unitId && unit && unitId != unit.name)
-            continue
-          let obj = getSlotObj(this.scene, countryId, idInCountry)
-          if (obj && (unit || withEmptySlots))
-            unitSlots.append({
-              unit      = unit
-              crew      = crew
-              countryId = countryId
-              obj       = obj
-            })
-        }
+    foreach (countryId, countryData in ::g_crews_list.get()) {
+      if (this.singleCountry && countryData.country != this.singleCountry)
+        continue
 
+      if (searchCountryId != -1 && countryId != searchCountryId)
+        continue
+
+      foreach (idInCountry, crew in countryData.crews) {
+        if (slotCrewId != -1 && slotCrewId != (crew?.id ?? -1))
+          continue
+        let unit = this.getCurCrewUnit(crew)
+        if (unitId && unit && unitId != unit.name)
+          continue
+        let obj = getSlotObj(this.scene, countryId, idInCountry)
+        if (obj && (unit || withEmptySlots))
+          unitSlots.append({
+            unit      = unit
+            crew      = crew
+            countryId = countryId
+            obj       = obj
+          })
+      }
+    }
     return unitSlots
   }
 
-  function getCrewUnit(crew) {
-    return ::g_crew.getCrewUnit(crew)
+  function getCurCrewUnit(crew) {
+    return getCrewUnit(crew)
   }
 
   function updateDifficulty(unitSlots = null) {
@@ -1183,26 +1215,23 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       local obj = slot.obj.findObject("crew_level")
       if (checkObj(obj)) {
         let crewLevelText = slot.unit
-          ? ::g_crew.getCrewLevel(slot.crew, slot.unit, slot.unit.getCrewUnitType()).tointeger().tostring()
+          ? getCrewLevel(slot.crew, slot.unit, slot.unit.getCrewUnitType()).tointeger().tostring()
           : ""
         obj.setValue(crewLevelText)
       }
 
       obj = slot.obj.findObject("crew_spec")
       if (checkObj(obj)) {
-        let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
+        let crewSpecIcon = getSpecTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
         obj["background-image"] = crewSpecIcon
       }
     }
   }
 
   function updateSlotsStatuses(unitSlots) {
-    if (::g_crews_list.isCrewListOverrided)
-      return
-
     foreach (slot in unitSlots) {
-      let { obj, unit } = slot
-      obj.shopStat = getUnitItemStatusText(getBitStatus(unit))
+      let { obj, unit, crew } = slot
+      obj.shopStat = getUnitItemStatusText(this.getUnitStatus(unit, crew, unit.shopCountry).status)
       let isBroken = unit.isBroken()
       obj.isBroken = isBroken ? "yes" : "no"
       showObjById("repair_icon", isBroken, obj)
@@ -1247,6 +1276,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (obj && obj.getValue() != params.value)
       obj.setValue(params.value)
   }
+
+  onEventAllModificationsPurchased = @(params) this.getSlotsData(params.unit.name)
+    .map(@(slot) slot.obj)
+    .filter(@(obj) obj?.isValid() && ::isUnitElite(params.unit))
+    .each(@(obj) obj.isElite = "yes")
 
   function updateSlotRowView(countryData, tblObj) {
     if (!countryData)
@@ -1333,7 +1367,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return Callback(function(crew) {
       if (::g_crews_list.isCrewListOverrided)
         return
-      let unit = this.getCrewUnit(crew)
+      let unit = this.getCurCrewUnit(crew)
       if (unit)
         ::open_weapons_for_unit(unit, { curEdiff = this.getCurrentEdiff() })
     }, this)
@@ -1385,7 +1419,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSlotbarHint() {
-    let obj = this.showSceneBtn("slotbarHint", this.slotbarHintText != "")
+    let obj = showObjById("slotbarHint", this.slotbarHintText != "", this.scene)
     if (obj != null && this.slotbarHintText != "")
      obj.findObject("slotbarHintText").setValue(this.slotbarHintText)
   }
@@ -1398,5 +1432,12 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventVisibleCountriesCacheInvalidate(_p) {
     if (this.loadedCountries.len() != getShopVisibleCountries().len())
       this.fullUpdate()
+  }
+
+  function onEventProfileUpdated(_) {
+    if (!this.needCheckUnitUnlock) //need check locked slots by unlock
+      return
+
+    this.updateSlotsStatuses(this.getSlotsData(null, -1, this.curSlotCountryId))
   }
 }

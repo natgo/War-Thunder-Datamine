@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, steam_is_running, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -18,7 +18,6 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
-let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
@@ -27,13 +26,15 @@ let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_network_block } = require("blkGetters")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { steam_is_running } = require("steam")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -42,19 +43,19 @@ let validateNickRegexp = regexp2(@"[^_0-9a-zA-Z]")
 
 local dbgGuestLoginIdPrefix = ""
 
-let function getGuestLoginId() {
+function getGuestLoginId() {
   let { uuid0 = "", uuid1 = "", uuid2 = "" } = get_user_system_info()
   return $"{dbgGuestLoginIdPrefix}{uuid0}_{uuid1}_{uuid2}"
 }
 
-let function setDbgGuestLoginIdPrefix(prefix) {
+function setDbgGuestLoginIdPrefix(prefix) {
   dbgGuestLoginIdPrefix = $"{prefix}_"
   console_print(getGuestLoginId())
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
 gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
-  sceneBlkName = loginWndBlkPath.value
+  sceneBlkName = "%gui/loginBox.blk"
 
   check2StepAuthCode = false
   availableCircuitsBlockName = "multipleAvailableCircuits"
@@ -127,9 +128,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     let isSteamRunning = steam_is_running()
     let showSteamLogin = isSteamRunning
     let showWebLogin = !isSteamRunning && webauth_start(this, this.onSsoAuthorizationComplete)
-    this.showSceneBtn("steam_login_action_button", showSteamLogin)
-    this.showSceneBtn("sso_login_action_button", showWebLogin)
-    this.showSceneBtn("btn_signUp_link", !showSteamLogin)
+    showObjById("steam_login_action_button", showSteamLogin, this.scene)
+    showObjById("sso_login_action_button", showWebLogin, this.scene)
+    showObjById("btn_signUp_link", !showSteamLogin, this.scene)
 
     this.initial_autologin = ::is_autologin_enabled()
 
@@ -143,7 +144,12 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       autoLoginObj.setValue(autoLogin)
     }
 
-    this.showSceneBtn("links_block", !isPlatformShieldTv())
+    let isVisibleLinks = !isPlatformShieldTv()
+    let linksObj = showObjById("links_block", isVisibleLinks, this.scene)
+    if (isVisibleLinks && (linksObj?.isValid() ?? false)) {
+      linksObj.findObject("btn_faq_link").link = getCurCircuitUrl("faqURL", loc("url/faq"))
+      linksObj.findObject("btn_support_link").link = getCurCircuitUrl("supportURL", loc("url/support"))
+    }
 
     if ("dgs_get_argv" in getroottable()) {
       let s = dgs_get_argv("stoken")
@@ -181,7 +187,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function setDisableSslCertBox(value) {
-    let dcObj = this.showSceneBtn("loginbox_disable_ssl_cert", value)
+    let dcObj = showObjById("loginbox_disable_ssl_cert", value, this.scene)
     if (checkObj(dcObj))
       dcObj.setValue(value)
   }
@@ -219,7 +225,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     let show = this.shardItems.len() > 1
-    let shardObj = this.showSceneBtn("sharding_block", show)
+    let shardObj = showObjById("sharding_block", show, this.scene)
     if (show && checkObj(shardObj)) {
       let dropObj = shardObj.findObject("sharding_dropright_block")
       let shardData = ::create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
@@ -263,7 +269,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
   function initLanguageSwitch() {
     let canSwitchLang = canSwitchGameLocalization()
-    this.showSceneBtn("language_selector", canSwitchLang)
+    showObjById("language_selector", canSwitchLang, this.scene)
     if (!canSwitchLang)
       return
 
@@ -498,8 +504,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     else if ( result == YU2_2STEP_AUTH) {
       //error, received if user not logged, because he have 2step authorization activated
       this.check2StepAuthCode = true
-      this.showSceneBtn("loginbox_code_remember_this_device", true)
-      this.showSceneBtn("loginbox_remote_comp", false)
+      showObjById("loginbox_code_remember_this_device", true, this.scene)
+      showObjById("loginbox_remote_comp", false, this.scene)
       twoStepModal.open({
         loginScene           = this.scene,
         continueLogin        = this.continueLogin.bindenv(this)
@@ -523,7 +529,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
         return;
       ::error_message_box("yn1/connect_error", result, // auth error
       [
-        ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
+        ["recovery", @() openUrl(getCurCircuitUrl("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")],
         ["exit", exitGame],
         ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
       ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
@@ -597,11 +603,11 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     else
       urlLocId = "url/signUp"
 
-    openUrl(loc(urlLocId, { distr = getDistr() }), false, false, "login_wnd")
+    openUrl(getCurCircuitUrl("signUpURL", loc(urlLocId)).subst({ distr = getDistr() }), false, false, "login_wnd")
   }
 
   function onForgetPassword() {
-    openUrl(loc("url/recovery"), false, false, "login_wnd")
+    openUrl(getCurCircuitUrl("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")
   }
 
   function onChangeLogin(obj) {
@@ -682,7 +688,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 }
 
-subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
   let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return

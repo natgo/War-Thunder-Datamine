@@ -6,16 +6,22 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler, isInMenu
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
-let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
 let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
 let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
 } = require("%scripts/options/optionsExtNames.nut")
 let { restoreCharCallback } = require("%scripts/tasker.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
+let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -40,10 +46,21 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
   EULT_EXCHANGE_WARBONDS
 ]
 
+function isMissionExtrCheckFucn(userLog) {
+  if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
+    return true
+
+  return ::getUserLogsList({ show = [EULT_SESSION_RESULT] }).findvalue(function(battleLog) {
+    let isMissionExtrLog = isMissionExtrByName(battleLog?.mission ?? "")
+    return isMissionExtrLog && (battleLog?.roomId == userLog.roomId)
+  }) == null
+}
+
 ::userlog_pages <- [
   {
     id = "all"
     hide = ::hidden_userlogs
+    checkFunc = isMissionExtrCheckFucn
   }
   {
     id = "battle"
@@ -107,6 +124,7 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
             EULT_ACTIVATE_ITEM, EULT_REMOVE_ITEM, EULT_TICKETS_REMINDER,
             EULT_CONVERT_BLUEPRINTS, EULT_INVENTORY_ADD_ITEM, EULT_INVENTORY_FAIL_ITEM]
     unlocks = [UNLOCKABLE_TROPHY]
+    checkFunc = isMissionExtrCheckFucn
   }
   {
     id = "onlineShop"
@@ -121,6 +139,31 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
 
 ::gui_modal_userLog <- function gui_modal_userLog() {
   loadHandler(gui_handlers.UserLogHandler)
+}
+
+let actionByLogType = {
+  [EULT_PUNLOCK_ACCEPT]       = @(_log) guiStartBattleTasksWnd(),
+  [EULT_PUNLOCK_EXPIRED]      = @(_log) guiStartBattleTasksWnd(),
+  [EULT_PUNLOCK_CANCELED]     = @(_log) guiStartBattleTasksWnd(),
+  [EULT_PUNLOCK_NEW_PROPOSAL] = @(_log) guiStartBattleTasksWnd(),
+  [EULT_PUNLOCK_ACCEPT_MULTI] = @(_log) guiStartBattleTasksWnd(),
+  [EULT_INVITE_TO_TOURNAMENT] = function (logObj) {
+    let battleId = logObj?.battleId
+    if (battleId == null)
+      return
+
+    if (!isInMenu())
+      return ::g_invites.showLeaveSessionFirstPopup()
+
+    if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
+      return
+
+    if (!isCrossPlayEnabled())
+      return addPopup(null, colorize("warningTextColor", loc("xbox/crossPlayRequired")))
+
+    log($"join to tournament battle with id {battleId}")
+    get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
+  }
 }
 
 gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {

@@ -406,6 +406,8 @@
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
+      "genericDamageMult": 2.0,
+      "cumulativeDamageMult": 1.25,
       "hp": 300.0,
       "armorThickness": 2.0,
       "armorThrough": 10.0,
@@ -625,6 +627,7 @@
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
+      "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
       "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
@@ -1654,7 +1657,7 @@
         "breechDP": "cannon_breech_dm",
         "autoLoader": true,
         "speedYaw": 55.0,
-        "speedPitch": 20.0,
+        "speedPitch": 40.0,
         "fireConeAngle": 1.0,
         "bullets": 148,
         "salvoAmount": 100.0,
@@ -1920,9 +1923,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 29000.0,
+      "Empty": 27500.0,
       "Fuel": 1000.0,
-      "TakeOff": 30000.0,
+      "TakeOff": 28500.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -1964,31 +1967,36 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 720.0,
+      "horsePowers": 600.0,
       "maxRPM": 2200.0,
       "minRPM": 850.0
     },
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 114000.0,
-      "driveGearRadius": 0.35,
-      "mainGearRatio": 1.45,
-      "sideGearRatio": 2.85,
-      "neutralGearRatio": 12.0,
+      "driveGearRadius": 0.28,
+      "mainGearRatio": 1.27,
+      "sideGearRatio": 2.97,
+      "neutralGearRatio": 10.0,
       "gearRatios": {
         "ratio": [
-          -1.0,
-          -1.49,
-          -2.26,
-          -4.37,
+          -0.82,
+          -1.02,
+          -1.22,
+          -1.52,
+          -1.82,
+          -2.685,
+          -3.55,
+          -7.1,
           0.0,
-          8.0,
-          6.0,
-          4.37,
-          2.26,
-          1.49,
-          1.2,
-          1.0
+          7.1,
+          3.55,
+          2.685,
+          1.82,
+          1.52,
+          1.22,
+          1.02,
+          0.82
         ]
       }
     },
@@ -3059,15 +3067,6 @@
             ],
             "lightMult": 8.0,
             "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
             "noiseFactor": 0.2
           },
           "driverIr": {

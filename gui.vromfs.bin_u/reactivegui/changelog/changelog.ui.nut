@@ -16,6 +16,7 @@ let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 let blurPanel = require("%rGui/components/blurPanel.nut")
 let spinner = require("%rGui/components/spinner.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 
 let tabStyle = {
   fillColor = {
@@ -39,7 +40,7 @@ let scrollHandler = ScrollHandler()
 let scrollStep = fpx(75)
 let maxPatchnoteWidth = fpx(300)
 
-let function getTabColorCtor(sf, style, isCurrent) {
+function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)
     return style.current
   if (sf & S_ACTIVE)
@@ -49,7 +50,7 @@ let function getTabColorCtor(sf, style, isCurrent) {
   return style.normal
 }
 
-let function patchnote(v) {
+function patchnote(v) {
   let stateFlags = Watched(0)
   let isCurrent = Computed(@() curPatchnote.value.id == v.id)
   return @() {
@@ -96,7 +97,7 @@ let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
 })
 
 let isVersionsExists = Computed(@() patchnotesReceived.value && (versions.value?.len() ?? 0) > 0)
-let function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
+function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
   let children = versionsConf.map(patchnote)
   if (!needAddGamepadButtons)
     return children
@@ -121,14 +122,14 @@ let missedPatchnoteText = formatText([loc("NoUpdateInfo", "Oops... No informatio
 
 let seeMoreUrl = {
   t = "url"
-  url = loc("url/news")
+  url = getCurCircuitUrl("newsURL", loc("url/news"))
   v = loc("visitGameSite", "See game website for more details")
   margin = [fpx(50), 0, 0, 0]
 }
 
 let scrollPatchnoteWatch = Watched(0)
 
-let function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
   let element = scrollHandler.elem
   if (element != null)
     scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.value * scrollStep)
@@ -161,7 +162,7 @@ let patchnoteLoading = freeze({
   padding = sh(2)
 })
 
-let function selPatchnote() {
+function selPatchnote() {
   local text = (chosenPatchnoteContent.value.text ?? "") != ""
     ? chosenPatchnoteContent.value.text : missedPatchnoteText
   if (cross_call.hasFeature("AllowExternalLink")) {
@@ -188,7 +189,7 @@ let function selPatchnote() {
   }
 }
 
-let function onCloseAction() {
+function onCloseAction() {
   cross_call.startMainmenu()
 }
 

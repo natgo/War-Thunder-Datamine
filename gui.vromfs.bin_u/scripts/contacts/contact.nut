@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name, can_use_text_chat_with_target
 from "%scripts/dagui_library.nut" import *
 let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
@@ -6,34 +5,26 @@ let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
 } = require("%scripts/chat/chatStates.nut")
-let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
-let { subscribe } = require("eventbus")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
-let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids, cacheContactByName
+} = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 
-let contactsByName = {}
-
-subscribe("playerProfileDialogClosed", function(r) {
-  if (r?.result.wasCanceled)
-    return
-  updateContacts(true)
-})
-
-::Contact <- class {
+class Contact {
   name = ""
   uid = ""
   uidInt64 = null
   clanTag = ""
   title = ""
 
-  presence = ::g_contact_presence.UNKNOWN
+  presence = contactPresence.UNKNOWN
   forceOffline = false
   isForceOfflineChecked = !is_platform_xbox
 
@@ -44,10 +35,13 @@ subscribe("playerProfileDialogClosed", function(r) {
   gameStatus = null
   gameConfig = null
   inGameEx = null
+  isSteamOnline = false
 
   psnId = ""
   xboxId = ""
-  steamName = ""
+  steamName = null
+  steamId = null
+  steamAvatar = null
 
   pilotIcon = "cardicon_bot"
 
@@ -72,21 +66,20 @@ subscribe("playerProfileDialogClosed", function(r) {
     }, this)
   }
 
-  static getByName = @(name) contactsByName?[name]
-
   function update(contactData) {
-    let isChangedName = ("name" in contactData) && contactData.name != this.name
+    let isChangedName = (("name" in contactData) && contactData.name != this.name)
+      || (("steamName" in contactData) && contactData.steamName != this.steamName)
     foreach (key, val in contactData)
       if (key in this)
         this[key] = val
 
     this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
     if (isChangedName)
-      this.lowerName = utf8ToLower(this.name)
+      this.lowerName = utf8ToLower(this.steamName ?? this.name)
 
     this.refreshClanTagsTable()
     if (this.name.len())
-      contactsByName[this.name] <- this
+      cacheContactByName(this)
 
     if (this.afterSuccessUpdateFunc) {
       this.afterSuccessUpdateFunc()
@@ -95,7 +88,7 @@ subscribe("playerProfileDialogClosed", function(r) {
   }
 
   function resetMatchingParams() {
-    this.presence = ::g_contact_presence.UNKNOWN
+    this.presence = contactPresence.UNKNOWN
 
     this.online = null
     this.unknown = true
@@ -118,8 +111,8 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function getPresenceText() {
     local locParams = {}
-    if (this.presence == ::g_contact_presence.IN_QUEUE
-        || this.presence == ::g_contact_presence.IN_GAME) {
+    if (this.presence == contactPresence.IN_QUEUE
+        || this.presence == contactPresence.IN_GAME) {
       let event = ::events.getEvent(getTblValue("eventId", this.gameConfig))
       locParams = {
         gameMode = event ? ::events.getEventNameText(event) : ""
@@ -219,12 +212,12 @@ subscribe("playerProfileDialogClosed", function(r) {
     return isPlayerFromXboxOne(this.name) && this.xboxId == ""
   }
 
-  getName = @() getPlayerName(this.name)
+  getName = @() this.steamName ?? getPlayerName(this.name)
 
   function needCheckForceOffline() {
     if (this.isForceOfflineChecked
         || !this.isInFriendGroup()
-        || this.presence == ::g_contact_presence.UNKNOWN)
+        || this.presence == contactPresence.UNKNOWN)
       return false
 
     return isPlayerFromXboxOne(this.name)
@@ -240,51 +233,40 @@ subscribe("playerProfileDialogClosed", function(r) {
       || this.name == userName.value
   }
 
-  function getInteractionStatus(needShowSystemMessage = false) {
+  function getInteractionStatus() {
     if (!is_platform_xbox || this.isMe())
       return XBOX_COMMUNICATIONS_ALLOWED
 
     if (this.xboxId == "") {
-      let status = getXboxChatEnableStatus(needShowSystemMessage)
+      let status = getXboxChatEnableStatus()
       if (status == XBOX_COMMUNICATIONS_ONLY_FRIENDS && !this.isInFriendGroup())
         return XBOX_COMMUNICATIONS_BLOCKED
 
       return isChatEnabled() ? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
     }
 
-    if (!needShowSystemMessage && this.interactionStatus != null)
-      return this.interactionStatus
-
-    this.interactionStatus = can_use_text_chat_with_target(this.xboxId, needShowSystemMessage)
+    if (this.interactionStatus == null)
+      this.interactionStatus = can_use_text_chat_with_target(this.xboxId, false)
     return this.interactionStatus
   }
 
-  function canChat(needShowSystemMessage = false) {
-    if (!needShowSystemMessage
-      && ((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name))
-          || this.isBlockedMe())
-      )
+  function canChat() {
+    if (((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name)) || this.isBlockedMe()))
       return false
 
     if (!isCrossNetworkMessageAllowed(this.name)) {
-      if (needShowSystemMessage)
-        this.getInteractionStatus(needShowSystemMessage) //just to show overlay message
       return false
     }
 
-    let intSt = this.getInteractionStatus(needShowSystemMessage)
-    return intSt == XBOX_COMMUNICATIONS_ALLOWED
-      || (intSt == XBOX_COMMUNICATIONS_ONLY_FRIENDS && this.isInFriendGroup())
+    let intSt = this.getInteractionStatus()
+    return intSt == XBOX_COMMUNICATIONS_ALLOWED || (intSt == XBOX_COMMUNICATIONS_ONLY_FRIENDS && this.isInFriendGroup())
   }
 
-  function canInvite(needShowSystemMessage = false) {
-    if (!needShowSystemMessage
-      && (!isMultiplayerPrivilegeAvailable.value
-          || !isCrossNetworkMessageAllowed(this.name))
-      )
+  function canInvite() {
+    if ((!isMultiplayerPrivilegeAvailable.value || !isCrossNetworkMessageAllowed(this.name)))
       return false
 
-    let intSt = this.getInteractionStatus(needShowSystemMessage)
+    let intSt = this.getInteractionStatus()
     return intSt == XBOX_COMMUNICATIONS_ALLOWED || intSt == XBOX_COMMUNICATIONS_MUTED
   }
 
@@ -308,3 +290,5 @@ subscribe("playerProfileDialogClosed", function(r) {
   isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)
   setContactServiceGroup = @(grp_name) this.contactServiceGroup = grp_name
 }
+
+return Contact

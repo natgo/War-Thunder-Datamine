@@ -1,25 +1,27 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let {enumsAddTypes} = require("%sqStdLibs/helpers/enums.nut")
+let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep, getMaxAvailbleCrewStepValue
+} = require("%scripts/crew/crew.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-::g_skills_page_status <-
-{
+let g_skills_page_status = {
   types = []
+
+  template = {
+    priority = 0
+    minSteps = 0
+    minSkillsRel = 0 //relative value of skills on this page from all skills available on page.
+    style = ""
+    icon = "#ui/gameuiskin#new_crew_skill_points.svg"
+    color = "white"
+    show = true
+    wink = false
+  }
+
 }
 
-::g_skills_page_status.template <- {
-  priority = 0
-  minSteps = 0
-  minSkillsRel = 0 //relative value of skills on this page from all skills available on page.
-  style = ""
-  icon = "#ui/gameuiskin#new_crew_skill_points.svg"
-  color = "white"
-  show = true
-  wink = false
-}
 
-enums.addTypesByGlobalName("g_skills_page_status", {
+enumsAddTypes(g_skills_page_status, {
   NONE = {
     show = false
   }
@@ -57,8 +59,8 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   */
 })
 
-::g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
-  local res = ::g_skills_page_status.NONE
+g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
+  local res = g_skills_page_status.NONE
   let items = getTblValue("items", page)
   if (!items || !items.len())
     return res
@@ -70,14 +72,14 @@ enums.addTypesByGlobalName("g_skills_page_status", {
     if (!item.isVisible(crewUnitType))
       continue
 
-    let totalSteps = ::g_crew.getTotalSteps(item)
-    let value = ::g_crew.getSkillNewValue(item, crew, unit)
-    let curStep = ::g_crew.skillValueToStep(item, value)
+    let totalSteps = getCrewTotalSteps(item)
+    let value = getCrewSkillNewValue(item, crew, unit)
+    let curStep = crewSkillValueToStep(item, value)
     if (curStep >= totalSteps)
       continue
 
-    let availValue = ::g_crew.getMaxAvailbleStepValue(item, value, skillPoints)
-    let availStep = ::g_crew.skillValueToStep(item, availValue)
+    let availValue = getMaxAvailbleCrewStepValue(item, value, skillPoints)
+    let availStep = crewSkillValueToStep(item, availValue)
 
     if (totalSteps == availStep)
       allowedMax++
@@ -99,3 +101,7 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   }
   return res
 }
+
+return freeze({
+  g_skills_page_status
+})

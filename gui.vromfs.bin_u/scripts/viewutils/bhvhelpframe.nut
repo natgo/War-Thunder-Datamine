@@ -1,8 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/viewUtils/hints.nut" import g_hints
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { ceil } = require("math")
 
 let BhvHelpFrame = class {
@@ -28,7 +27,7 @@ let BhvHelpFrame = class {
     obj.setIntProp(this.isUpdateInProgressPID, 1)
 
     if (obj?.value) {
-      let markup = ::g_hints.buildHintMarkup(loc(obj.value), {})
+      let markup = g_hints.buildHintMarkup(loc(obj.value), {})
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
     }
 
@@ -37,7 +36,7 @@ let BhvHelpFrame = class {
       needToFlow = true;
 
     if (obj.getParent().getSize()[0] < obj.getSize()[0])
-      obj.getParent().width = "0.02@sf+" + ceil(obj.getSize()[0])
+      obj.getParent().width = "".concat("0.02@sf+", ceil(obj.getSize()[0]))
 
     obj.getParent()["verticalFlow"] = needToFlow ? "yes" : "no"
 

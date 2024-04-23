@@ -197,7 +197,9 @@
       "superstructure_top_dm": {},
       "turret_01_bottom_dm": {},
       "turret_02_back_dm": {},
-      "turret_02_bottom_dm": {}
+      "turret_02_bottom_dm": {},
+      "turret_02_front_dm": {},
+      "turret_02_side_dm": {}
     },
     "turret": {
       "armorClass": "RHA_tank_modern",
@@ -518,6 +520,8 @@
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
+      "genericDamageMult": 2.0,
+      "cumulativeDamageMult": 1.25,
       "hp": 300.0,
       "armorThickness": 2.0,
       "armorThrough": 10.0,
@@ -1850,9 +1854,11 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 840.0,
+      "horsePowers": 780.0,
       "maxRPM": 2000.0,
-      "minRPM": 500.0
+      "minRPM": 800.0,
+      "manufacturer": "chtz",
+      "model": "v_84_DT"
     },
     "mechanics": {
       "steerType": "clutch_braking",
@@ -1864,13 +1870,21 @@
       "gearRatios": {
         "ratio": [
           -1.0,
+          -1.3385,
           -1.677,
+          -2.427,
           -3.177,
+          -4.7085,
           -6.24,
+          -12.48,
           0.0,
-          10.0,
+          12.48,
+          6.24,
+          4.7085,
           3.177,
+          2.427,
           1.677,
+          1.3385,
           1.0
         ]
       }
@@ -2576,15 +2590,6 @@
             ],
             "lightMult": 5.0,
             "ghosting": 0.7,
-            "noiseFactor": 0.2
-          },
-          "commanderIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
             "noiseFactor": 0.2
           }
         }

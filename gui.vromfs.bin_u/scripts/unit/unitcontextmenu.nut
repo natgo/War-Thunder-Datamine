@@ -7,10 +7,10 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
-let { isInMenu, handlersManager, is_in_loading_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getShopItem,
-        canUseIngameShop,
-        getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { isInMenu, handlersManager, is_in_loading_screen, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getShopItem, canUseIngameShop, getShopItemsTable
+} = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -37,6 +37,13 @@ let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificati
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
+let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -60,6 +67,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     local disabled    = false
     local icon       = ""
     local isLink = false
+    local isWarning = false
     local iconRotation = 0
     local isObjective = false
 
@@ -71,7 +79,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         ::queues.checkAndStart(function () {
           broadcastEvent("BeforeStartShowroom")
           showedUnit(unit)
-          handlersManager.animatedSwitchScene(::gui_start_decals)
+          handlersManager.animatedSwitchScene(gui_start_decals)
         }, null, "isCanModifyCrew")
       }
     }
@@ -101,12 +109,12 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (crew == null)
         continue
 
-      let discountInfo = ::g_crew.getDiscountInfo(crew.idCountry, crew.idInCountry)
+      let discountInfo = getCrewDiscountInfo(crew.idCountry, crew.idInCountry)
 
       actionText = loc("mainmenu/btnCrew")
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
-      haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
+      haveDiscount = getCrewMaxDiscountByInfo(discountInfo) > 0
       showAction = inMenu
       let params = {
         countryId = crew.idCountry,
@@ -142,7 +150,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon = "#ui/gameuiskin#sh_unlockachievement.svg"
       showAction = inMenu
       isObjective = true
-      actionFunc = @() ::gui_start_profile({
+      actionFunc = @() loadHandler(gui_handlers.Profile, {
         initialSheet = "UnlockAchievement"
         initialUnlockId = getUnlockIdByUnitName(unit.name, curEdiff)
       })
@@ -283,7 +291,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = unit.unitType.testFlightIcon
       showAction = inMenu && ::isTestFlightAvailable(unit, shouldSkipUnitCheck)
       actionFunc = function () {
-        ::queues.checkAndStart(@() ::gui_start_testflight({ unit, shouldSkipUnitCheck }),
+        ::queues.checkAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
     }
@@ -310,7 +318,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       showAction = ::canBuyUnitOnMarketplace(unit)
       isLink     = true
       actionFunc = function() {
-        let item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
+        let item = findItemById(unit.marketplaceItemdefId)
         if (item && item.hasLink())
           item.openLink()
       }
@@ -329,6 +337,21 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
           }, null, "isCanModifyCrew")
       }
     }
+    else if (action == "add_to_wishlist") {
+      let isListFull = isWishlistFull()
+      actionText = loc("mainmenu/add_to_wishlist")
+      isWarning = isListFull
+      icon       = "#ui/gameuiskin#add_to_wishlist.svg"
+      showAction = hasFeature("Wishlist") && !hasInWishlist(unit.name) && !unit.isBought()
+      actionFunc = @() isListFull ? showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+        : addToWishlist(unit)
+    }
+    else if (action == "go_to_wishlist") {
+      actionText = loc("mainmenu/go_to_wishlist")
+      icon       = "#ui/gameuiskin#go_to_wishlist.svg"
+      showAction = hasFeature("Wishlist") && hasInWishlist(unit.name) && !unit.isBought()
+      actionFunc = @() openWishlist({ unitName = unit.name })
+    }
 
     actions.append({
       actionName   = action
@@ -342,6 +365,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       isLink
       isObjective
       iconRotation
+      isWarning
     })
   }
 

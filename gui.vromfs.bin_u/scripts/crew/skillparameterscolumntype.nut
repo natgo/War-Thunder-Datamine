@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
 let { format } = require("string")
 let { fabs } = require("math")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
+let { isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
+let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCachedCrewId, getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -170,7 +172,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
 
     getHeaderImage = function (params) {
-      return ::g_crew_spec_type.getTypeByCrewAndUnit(params.crew, params.unit).trainedIcon
+      return getSpecTypeByCrewAndUnit(params.crew, params.unit).trainedIcon
     }
   }
 
@@ -202,18 +204,18 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkCrewUnitType = @(crewUnitType) crewUnitType == CUT_AIRCRAFT
 
     getHeaderText = function () {
-      let unitName = getUnitName(::g_crew_short_cache.unit)
+      let unitName = getUnitName(getCachedCrewUnit())
       let pad = "    "
       return pad + loc("crew/forUnit", { unitName = unitName }) + pad
     }
 
     createValueItem = function (_prevValue, _curValue, _prevSelectedValue, _curSelectedValue, _measureType, _sign) {
-      let crewId = ::g_crew_short_cache.cacheCrewid
-      let unit = ::g_crew_short_cache.unit
+      let crewId = getCachedCrewId()
+      let unit = getCachedCrewUnit()
       let isUnitCompatible = unit && unit.unitType.hasAiGunners &&
         this.checkCrewUnitType(unit.unitType.crewUnitType)
       let unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
-      let crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
+      let crewExpGunners = getCrewSkillValue(crewId, unit, "gunner", "members")
       let curGunners = min(crewExpGunners, unitTotalGunners)
       local text = curGunners + loc("ui/slash") + unitTotalGunners
       if (isUnitCompatible) {

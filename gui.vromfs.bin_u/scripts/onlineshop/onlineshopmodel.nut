@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_name, steam_is_running, steam_get_my_id, steam_get_app_id
+from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
@@ -8,12 +8,12 @@ let { format } = require("string")
 let { ceil } = require("math")
 let { get_url_for_purchase } = require("url")
 let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { getShopItem, openIngameStore, canUseIngameShop
-} = require("%scripts/onlineShop/entitlementsStore.nut")
-
+let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
+let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
@@ -22,6 +22,7 @@ let { get_network_block } = require("blkGetters")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
+let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
@@ -137,7 +138,7 @@ function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
     && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")) //temporary use old code pass for steam
 
   let url = isSteam
-    ? format(loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), steam_get_my_id())
+    ? format(loc("url/webstore/steam/item"), guid, steam_get_app_id(), steam_get_my_id().tostring())
     : " ".concat("auto_local", "auto_login", get_url_for_purchase(guid))
 
   if (url == "") {
@@ -167,9 +168,9 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
     return
 
   if (isInArray(chapter, [null, ""])) {
-    local webStoreUrl = loc("url/webstore", "")
+    local webStoreUrl = getCurCircuitUrl("webstoreURL", loc("url/webstore", ""))
     if (steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))
-      webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id())
+      webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id().tostring())
 
     if (webStoreUrl != "")
       return openShopUrl(webStoreUrl)
@@ -278,7 +279,7 @@ function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, l
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
 
-let function openOnlineShopFromPromo(handler, params) {
+function openOnlineShopFromPromo(handler, params) {
   let shopType = params?[0]
   if (shopType == ONLINE_SHOP_TYPES.BUNDLE
     || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop())) {

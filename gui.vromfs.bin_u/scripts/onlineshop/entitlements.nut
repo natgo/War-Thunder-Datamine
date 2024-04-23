@@ -1,10 +1,8 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import has_entitlement, steam_is_running, get_entitlement_cost_gold
+from "%scripts/dagui_natives.nut" import has_entitlement, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -15,6 +13,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
+let { measureType } = require("%scripts/measureType.nut")
+let { steam_is_running } = require("steam")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -68,7 +68,7 @@ let premiumAccountDescriptionArr = [
   }
 ]
 
-let function getEntitlementConfig(name) {
+function getEntitlementConfig(name) {
   if (!name || name == "")
     return null
 
@@ -99,11 +99,11 @@ let function getEntitlementConfig(name) {
   return res
 }
 
-let function getEntitlementLocId(ent) {
+function getEntitlementLocId(ent) {
   return ("alias" in ent) ? ent.alias : ("group" in ent) ? ent.group : (ent?.name ?? "unknown")
 }
 
-let function getEntitlementAmount(ent) {
+function getEntitlementAmount(ent) {
   if ("httl" in ent)
     return ent.httl.tofloat() / 24.0
 
@@ -114,7 +114,7 @@ let function getEntitlementAmount(ent) {
   return 1
 }
 
-let function getEntitlementTimeText(ent) { // -return-different-types
+function getEntitlementTimeText(ent) { // -return-different-types
   if ("ttl" in ent)
     return ent.ttl + loc("measureUnits/days")
   if ("httl" in ent)
@@ -122,7 +122,7 @@ let function getEntitlementTimeText(ent) { // -return-different-types
   return ""
 }
 
-let function getEntitlementShortName(ent) {
+function getEntitlementShortName(ent) {
   local name = ""
   if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent)) {
     name = loc($"charServer/entitlement/{ent.group}")
@@ -134,7 +134,7 @@ let function getEntitlementShortName(ent) {
   return loc($"charServer/entitlement/{getEntitlementLocId(ent)}")
 }
 
-let function getEntitlementName(ent) {
+function getEntitlementName(ent) {
   local name = getEntitlementShortName(ent)
   let timeText = getEntitlementTimeText(ent)
   if (timeText != "")
@@ -142,14 +142,14 @@ let function getEntitlementName(ent) {
   return name
 }
 
-let function getFirstPurchaseAdditionalAmount(ent) {
+function getFirstPurchaseAdditionalAmount(ent) {
   if (!has_entitlement(ent.name))
     return getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
 }
 
-let function getEntitlementPrice(ent) {
+function getEntitlementPrice(ent) {
   if (ent?.onlinePurchase ?? false) {
     let info = bundlesShopInfo.value?[ent.name]
     if (info) {
@@ -176,9 +176,9 @@ let function getEntitlementPrice(ent) {
   return ""
 }
 
-local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
+local bonusPercentText = @(v) "+{0}".subst(measureType.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
 
-let function getEntitlementPriceFloat(ent) {
+function getEntitlementPriceFloat(ent) {
   local cost = -1.0
   if (ent?.onlinePurchase) {
     local costText = ""
@@ -196,7 +196,7 @@ let function getEntitlementPriceFloat(ent) {
   return cost
 }
 
-let function getPricePerEntitlement(ent) {
+function getPricePerEntitlement(ent) {
   let amount = getEntitlementAmount(ent)
   if (amount <= 0)
     return 0.0
@@ -204,7 +204,7 @@ let function getPricePerEntitlement(ent) {
   return getEntitlementPriceFloat(ent) / amount
 }
 
-let function  getEntitlementLocParams() {
+function  getEntitlementLocParams() {
   let rBlk = get_ranks_blk()
   let wBlk = get_warpoints_blk()
 
@@ -227,7 +227,7 @@ let canBuyEntitlement = @(ent)
     || ent?.chapter == "license"
     || ent?.chapter == "bonuses"
 
-let function getEntitlementBundles() {
+function getEntitlementBundles() {
   let bundles = {}
   let eblk = getShopPriceBlk()
   let numBlocks = eblk.blockCount()
@@ -240,7 +240,7 @@ let function getEntitlementBundles() {
   return bundles
 }
 
-let function isBoughtEntitlement(ent) {
+function isBoughtEntitlement(ent) {
   let bundles = getEntitlementBundles()
   if (ent?.name != null && bundles?[ent.name] != null) {
     let isBought = callee()
@@ -253,7 +253,7 @@ let function isBoughtEntitlement(ent) {
   return (canBuyEntitlement(ent) && has_entitlement(realname))
 }
 
-let function getEntitlementDescription(product, _productId) {
+function getEntitlementDescription(product, _productId) {
   if (product == null)
     return ""
 

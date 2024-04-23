@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -48,12 +49,14 @@ local WorkshopSet = class {
   hasSubsets  = false
   subsetsList = null
   curSubsetId   = null
+  needToShowInWorkshop = true
 
   constructor(blk) {
     this.id = blk.getBlockName() || ""
     this.reqFeature = blk?.reqFeature
     this.locId = blk?.locId || this.id
     this.hasSubsets = blk?.hasSubsets ?? false
+    this.needToShowInWorkshop =blk?.needToShowInWorkshop ?? true
 
     this.itemdefsSorted = []
     this.itemdefs = {}
@@ -98,12 +101,13 @@ local WorkshopSet = class {
     if (this.hasSubsets)
       this.curSubsetId = loadLocalAccountSettings(CURRENT_SUBSET_SAVE_PATH + this.id, firstSubsetId)
 
-    subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
+    subscribe_handler(this, g_listener_priority.CONFIG_VALIDATION)
     this.checkForcedDisplayTime(blk?.forcedDisplayWithoutFeature)
   }
 
   isValid                   = @() this.id.len() > 0 && this.itemdefs.len() > 0
-  isVisible                 = @() !this.reqFeature || hasFeature(this.reqFeature) || this.isForcedDisplayByDate
+  isVisible                 = @() this.needToShowInWorkshop
+    && (!this.reqFeature || hasFeature(this.reqFeature) || this.isForcedDisplayByDate)
   isItemDefAlwaysVisible    = @(itemdef) itemdef in this.alwaysVisibleItemdefs
   getItemdefs               = @() this.itemdefsSorted
   getLocName                = @() loc(this.locId)

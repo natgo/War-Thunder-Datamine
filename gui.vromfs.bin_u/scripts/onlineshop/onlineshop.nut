@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, steam_is_running, yuplay2_buy_entitlement, has_entitlement, is_app_active, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -26,6 +26,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
 let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { steam_is_running, steam_is_overlay_active } = require("steam")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -261,7 +262,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("item_desc_header_img")["background-image"] = image
 
     this.priceText = this.getItemPriceText(productId)
-    this.showSceneBtn("btn_buy_online", product != null && !isBoughtEntitlement(product))
+    showObjById("btn_buy_online", product != null && !isBoughtEntitlement(product), this.scene)
     this.scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
@@ -305,13 +306,14 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function goForwardIfPurchase() {
+  function goForwardIfPurchase(curIdx) {
     let taskId = purchase_entitlement(this.task)
     let taskOptions = {
       showProgressBox = true
     }
     let taskSuccessCallback = Callback(function () {
         this.goForward(this.startFunc)
+        move_mouse_on_child(this.scene.findObject("items_list"), curIdx)
       }, this)
     addTask(taskId, taskOptions, taskSuccessCallback)
   }
@@ -332,7 +334,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let curIdx = this.scene.findObject("items_list").getValue()
     let onCallbackYes = Callback(function() {
       if (checkBalanceMsgBox(price))
-        this.goForwardIfPurchase()
+        this.goForwardIfPurchase(curIdx)
     }, this)
     let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
     purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)

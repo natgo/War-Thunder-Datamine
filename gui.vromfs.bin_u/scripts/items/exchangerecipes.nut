@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
+let { eventbus_send } = require("eventbus")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -23,7 +24,7 @@ let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophy
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
-let { showBuyAndOpenChestWnd } = require("%scripts/items/buyAndOpenChestWnd.nut")
+let { showBuyAndOpenChestWnd, getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -45,7 +46,7 @@ let defaultLocIdsList = {
   actionButton              = null
 }
 
-let function showExchangeInventoryErrorMsg(errorId, componentItem) {
+function showExchangeInventoryErrorMsg(errorId, componentItem) {
   let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
   showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
@@ -66,33 +67,41 @@ function getRecipesCraftTimeText(recipes) {
   return loc(recipes[0].getLocIdsList().craftTime, { time = " ".join(timeText) })
 }
 
+function getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes) {
+  let isFullRecipesList = recipes.len() <= maxRecipes
+  local recipesToShow = recipes
+  if (!hasFakeRecipes)
+    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
+  if (isFullRecipesList)
+    return recipesToShow
+
+  recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
+  if (recipesToShow.len() == maxRecipes)
+    return recipesToShow
+
+  if (recipesToShow.len() > maxRecipes)
+    return recipesToShow.slice(0, maxRecipes)
+
+  foreach (r in recipes)
+    if (!r.isUsable && !r.isRecipeLocked()) {
+      recipesToShow.append(r)
+      if (recipesToShow.len() == maxRecipes)
+        break
+    }
+  return recipesToShow
+}
+
+
 function getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
   if (componentItem.showAllowableRecipesOnly())
     return ""
 
   let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
-  let isFullRecipesList = recipes.len() <= maxRecipes
+  let hasFakeRecipes = hasFakeRecipesInList(recipes)
+  let recipesToShow = getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes)
 
   let isMultiRecipes = recipes.len() > 1
   local isMultiExtraItems = false
-  let hasFakeRecipes = hasFakeRecipesInList(recipes)
-
-  local recipesToShow = recipes
-  if (!hasFakeRecipes)
-    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
-  if (!isFullRecipesList) {
-    recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
-    if (recipesToShow.len() > maxRecipes)
-      recipesToShow = recipesToShow.slice(0, maxRecipes)
-    else if (recipesToShow.len() < maxRecipes)
-      foreach (r in recipes)
-        if (!r.isUsable && !r.isRecipeLocked()) {
-          recipesToShow.append(r)
-          if (recipesToShow.len() == maxRecipes)
-            break
-        }
-  }
-
   let needShowHeader = params?.needShowHeader ?? true
   local headerFirst = ""
   local headerNext = ""
@@ -135,6 +144,19 @@ let getRequirementsMarkup = @(recipes, componentItem, params)
 
 let getRequirementsText = @(recipes, componentItem, params)
   getRequirements(recipes, componentItem, params, false)
+
+function getRecipesComponents(recipes, componentItem, params) {
+  if (componentItem.showAllowableRecipesOnly())
+    return []
+
+  let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
+  let hasFakeRecipes = hasFakeRecipesInList(recipes)
+  let recipesToShow = getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes)
+  let res = []
+  foreach (recipe in recipesToShow)
+    res.append(recipe.getItemsListForPrizesView(params))
+  return res
+}
 
 function saveMarkedRecipes(newMarkedRecipesUid) {
   if (!newMarkedRecipesUid.len())
@@ -238,16 +260,23 @@ function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, rec
 }
 
 function tryUseRecipes(recipes, componentItem, params = {}) {
+  let {reciepeExchangeAmount = 1} = params
+
   let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
   if (showUseErrorMsgIfNeed(recipe, componentItem, recipes) || recipe == null)
     return false
 
-  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
-    recipe.doExchange(componentItem, 1, params)
+  if (getBuyAndOpenChestWndStyle(componentItem) && !params?.isFromChestWnd) {
+    showBuyAndOpenChestWnd(componentItem)
     return true
   }
 
-  showConfirmExchangeMsg(recipe, componentItem, params, 1, recipes)
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, reciepeExchangeAmount, params)
+    return true
+  }
+
+  showConfirmExchangeMsg(recipe, componentItem, params, reciepeExchangeAmount, recipes)
   return true
 }
 
@@ -731,7 +760,8 @@ local ExchangeRecipes = class {
         if (rewardsHandler != null)
           rewardsHandler.showReceivedPrizes(expectedPrizes)
         else
-          ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+          eventbus_send("guiStartOpenTrophy",
+            rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
       }
     }
     else if (effectOnOpenChest?.playSound != null) {
@@ -829,4 +859,5 @@ return {
   saveMarkedRecipes
   tryUseRecipes
   tryUseRecipeSeveralTime
+  getRecipesComponents
 }

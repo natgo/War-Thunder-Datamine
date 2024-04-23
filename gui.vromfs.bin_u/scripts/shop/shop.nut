@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
 
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -14,7 +15,7 @@ let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager, loadHandler
+let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
@@ -53,6 +54,9 @@ let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 local lastUnitType = null
 
@@ -78,10 +82,6 @@ shopData = [
   ...
 ]
 */
-
-::gui_start_shop_research <- function gui_start_shop_research(config) {
-  loadHandler(gui_handlers.ShopCheckResearch, config)
-}
 
 gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -110,7 +110,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   shopData = null
   slotbarActions = [
-    "research", "researchCrossPromo", "find_in_market", "buy", "take", "sec_weapons", "weapons",
+    "research", "researchCrossPromo", "find_in_market", "buy", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
@@ -291,7 +291,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUnitMarkerClick(obj) {
     let unitName = obj.holderId
-    ::gui_start_profile({
+    guiStartProfile({
       initialSheet = "UnlockAchievement"
       initialUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
     })
@@ -456,7 +456,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (config.own || config.partOwn)
       return "owned"
-    else if (!config.shopReq || !configReq.own)
+    else if (!config.shopReq || !(configReq.own || configReq.partOwn))
       return "locked"
     return ""
   }
@@ -1659,7 +1659,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitBought(params) {
-    let unitName = getTblValue("unitName", params)
+    let { unitName = null, needSelectCrew = true } = params
     let unit = unitName ? getAircraftByName(unitName) : null
     if (!unit)
       return
@@ -1676,8 +1676,13 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    if (!::checkIsInQueue() && !this.shopResearchMode)
-      this.onTake(unit, { isNewUnit = true })
+    if (needSelectCrew && !::checkIsInQueue() && !this.shopResearchMode)
+      takeUnitInSlotbar(unit, {
+        unitObj = this.getAirObj(unit.name)
+        cellClass = "shopClone"
+        isNewUnit = true
+        getEdiffFunc = this.getCurrentEdiff.bindenv(this)
+      })
     else if (this.shopResearchMode)
       this.selectRequiredUnit()
   }
@@ -1757,15 +1762,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
     return false
-  }
-
-  function onTake(unit, params = {}) {
-    base.onTake(unit, {
-      unitObj = this.getAirObj(unit.name)
-      cellClass = "shopClone"
-      isNewUnit = false
-      getEdiffFunc = this.getCurrentEdiff.bindenv(this)
-    }.__merge(params))
   }
 
   function onEventExpConvert(_params) {
@@ -1911,7 +1907,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let storedMode = getShopDiffMode()
     local curMode = -1
     this.showModeList = []
-    foreach (diff in ::g_difficulty.types)
+    foreach (diff in g_difficulty.types)
       if (diff.diffCode == -1 || (!this.shopResearchMode && diff.isAvailable())) {
         this.showModeList.append({
           text = diff.diffCode == -1 ? loc("options/auto") : colorize("warningTextColor", diff.getLocName())
@@ -2016,7 +2012,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentEdiff() {
-    return this.hasModeList() ? getShopDiffCode() : ::get_current_ediff()
+    return this.hasModeList() ? getShopDiffCode() : getCurrentGameModeEdiff()
   }
 
   function updateSlotbarDifficulty() {

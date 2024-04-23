@@ -1,30 +1,29 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
+local orderUseResult = null
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-::g_order_use_result <- {
+orderUseResult = {
   types = []
+  cache = {
+    byCode = {}
+  }
+  template = {
+    // Creates text message to show in order
+    // activation window, order tooltip, etc.
+    function createResultMessage(addErrorHeader) {
+      if (this == orderUseResult.OK)
+        return loc($"orderUseResult/result/{this.name}")
+
+      return addErrorHeader
+        ? "".concat(loc("orderUseResult/error"), "\n", loc($"orderUseResult/result/{this.name}"))
+        : loc($"orderUseResult/result/{this.name}")
+    }
+  }
 }
 
-::g_order_use_result._createResultMessage <- function _createResultMessage(addErrorHeader) {
-  local resultMessage = (this == ::g_order_use_result.OK || !addErrorHeader)
-    ? ""
-    : loc("orderUseResult/error") + "\n"
-  resultMessage += loc($"orderUseResult/result/{this.name}")
-  return resultMessage
-}
-
-::g_order_use_result.template <- {
-  /**
-   * Creates text message to show in order
-   * activation window, order tooltip, etc.
-   */
-  createResultMessage = ::g_order_use_result._createResultMessage
-}
-
-enums.addTypesByGlobalName("g_order_use_result", {
+enumsAddTypes(orderUseResult, {
   OK = {
     code = ORDER_USE_RESULT_OK
     name = "ok"
@@ -86,11 +85,12 @@ enums.addTypesByGlobalName("g_order_use_result", {
   }
 })
 
-::g_order_use_result.getOrderUseResultByCode <- function getOrderUseResultByCode(useResultCode) {
-  return enums.getCachedType("code", useResultCode, ::g_order_use_result_cache.byCode,
-    ::g_order_use_result, ::g_order_use_result.UNKNOWN)
+function getOrderUseResultByCode(useResultCode) {
+  return enumsGetCachedType("code", useResultCode, orderUseResult.cache.byCode,
+    orderUseResult, orderUseResult.UNKNOWN)
 }
 
-::g_order_use_result_cache <- {
-  byCode = {}
+return {
+  orderUseResult
+  getOrderUseResultByCode
 }

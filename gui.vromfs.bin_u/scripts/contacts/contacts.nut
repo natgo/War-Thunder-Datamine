@@ -1,9 +1,11 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, find_nicks_by_prefix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -12,24 +14,26 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isEqual } = u
-let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups
+let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups, getContactByName
 } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
+let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let Contact = require("%scripts/contacts/contact.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
 }
 
 foreach (fn in [
-    "contactPresence.nut"
     "contact.nut"
     "playerStateTypes.nut"
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-  loadOnce("%scripts/contacts/" + fn)
+  loadOnce($"%scripts/contacts/{fn}")
 
 ::g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params) {
   let usersInfoData = getTblValue("usersInfo", params, null)
@@ -92,7 +96,7 @@ foreach (fn in [
 }
 
 ::find_contact_by_name_and_do <- function find_contact_by_name_and_do(playerName, func) { //return taskId if delayed.
-  let contact = ::Contact.getByName(playerName)
+  let contact = getContactByName(playerName)
   if (contact && contact?.uid != "") {
     func(contact)
     return null
@@ -130,7 +134,7 @@ foreach (fn in [
 
   if (!(uid in contactsPlayers)) {
     if (nick != null) {
-      let contact = ::Contact({ name = nick, uid = uid })
+      let contact = Contact({ name = nick, uid = uid })
       contactsPlayers[uid] <- contact
       if (uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.$rawdelete(uid))
@@ -159,7 +163,7 @@ foreach (fn in [
 }
 
 ::updateContact <- function updateContact(config) {
-  let configIsContact = u.isInstance(config) && config instanceof ::Contact
+  let configIsContact = u.isInstance(config) && config instanceof Contact
   if (u.isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
     script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null
@@ -178,37 +182,7 @@ foreach (fn in [
     contact.update(config)
   }
 
-  //update presence
-  local presence = ::g_contact_presence.UNKNOWN
-  if (contact.online)
-    presence = ::g_contact_presence.ONLINE
-  else if (!contact.unknown)
-    presence = ::g_contact_presence.OFFLINE
-
-  let squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(uid)
-  if (squadStatus == squadMemberState.NOT_IN_SQUAD) {
-    if (contact.forceOffline)
-      presence = ::g_contact_presence.OFFLINE
-    else if (contact.online && contact.gameStatus) {
-      if (contact.gameStatus == "in_queue")
-        presence = ::g_contact_presence.IN_QUEUE
-      else
-        presence = ::g_contact_presence.IN_GAME
-    }
-  }
-  else if (squadStatus == squadMemberState.SQUAD_LEADER)
-    presence = ::g_contact_presence.SQUAD_LEADER
-  else if (squadStatus == squadMemberState.SQUAD_MEMBER_READY)
-    presence = ::g_contact_presence.SQUAD_READY
-  else if (squadStatus == squadMemberState.SQUAD_MEMBER_OFFLINE)
-    presence = ::g_contact_presence.SQUAD_OFFLINE
-  else
-    presence = ::g_contact_presence.SQUAD_NOT_READY
-
-  contact.presence = presence
-
-  if (squadStatus != squadMemberState.NOT_IN_SQUAD || ::is_in_my_clan(null, uid))
-    ::chatUpdatePresence(contact)
+  updateContactPresence(contact)
 
   return contact
 }
@@ -236,9 +210,14 @@ foreach (fn in [
 }
 
 ::fillContactTooltip <- function fillContactTooltip(obj, contact, handler) {
+  let customNick = getCustomNick(contact)
+  let playerName = customNick == null
+    ? contact.getName()
+    : $"{contact.getName()}\n{loc("ui/parentheses/space", { text = customNick })}"
+
   let fullName = hasFeature("Clans") && contact.clanTag != ""
-    ? $"{contact.clanTag} {contact.getName()}"
-    : contact.getName()
+    ? $"{contact.clanTag} {playerName}"
+    : playerName
 
   let title = contact.title != "" && contact.title != null
     ? loc($"title/{contact.title}")
@@ -247,17 +226,19 @@ foreach (fn in [
   let view = {
     name = fullName
     presenceText = colorize(contact.presence.getIconColor(), contact.getPresenceText())
-    icon = contact.pilotIcon
+    icon = contact.steamAvatar ?? $"#ui/images/avatars/{contact.pilotIcon}"
     hasUnitList = false
-    title = title
+    title
+    wtName = contact.steamName == null || contact.name == "" ? ""
+      : loc("war_thunder_nickname", { name = getPlayerName(contact.name) })
   }
 
-  let squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(contact.uid)
+  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(contact.uid)
   if (squadStatus != squadMemberState.NOT_IN_SQUAD && squadStatus != squadMemberState.SQUAD_MEMBER_OFFLINE) {
-    let memberData = ::g_squad_manager.getMemberData(contact.uid)
+    let memberData = g_squad_manager.getMemberData(contact.uid)
     if (memberData) {
       let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
-      let gameModeId = ::g_squad_manager.getLeaderGameModeId()
+      let gameModeId = g_squad_manager.getLeaderGameModeId()
       let event = ::events.getEvent(gameModeId)
       let difficulty = ::events.getEventDifficulty(event)
       let ediff = difficulty.getEdiff()
@@ -325,4 +306,4 @@ foreach (fn in [
   return isFriend
 }
 
-subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_contacts, g_listener_priority.DEFAULT_HANDLER)

@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modificat
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { isBullets,
@@ -16,39 +17,40 @@ let { getLastWeapon,
         isWeaponUnlocked,
         getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
-  getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+  getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 
-let function getItemAmount(unit, item) {
+const MAX_SPARE_AMOUNT = 100
+
+function getItemAmount(unit, item) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(unit, item)
 }
 
-let function isResearchableItem(item) {
+function isResearchableItem(item) {
   return item.type == weaponsItem.modification
 }
 
-let function canBeResearched(unit, item, checkCurrent = true) {
+function canBeResearched(unit, item, checkCurrent = true) {
   if (isResearchableItem(item))
     return canResearchMod(unit, item, checkCurrent)
   return false
 }
 
-let function canResearchItem(unit, item, checkCurrent = true) {
+function canResearchItem(unit, item, checkCurrent = true) {
   return item.type == weaponsItem.modification &&
          canBeResearched(unit, item, checkCurrent)
 }
 
-let function getItemCost(unit, item) {
+function getItemCost(unit, item) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
 }
 
-let function isModStatusResearched(unit, mod) {
+function isModStatusResearched(unit, mod) {
   let s = shop_get_module_research_status(unit.name, mod.name)
   return (s & ES_ITEM_STATUS_RESEARCHED) != 0
 }
 
-let function getItemStatusTbl(unit, item) {
+function getItemStatusTbl(unit, item) {
   let isOwn = ::isUnitUsable(unit)
   let res = {
     amount = getItemAmount(unit, item)
@@ -84,7 +86,7 @@ let function getItemStatusTbl(unit, item) {
       res.unlocked = isOwn
     else {
       res.maxAmount = wp_get_modification_max_count(unit.name, item.name)
-      res.equipped = res.amount && shopIsModificationEnabled(unit.name, item.name)
+      res.equipped = res.amount && isModificationEnabled(unit.name, item.name)
       res.unlocked = res.amount || canBuyMod(unit, item)
       res.showPrice = false //amount < maxAmount
     }
@@ -109,7 +111,7 @@ let function getItemStatusTbl(unit, item) {
           && res.maxAmount == 1
           && res.canBuyMore
           && getItemCost(unit, item).wp > 0
-        res.equipped = res.amount && shopIsModificationEnabled(unit.name, item.name)
+        res.equipped = res.amount && isModificationEnabled(unit.name, item.name)
         res.goldUnlockable = !res.unlocked && hasFeature("SpendGold")
           && isReqModificationsUnlocked(unit, item) && canBeResearched(unit, item, false)
         if (item.type == weaponsItem.expendables)
@@ -139,7 +141,7 @@ let function getItemStatusTbl(unit, item) {
   }
   else if (item.type == weaponsItem.spare) {
     res.equipped = res.amount > 0
-    res.maxAmount = ::max_spare_amount
+    res.maxAmount = MAX_SPARE_AMOUNT
     res.showMaxAmount = false
     res.canBuyMore = res.amount < res.maxAmount
     res.unlocked = isOwn
@@ -148,7 +150,7 @@ let function getItemStatusTbl(unit, item) {
   return res
 }
 
-let function getBundleCurItem(unit, bundle) {
+function getBundleCurItem(unit, bundle) {
   if (!("itemsType" in bundle))
     return null
 
@@ -179,22 +181,22 @@ let function getBundleCurItem(unit, bundle) {
   return null
 }
 
-let function getByCurBundle(unit, bundle, func, defValue = "") {
+function getByCurBundle(unit, bundle, func, defValue = "") {
   let cur = getBundleCurItem(unit, bundle)
   return cur ? func(unit, cur) : defValue
 }
 
-let function getItemUnlockCost(unit, item) {
+function getItemUnlockCost(unit, item) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getUnlockCost(unit, item)
 }
 
-let function isCanBeDisabled(item) {
+function isCanBeDisabled(item) {
   return (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) &&
          (!("deactivationIsAllowed" in item) || item.deactivationIsAllowed) &&
          !isBullets(item)
 }
 
-let function isModInResearch(unit, item) {
+function isModInResearch(unit, item) {
   if (item.name == "" || !("type" in item) || item.type != weaponsItem.modification)
     return false
 
@@ -202,7 +204,7 @@ let function isModInResearch(unit, item) {
   return status == ES_ITEM_STATUS_IN_RESEARCH
 }
 
-let function getItemUpgradesList(item) {
+function getItemUpgradesList(item) {
   if ("weaponUpgrades" in item)
     return item.weaponUpgrades
   else if ("weaponMod" in item && item.weaponMod != null && "weaponUpgrades" in item.weaponMod)
@@ -210,7 +212,7 @@ let function getItemUpgradesList(item) {
   return null
 }
 
-let function countWeaponsUpgrade(unit, item) {
+function countWeaponsUpgrade(unit, item) {
   local upgradesTotal = 0
   local upgraded = 0
   let upgrades = getItemUpgradesList(item)
@@ -225,7 +227,7 @@ let function countWeaponsUpgrade(unit, item) {
     upgradesTotal++
 
     foreach (modName in modsArray)
-      if (shopIsModificationEnabled(unit.name, modName)) {
+      if (isModificationEnabled(unit.name, modName)) {
         upgraded++
         break
       }
@@ -233,7 +235,7 @@ let function countWeaponsUpgrade(unit, item) {
   return [upgraded, upgradesTotal]
 }
 
-let function getItemUpgradesStatus(unit, item) {
+function getItemUpgradesStatus(unit, item) {
   if (item.type == weaponsItem.primaryWeapon) {
     let countData = countWeaponsUpgrade(unit, item)
     return !countData?[1] ? ""
@@ -252,12 +254,12 @@ let function getItemUpgradesStatus(unit, item) {
   return ""
 }
 
-let function getRepairCostCoef(item) {
-  let modeName = ::get_current_shop_difficulty().getEgdName(true)
+function getRepairCostCoef(item) {
+  let modeName = getCurrentShopDifficulty().getEgdName(true)
   return item?["repairCostCoef" + modeName] ?? item?.repairCostCoef ?? 0
 }
 
-let function getDiscountPath(unit, item, discountType) {
+function getDiscountPath(unit, item, discountType) {
   let discountPath = ["aircrafts", unit.name, item.name]
   if (item.type != weaponsItem.spare)
     discountPath.insert(2, discountType)
@@ -265,7 +267,7 @@ let function getDiscountPath(unit, item, discountType) {
   return discountPath
 }
 
-let function getAllModsCost(unit, open = false) {
+function getAllModsCost(unit, open = false) {
   local modsCost = Cost()
   foreach (modification in (unit?.modifications ?? {})) {
     let statusTbl = getItemStatusTbl(unit, modification)
@@ -305,6 +307,7 @@ let function getAllModsCost(unit, open = false) {
 }
 
 return {
+  MAX_SPARE_AMOUNT
   getItemAmount         = getItemAmount
   isResearchableItem    = isResearchableItem
   canBeResearched       = canBeResearched

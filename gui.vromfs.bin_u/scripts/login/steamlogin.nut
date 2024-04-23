@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_login_pass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -11,7 +10,7 @@ let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setGuiOptionsMode } = require("guiOptions")
-let { is_running } = require("steam")
+let { steam_is_running } = require("steam")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
@@ -56,7 +55,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
       return
     }
     if ( result == YU2_OK) {
-      if (is_running()) {
+      if (steam_is_running()) {
         saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
       }
     }

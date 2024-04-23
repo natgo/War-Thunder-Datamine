@@ -1,13 +1,15 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { hideBonus } = require("%scripts/bonusModule.nut")
 let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit, upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getCrewTrainCost, getCrewButtonRow } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -66,14 +68,14 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene)
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit == null)
       return
 
     if (this.isRecrutedCurCrew()
       && rowUnit.isUsable()
-      && ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, rowUnit) == ::g_crew_spec_type.UNKNOWN) {
+      && getSpecTypeByCrewAndUnit(this.crew, rowUnit) == crewSpecTypes.UNKNOWN) {
         trainCrewUnitWithoutSwitchCurrUnit(this.crew, rowUnit)
         return
     }
@@ -86,18 +88,18 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function increaseSpec(nextSpecType, obj = null) {
-    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene)
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
       upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
   }
 
   function onSpecIncrease1(obj) {
-    this.increaseSpec(::g_crew_spec_type.EXPERT, obj)
+    this.increaseSpec(crewSpecTypes.EXPERT, obj)
   }
 
   function onSpecIncrease2(obj) {
-    this.increaseSpec(::g_crew_spec_type.ACE, obj)
+    this.increaseSpec(crewSpecTypes.ACE, obj)
   }
 
   function getSpecRowConfig(idx) {
@@ -105,12 +107,12 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return null
 
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
+    let specType = getSpecTypeByCrewAndUnit(this.crew, unit)
     let hasNextType = specType.hasNextType()
     let nextType = specType.getNextType()
     let reqLevel = hasNextType ? nextType.getReqCrewLevel(unit) : 0
     let isRecrutedCrew = this.isRecrutedCurCrew()
-    let needToTrainUnit = specType == ::g_crew_spec_type.UNKNOWN
+    let needToTrainUnit = specType == crewSpecTypes.UNKNOWN
     let isUsableUnit = unit.isUsable()
     let canCrewTrainUnit = isRecrutedCrew && needToTrainUnit
       && isUsableUnit
@@ -127,13 +129,13 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       holderId = idx
       unitName = getUnitName(unit.name)
       hasProgressBar = true
-      rowTooltipId   = ::g_tooltip.getIdCrewSpecialization(this.crew.id, unit.name, -1)
-      buySpecTooltipId1 = ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(this.crew, unit)
-      buySpecTooltipId2 = ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, unit)
-      buySpecTooltipId = ::g_tooltip.getIdBuyCrewSpec(this.crew.id, unit.name, -1)
+      rowTooltipId   = getTooltipType("CREW_SPECIALIZATION").getTooltipId(this.crew.id, unit.name)
+      buySpecTooltipId1 = crewSpecTypes.EXPERT.getBtnBuyTooltipId(this.crew, unit)
+      buySpecTooltipId2 = crewSpecTypes.ACE.getBtnBuyTooltipId(this.crew, unit)
+      buySpecTooltipId = getTooltipType("BUY_CREW_SPEC").getTooltipId(this.crew.id, unit.name, -1)
       curValue = specType.getName()
       costText = hasNextType ? specType.getUpgradeCostByCrewAndByUnit(this.crew, unit).tostring()
-        : canCrewTrainUnit ? ::g_crew.getCrewTrainCost(this.crew, unit).getTextAccordingToBalance()
+        : canCrewTrainUnit ? getCrewTrainCost(this.crew, unit).getTextAccordingToBalance()
         : ""
       enableForBuy = enableForBuy || canCrewTrainUnit
       buttonRowDisplay = (hasNextType || canCrewTrainUnit
@@ -149,8 +151,8 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       progressBarValue = progressBarValue
 
       btnSpec = [
-        this.getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, this.crewLevel, unit, specType), // warning disable: -param-pos
-        this.getRowSpecButtonConfig(::g_crew_spec_type.ACE, this.crewLevel, unit, specType) // warning disable: -param-pos
+        this.getRowSpecButtonConfig(crewSpecTypes.EXPERT, this.crewLevel, unit, specType), // warning disable: -param-pos
+        this.getRowSpecButtonConfig(crewSpecTypes.ACE, this.crewLevel, unit, specType) // warning disable: -param-pos
       ]
     }
   }
@@ -161,7 +163,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       id = specType.code
       icon = icon
       enable = (icon != "" && curSpecType.code < specType.code) ? "yes" : "no"
-      isExpertSpecType = specType == ::g_crew_spec_type.EXPERT
+      isExpertSpecType = specType == crewSpecTypes.EXPERT
     }
   }
 
@@ -171,12 +173,12 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!checkObj(rowObj))
         return
 
-      let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
+      let specType = getSpecTypeByCrewAndUnit(this.crew, unit)
       let discObj = rowObj.findObject("buy-discount")
       if (specType.hasNextType())
         ::showAirDiscount(discObj, unit.name, "specialization", specType.getNextType().specName)
       else
-        ::hideBonus(discObj)
+        hideBonus(discObj)
     }
   }
 

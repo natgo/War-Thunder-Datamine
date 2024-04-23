@@ -1,7 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 
+let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -30,7 +32,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       maxRows = this.getMaxTeamSize()
     }
 
-    let mgm = ::SessionLobby.getMGameMode(this.room)
+    let mgm = SessionLobby.getMGameMode(this.room)
     if (mgm)
       view.headerData <- {
         difficultyImage = ::events.getDifficultyImg(mgm.name)
@@ -55,7 +57,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.setFullRoomInfo()
-    this.teams = ::g_team.getTeams()
+    this.teams = g_team.getTeams()
 
     this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_list")
@@ -76,8 +78,8 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateTeamsHeader() {
     let headerNest = this.scene.findObject("teams_header")
 
-    let countTbl = ::SessionLobby.getMembersCountByTeams(this.room)
-    let countTblReady = ::SessionLobby.getMembersCountByTeams(this.room, true)
+    let countTbl = SessionLobby.getMembersCountByTeams(this.room)
+    let countTblReady = SessionLobby.getMembersCountByTeams(this.room, true)
     foreach (team in this.teams) {
       let teamObj = headerNest.findObject("num_team" + team.id)
       if (!checkObj(teamObj))
@@ -99,15 +101,15 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getMaxTeamSize() {
-    let mgm = ::SessionLobby.getMGameMode(this.room)
-    return mgm ? ::events.getMaxTeamSize(mgm) : ::SessionLobby.getMaxMembersCount(this.room) / 2
+    let mgm = SessionLobby.getMGameMode(this.room)
+    return mgm ? ::events.getMaxTeamSize(mgm) : SessionLobby.getMaxMembersCount(this.room) / 2
   }
 
   function initRoomTimer() {
     let timerObj = this.scene.findObject("event_time")
     SecondsUpdater(timerObj, Callback(function(obj, _params) {
       local text = ""
-      let startTime = ::SessionLobby.getRoomSessionStartTime(this.room)
+      let startTime = SessionLobby.getRoomSessionStartTime(this.room)
       if (startTime > 0) {
         let secToStart = startTime - ::get_matching_server_time()
         if (secToStart <= 0)

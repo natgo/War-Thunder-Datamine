@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
+let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 
 let cache = { byId = {} }
 
@@ -20,7 +20,7 @@ let template = {
   text = @() ""
   tooltip = @() ""
   image = @() null
-  link = null
+  link = @() null
   isLink = @() false
   isFeatured = @() false
   needDiscountIcon = false
@@ -57,7 +57,7 @@ let defaultButtonsConfig = { //Used in main menu and World War
   }
   CONTROLS = {
     text = @() "#mainmenu/btnControls"
-    onClickFunc = @(...) ::gui_start_controls()
+    onClickFunc = @(...) gui_start_controls()
     isHidden = @(...) !hasFeature("ControlsAdvancedSettings")
   }
   EMPTY = {

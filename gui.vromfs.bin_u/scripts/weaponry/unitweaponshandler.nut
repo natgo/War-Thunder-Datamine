@@ -17,6 +17,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 
 gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -72,7 +73,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.checkInitWidth()
     this.unit = newUnit
-    this.bulletsManager.setUnit(this.unit)
+    this.bulletsManager.setUnit(this.unit, forceUpdate)
 
     local columnsConfig = null
     let unitType = getEsUnitType(this.unit)
@@ -317,6 +318,9 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
     }
 
+    res.columns = res.columns.filter(@(v) v.len() > 0) //filter empty columns
+    totalColumns = res.columns.len()
+
     let maxColumns = (this.modsInRow / res.itemWidth) || 1
     if (gunsCount == 3 && maxColumns == 2) {
       let newColumns = [[], []]
@@ -326,7 +330,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           newColumns[0].append(column[0])
           newColumns[1].append(column[1])
         }
-        else if (singleItemIdx == -1) {
+        else if (singleItemIdx == -1 && column.len() != 0) {
           newColumns[0].append(column[0])
           newColumns[1].append(null)
           singleItemIdx = idx
@@ -482,6 +486,10 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateAllBulletCountSliders()
   }
 
+  function onEventModificationChanged(_p) {
+    this.setUnit(this.unit, true)
+  }
+
   function getSelectionItemParams() {
     let res = clone this.showItemParams
     res.$rawdelete("selectBulletsByManager")
@@ -500,7 +508,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let id = obj.holderId
     if (id == this.weaponItemId) {
       if (this.hasWeaponsToChooseFrom())
-        ::gui_start_choose_unit_weapon(this.unit, null, {
+        guiStartChooseUnitWeapon(this.unit, null, {
           itemParams = this.getSelectionItemParams()
           alignObj = obj
           isForcedAvailable = this.isForcedAvailable

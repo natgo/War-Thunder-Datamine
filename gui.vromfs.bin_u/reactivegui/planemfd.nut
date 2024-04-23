@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { mkRadarForMfd } = require("radarComponent.nut")
-let { MfdRadarColor, MfdRadarEnabled } = require("radarState.nut")
+let { MfdRadarColor, MfdRadarEnabled, radarPosSize } = require("radarState.nut")
 let { IsMfdEnabled, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
     MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
 let tws = require("tws.nut")
@@ -10,6 +9,7 @@ let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
 let mfdVdi = require("planeCockpit/mfdVdi.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
 let mfdCamera = require("planeMfdCamera.nut")
+let { radarMfd } = require("%rGui/radar.nut")
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
@@ -19,18 +19,20 @@ let planeMFD = @() {
   watch = [MfdRadarEnabled, RwrForMfd, RwrScale, MfdRadarWithNavVis, MfdVdiVisible, DigitalDevicesVisible, RwrBackHide]
   size = flex()
   children = [
-    (MfdRadarEnabled.value ? mkRadarForMfd(MfdRadarColor) : null),
+    (MfdRadarEnabled.value ? radarMfd(radarPosSize, MfdRadarColor) : null),
     (RwrForMfd.value
       ? tws({
         colorWatched = MfdRadarColor,
         posWatched = twsPosComputed,
         sizeWatched = twsSizeComputed,
-        relativCircleSize = 36,
+        relativCircleSize = 54,
         scale = RwrScale.value,
         needDrawCentralIcon = !RwrBackHide.value,
         needDrawBackground = !RwrBackHide.value,
-        fontSizeMult = 2.0,
-        needAdditionalLights = false
+        fontSizeMult = 1.8,
+        needAdditionalLights = false,
+        forMfd = true
+        centralCircleSizeMult = 0.7
       })
       : null),
     mfdCamera,

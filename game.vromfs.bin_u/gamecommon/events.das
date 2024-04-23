@@ -77,6 +77,10 @@ struct EventOnShortcutEnable
   enable : bool
 
 [cpp_event(broadcast)]
+struct EventOnAllShortcutsEnable
+  enable : bool
+
+[cpp_event(broadcast)]
 struct EventOnAxisEnable
   axis : string
   enable : bool
@@ -174,6 +178,7 @@ struct CmdSetOperatorCountry
 [cpp_event(broadcast)]
 struct EventOnPlayerUnlockStreak
   userId : uint64
+  unitName : string
   unlockName : string
   statIdName : string
   amountWp : int
@@ -182,3 +187,46 @@ struct EventOnPlayerUnlockStreak
 [event(broadcast)]
 struct EventSoundAreaInit
 {}
+
+[cpp_event(broadcast)]
+struct EventOnPlayerStat
+  userId : uint64
+  statIdName : string
+
+[cpp_event(unicast)]
+struct CmdEngineStartSound
+{}
+
+[cpp_event(unicast)]
+struct CmdEngineStopSound
+{}
+
+[cpp_event(unicast)]
+struct CmdEnginePlayStartSound
+{}
+
+[cpp_event(unicast)]
+struct CmdEnginePlayStopSound
+{}
+
+[cpp_event(unicast)]
+struct CmdEngineStealSound
+{}
+
+[cpp_event(unicast)]
+struct CmdEngineUnstealSound
+{}
+
+[event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventPickUpLoot
+  loot_type : int
+  count : int
+
+[cpp_event(unicast, with_scheme)]
+struct EventOnUnitDead
+  killer_eid : EntityId
+
+[cpp_event(broadcast, with_scheme)]
+struct EventRendInstDestroyed
+  pos : float3
+  riType : uint

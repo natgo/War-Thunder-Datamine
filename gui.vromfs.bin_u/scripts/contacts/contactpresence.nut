@@ -1,11 +1,14 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadMemberState
 
+let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
 enum PRESENCE_SORT {
   UNKNOWN
   OFFLINE
+  STEAM_ONLINE
   ONLINE
   IN_QUEUE
   IN_GAME
@@ -15,24 +18,24 @@ enum PRESENCE_SORT {
   SQUAD_LEADER
 }
 
-::g_contact_presence <- {
+let contactPresence = {
   types = []
   template = {
-    presenceName = "" //filled automatically with addTypesByGlobalName
+    presenceName = "" // filled automatically with addTypes
     sortOrder = PRESENCE_SORT.UNKNOWN
     iconName = ""
     iconColor = "white"
     textColor = ""
     iconTransparency = 180
 
-    getTooltip = @() "status/" + this.presenceName
+    getTooltip = @() $"status/{this.presenceName}"
     getText = @(locParams = {}) colorize(this.textColor, loc(this.getTooltip(), locParams))
-    getIcon = @() "#ui/gameuiskin#" + this.iconName
+    getIcon = @() $"#ui/gameuiskin#{this.iconName}"
     getIconColor = @() get_main_gui_scene().getConstantValue(this.iconColor) || ""
   }
 }
 
-enums.addTypesByGlobalName("g_contact_presence", {
+addTypes(contactPresence, {
   UNKNOWN = {
     sortOrder = PRESENCE_SORT.UNKNOWN
     iconName = "player_unknown"
@@ -84,6 +87,51 @@ enums.addTypesByGlobalName("g_contact_presence", {
     iconName = "squad_leader"
     textColor = "@userlogColoredText"
   }
-},
-@() this.presenceName = this.typeName.tolower(),
-"typeName")
+
+  STEAM_ONLINE = {
+    sortOrder = PRESENCE_SORT.STEAM_ONLINE
+    iconName = "player_online"
+    iconColor = "contactOfflineColor"
+  }
+}, @() this.presenceName = this.typeName.tolower(), "typeName")
+
+function updateContactPresence(contact) {
+  let { uid } = contact
+  local presence = contactPresence.UNKNOWN
+  if (contact.online)
+    presence = contactPresence.ONLINE
+  else if (!contact.unknown)
+    presence = contactPresence.OFFLINE
+
+  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(uid)
+  if (squadStatus == squadMemberState.NOT_IN_SQUAD) {
+    if (contact.forceOffline)
+      presence = contactPresence.OFFLINE
+    else if (contact.online && contact.gameStatus) {
+      if (contact.gameStatus == "in_queue")
+        presence = contactPresence.IN_QUEUE
+      else
+        presence = contactPresence.IN_GAME
+    }
+    else if (!contact.online && contact.isSteamOnline)
+      presence = contactPresence.STEAM_ONLINE
+  }
+  else if (squadStatus == squadMemberState.SQUAD_LEADER)
+    presence = contactPresence.SQUAD_LEADER
+  else if (squadStatus == squadMemberState.SQUAD_MEMBER_READY)
+    presence = contactPresence.SQUAD_READY
+  else if (squadStatus == squadMemberState.SQUAD_MEMBER_OFFLINE)
+    presence = contactPresence.SQUAD_OFFLINE
+  else
+    presence = contactPresence.SQUAD_NOT_READY
+
+  contact.presence = presence
+
+  if (squadStatus != squadMemberState.NOT_IN_SQUAD || ::is_in_my_clan(null, uid))
+    ::chatUpdatePresence(contact)
+}
+
+return {
+  contactPresence
+  updateContactPresence
+}
