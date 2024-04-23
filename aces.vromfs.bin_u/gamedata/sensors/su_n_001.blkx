@@ -408,9 +408,7 @@
       "rangeFinder": true,
       "groundClutter": false,
       "angularAccuracy": 0.05,
-      "distanceAccuracy": 10.0,
-      "showBScope": false,
-      "showCScope": true
+      "distanceAccuracy": 10.0
     }
   },
   "scanPatternSets": {
@@ -926,7 +924,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto ACM"
+            "name": "PD ACM"
           }
         },
         "setIrstAcmLockMode": {
@@ -1164,9 +1162,6 @@
           ],
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
-          },
-          "setModeName": {
-            "name": "auto HMD"
           }
         },
         "resetHmdLockMode": {
@@ -1224,7 +1219,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "setIrstHmdStandbyMode": {
@@ -1258,7 +1253,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "setIrstHmdLockMode": {
@@ -1613,10 +1608,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToHmdStandby": {

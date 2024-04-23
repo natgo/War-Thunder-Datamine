@@ -243,8 +243,11 @@ function updateTitle() {
   scene.result = style
   let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
   titleObj.show(isVisibleTitle)
-  if (isVisibleTitle)
+  if (isVisibleTitle) {
     titleObj.setValue(utf8ToUpper(loc($"hitcamera/result/{style}")))
+    setTimeout(TIME_TITLE_SHOW_SEC, updateTitle)
+    hitResult = DM_HIT_RESULT_NONE
+  }
 }
 
 function showRelativeCrewLoss() {
@@ -312,11 +315,11 @@ function updateCrewCount(unitInfo, data = null) {
   let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
   let maxCrewLeftPercent = (1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / unitInfo.crewTotalCount) * 100
   let newCrewRelative = clamp(stdMath.lerp(minCrewCount - 1, unitInfo.crewTotalCount, 0, maxCrewLeftPercent, crewCount), 0, 100)
-
-  let crewChangeRelative = unitInfo.crewRelative > 0 ? newCrewRelative - unitInfo.crewRelative : 0
+  let crewChangeRelative = unitInfo.crewRelative > 0 ? unitInfo.crewRelative - newCrewRelative : 0
   unitInfo.crewRelative = newCrewRelative
-  if (!(data?.updateDebuffsOnly ?? true) && crewChangeRelative < 0.0)
-    unitInfo.crewLostRelative += crewChangeRelative
+  let needShowDelta = crewCount > 0 && crewChangeRelative > 0.0 && (camInfo?.needShowCrewLoss ?? false)
+  if (needShowDelta)
+    unitInfo.crewLostRelative -= crewChangeRelative
 
   setTimeout(TIME_TO_SUM_RELATIVE_CREW_LOST, showRelativeCrewLoss)
 
@@ -386,7 +389,7 @@ function onHitCameraEvent(mode, result, info) {
 
   let needFade   = mode == HIT_CAMERA_FADE_OUT
   let isStarted  = mode == HIT_CAMERA_START
-  isVisible      = isEnabled && (isStarted || needFade || mode == HIT_CAMERA_FADE_IN)
+  isVisible      = isEnabled && (isStarted || needFade || mode == HIT_CAMERA_FADE_IN || mode == HIT_CAMERA_START)
   stopFadeTimeS  = needFade ? (info?.stopFadeTime ?? -1) : -1
   hitResult      = result
   curUnitId      = info?.unitId ?? curUnitId
@@ -519,9 +522,9 @@ function onEnemyDamageState(event) {
   if (curUnitType in (damageStatusTemplates)) {
     let { artilleryTotalCount  = 5, torpedoTotalCount = 5, artilleryHealth = 100, hasFire = false, engineHealth = 100,
       torpedoTubesHealth = 100, ruddersHealth = 100, hasBreach = false  } = event
-    let artilleryText = format("%d/%d", artilleryHealth*artilleryTotalCount/100, artilleryTotalCount)
+    let artilleryText = format("%d/%d", stdMath.round(artilleryHealth*artilleryTotalCount/100.), artilleryTotalCount)
     let torpedoText =
-      torpedoTotalCount != 0 ? format("%d/%d", torpedoTubesHealth*torpedoTotalCount/100, torpedoTotalCount) : ""
+      torpedoTotalCount != 0 ? format("%d/%d", stdMath.round(torpedoTubesHealth*torpedoTotalCount/100.), torpedoTotalCount) : ""
     setDamageStatus("artillery_health", artilleryHealth, artilleryText)
     setDamageStatus("fire_status", hasFire ? 1 : -1)
     setDamageStatus("engine_health", engineHealth, format("%d%%", engineHealth))

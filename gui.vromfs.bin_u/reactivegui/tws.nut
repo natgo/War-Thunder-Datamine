@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
-let { MlwsLwsForMfd, RwrForMfd, MfdFontScale } = require("airState.nut");
+let { MlwsLwsForMfd, MfdFontScale } = require("airState.nut");
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
@@ -71,7 +71,7 @@ let aircraftVectorImageCommands = (function() {
 }())
 
 
-function centeredAircraftIcon(colorWatched) {
+function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
 
   let aircraftIcon = @() styleLineBackground.__merge({
     watch = colorWatched
@@ -81,7 +81,7 @@ function centeredAircraftIcon(colorWatched) {
     color = colorWatched.value
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    size = [pw(33), ph(33)]
+    size = [pw(33 * centralCircleSizeMult), ph(33 * centralCircleSizeMult)]
     pos = [0, 0]
     opacity = RADAR_LINES_OPACITY
     commands = aircraftVectorImageCommands
@@ -99,7 +99,7 @@ function centeredAircraftIcon(colorWatched) {
         watch = [targetsCommonOpacity, colorWatched]
         lineWidth = hdpx(LINE_WIDTH)
         commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25, indicatorRadius * 0.25]
+          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25 * centralCircleSizeMult, indicatorRadius * 0.25 * centralCircleSizeMult]
         ]
       }),
       aircraftIcon
@@ -369,7 +369,7 @@ let cmdsRwrTarget = [
   [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
 ]
 
-function createRwrTarget(index, colorWatched, fontSizeMult) {
+function createRwrTarget(index, colorWatched, fontSizeMult, for_fmd) {
   let target = rwrTargets[index]
 
   if (!target.valid)
@@ -386,13 +386,13 @@ function createRwrTarget(index, colorWatched, fontSizeMult) {
   if (target.groupId != null)
     targetType = @()
       styleText.__merge({
-        watch = [colorWatched, RwrForMfd, MfdFontScale]
+        watch = [colorWatched, MfdFontScale]
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : hudFontHgt) : hudFontHgt
+        fontSize = for_fmd ? (fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : 1.0) * hudFontHgt) : hudFontHgt
         text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
         color = isColorOrWhite(colorWatched.value)
       })
@@ -668,11 +668,11 @@ function rwrTargetsState(colorWatched) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched, fontSizeMult) {
+let rwrTargetsComponent = function(colorWatched, fontSizeMult, for_mfd) {
   return @() {
-    watch = [rwrTargetsTriggers, RwrForMfd]
+    watch = rwrTargetsTriggers
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult, for_mfd))
   }
 }
 
@@ -684,13 +684,14 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
-function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights) {
+function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
+    needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
   return {
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
       needDrawBackground ? rwrBackground(colorWatched, scale) : null,
-      needDrawCentralIcon ? centeredAircraftIcon(colorWatched) : null,
+      needDrawCentralIcon ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
       {
         size = [pw(relativCircleRadius * ratio * scale), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER
@@ -701,7 +702,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
           needAdditionalLights ? lwsTargetsState(colorWatched) : null
           lwsTargetsComponent(colorWatched, !needDrawCentralIcon)
           needAdditionalLights ? rwrTargetsState(colorWatched) : null
-          rwrTargetsComponent(colorWatched, fontSizeMult)
+          rwrTargetsComponent(colorWatched, fontSizeMult, forMfd)
           needAdditionalLights ? rwrTargetsPresenceComponent(colorWatched) : null
         ]
       }
@@ -709,14 +710,17 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
   }
 }
 
-let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0, needAdditionalLights = true) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0,
+    needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0,
+    needAdditionalLights = true, forMfd = false, centralCircleSizeMult = 1.0) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights)
+    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0,
+      needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult)
   }
 })
 

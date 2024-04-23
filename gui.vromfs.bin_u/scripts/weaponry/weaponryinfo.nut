@@ -11,7 +11,7 @@ let { get_current_mission_name } = require("mission")
 let { set_last_weapon } = require("unitCustomization")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { AMMO,
         getAmmoCost,
         getAmmoAmount,
@@ -27,7 +27,7 @@ let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeapon
 let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
-let { shopIsModificationEnabled, shopIsModificationPurchased } = require("chardResearch")
+let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -130,7 +130,7 @@ function isWeaponEnabled(unit, weapon) {
 let getWeaponDisabledMods = @(unit, weapon)
   shop_is_weapon_available(unit.name, weapon.name, true, false)
     ? []
-    : (weapon?.reqModification.filter(@(n) !shopIsModificationEnabled(unit.name, n)) ?? [])
+    : (weapon?.reqModification.filter(@(n) !isModificationEnabled(unit.name, n)) ?? [])
 
 let isDefaultTorpedoes = @(weapon) weapon?.reqModification.contains("ship_torpedoes") ?? false
 
@@ -519,8 +519,12 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         item.diveDepth <- itemBlk?.diveDepth ?? 0
       }
 
-      if ([ WEAPON_TYPE.BOMBS, WEAPON_TYPE.GUIDED_BOMBS ].contains(currentTypeName) && weapon?.machLimit)
-        item.machLimit <- weapon.machLimit
+      if (weapon?.machLimit) {
+        if (currentTypeName == WEAPON_TYPE.BOMBS || currentTypeName == WEAPON_TYPE.GUIDED_BOMBS)
+          item.machLimit <- weapon.machLimit
+        if (weapon?.trigger == TRIGGER_TYPE.ROCKETS || weapon?.trigger == TRIGGER_TYPE.ATGM)
+          item.machLimitRockets <- weapon.machLimit
+      }
 
       if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName)) {
         if (itemBlk?.strikingPart != null)
@@ -686,7 +690,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
   }
   else if (weaponType == "torpedoes") {
     let torpedoMod = "torpedoes_movement_mode"
-    if (shopIsModificationEnabled(unit.name, torpedoMod)) {
+    if (isModificationEnabled(unit.name, torpedoMod)) {
       let mod = getModificationByName(unit, torpedoMod)
       let diffId = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff()).crewSkillName
       let effects = mod?.effects?[diffId]
@@ -730,6 +734,10 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
   if (weapon?.machLimit)
     res.append("".concat(loc("bombProperties/machLimit"), colon,
       format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber"))))
+
+  if (weapon?.machLimitRockets)
+    res.append("".concat(loc("rocketProperties/machLimit"), colon,
+      format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber"))))
 
   if (weapon.explosiveType != null) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
@@ -782,7 +790,7 @@ function getPrimaryWeaponsList(unit) {
 function getLastPrimaryWeapon(unit) {
   let primaryList = getPrimaryWeaponsList(unit)
   foreach (modName in primaryList)
-    if (modName != "" && shopIsModificationEnabled(unit.name, modName))
+    if (modName != "" && isModificationEnabled(unit.name, modName))
       return modName
   return ""
 }
@@ -929,7 +937,7 @@ function checkUnitBullets(unit, isCheckAll = false, bulletSet = null) {
     if (modifName == "")
       continue
 
-    if ((!isCheckAll && shopIsModificationEnabled(unit.name, modifName)) //Current mod
+    if ((!isCheckAll && isModificationEnabled(unit.name, modifName)) //Current mod
       || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName)))) { //All unlocked mods
       let res = checkAmmoAmount(unit, modifName, AMMO.MODIFICATION)
       if (res != UNIT_WEAPONS_READY)

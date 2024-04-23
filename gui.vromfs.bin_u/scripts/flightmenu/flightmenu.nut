@@ -32,16 +32,20 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartCdOptions, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
+let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
-  let missionName = ::current_campaign_mission
+  let missionName = getCurrentCampaignMission()
   if (missionName != null) {
     let missionBlk = DataBlock()
     let gm = get_game_mode()
-    missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, ::current_campaign_mission))
+    let missionInfoBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
+    if (missionInfoBlk != null)
+      missionBlk.setFrom(missionInfoBlk)
     let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
       return restartCurrentMission()
@@ -244,7 +248,11 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
       if (is_mplayer_host())
         text = loc("flightmenu/questionQuitMissionHost")
       else if (get_game_mode() == GM_DOMINATION) {
-        let unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
+        let misBlk = get_current_mission_info_cached()
+        local unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
+        if (isMissionExtr())
+          unitsData = unitsData.filter(@(ud) ud.unit.name not in misBlk?.editSlotbar[ud.unit.shopCountry])
+
         let unitsTexts = unitsData.map(function(ud) {
           local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())
@@ -254,7 +262,9 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
         if (unitsTexts.len())
           text = loc("flightmenu/haveAvailableCrews") + "\n" + ", ".join(unitsTexts, true) + "\n\n"
 
-        text += loc("flightmenu/questionQuitMissionInProgress")
+        text = "".concat(text, (misBlk?.gt_use_wp && misBlk?.gt_use_xp)
+          ? loc("flightmenu/questionQuitMissionInProgress")
+          : loc("flightmenu/questionQuitMission"))
       }
       else
         text = loc("flightmenu/questionQuitMission")

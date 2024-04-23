@@ -742,14 +742,14 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setModeName": {
-            "name": "auto ACM"
-          },
           "setTransiver": {
             "transiver": "mprf"
           },
           "setSignal": {
             "signal": "mprfTrack"
+          },
+          "setModeName": {
+            "name": "PD ACM"
           }
         },
         "resetAcmLockMode": {
@@ -895,18 +895,6 @@
             "name": "PD HDN standby"
           }
         },
-        "setTwsStandbyMode": {
-          "setTwsStandbyModeCommon": {},
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          },
-          "setModeName": {
-            "name": "TWS HDN standby"
-          }
-        },
         "setHprfVelocityStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
@@ -958,18 +946,6 @@
             "name": "PD HDN VS search"
           }
         },
-        "setTwsSearchMode": {
-          "setTwsSearchModeCommon": {},
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          },
-          "setModeName": {
-            "name": "TWS HDN search"
-          }
-        },
         "setLprfSearchMode": {
           "setSearchModeCommon": {},
           "setTransiver": {
@@ -992,6 +968,28 @@
           "setBvrLockMode": {},
           "setModeName": {
             "name": "acquisition"
+          }
+        },
+        "setHprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfAcm"
+          },
+          "setModeName": {
+            "name": "PD HDN ACM"
+          }
+        },
+        "setLprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "lprf"
+          },
+          "setSignal": {
+            "signal": "lprfTrack"
+          },
+          "setModeName": {
+            "name": "ACM"
           }
         },
         "setMprfStandbyMode": {
@@ -1019,6 +1017,54 @@
           },
           "setModeName": {
             "name": "PD search"
+          }
+        },
+        "setMprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS standby"
+          }
+        },
+        "setMprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS search"
+          }
+        },
+        "setHprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN standby"
+          }
+        },
+        "setHprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN search"
           }
         },
         "setHmdStandbyMode": {
@@ -1049,7 +1095,7 @@
             "active": true
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdStandbyMode": {
@@ -1093,7 +1139,7 @@
             "scopeRangeSet": "acm"
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdLockMode": {
@@ -1309,7 +1355,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "acmLockToAcmTrack": {
@@ -1343,7 +1393,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToAcmLock": {
@@ -1377,7 +1431,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToSearch": {
@@ -1394,7 +1452,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "standbyToAcmLock": {
@@ -1419,10 +1481,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToHmdStandby": {
@@ -1921,8 +1989,56 @@
             ]
           }
         },
-        "mprfToHprf": {
+        "mprfToMprfTws": {
           "stateFrom": "mprf",
+          "command": "modeSwitch",
+          "stateTo": "mprfTws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setMprfTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setMprfTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "mprfTwsToHprf": {
+          "stateFrom": "mprfTws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
@@ -1931,11 +2047,6 @@
                 "fsm": "main",
                 "name": "setStandbyMode",
                 "actionTemplateName": "setHprfStandbyMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetSearchMode",
-                "actionTemplateName": "resetSearchMode"
               },
               {
                 "fsm": "main",
@@ -1951,8 +2062,17 @@
                 "fsm": "main",
                 "name": "designateTarget",
                 "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
               }
             ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -1965,21 +2085,21 @@
             ]
           }
         },
-        "hprfToTws": {
+        "hprfToHprfTws": {
           "stateFrom": "hprf",
           "command": "modeSwitch",
-          "stateTo": "tws",
+          "stateTo": "hprfTws",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setTwsStandbyMode"
+                "actionTemplateName": "setHprfTwsStandbyMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setTwsSearchMode"
+                "actionTemplateName": "setHprfTwsSearchMode"
               },
               {
                 "fsm": "main",
@@ -2014,7 +2134,7 @@
           }
         },
         "twsToHprfVelocity": {
-          "stateFrom": "tws",
+          "stateFrom": "hprfTws",
           "command": "modeSwitch",
           "stateTo": "hprfVelocity",
           "actions": {
@@ -2146,6 +2266,9 @@
           }
         }
       }
+    },
+    "acmLockModes": {
+      "stateInit": "init"
     },
     "acmLock": {
       "stateInit": "lock",

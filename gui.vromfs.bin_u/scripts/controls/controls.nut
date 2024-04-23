@@ -64,6 +64,7 @@ let { getLocaliazedPS4ControlName, getLocalizedControlName
 } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
+let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 ::preset_changed <- false
 
@@ -383,7 +384,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       local show = filterText == "" || data.text.indexof(filterText) != null
       if(show && data?.isHeader == true)
         parentId = data.id
-      if(data?.parentId == parentId)
+      if(parentId != "" && data?.parentId == parentId)
         show = true
       showObjById(data.id, show, this.scene)
     }
@@ -1943,7 +1944,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
   let unmapped = ::getUnmappedControls(required, helpersMode, true, false)
   if (isInFlight() && gm == GM_TRAINING) {
-    let tutorialUnmapped = ::getUnmappedControlsForTutorial(::current_campaign_mission, helpersMode)
+    let tutorialUnmapped = ::getUnmappedControlsForTutorial(getCurrentCampaignMission(), helpersMode)
     foreach (id in tutorialUnmapped)
       u.appendOnce(id, unmapped)
   }

@@ -7125,6 +7125,34 @@
         "additiveBulletMod": "130mm_ussr_HE"
       }
     },
+    "130mm_ussr_HE_VT": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "130mm_ussr_HE_VT_ammo_pack",
+      "group": "130mm_HE",
+      "effects": {
+        "additiveBulletMod": "130mm_ussr_HE_VT"
+      }
+    },
+    "130mm_ussr_HE_VT_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 3,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "130mm_ussr_Smoke": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "130mm_ussr_Smoke_ammo_pack",
+      "group": "130mm_HE",
+      "effects": {
+        "additiveBulletMod": "130mm_ussr_Smoke"
+      }
+    },
+    "130mm_ussr_Smoke_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "130mm_ussr_SAP": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "130mm_ussr_SAP_ammo_pack",
@@ -11062,6 +11090,15 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "152mm_us_m81_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "152mm_HE",
+      "caliber": 152.0,
+      "effects": {
+        "additiveBulletMod": "152mm_us_m81_he"
+      }
+    },
     "152mm_us_mk34_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -14345,12 +14382,9 @@
     },
     "laser_warning_system": {
       "image": "#ui/gameuiskin#counterMeasures",
-      "animation": [
-        "video/unitModifications/ircm.ivf",
-        "video/unitModifications/laser_warning_system.ivf"
-      ],
       "tier": 3,
       "modClass": "firepower",
+      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rcostAddParam": 0.98,
         "sensors": {
@@ -14368,12 +14402,9 @@
     },
     "laser_rangefinder_lws": {
       "image": "#ui/gameuiskin#counterMeasures",
-      "animation": [
-        "video/unitModifications/ircm.ivf",
-        "video/unitModifications/laser_warning_system.ivf"
-      ],
       "tier": 2,
       "modClass": "firepower",
+      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
@@ -14433,12 +14464,9 @@
     },
     "laser_rangefinder_ircm_lws_t_90a": {
       "image": "#ui/gameuiskin#counterMeasures",
-      "animation": [
-        "video/unitModifications/ircm.ivf",
-        "video/unitModifications/laser_warning_system.ivf"
-      ],
       "tier": 2,
       "modClass": "firepower",
+      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
@@ -14487,6 +14515,9 @@
           "sensor": [
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
             },
             {
               "blk": "gameData/sensors/su_tshu_1_11.blk",
@@ -14695,6 +14726,23 @@
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/ussr_152mm_d1",
         "supportUnitTag": "artillery"
+      }
+    },
+    "md_loot_imager_1_gen": {
+      "image": "#ui/gameuiskin#oil",
+      "tier": 2,
+      "modClass": "firepower",
+      "effects": {
+        "lootImagerMaxDist": 500.0
+      }
+    },
+    "md_rage_scanner": {
+      "image": "#ui/gameuiskin#radar_warning_receiver",
+      "tier": 3,
+      "modClass": "firepower",
+      "effects": {
+        "rageScannerCooldown": 30.0,
+        "rageScannerActiveTime": 5.0
       }
     },
     "ki_43_1_otsu": {
@@ -22050,6 +22098,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "uk_lau_51_ffar": {
+      "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "fr_lr_f1": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
       "animation": "video/unitModifications/rocket_block.ivf",
@@ -23024,6 +23078,13 @@
       "image": "#ui/gameuiskin#torpedo_multiple",
       "requiresModelReload": true,
       "tier": 3,
+      "modClass": "firepower",
+      "deactivationIsAllowed": true
+    },
+    "ship_pgh1_bofors_cannon": {
+      "image": "#ui/gameuiskin#ship_type_boat",
+      "requiresModelReload": true,
+      "tier": 4,
       "modClass": "firepower",
       "deactivationIsAllowed": true
     },

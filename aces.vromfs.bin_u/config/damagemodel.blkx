@@ -440,17 +440,21 @@
     "voxelBoxResolution": 80,
     "minVoxelSize": 0.02,
     "minObstacleSize": 0.02,
-    "squashArmorAnglesScales": {
+    "squashArmorAnglesScale": {
       "p0": [
         0.0,
-        1.0,
-        1.0,
         1.0
       ],
       "p1": [
+        60.0,
+        1.0
+      ],
+      "p2": [
+        75.0,
+        1.0
+      ],
+      "p3": [
         90.0,
-        1.0,
-        1.0,
         1.0
       ]
     },
@@ -4996,6 +5000,30 @@
     "jp_type_98_ke_ni": 125,
     "jp_type_98_ta_se": 125,
     "jp_type_99": 166,
+    "md_bosvark": 125,
+    "md_bosvark_recoiless_rifle": 125,
+    "md_bosvark_uparmor": 125,
+    "md_bosvark_uparmor_recoiless_rifle": 125,
+    "md_btr_80a": 125,
+    "md_btr_80a_projector": 125,
+    "md_btr_80a_uparmor": 125,
+    "md_btr_80a_uparmor_projector": 125,
+    "md_flarakrad": 125,
+    "md_flarakrad_uparmor": 125,
+    "md_m53_59": 125,
+    "md_m53_59_rocket": 125,
+    "md_m53_59_uparmor": 125,
+    "md_m53_59_uparmor_rocket": 125,
+    "md_tgdgb_m40_lv": 125,
+    "md_tgdgb_m40_lv_uparmor": 125,
+    "md_vickers_mk_11": 133,
+    "md_vickers_mk_11_rearmed": 133,
+    "md_vickers_mk_11_uparmor": 133,
+    "md_vickers_mk_11_uparmor_rearmed": 133,
+    "md_ystervark_spaa": 125,
+    "md_ystervark_spaa_flamer": 125,
+    "md_ystervark_spaa_uparmor": 125,
+    "md_ystervark_spaa_uparmor_flamer": 125,
     "sw_a_34_comet": 140,
     "sw_asrad_r": 125,
     "sw_bkan_1c": 166,
@@ -9475,11 +9503,11 @@
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
-      "pierceAngled": "kinetic_discard_sabot_penetration_angled",
-      "stopAngled": "kinetic_discard_sabot_non_penetration_angled"
+      "pierceAngled": "explosive_penetration_angled",
+      "stopAngled": "explosive_non_penetration_angled"
     },
     "smoke": {
-      "bullets": "smoke_tank, smoke_grenade_tank",
+      "bullets": "smoke_tank, smoke_grenade_tank, incendiary_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
@@ -9859,87 +9887,91 @@
       ],
       [
         0.1,
-        10.0
+        8.0
       ],
       [
         0.102,
-        10.0
+        8.0
       ],
       [
         0.105,
-        10.0
+        8.0
       ],
       [
         0.114,
-        12.0
+        9.0
       ],
       [
         0.12,
-        12.0
+        9.0
       ],
       [
         0.127,
-        13.0
+        10.0
       ],
       [
         0.13,
-        14.0
+        10.0
       ],
       [
         0.133,
-        14.0
+        11.0
       ],
       [
         0.14,
-        14.0
+        11.0
       ],
       [
         0.152,
-        16.0
+        13.0
       ],
       [
         0.18,
-        18.0
+        15.0
       ],
       [
         0.19,
-        18.0
+        15.0
       ],
       [
         0.2,
-        21.0
+        16.0
       ],
       [
         0.203,
-        21.0
+        16.0
       ],
       [
         0.254,
-        26.0
+        20.0
       ],
       [
         0.28,
-        29.0
+        24.0
       ],
       [
         0.283,
-        29.0
+        24.0
       ],
       [
         0.305,
-        31.0
+        25.0
       ],
       [
         0.343,
-        35.0
+        28.0
       ],
       [
         0.356,
-        36.0
+        29.0
       ],
       [
         0.381,
-        39.0
+        30.0
+      ],
+      [
+        0.41,
+        33.0
       ]
     ]
   },
@@ -10321,6 +10353,10 @@
       "gbufferModelName": "tank_shell_og9"
     },
     "smoke_tank": {
+      "modelName": "tank_bullet_he",
+      "gbufferModelName": "tank_shell_smoke"
+    },
+    "incendiary_tank": {
       "modelName": "tank_bullet_he",
       "gbufferModelName": "tank_shell_smoke"
     },

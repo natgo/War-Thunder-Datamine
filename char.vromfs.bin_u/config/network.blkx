@@ -95,8 +95,8 @@
   },
   "_common_ugcSkinsDecalsCDN": {
     "ugcServerUrl": [
-      "https://ugcinfo-test-lw-nl-01.gaijin.net/char",
-      "https://ugcinfo-test-lw-nl-02.gaijin.net/char"
+      "https://ugcinfo-test-lw-nl-03.gaijin.net/char",
+      "https://ugcinfo-test-lw-nl-04.gaijin.net/char"
     ],
     "enableUGC": false,
     "url": "https://wt-ugc.cdn.gaijin.net/"
@@ -106,7 +106,7 @@
     "host": "127.0.0.1"
   },
   "production": {
-    "appPerm": 79,
+    "appPerm": 50278,
     "jwtAuthorizationPercent": 100,
     "matchServer": [
       "mgate-sv-lux1-01.warthunder.com:7853",
@@ -206,7 +206,7 @@
     ]
   },
   "production_scee": {
-    "appPerm": 79,
+    "appPerm": 50278,
     "matchServer": "mgate-elb-01.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -245,7 +245,7 @@
     }
   },
   "production_scea": {
-    "appPerm": 79,
+    "appPerm": 50278,
     "matchServer": "mgate-elb-01.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -284,8 +284,8 @@
     }
   },
   "dev-stable": {
-    "appPerm": 78,
-    "matchServer": "match-dev-lw-nl-01.warthunder.com:7853",
+    "appPerm": 50277,
+    "matchServer": "match-dev-lw-nl-02.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -330,8 +330,8 @@
     }
   },
   "dev": {
-    "appPerm": 78,
-    "matchServer": "match-dev-lw-nl-01.warthunder.com:7852",
+    "appPerm": 50277,
+    "matchServer": "match-dev-lw-nl-02.warthunder.com:7852",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -367,9 +367,9 @@
     "contacts": {
       "servers": {
         "url": [
-          "https://contacts-dev-01.gaijin.net:9443/char",
-          "https://contacts-dev-02.gaijin.net:9443/char",
-          "https://contacts-dev-03.gaijin.net:9443/char"
+          "https://contacts-dev-01.gaijin.net:9443/json",
+          "https://contacts-dev-02.gaijin.net:9443/json",
+          "https://contacts-dev-03.gaijin.net:9443/json"
         ]
       }
     },
@@ -389,8 +389,8 @@
     }
   },
   "nightly": {
-    "appPerm": 79,
-    "matchServer": "match-nightly-lw-nl-01.warthunder.com:7853",
+    "appPerm": 50276,
+    "matchServer": "match-nightly-lw-nl-02.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -441,7 +441,7 @@
     }
   },
   "ps4submission": {
-    "appPerm": 79,
+    "appPerm": 50277,
     "matchServer": "ps4sub-match.warthunder.com:7870",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -457,7 +457,7 @@
     }
   },
   "xbox-submission": {
-    "appPerm": 79,
+    "appPerm": 50277,
     "matchServer": "xbsub-match.warthunder.com:7870",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -470,7 +470,7 @@
     "enableApex": true
   },
   "test": {
-    "appPerm": 33,
+    "appPerm": 50276,
     "matchServer": "match-test-gj-msk-01.gaijin.ops:7852",
     "ircServer": "chat-test-gj-msk-01.gaijin.ops:6668",
     "useTamVoice": true,
@@ -484,7 +484,7 @@
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
     "enableNetConsole": true,
-    "marketplaceURL": "http://market-test.gaijin.ops/marketPlace/",
+    "marketplaceURL": "http://market-test-apollo.gaijin.ops/",
     "enableUGC": true,
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
@@ -532,9 +532,9 @@
     "url": "http://webfs-test-gj-msk-01.gaijin.ops:8000/content/warthunder/webfs/"
   },
   "internal": {
-    "appPerm": 33,
+    "appPerm": 50276,
     "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7852",
-    "ircServer": "chat-test-gj-msk-01.gaijin.ops:6668",
+    "ircServer": "chat-gj-hu-01.gaijin.ops:6668",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -546,7 +546,7 @@
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
     "enableNetConsole": true,
-    "marketplaceURL": "http://market-test.gaijin.ops/marketPlace/",
+    "marketplaceURL": "http://market-test-apollo.gaijin.ops/",
     "enableUGC": true,
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
@@ -585,8 +585,8 @@
     "contacts": {
       "servers": {
         "url": [
-          "https://contact-proxy-internal.gaijin.net:443/char",
-          "https://contact-proxy-internal.gaijin.net:8443/char"
+          "https://contact-proxy-internal.gaijin.net:443/json",
+          "https://contact-proxy-internal.gaijin.net:8443/json"
         ]
       }
     },
@@ -597,7 +597,7 @@
     }
   },
   "experimental": {
-    "appPerm": 33,
+    "appPerm": 50276,
     "matchServer": "match-test-gj-msk-01.gaijin.ops:7870",
     "ircServer": "chat-test-gj-msk-01.gaijin.ops:7001",
     "useTamVoice": true,

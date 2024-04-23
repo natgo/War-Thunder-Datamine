@@ -64,7 +64,7 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
   getTimePlayedOnUnitType
 } = require("%scripts/myStats.nut")
-let { guiStartSessionList, setMatchSearchGm, guiStartFlight
+let { guiStartSessionList, setMatchSearchGm, guiStartFlight, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
   getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
@@ -72,7 +72,6 @@ let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGame
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -427,7 +426,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       if (name != "name")
         missionBlk[name] <- value
     select_mission(missionBlk, false)
-    ::current_campaign_mission = missionBlk.name
+    setCurrentCampaignMission(missionBlk.name)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight) })
   }
 
@@ -514,11 +513,6 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let event = getGameModeEvent(curGameMode)
     if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
-
-    if (hasMultiplayerLimitByAas.get()) {
-      showMultiplayerLimitByAasMsg()
-      return
-    }
 
     if (!this.isCrossPlayEventAvailable(event)) {
       checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))

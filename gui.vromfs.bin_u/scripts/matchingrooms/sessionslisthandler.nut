@@ -9,7 +9,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { move_mouse_on_child_by_value, handlersManager, loadHandler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -29,7 +28,7 @@ let { checkAndCreateGamemodeWnd, setMatchSearchGm, getMatchSearchGm
 } = require("%scripts/missions/startMissionsList.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
-  sceneBlkName = sessionsListBlkPath.value
+  sceneBlkName = "%gui/sessionsList.blk"
   sceneNavBlkName = "%gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
   isCoop = true
@@ -52,7 +51,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     this.curPageRoomsList = []
     this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
-    this.isCoop = isGameModeCoop(getMatchSearchGm)
+    this.isCoop = isGameModeCoop(getMatchSearchGm())
     this.scene.findObject("sessions_update").setUserData(this)
 
     let head = this.scene.findObject("sessions_diff_header")
@@ -106,7 +105,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
         [USEROPT_SEARCH_GAMEMODE, "spinner"],
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
-    else if (getMatchSearchGm == GM_SKIRMISH)
+    else if (getMatchSearchGm() == GM_SKIRMISH)
       options = [
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]

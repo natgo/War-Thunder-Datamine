@@ -19,6 +19,7 @@ let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -30,14 +31,17 @@ let getSystemOptions = @() {
 local overrideMainOptionsFn = null
 
 function getPrivacyOptionsList() {
-  let hasFeat = hasFeature("PrivacySettings")
+  let hasPrivacyFeature = hasFeature("PrivacySettings")
+  let hasWishlistFeature = hasFeature("Wishlist")
   return [
-    ["options/header/privacy", null, hasFeat],
-    [USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeat],
-    [USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeat],
-    [USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeat],
-    [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat],
-    [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasFeat && is_platform_pc]
+    ["options/header/privacy", null, hasPrivacyFeature || hasWishlistFeature],
+    [USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasPrivacyFeature],
+    [USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasPrivacyFeature],
+    [USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasPrivacyFeature],
+    [USEROPT_ALLOW_SHOW_WISHLIST, "spinner", hasWishlistFeature],
+    [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS, "spinner", hasWishlistFeature],
+    [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasPrivacyFeature],
+    [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasPrivacyFeature && is_platform_pc]
   ]
 }
 
@@ -55,7 +59,7 @@ let getMainOptions = function() {
     return overrideMainOptionsFn()
 
   let isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
-    (::current_campaign_mission == "tutorial01")
+    (getCurrentCampaignMission() == "tutorial01")
   let canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
 
   return {
