@@ -14,6 +14,7 @@
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "ilsMarconiAvionics": true,
+  "mfdCamTads": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
@@ -39,6 +40,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1862,7 +1864,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_japan_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1876,9 +1878,9 @@
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
         "flexionDir": [
-          0.5,
+          0.0,
           -1.0,
-          0.2
+          0.3
         ],
         "type": "leftHand",
         "detachedNodeYpr": [
@@ -1898,9 +1900,9 @@
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
         "flexionDir": [
-          -0.3,
+          0.0,
           -1.0,
-          -0.5
+          -0.3
         ],
         "type": "rightHand",
         "detachedNodeYpr": [
@@ -1922,7 +1924,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.3
+          0.2
         ]
       },
       {
@@ -1933,7 +1935,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.3
+          -0.2
         ]
       }
     ]
@@ -2316,7 +2318,7 @@
           ],
           "monoDisplayColor": [
             0.37,
-            0.45,
+            0.5,
             0.4
           ],
           "cameraFromShell": true,
@@ -2328,7 +2330,44 @@
             {
               "type": "radar",
               "scale": 0.92,
-              "hideRadarBackground": true
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
@@ -2341,7 +2380,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.0
+            "scale": 1.0,
+            "hideBackground": true
           }
         },
         {
@@ -2553,19 +2593,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2795,8 +2837,7 @@
           },
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
+            "name": "aim_7f_default",
             "ShowNodes": {
               "node": "pylon2_aim7"
             },
@@ -3246,8 +3287,7 @@
           },
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
+            "name": "aim_7f_default",
             "ShowNodes": {
               "node": "pylon6_aim7"
             },
@@ -3475,10 +3515,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -3490,12 +3527,6 @@
       "prevModification": "countermeasures_belt_pack",
       "tier": 2,
       "modClass": "armor"
-    },
-    "air_extinguisher": {
-      "prevModification": "f_4c_g_suit",
-      "tier": 4,
-      "modClass": "armor",
-      "invertEnableLogic": false
     },
     "JM61A1_armor_targets": {},
     "JM61A1_air_targets": {},
@@ -3529,13 +3560,8 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_aim_7f": {
-      "reqModification": "us_aim_9p",
-      "tier": 2,
-      "modClass": "weapon"
-    },
     "us_aim_9l": {
-      "reqModification": "us_aim_7f",
+      "reqModification": "us_aim_9p",
       "tier": 3,
       "modClass": "weapon"
     }
@@ -3666,6 +3692,112 @@
       -4.78337,
       -0.0561663,
       4.18291e-8
+    ]
+  },
+  "lerxVapors": {
+    "lerxVapor": [
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          -0.855,
+          0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          -0.478,
+          0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      },
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          -0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          -2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          -0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          -1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          0.855,
+          -0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          0.478,
+          -0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      }
     ]
   }
 }

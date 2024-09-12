@@ -1,14 +1,30 @@
 tdiv {
   flow:t='vertical'
   table {
+    id:t='battle_reward_table'
+    class:t='btlReward'
+
+    <<#minimized>>
+    minimized:t='yes'
+    <</minimized>>
+
+    <<^minimized>>
+    minimized:t='no'
+    <</minimized>>
+
     tr {
+      headerRow:t='yes'
+
       <<#columns>>
       td {
-        padding-left:t='4@blockInterval'
-        padding-right:t='4@blockInterval'
+        <<^isFirstCol>>
+        cellSeparator {}
+        <</isFirstCol>>
 
         textareaNoTab {
           halign:t='center'
+          valign:t='center'
+          text-align:t='center'
           text:t='#<<titleLocId>>'
         }
       }
@@ -16,32 +32,61 @@ tdiv {
     }
     <<#rows>>
     tr {
+      headerRow:t='no'
+
       <<#isEven>>
       even:t='yes'
       <</isEven>>
 
       <<#cells>>
       td {
-        padding-left:t='4@blockInterval'
-        padding-right:t='4@blockInterval'
+        <<^isFirstCol>>
+        cellSeparator {}
+        <</isFirstCol>>
         <<#cell>>
+        <<#cellType>>
+        cellType:t='<<cellType>>'
+        <</cellType>>
+        <<#hasFormula>>
+        cellType:t='tdRight'
+        <</hasFormula>>
+        <<#image>>
+        hasImage:t='yes'
+        <</image>>
+        <<^image>>
+        hasImage:t='no'
+        <</image>>
         <<#text>>
         activeText {
+          valign:t='center'
           <<#isAlignCenter>>
           halign:t='center'
           <</isAlignCenter>>
+          <<#parseTags>>
+          parseTags:t='yes'
+          <</parseTags>>
           text:t = '<<text>>'
         }
         <</text>>
 
+        <<#hasFormula>>
+        rewardFormula {
+          position:t='relative'
+          left:t='pw-w'
+          valign:t='center'
+
+          include "%gui/debriefing/rewardSources.tpl"
+        }
+        <</hasFormula>>
+
         <<#image>>
         tdiv {
-          size='pw, ph'
-          margin-left='1@sf/@pf'
+          height:t='ph'
+          margin-left:t='1@sf/@pf'
 
           img {
-            halign='center'
-            valign='center'
+            halign:t='center'
+            valign:t='center'
             background-image:t='<<src>>'
             <<#size>>
             size:t='<<size>>'
@@ -54,15 +99,6 @@ tdiv {
           }
         }
         <</image>>
-
-        <<#hasFormula>>
-        tdiv {
-          position:t='relative'
-          pos:t='pw-w, 0'
-
-          include "%gui/debriefing/rewardSources.tpl"
-        }
-        <</hasFormula>>
         <</cell>>
       }
       <</cells>>
@@ -71,12 +107,12 @@ tdiv {
   }
   <<#isLongTooltip>>
   textareaNoTab {
-    margin-left:t='4@blockInterval'
+    margin-left:t='2@blockInterval'
     text:t='...'
   }
   <<#allowToCopy>>
   textareaNoTab {
-    margin-left:t='4@blockInterval'
+    margin-left:t='2@blockInterval'
     text:t='#userlog/copyToClipboardFullInfo'
   }
   <</allowToCopy>>

@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -31,6 +32,7 @@ let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.n
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getRankByExp } = require("%scripts/ranks.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -312,7 +314,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
         local prestigeImg = "";
         local rankTxt = ""
         if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i])) {
-          rankTxt = ::get_rank_by_exp(table[i].exp).tostring()
+          rankTxt = getRankByExp(table[i].exp).tostring()
           prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}"
         }
         let rankItem = format("activeText { id:t='rank-text'; text:t='%s'; margin-right:t='%%s' } ", rankTxt)
@@ -334,7 +336,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
         tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
       else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
-        let txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
+        let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
         if (width != "")
@@ -687,7 +689,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         objTd.getChild(0).setValue(item)
       }
       else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
-        let paramType = ::g_mplayer_param_type.getTypeById(hdr)
+        let paramType = g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)

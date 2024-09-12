@@ -34,6 +34,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1385,6 +1386,14 @@
       {
         "name": "ucav_orion_kornet_fm3",
         "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kornet_fm3.blk"
+      },
+      {
+        "name": "ucav_orion_kab_50l",
+        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kab_50l.blk"
+      },
+      {
+        "name": "ucav_orion_kab_50tv",
+        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kab_50tv.blk"
       }
     ]
   },
@@ -1557,6 +1566,10 @@
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },

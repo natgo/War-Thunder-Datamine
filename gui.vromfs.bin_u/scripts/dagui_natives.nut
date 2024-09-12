@@ -1,4 +1,6 @@
 //pseudo-module for native code
+//ATTENTION! This file cannot be increased. Need to remove functions from root of dagui VM, not add them.
+//shouldDecreaseSize, allowedSizeIncrease = 5
 
 let r = getroottable()
 
@@ -91,6 +93,7 @@ return freeze({
   is_low_latency_available = r["is_low_latency_available"]
   is_xess_quality_available_at_resolution = r["is_xess_quality_available_at_resolution"]
   is_dlss_quality_available_at_resolution = r["is_dlss_quality_available_at_resolution"]
+  get_available_amd_fsr_modes = r["get_available_amd_fsr_modes"]
   epic_is_running = r["epic_is_running"]
   get_cur_circuit_name = r["get_cur_circuit_name"]
   is_online_available = r["is_online_available"]
@@ -146,7 +149,6 @@ return freeze({
   add_last_played = r["add_last_played"]
   add_light = r["add_light"]
   add_rta_localization = r["add_rta_localization"]
-  add_tank_alt_crosshair_template = r["add_tank_alt_crosshair_template"]
   add_video_seen = r["add_video_seen"]
   add_warpoints = r["add_warpoints"]
   allowCuttingInHangar = r["allowCuttingInHangar"]
@@ -158,9 +160,7 @@ return freeze({
   calculate_min_and_max_parameters = r["calculate_min_and_max_parameters"]
   calculate_mod_or_weapon_effect = r["calculate_mod_or_weapon_effect"]
   calculate_mod_or_weapon_effect_with_level = r["calculate_mod_or_weapon_effect_with_level"]
-  can_add_tank_alt_crosshair = r["can_add_tank_alt_crosshair"]
   can_receive_pve_trophy = r["can_receive_pve_trophy"]
-  can_use_text_chat_with_target = r["can_use_text_chat_with_target"]
   char_change_nick = r["char_change_nick"]
   char_request_blk_from_server = r["char_request_blk_from_server"]
   char_request_json_from_server = r["char_request_json_from_server"]
@@ -229,7 +229,6 @@ return freeze({
   copy_to_clipboard = r["copy_to_clipboard"]
   d3d_enable_vsync = r?["d3d_enable_vsync"] ?? @(...) null
   d3d_get_vsync_enabled = r?["d3d_get_vsync_enabled"] ?? @(...) ""
-  dd_mkpath = r?["dd_mkpath"]
   debug_unlock_all = r?["debug_unlock_all"]
   destroy_light = r["destroy_light"]
   dgs_argc = r["dgs_argc"]
@@ -312,11 +311,8 @@ return freeze({
   get_entitlement_gold_discount = r["get_entitlement_gold_discount"]
   get_file_modify_time_sec = r["get_file_modify_time_sec"]
   get_game_mode_name = r["get_game_mode_name"]
-  get_game_type_by_mode = r["get_game_type_by_mode"]
   get_global_stats_blk = r["get_global_stats_blk"]
   get_hint_seen_count = r["get_hint_seen_count"]
-  get_hud_crosshair_color = r["get_hud_crosshair_color"]
-  get_hud_crosshair_type = r["get_hud_crosshair_type"]
   get_hud_game_mode = r["get_hud_game_mode"]
   get_hue = r["get_hue"]
   get_internet_radio_options = r["get_internet_radio_options"]
@@ -379,6 +375,7 @@ return freeze({
   get_option_depthcharge_activation_time = r["get_option_depthcharge_activation_time"]
   get_option_favorite_voice_message = r["get_option_favorite_voice_message"]
   get_option_gamma = r["get_option_gamma"]
+  get_option_console_preset = r["get_option_console_preset"]
   get_option_grass_in_tank_vision = r["get_option_grass_in_tank_vision"]
   get_option_ground_radar_target_cycling = r["get_option_ground_radar_target_cycling"]
   get_option_gunVerticalTargeting = r["get_option_gunVerticalTargeting"]
@@ -393,6 +390,8 @@ return freeze({
   get_option_hud_show_fuel = r["get_option_hud_show_fuel"]
   get_option_hud_show_temperature = r["get_option_hud_show_temperature"]
   get_option_indicatedSpeedType = r["get_option_indicatedSpeedType"]
+  get_option_indicatedAltitudeType = r?["get_option_indicatedAltitudeType"] ?? @(...) null
+  get_option_radarAltitudeAlert = r?["get_option_radarAltitudeAlert"] ?? @(...) null
   get_option_indicators_mode = r["get_option_indicators_mode"]
   get_option_radar_target_cycling = r["get_option_radar_target_cycling"]
   get_option_rocket_fuse_dist = r["get_option_rocket_fuse_dist"]
@@ -401,7 +400,6 @@ return freeze({
   get_option_speech_country_type = r["get_option_speech_country_type"]
   get_option_subs = r["get_option_subs"]
   get_option_subs_radio = r["get_option_subs_radio"]
-  get_option_tank_alt_crosshair = r["get_option_tank_alt_crosshair"]
   get_option_tank_gunner_camera_from_sight = r["get_option_tank_gunner_camera_from_sight"]
   get_option_torpedo_dive_depth = r["get_option_torpedo_dive_depth"]
   get_option_torpedo_dive_depth_auto = r["get_option_torpedo_dive_depth_auto"]
@@ -412,7 +410,6 @@ return freeze({
   get_option_use_rectangular_radar_indicator = r["get_option_use_rectangular_radar_indicator"]
   get_option_vibration = r["get_option_vibration"]
   get_option_view_type = r["get_option_view_type"]
-  get_option_voice_message_voice = r["get_option_voice_message_voice"]
   get_option_xray_death = r["get_option_xray_death"]
   get_option_xray_kill = r["get_option_xray_kill"]
   get_option_zoom_turret = r["get_option_zoom_turret"]
@@ -429,7 +426,7 @@ return freeze({
   get_premium_reward_wp = r["get_premium_reward_wp"]
   get_premium_reward_xp = r["get_premium_reward_xp"]
   get_preset_by_skin_tags = r["get_preset_by_skin_tags"]
-  get_race_checkpioints_count = r["get_race_checkpioints_count"]
+  get_race_checkpoints_count = r["get_race_checkpoints_count"]
   get_race_laps_count = r["get_race_laps_count"]
   get_race_winners_count = r["get_race_winners_count"]
   get_replay_status = r["get_replay_status"]
@@ -459,7 +456,6 @@ return freeze({
   get_ugc_blk = r["get_ugc_blk"]
   get_unit_elite_status = r["get_unit_elite_status"]
   get_unlock_type = r["get_unlock_type"]
-  get_user_alt_crosshairs = r["get_user_alt_crosshairs"]
   get_user_custom_state = r["get_user_custom_state"]
   get_user_log_blk_body = r["get_user_log_blk_body"]
   get_user_log_time_sec = r["get_user_log_time_sec"]
@@ -477,7 +473,6 @@ return freeze({
   hangar_get_attachable_tm = r["hangar_get_attachable_tm"]
   hangar_prem_vehicle_view_close = r["hangar_prem_vehicle_view_close"]
   hangar_show_external_dm_parts_change = r["hangar_show_external_dm_parts_change"]
-  hangar_show_hidden_xray_parts_change = r["hangar_show_hidden_xray_parts_change"]
   has_entitlement = r["has_entitlement"]
   have_you_valid_tournament_ticket = r["have_you_valid_tournament_ticket"]
   hud_request_hud_crew_state = r["hud_request_hud_crew_state"]
@@ -551,8 +546,6 @@ return freeze({
   myself_can_devoice = r["myself_can_devoice"]
   on_renderer_settings_change = r["on_renderer_settings_change"]
   on_voice_message_button = r["on_voice_message_button"]
-  package_get_status = r["package_get_status"]
-  package_request = r["package_request"]
   periodic_task_register = r["periodic_task_register"]
   periodic_task_register_ex = r["periodic_task_register_ex"]
   periodic_task_unregister = r["periodic_task_unregister"]
@@ -585,7 +578,6 @@ return freeze({
   req_player_public_statinfo = r["req_player_public_statinfo"]
   req_player_public_statinfo_by_player_id = r["req_player_public_statinfo_by_player_id"]
   req_unlock = r["req_unlock"]
-  request_aircraft_and_weapon = r["request_aircraft_and_weapon"]
   request_leaderboard_blk = r["request_leaderboard_blk"]
   request_voice_message_list = r["request_voice_message_list"]
   save_attachables = r["save_attachables"]
@@ -613,8 +605,6 @@ return freeze({
   set_gui_vr_params = r["set_gui_vr_params"]
   set_hint_options_by_blk = r["set_hint_options_by_blk"]
   set_host_cb = r["set_host_cb"]
-  set_hud_crosshair_color = r["set_hud_crosshair_color"]
-  set_hud_crosshair_type = r["set_hud_crosshair_type"]
   set_hud_width_limit = r["set_hud_width_limit"]
   set_hue = r["set_hue"]
   set_internet_radio_options = r["set_internet_radio_options"]
@@ -648,6 +638,7 @@ return freeze({
   set_option_depthcharge_activation_time = r["set_option_depthcharge_activation_time"]
   set_option_favorite_voice_message = r["set_option_favorite_voice_message"]
   set_option_gamma = r["set_option_gamma"]
+  set_option_console_preset = r["set_option_console_preset"]
   set_option_grass_in_tank_vision = r["set_option_grass_in_tank_vision"]
   set_option_ground_radar_target_cycling = r["set_option_ground_radar_target_cycling"]
   set_option_gunVerticalTargeting = r["set_option_gunVerticalTargeting"]
@@ -662,6 +653,8 @@ return freeze({
   set_option_hud_show_fuel = r["set_option_hud_show_fuel"]
   set_option_hud_show_temperature = r["set_option_hud_show_temperature"]
   set_option_indicatedSpeedType = r["set_option_indicatedSpeedType"]
+  set_option_indicatedAltitudeType = r?["set_option_indicatedAltitudeType"] ?? @(...) null
+  set_option_radarAltitudeAlert = r?["set_option_radarAltitudeAlert"] ?? @(...) null
   set_option_indicators_mode = r["set_option_indicators_mode"]
   set_option_radar_target_cycling = r["set_option_radar_target_cycling"]
   set_option_rocket_fuse_dist = r["set_option_rocket_fuse_dist"]
@@ -670,7 +663,6 @@ return freeze({
   set_option_speech_country_type = r["set_option_speech_country_type"]
   set_option_subs = r["set_option_subs"]
   set_option_subs_radio = r["set_option_subs_radio"]
-  set_option_tank_alt_crosshair = r["set_option_tank_alt_crosshair"]
   set_option_tank_gunner_camera_from_sight = r["set_option_tank_gunner_camera_from_sight"]
   set_option_torpedo_dive_depth = r["set_option_torpedo_dive_depth"]
   set_option_unit_type = r["set_option_unit_type"]
@@ -680,7 +672,6 @@ return freeze({
   set_option_use_rectangular_radar_indicator = r["set_option_use_rectangular_radar_indicator"]
   set_option_vibration = r["set_option_vibration"]
   set_option_view_type = r["set_option_view_type"]
-  set_option_voice_message_voice = r["set_option_voice_message_voice"]
   set_option_xray_death = r["set_option_xray_death"]
   set_option_xray_kill = r["set_option_xray_kill"]
   set_option_zoom_turret = r["set_option_zoom_turret"]
@@ -759,9 +750,6 @@ return freeze({
   was_video_seen = r["was_video_seen"]
   web_vromfs_is_file_prefetched = r["web_vromfs_is_file_prefetched"]
   web_vromfs_prefetch_file = r["web_vromfs_prefetch_file"]
-  webauth_get_url = r?["webauth_get_url"] ?? @(...) ""
-  webauth_start = r?["webauth_start"] ?? @(...) false
-  webauth_stop = r?["webauth_stop"] ?? @(...) null
   wp_get_cost = r["wp_get_cost"]
   wp_get_cost2 = r["wp_get_cost2"]
   wp_get_cost_gold = r["wp_get_cost_gold"]
@@ -847,4 +835,6 @@ return freeze({
 
   run_reactive_gui = r["run_reactive_gui"]
   get_cur_gui_scene = r["get_cur_gui_scene"]
+
+  has_ray_query = r["has_ray_query"]
 })

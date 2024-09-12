@@ -81,6 +81,8 @@
   "pvpRatioRewardGoldPlace1Simulation": 0,
   "pvpRatioRewardGoldPlace2Simulation": 0,
   "pvpRatioRewardGoldPlace3Simulation": 0,
+  "maxWishListSize": 100,
+  "maxWishListCommentSize": 100,
   "units": {
     "exp_bomber": 1.0,
     "exp_fighter": 1.0,
@@ -784,19 +786,36 @@
             ]
           ]
         },
+        "GuidedBombWeapon": {
+          "mass": [
+            [
+              500.0,
+              1.2
+            ],
+            [
+              2000.0,
+              1.4
+            ]
+          ]
+        },
         "AtgmVisibilityTypeMul": {
           "default": 1.4,
           "infraRed": 1.66,
           "optic": 1.66
+        },
+        "AamGuidanceTypeMul": {
+          "default": 1.1,
+          "saclos": 1.1,
+          "arh": 1.37
         }
       },
       "exp_helicopter": {
-        "largeRocketMass": 65.0,
         "largeRocketTntMass": 7.0,
         "largeRocketMul": 1.7,
         "atgmHasProximityFuseMul": 1.09,
         "BombRocketWeapon": {},
         "NapalmBombWeapon": {},
+        "GuidedBombWeapon": {},
         "AtgmMaxDistanceMul": {
           "dist": [
             [
@@ -821,6 +840,11 @@
           "default": 1.8,
           "infraRed": 2.1,
           "optic": 2.1
+        },
+        "AamGuidanceTypeMul": {
+          "default": 1.0,
+          "saclos": 1.68,
+          "arh": 1.68
         }
       }
     },
@@ -992,6 +1016,8 @@
         "exp_tank_destroyer": 0.3,
         "exp_SPAA": 0.25,
         "ussr_pantsyr_s1": 0.3,
+        "us_adats_bradley": 0.3,
+        "uk_adats_m113a3": 0.3,
         "us_m2a4": 0.18,
         "us_lvt_a_1": 0.18,
         "germ_pzkpfw_III_ausf_B": 0.18,
@@ -1370,5 +1396,13 @@
     "md_vickers_mk_11_uparmor": 1,
     "md_vickers_mk_11_rearmed": 1,
     "md_vickers_mk_11_uparmor_rearmed": 1
+  },
+  "BombingRewardMultipliers": {
+    "presetDmgMin": 18000.0,
+    "presetDmgMax": 97500.0,
+    "bombingRewardModifier": 2.0,
+    "multiroleAircraftMinRank": 6,
+    "fighterBombingRewardMul": 0.8,
+    "premBombingRewardMul": 1.2
   }
 }

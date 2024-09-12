@@ -26,15 +26,14 @@
     {
       "mass": 0.387,
       "caliber": 0.03,
-      "explosiveType": "a_ix_2",
-      "explosiveMass": 0.0433,
       "speed": 940.0,
       "Cx": 0.25,
       "maxDistance": 5000.0,
-      "selfDestructionInAir": false,
+      "explosiveType": "a_ix_2",
+      "explosiveMass": 0.0433,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -49,8 +48,23 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
-      "recoilMultiplier": 0.35,
-      "hitPowerMult": 2.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
+      "fuseDelayDist": 0.2,
+      "explodeTreshold": 0.1,
+      "nearArmorPower": [
+        3.0,
+        150.0
+      ],
+      "midArmorPower": [
+        3.0,
+        600.0
+      ],
+      "farArmorPower": [
+        3.0,
+        1000.0
+      ],
       "nearHitPower": [
         1.0,
         50.0
@@ -71,27 +85,13 @@
         300.0,
         1000.0
       ],
-      "nearArmorPower": [
-        3.0,
-        150.0
-      ],
-      "midArmorPower": [
-        3.0,
-        600.0
-      ],
-      "farArmorPower": [
-        3.0,
-        1000.0
-      ],
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 2.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
-      "fuseOnWater": true,
-      "fuseOnWaterProbability": 1.0,
-      "ricochetTimeToLive": 0.085,
-      "fuseDelayDist": 0.2,
-      "explodeTreshold": 0.1,
+      "onHitChanceMultFire": 4.1,
       "selfDestructionFx": [
         "explosion_air_selfexplosion_small",
         "explosion_air_selfexplosion_small"
@@ -314,9 +314,11 @@
       "speed": 940.0,
       "Cx": 0.25,
       "maxDistance": 5000.0,
+      "explosiveType": "a_ix_2",
+      "explosiveMass": 0.0146,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -332,31 +334,18 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-      "explosiveType": "a_ix_2",
-      "explosiveMass": 0.0146,
-      "recoilMultiplier": 0.35,
-      "onHitChanceMultFire": 10.0,
+      "fuseDelayDist": 1.2,
+      "explodeTreshold": 1.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "recoilMultiplier": 0.35,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
-      "fuseDelayDist": 1.2,
-      "explodeTreshold": 1.0,
-      "explodeHitPower": 25.0,
-      "explodeArmorPower": 7.0,
-      "explodeRadius": [
-        0.1,
-        0.15
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 0.7,
-      "shutterAmount": 20,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 8.0,
+      "onHitChanceMultFire": 5.0,
       "selfDestructionFx": [
         "explosion_air_selfexplosion_small",
         "explosion_air_selfexplosion_small"
@@ -415,6 +404,38 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "secondaryShattersPreset": "ap_large_caliber",
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  40.0,
+                  110.0
+                ],
+                "countPortion": 0.6
+              }
+            ]
+          }
         }
       },
       "collisions": {
@@ -547,7 +568,7 @@
         "maxDistance": 5000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -561,12 +582,12 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
+        "onHitChanceMultFire": 3.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -762,15 +783,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -785,8 +805,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -807,27 +846,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -1041,9 +1062,11 @@
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0146,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1059,31 +1082,18 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0146,
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 1.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseDelayDist": 1.2,
-        "explodeTreshold": 1.0,
-        "explodeHitPower": 25.0,
-        "explodeArmorPower": 7.0,
-        "explodeRadius": [
-          0.1,
-          0.15
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.7,
-        "shutterAmount": 20,
-        "shutterArmorPower": 6.0,
-        "shutterHit": 8.0,
+        "onHitChanceMultFire": 5.0,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -1142,6 +1152,38 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "collisions": {
@@ -1266,15 +1308,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1289,8 +1330,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -1311,27 +1371,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -1551,7 +1593,7 @@
         "maxDistance": 5000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1565,12 +1607,12 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
+        "onHitChanceMultFire": 3.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1769,9 +1811,11 @@
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0146,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1787,31 +1831,18 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0146,
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 1.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseDelayDist": 1.2,
-        "explodeTreshold": 1.0,
-        "explodeHitPower": 25.0,
-        "explodeArmorPower": 7.0,
-        "explodeRadius": [
-          0.1,
-          0.15
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.7,
-        "shutterAmount": 20,
-        "shutterArmorPower": 6.0,
-        "shutterHit": 8.0,
+        "onHitChanceMultFire": 5.0,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -1870,6 +1901,38 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "collisions": {
@@ -1997,9 +2060,11 @@
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0146,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2015,31 +2080,18 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0146,
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 1.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseDelayDist": 1.2,
-        "explodeTreshold": 1.0,
-        "explodeHitPower": 25.0,
-        "explodeArmorPower": 7.0,
-        "explodeRadius": [
-          0.1,
-          0.15
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.7,
-        "shutterAmount": 20,
-        "shutterArmorPower": 6.0,
-        "shutterHit": 8.0,
+        "onHitChanceMultFire": 5.0,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -2098,6 +2150,38 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "collisions": {
@@ -2229,9 +2313,11 @@
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0146,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2247,31 +2333,18 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0146,
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 1.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseDelayDist": 1.2,
-        "explodeTreshold": 1.0,
-        "explodeHitPower": 25.0,
-        "explodeArmorPower": 7.0,
-        "explodeRadius": [
-          0.1,
-          0.15
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.7,
-        "shutterAmount": 20,
-        "shutterArmorPower": 6.0,
-        "shutterHit": 8.0,
+        "onHitChanceMultFire": 5.0,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -2330,6 +2403,38 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "collisions": {
@@ -2454,15 +2559,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2477,8 +2581,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -2499,27 +2622,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -2730,15 +2835,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2753,8 +2857,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -2775,27 +2898,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -3006,15 +3111,14 @@
       {
         "mass": 0.387,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0433,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0433,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3029,8 +3133,23 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -3051,27 +3170,13 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "onHitChanceMultFire": 4.1,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -3298,9 +3403,11 @@
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0146,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3316,31 +3423,18 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/aphe_shell.ivf",
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0146,
-        "recoilMultiplier": 0.35,
-        "onHitChanceMultFire": 10.0,
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 1.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "fuseDelayDist": 1.2,
-        "explodeTreshold": 1.0,
-        "explodeHitPower": 25.0,
-        "explodeArmorPower": 7.0,
-        "explodeRadius": [
-          0.1,
-          0.15
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.7,
-        "shutterAmount": 20,
-        "shutterArmorPower": 6.0,
-        "shutterHit": 8.0,
+        "onHitChanceMultFire": 5.0,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -3399,6 +3493,38 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "collisions": {
@@ -3523,15 +3649,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3546,8 +3671,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -3568,27 +3712,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"
@@ -3799,15 +3925,14 @@
       {
         "mass": 0.39,
         "caliber": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.0485,
         "speed": 940.0,
         "Cx": 0.25,
         "maxDistance": 5000.0,
-        "selfDestructionInAir": false,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.0485,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3822,8 +3947,27 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
-        "recoilMultiplier": 0.35,
-        "hitPowerMult": 2.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
+        "ricochetTimeToLive": 0.085,
+        "fuseDelayDist": 0.2,
+        "explodeTreshold": 0.1,
+        "nearArmorPower": [
+          3.0,
+          150.0
+        ],
+        "midArmorPower": [
+          3.0,
+          600.0
+        ],
+        "farArmorPower": [
+          3.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
         "nearHitPower": [
           1.0,
           50.0
@@ -3844,27 +3988,9 @@
           300.0,
           1000.0
         ],
-        "nearArmorPower": [
-          3.0,
-          150.0
-        ],
-        "midArmorPower": [
-          3.0,
-          600.0
-        ],
-        "farArmorPower": [
-          3.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
-        "ricochetTimeToLive": 0.085,
-        "fuseDelayDist": 0.2,
-        "explodeTreshold": 0.1,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 2.0,
+        "onHitChanceMultFire": 3.5,
         "selfDestructionFx": [
           "explosion_air_selfexplosion_small",
           "explosion_air_selfexplosion_small"

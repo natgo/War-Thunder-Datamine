@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
-from "%scripts/crew/skillsPageStatus.nut" import g_skills_page_status
 
+let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -26,7 +26,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
@@ -36,12 +36,15 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { isAllCrewsMinLevel, getCrewName, getCrewLevel,
   getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
   getCrewSkillPointsToMaxAllSkills, buyAllCrewSkills, createCrewUnitSpecHandler,
-  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages
+  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
+  loadCrewSkills
 } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
 } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
+} = require("%scripts/slotbar/crewsList.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -52,7 +55,7 @@ let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByIn
 
 function isAllCrewsHasBasicSpec() {
   let basicCrewSpecType = crewSpecTypes.BASIC
-  foreach (checkedCountrys in ::g_crews_list.get())
+  foreach (checkedCountrys in getCrewsList())
     foreach (crew in checkedCountrys.crews)
       foreach (unitName, _value in crew.trainedSpec) {
         let crewUnitSpecType = getSpecTypeByCrewAndUnitName(crew, unitName)
@@ -104,7 +107,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.crew)
       return this.goBack()
 
-    let country = ::g_crews_list.get()?[this.countryId].country
+    let country = getCrewsList()?[this.countryId].country
     if (country)
       switchProfileCountry(country)
 
@@ -171,7 +174,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     ::update_gamercards()
     if (reloadSkills)
-      ::load_crew_skills()
+      loadCrewSkills()
 
     this.scene.findObject("crew_name").setValue(getCrewName(this.crew))
 
@@ -214,7 +217,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurCountryName() {
-    return ::g_crews_list.get()[this.countryId].country
+    return getCrewsList()[this.countryId].country
   }
 
   function updateUnitTypeRadioButtons() {
@@ -380,9 +383,8 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("crew_points_advice_block").show(isSkills)
     if (!isSkills)
       return
-    let statusType = g_skills_page_status.getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
-    this.scene.findObject("crew_points_advice").show(statusType.show)
-    this.scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
+    let statusType = getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
+    this.scene.findObject("crew_points_advice").show(statusType.needShowAdvice)
   }
 
   function updateBuyAllButton() {
@@ -410,7 +412,11 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
 
     let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
-    upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
+    upgradeBlock.findObject("current_qualification").setValue(
+      "".concat(loc("crew/trained"), loc("ui/colon")))
+    upgradeBlock.findObject("current_qualification_icon")["background-image"]
+      = crewSpecType.trainedIcon
+    upgradeBlock.findObject("current_qualification_desc").setValue(crewSpecType.getName())
 
     let nextSpecType = crewSpecType.getNextType()
     let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
@@ -443,15 +449,15 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         })
         : ""
 
-      crewLvlText = loc("crew/qualification/specDescriptionMain",
-        {
-         specName = colorize("activeTextColor", nextSpecType.getName())
-         descPart = specDescriptionPart
-         trainCost = colorize("activeTextColor",
-           crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
-        })
+      let nextSpecTypeImg = "".concat("{{img=", nextSpecType.trainedIcon, "}}")
+      crewLvlText = loc("crew/qualification/specDescriptionMain", {
+        specName = $"{nextSpecTypeImg}{colorize("activeTextColor", nextSpecType.getName())}"
+        descPart = specDescriptionPart
+        trainCost = colorize("activeTextColor",
+          crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
+      })
+      qualificationReqObj.setValue(crewLvlText)
     }
-    qualificationReqObj.setValue(crewLvlText)
 
     if (!isShowExpUpgrade)
       return
@@ -545,12 +551,17 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!obj?.isValid())
         continue
 
-      let statusType = g_skills_page_status.getPageStatus(
+      let statusType = getPageStatus(
         this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
-      obj["background-image"] = statusType.icon
-      obj["background-color"] = this.guiScene.getConstantValue(statusType.color) || ""
-      obj.wink = statusType.wink ? "yes" : "no"
-      obj.show(statusType.show)
+      let needShowPageIcon = statusType.avalibleSkills.len() > 0
+      obj.show(needShowPageIcon)
+      let pageObj = pagesObj.findObject(page.id)
+      if (pageObj)
+        pageObj.tooltip = needShowPageIcon ? this.createPageTooltipFromSkills(statusType.avalibleSkills) : ""
+      if (needShowPageIcon) {
+        obj["background-image"] = statusType.icon
+        obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) || ""
+      }
     }
     this.guiScene.setUpdatesEnabled(true, true)
   }
@@ -679,17 +690,17 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           curHandler.afterApplyAction()
           curHandler.afterApplyAction = null
         }
-        ::g_crews_list.flushSlotbarUpdate()
+        flushSlotbarUpdate()
       },
       function(_err) {
         curHandler.isCrewUpgradeInProgress = false
-        ::g_crews_list.flushSlotbarUpdate()
+        flushSlotbarUpdate()
       }
     )
 
     if (isTaskCreated) {
       this.isCrewUpgradeInProgress = true
-      ::g_crews_list.suspendSlotbarUpdates()
+      suspendSlotbarUpdates()
     }
   }
 
@@ -1110,4 +1121,11 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       hintQualification.pos = $"sw/2 - 0.8@sf - 1@bw + 2@shopWidthMax + 2@helpInterval, sh - h - 2@bh - 2@helpInterval"
 
   }
+
+  function createPageTooltipFromSkills(skills) {
+    if (skills.len() == 0)
+      return ""
+    return "".concat(loc("crew/skillUpgradesAvalible"), ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
+  }
+
 }

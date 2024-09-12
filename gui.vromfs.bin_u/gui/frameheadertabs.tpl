@@ -1,7 +1,7 @@
 <<#tabs>>
 shopFilter {
   <<#id>>id:t='<<id>>'<</id>>
-
+  tooltip:t=''
   <<#hidden>>
   display:t='hide'
   enable:t='no'
@@ -47,6 +47,49 @@ shopFilter {
     text:t='<<tabName>>'
   }
 
+  infoMarker {
+    id:t='remainingPageMarker'
+    type:t='remainingTimeMarker'
+    place:t='inTab'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
+  }
+
+  <<#seenIconCfg>>
+  infoMarker {
+    type:t='unlockMarker'
+    place:t='inTab'
+    value:t='<<seenIconCfg>>'
+  }
+  <</seenIconCfg>>
+
+  infoMarker {
+    type:t='nationBonusMarker'
+    place:t='inTab'
+    value:t='{"viewId": "SHOP_PAGES_NATION_BONUS_MARKER"}'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    tooltip:t='$tooltipObj'
+    tooltipObj {
+      id:t='nationBonusMarkerTooltip'
+      tooltipId:t=''
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+  }
+
+  <<#discount>>
+  infoMarker {
+    type:t='discountNotificationMarker'
+    place:t='inTab'
+    id:t='<<#discountId>><<discountId>><</discountId>><<^discountId>><<id>>_discount<</discountId>>'
+    text:t='<<text>>'
+    tooltip:t='<<tooltip>>'
+  }
+ <</discount>>
+
   <<#squadronExpIconId>>
   squadronExpIcon {
     id:t='<<squadronExpIconId>>'
@@ -55,33 +98,6 @@ shopFilter {
     display:t='hide'
   }
   <</squadronExpIconId>>
-
-  <<#remainingTimeUnitPageMarker>>
-  remainingTimeUnitPageMarker {
-    behavior:t='bhvUpdater'
-    id:t='remainingPageMarker'
-    countryId:t='<<countryId>>'
-    armyId:t='<<armyId>>'
-    value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
-    display:t='hide'
-  }
-  <</remainingTimeUnitPageMarker>>
-
-  <<#seenIconCfg>>
-  unlockMarker {
-    type:t='inTab'
-    value:t='<<seenIconCfg>>'
-  }
-  <</seenIconCfg>>
-
-  <<#discount>>
-  discount {
-    id:t='<<#discountId>><<discountId>><</discountId>><<^discountId>><<id>>_discount<</discountId>>'
-    type:t='inTab'
-    text:t='<<text>>'
-    tooltip:t='<<tooltip>>'
-  }
-  <</discount>>
 
   <<#cornerImg>>
   cornerImg {

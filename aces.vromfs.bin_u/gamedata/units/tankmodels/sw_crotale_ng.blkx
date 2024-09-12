@@ -134,25 +134,25 @@
       },
       {
         "type": "steeringWheel",
-        "turnSpeed": -0.1,
+        "turnSpeed": 0.2,
         "node": "bone_roll_driver_l_03",
         "absoluteValue": true
       },
       {
         "type": "steeringWheel",
-        "turnSpeed": -0.2,
+        "turnSpeed": 0.2,
         "node": "bone_roll_driver_l_04",
         "absoluteValue": true
       },
       {
         "type": "steeringWheel",
-        "turnSpeed": -0.5,
+        "turnSpeed": -0.15,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
       },
       {
         "type": "steeringWheel",
-        "turnSpeed": -0.2,
+        "turnSpeed": -0.1,
         "node": "bone_roll_driver_r_02",
         "absoluteValue": true
       },
@@ -246,6 +246,15 @@
       },
       "turret_back_dm": {
         "armorThickness": 8.0
+      },
+      "ex_decor_r_05_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_decor_r_06_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_decor_l_05_dm": {
+        "armorThickness": 5.0
       },
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
@@ -358,11 +367,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -381,21 +391,62 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
         "armorThrough": 3.0
+      },
+      "electronic_equipment_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -421,6 +472,11 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -603,6 +659,11 @@
       "ammo_body_l_13_dm": {},
       "ammo_body_l_14_dm": {},
       "ammo_body_l_15_dm": {},
+      "ammo_body_l_16_dm": {},
+      "ammo_body_l_17_dm": {},
+      "ammo_body_l_18_dm": {},
+      "ammo_body_l_19_dm": {},
+      "ammo_body_l_20_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -621,11 +682,12 @@
       "ammo_body_r_16_dm": {},
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
-      "ammo_body_r_19_dm": {}
+      "ammo_body_r_19_dm": {},
+      "ammo_body_r_20_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
-      "hp": 250.0,
+      "hp": 400.0,
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
@@ -1036,6 +1098,19 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 0.5,
+            "fire": 0.5,
+            "damage": 400.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.225,
@@ -1069,22 +1144,21 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.7,
-            "expl": 0.1,
+            "fire": 0.5,
+            "expl": 0.5,
+            "damage": 250.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "expl": 0.7,
             "damage": 300.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
-            "fire": 0.5,
-            "expl": 0.5,
-            "damage": 400.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.2,
-            "expl": 0.8,
+            "expl": 1.0,
             "damage": 600.0,
             "fHitCritical": true
           },
@@ -1094,9 +1168,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.5,
-          "expl": 0.3,
-          "nothing": 0.2,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -1428,6 +1500,88 @@
             }
           }
         ]
+      },
+      {
+        "name": [
+          "wheel_l_drive_dm",
+          "wheel_r_drive_dm",
+          "wheel_r_back_dm",
+          "wheel_r_front_dm",
+          "wheel_l_back_dm",
+          "wheel_l_front_dm",
+          "wheel_l_01_dm",
+          "wheel_r_01_dm",
+          "wheel_l_02_dm",
+          "wheel_r_02_dm",
+          "wheel_l_03_dm",
+          "wheel_r_03_dm",
+          "wheel_l_04_dm",
+          "wheel_r_04_dm",
+          "wheel_l_05_dm",
+          "wheel_r_05_dm",
+          "wheel_l_06_dm",
+          "wheel_r_06_dm"
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1545,6 +1699,7 @@
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "bone_gun",
+        "circleAim": true,
         "aimForOperatedShell": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1555,7 +1710,15 @@
           "head": "bone_turret",
           "gun": "bone_roll_01",
           "rotatedTurret": "bone_turret",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1648,8 +1811,15 @@
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
           "rotatedTurret": "bone_turret",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1782,6 +1952,18 @@
         "wheel_l_03": 0.4,
         "wheel_r_03": 0.4
       },
+      "wheelsDamageWeight": {
+        "wheel_l_01": 0.05,
+        "wheel_r_01": 0.05,
+        "wheel_l_02": 0.05,
+        "wheel_r_02": 0.05,
+        "wheel_l_03": 0.05,
+        "wheel_r_03": 0.05,
+        "wheel_l_04": 0.05,
+        "wheel_r_04": 0.05,
+        "wheel_r_drive": 0.25,
+        "wheel_l_drive": 0.25
+      },
       "driven": {
         "wheel_l_01": true,
         "wheel_r_01": true,
@@ -1797,347 +1979,81 @@
         "wheel_l_02": true,
         "wheel_r_03": true,
         "wheel_l_03": true
-      },
-      "wheelsDamageWeight": {
-        "wheel_l_01": 0.2,
-        "wheel_r_01": 0.2,
-        "wheel_l_02": 0.2,
-        "wheel_r_02": 0.2,
-        "wheel_l_03": 0.2,
-        "wheel_r_03": 0.2
       }
     }
   },
   "PhysSys": {
-    "group": [
-      {
-        "find": "bone_suspension_01",
-        "points": {
-          "lever": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_01"
-          },
-          "wheel_r_01": {
-            "searchChildren": {
-              "occurence": 1,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "wheel_l_01": {
-            "searchChildren": {
-              "occurence": 2,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "bone_suspension_l_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_01"
-          },
-          "bone_suspension_r_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_r_01"
-          }
-        },
-        "constraints": {
-          "edge": [
-            {
-              "to": "wheel_r_01",
-              "from": "lever"
-            },
-            {
-              "from": "lever",
-              "to": "wheel_l_01"
-            },
-            {
-              "to": "wheel_r_01",
-              "from": "bone_suspension_r_02",
-              "point": "wheel_r_01"
-            },
-            {
-              "point": "wheel_l_01",
-              "from": "bone_suspension_l_02",
-              "to": "wheel_l_01"
-            }
+    "find": "^bone_suspension_(\\w)_(\\d+)$",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_c_$2"
+      },
+      "wheel_r_01": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
           ],
-          "slider": {
-            "moveNodes": true,
-            "rotateSecond": false,
-            "moveSecond": true,
-            "moveOnly": false,
-            "point": "lever",
-            "from": "wheel_l_01",
-            "to": "wheel_r_01"
-          }
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "lever",
+          "find": "bone_wheel_"
         }
       },
-      {
-        "find": "bone_suspension_02",
-        "points": {
-          "lever": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_02"
-          },
-          "wheel_r_01": {
-            "searchChildren": {
-              "occurence": 1,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "wheel_l_01": {
-            "searchChildren": {
-              "occurence": 2,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "bone_suspension_l_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_02"
-          },
-          "bone_suspension_r_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_r_02"
-          }
-        },
-        "constraints": {
-          "edge": [
-            {
-              "to": "wheel_r_01",
-              "from": "lever"
-            },
-            {
-              "from": "lever",
-              "to": "wheel_l_01"
-            },
-            {
-              "to": "wheel_r_01",
-              "from": "bone_suspension_r_02",
-              "point": "wheel_r_01"
-            },
-            {
-              "point": "wheel_l_01",
-              "from": "bone_suspension_l_02",
-              "to": "wheel_l_01"
-            }
+      "wheel_l_01": {
+        "searchChildren": {
+          "occurence": 2,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
           ],
-          "slider": {
-            "moveNodes": true,
-            "rotateSecond": false,
-            "moveSecond": true,
-            "moveOnly": false,
-            "point": "lever",
-            "from": "wheel_l_01",
-            "to": "wheel_r_01"
-          }
-        }
-      },
-      {
-        "find": "bone_suspension_03",
-        "points": {
-          "lever": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_03"
-          },
-          "wheel_r_01": {
-            "searchChildren": {
-              "occurence": 1,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "wheel_l_01": {
-            "searchChildren": {
-              "occurence": 2,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "bone_suspension_l_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_03"
-          },
-          "bone_suspension_r_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_r_03"
-          }
-        },
-        "constraints": {
-          "edge": [
-            {
-              "to": "wheel_r_01",
-              "from": "lever"
-            },
-            {
-              "from": "lever",
-              "to": "wheel_l_01"
-            },
-            {
-              "to": "wheel_r_01",
-              "from": "bone_suspension_r_02",
-              "point": "wheel_r_01"
-            },
-            {
-              "point": "wheel_l_01",
-              "from": "bone_suspension_l_02",
-              "to": "wheel_l_01"
-            }
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
           ],
-          "slider": {
-            "moveNodes": true,
-            "rotateSecond": false,
-            "moveSecond": true,
-            "moveOnly": false,
-            "point": "lever",
-            "from": "wheel_l_01",
-            "to": "wheel_r_01"
-          }
+          "parent": "lever",
+          "find": "bone_wheel_"
         }
       }
-    ]
+    },
+    "constraints": {
+      "edge": [
+        {
+          "to": "wheel_r_01",
+          "from": "lever"
+        },
+        {
+          "from": "lever",
+          "to": "wheel_l_01"
+        }
+      ],
+      "slider": {
+        "moveNodes": true,
+        "rotateSecond": false,
+        "moveSecond": true,
+        "moveOnly": false,
+        "point": "lever",
+        "from": "wheel_l_01",
+        "to": "wheel_r_01"
+      }
+    }
   },
   "chainIK": {
     "points": [
@@ -2884,6 +2800,27 @@
         }
       },
       {
+        "name": "hydraulic_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -3071,10 +3008,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 12.3,
+    "zoomOutFov": 12.29,
     "zoomInFov": 6.14,
-    "sightFov": 6.0,
-    "sightName": "roland_sight",
+    "sightFov": 5.0,
+    "sightName": "merkava_sight",
     "openedCockpit": true,
     "headPos": [
       0.0,
@@ -3194,12 +3131,19 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ]
       },
       {
         "blk": "gameData/sensors/fr_crotale_track.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
+        "powerButtonIdx": -1
       }
     ]
   },
@@ -3490,6 +3434,7 @@
       "tier": 1,
       "effects": {
         "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
               1200,

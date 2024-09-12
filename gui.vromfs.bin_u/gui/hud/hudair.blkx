@@ -1,6 +1,11 @@
 {
   "tdiv": [
     {
+      "id": "air_weapon_selector",
+      "position": "absolute",
+      "pos": "pw/2-w/2, ph - h - 1@awsPadBottom"
+    },
+    {
       "id": "xray_render_dmg_indicator",
       "size": "@sizeDamageIndicator, @sizeDamageIndicator",
       "position": "absolute"
@@ -489,6 +494,14 @@
             "position": "relative",
             "flow": "vertical",
             "width": "pw - 0.2@shHud"
+          },
+          {
+            "id": "hud_message_tank_notification",
+            "message_style": "player_damage_notification",
+            "left": "0.2@shHud",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw - 0.2@shHud"
           }
         ],
         "textAreaCentered": {
@@ -518,6 +531,26 @@
     "result": "",
     "_transp-timer": "0",
     "hitCameraRender": {
+      "id": "hit_camera_render",
+      "tdiv": [
+        {
+          "position": "absolute",
+          "id": "indicators_nest"
+        },
+        {
+          "size": "pw, ph",
+          "position": "absolute",
+          "overflow": "hidden",
+          "hitCameraCritAnim": {
+            "id": "critAnim",
+            "height": "1@hitCameraHeight",
+            "needAnim": "no",
+            "_size-timer": "0",
+            "_transp-timer": "0",
+            "color-factor": "255"
+          }
+        }
+      ],
       "hitCameraTitle": {
         "id": "title"
       },
@@ -563,19 +596,6 @@
       },
       "hitCameraInfo": {
         "id": "info"
-      },
-      "tdiv": {
-        "size": "pw, ph",
-        "position": "absolute",
-        "overflow": "hidden",
-        "hitCameraCritAnim": {
-          "id": "critAnim",
-          "height": "1@hitCameraHeight",
-          "needAnim": "no",
-          "_size-timer": "0",
-          "_transp-timer": "0",
-          "color-factor": "255"
-        }
       }
     }
   },

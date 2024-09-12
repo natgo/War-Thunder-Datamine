@@ -10,7 +10,7 @@ let { APP_ID } = require("app")
 let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let DataBlock = require("DataBlock")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
@@ -34,7 +34,7 @@ function updateGetUnlocksValue(watchValue, response) {
 }
 
 function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
-  let data = Watched(defValue)
+  let data = Watched(clone defValue)
   let lastTime = Watched({ request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
@@ -46,7 +46,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
       cb(result)
 
     if (result?.error) {
-      data(defValue)
+      data(clone defValue)
       return
     }
 
@@ -56,7 +56,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
         data.mutate(@(v) updateGetUnlocksValue(v, response))
     }
     else
-      data(result?.response ?? defValue)
+      data(result?.response ?? (clone defValue))
   }
 
   function prepareToRequest() {
@@ -65,7 +65,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
 
   function refresh(cb = null) {
     if (!::g_login.isLoggedIn()) {
-      data.update(defValue)
+      data.set(clone defValue)
       if (cb)
         cb({ error = "not logged in" })
       return
@@ -86,7 +86,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
   }
 
   function invalidateConfig(_p) {
-    data(defValue)
+    data(clone defValue)
     forceRefresh()
   }
 
@@ -165,7 +165,7 @@ function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, task
 
   let taskId = char_send_custom_action("cln_userstat_grant_rewards",
     EATT_JSON_REQUEST, blk,
-    json_to_string({ unlock = unlockName, stage }, false),
+    object_to_json_string({ unlock = unlockName, stage }, false),
     -1)
   addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }

@@ -46,6 +46,7 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.8,
   "ikGunner": [
     {
       "model": "italian_gunner_char",
@@ -450,7 +451,8 @@
     },
     "equipment_body_turret": {
       "armorClass": "tank_structural_steel",
-      "hp": 150.0,
+      "hp": 250.0,
+      "armorThickness": 2.0,
       "armorThrough": 15.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
@@ -458,6 +460,9 @@
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -516,9 +521,21 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "radio_station_01_dm": {
-        "hp": 50.0,
+      "electronic_equipment_dm": {
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -528,34 +545,33 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
-        "restrainDamage": 0.5,
-        "armorThrough": 150.0
+        "restrainDamage": 0.5
       },
       "cannon_breech_01_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_02_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_03_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_04_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_05_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 50.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -737,10 +753,6 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
-      "ammo_body_l_21_dm": {},
-      "ammo_body_l_22_dm": {},
-      "ammo_body_l_23_dm": {},
-      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -760,21 +772,17 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {},
-      "ammo_body_r_21_dm": {},
-      "ammo_body_r_22_dm": {},
-      "ammo_body_r_23_dm": {},
-      "ammo_body_r_24_dm": {}
+      "ammo_body_r_20_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
-      "hp": 250.0,
+      "hp": 400.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
-      "fireParamsPreset": "fuel_internal",
       "stopChanceOnDeadPart": 0.0,
+      "fireParamsPreset": "fuel_internal",
       "fuel_tank_dm": {},
       "fuel_tank_01_dm": {},
       "fuel_tank_02_dm": {},
@@ -796,16 +804,21 @@
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
+      "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
       "fuel_tank_exterior_r_02_dm": {},
       "fuel_tank_exterior_r_03_dm": {},
+      "fuel_tank_exterior_r_04_dm": {},
+      "fuel_tank_exterior_r_05_dm": {},
       "fuel_tank_exterior_l_01_dm": {},
       "fuel_tank_exterior_l_02_dm": {},
       "fuel_tank_exterior_l_03_dm": {},
+      "fuel_tank_exterior_l_04_dm": {},
+      "fuel_tank_exterior_l_05_dm": {},
       "fuel_tank_exterior_01_dm": {},
       "fuel_tank_exterior_02_dm": {},
       "fuel_tank_exterior_03_dm": {}
@@ -1174,6 +1187,19 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 0.5,
+            "fire": 0.5,
+            "damage": 400.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.225,
@@ -1207,22 +1233,21 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.7,
-            "expl": 0.1,
+            "fire": 0.5,
+            "expl": 0.5,
+            "damage": 250.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "expl": 0.7,
             "damage": 300.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
-            "fire": 0.5,
-            "expl": 0.5,
-            "damage": 400.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.2,
-            "expl": 0.8,
+            "expl": 1.0,
             "damage": 600.0,
             "fHitCritical": true
           },
@@ -1232,9 +1257,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.5,
-          "expl": 0.3,
-          "nothing": 0.2,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -1566,6 +1589,31 @@
             }
           }
         ]
+      },
+      {
+        "name": [
+          "wheel_l_drive_dm",
+          "wheel_r_drive_dm",
+          "wheel_r_back_dm",
+          "wheel_r_front_dm",
+          "wheel_l_back_dm",
+          "wheel_l_front_dm",
+          "wheel_l_01_dm",
+          "wheel_r_01_dm",
+          "wheel_l_02_dm",
+          "wheel_r_02_dm",
+          "wheel_l_03_dm",
+          "wheel_r_03_dm",
+          "wheel_l_04_dm",
+          "wheel_r_04_dm",
+          "wheel_l_05_dm",
+          "wheel_r_05_dm",
+          "wheel_l_06_dm",
+          "wheel_r_06_dm"
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
       }
     ]
   },
@@ -1856,8 +1904,8 @@
             360.0
           ],
           "pitch": [
-            -10.0,
-            12.0
+            -17.0,
+            65.0
           ]
         },
         "limitsTable": {
@@ -1868,10 +1916,24 @@
             12.0
           ],
           "lim2": [
-            -145.0,
-            -20.0,
-            -8.0,
-            12.0
+            [
+              -145.0,
+              -135.0,
+              -8.0,
+              12.0
+            ],
+            [
+              -135.0,
+              -55.0,
+              -8.0,
+              65.0
+            ],
+            [
+              -55.0,
+              -20.0,
+              -8.0,
+              12.0
+            ]
           ],
           "lim3": [
             -20.0,
@@ -1882,7 +1944,7 @@
           "lim4": [
             20.0,
             145.0,
-            -10.0,
+            -17.0,
             5.0
           ],
           "lim5": [
@@ -2035,6 +2097,18 @@
         "steeringSpd": 1.0,
         "steeringNeutralSpd": 3.0
       },
+      "wheelsDamageWeight": {
+        "wheel_l_01": 0.05,
+        "wheel_r_01": 0.05,
+        "wheel_l_02": 0.05,
+        "wheel_r_02": 0.05,
+        "wheel_l_03": 0.05,
+        "wheel_r_03": 0.05,
+        "wheel_l_04": 0.05,
+        "wheel_r_04": 0.05,
+        "wheel_r_drive": 0.25,
+        "wheel_l_drive": 0.25
+      },
       "driven": {
         "wheel_l_01": true,
         "wheel_r_01": true,
@@ -2046,12 +2120,6 @@
         "wheel_l_01": true,
         "wheel_r_02": true,
         "wheel_l_02": true
-      },
-      "wheelsDamageWeight": {
-        "wheel_l_01": 0.4,
-        "wheel_r_01": 0.4,
-        "wheel_l_02": 0.4,
-        "wheel_r_02": 0.4
       }
     },
     "floats": {
@@ -2606,6 +2674,27 @@
         }
       },
       {
+        "name": "hydraulic_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -2895,8 +2984,8 @@
                   360.0
                 ],
                 "pitch": [
-                  -10.0,
-                  12.0
+                  -17.0,
+                  65.0
                 ]
               },
               "limitsTable": {
@@ -2907,10 +2996,24 @@
                   12.0
                 ],
                 "lim2": [
-                  -145.0,
-                  -20.0,
-                  -8.0,
-                  12.0
+                  [
+                    -145.0,
+                    -135.0,
+                    -8.0,
+                    12.0
+                  ],
+                  [
+                    -135.0,
+                    -55.0,
+                    -8.0,
+                    65.0
+                  ],
+                  [
+                    -55.0,
+                    -20.0,
+                    -8.0,
+                    12.0
+                  ]
                 ],
                 "lim3": [
                   -20.0,
@@ -2921,7 +3024,7 @@
                 "lim4": [
                   20.0,
                   145.0,
-                  -10.0,
+                  -17.0,
                   5.0
                 ],
                 "lim5": [
@@ -3066,7 +3169,7 @@
       "descLocId": "skin/it_camo_modern_three_color/desc",
       "replace_tex": {
         "from": "it_camo_olive_green*",
-        "to": "it_camo_threecolor_modern*"
+        "to": "it_camo_modern_three_color*"
       }
     },
     {

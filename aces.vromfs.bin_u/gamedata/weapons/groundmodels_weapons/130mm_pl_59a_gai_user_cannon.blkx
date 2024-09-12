@@ -46,11 +46,11 @@
     "explosiveMass": 0.115,
     "caliber": 0.13,
     "Cx": 0.35943,
-    "speed": 900.0,
+    "speed": 930.0,
     "maxDistance": 15000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
-    "groundRicochetPreset": "apbc",
+    "groundRicochetPreset": "apbc_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -126,6 +126,48 @@
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
+      }
+    },
+    "testProperties": {
+      "checkIntegrityAfterExplosion": true,
+      "secondaryShattersPreset": "ap_large_caliber",
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.6,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 0.75,
+              "damageScale": 1.5,
+              "angles": [
+                0.0,
+                180.0
+              ],
+              "countPortion": 0.4
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.75,
+              "angles": [
+                45.0,
+                105.0
+              ],
+              "countPortion": 0.5
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                130.0,
+                180.0
+              ],
+              "countPortion": 0.1
+            }
+          ]
+        }
       }
     },
     "pressureDamage": {
@@ -264,7 +306,7 @@
       "bulletCount": 25,
       "mass": 33.4,
       "explosiveType": "tnt",
-      "explosiveMass": 3.41,
+      "explosiveMass": 3.74,
       "rendinstDamageRadius": 5.0,
       "caliber": 0.13,
       "speed": 930.0,
@@ -272,7 +314,7 @@
       "maxDistance": 15000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -703,14 +745,14 @@
       "bulletCount": 40,
       "mass": 33.4,
       "explosiveType": "tnt",
-      "explosiveMass": 3.294,
+      "explosiveMass": 3.69,
       "caliber": 0.13,
       "speed": 930.0,
       "maxDistance": 25000.0,
       "explosionInAir": true,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,
@@ -1165,7 +1207,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,

@@ -9,7 +9,8 @@ let isPurchaseAllowed = mkWatched(persist, "isPurchaseAllowed", true)
 let countryCodeToLocId = {
   BE = "country_belgium",
   NL = "country_netherlands",
-  RU = "country_russia"
+  RU = "country_russia",
+  KR = "country_south_korea",
 }
 
 // restrictedInCountries - array of countries codes
@@ -19,6 +20,12 @@ function hasLegalRestictions(restrictedInCountries) {
 
   let userCountry = getCountryCode()
   return restrictedInCountries.findindex(@(c) c == userCountry) != null
+}
+
+function isHiddenByCountry(hiddenInCountries) {
+  if (hiddenInCountries.len() == 0)
+    return false
+  return hiddenInCountries.contains(getCountryCode())
 }
 
 function showLegalRestrictionsNotice() {
@@ -80,4 +87,5 @@ subscriptions.addListenersWithoutEnv({
 
 return {
   checkLegalRestrictions
+  isHiddenByCountry
 }

@@ -409,7 +409,9 @@ verticalCellsOptions > tr {
   width:pw;
 }
 
-tr[even=yes], unitContactRow[even=yes] {
+tr[even=yes],
+nationBonusUnit[even=yes],
+unitContactRow[even=yes] {
   background-color:@evenTrColor;
 }
 
@@ -783,4 +785,33 @@ table.transpTable, .transpTable > tr, .transpTable > tr > td {
 
 .noPad > tr > td {
   padding:0;
+}
+
+table.btlReward[minimized=no] td {
+  padding-left:2@blockInterval;
+  padding-right:2@blockInterval;
+}
+
+table.btlReward cellSeparator {
+  position:absolute;
+  pos:-w, 0;
+  size: 1@dp, ph;
+  background-color:@frameDarkMenuBorderColor;
+}
+
+table.btlReward[minimized=yes] {
+  css-hier-invalidate:all;
+  smallFont:yes;
+}
+
+table.btlReward[minimized=yes] img {
+  size:1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
+}
+
+table.btlReward[minimized=yes] rewardFormula activeText {
+  padding-left:1@dp; }
+
+table.btlReward[minimized=yes] > tr[headerRow=yes] textareaNoTab {
+  max-width:150@sf/@pf;
 }

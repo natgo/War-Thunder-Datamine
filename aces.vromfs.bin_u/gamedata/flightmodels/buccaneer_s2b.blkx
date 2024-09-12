@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2187,14 +2188,12 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      12.0,
-      3.2
+      24.7,
+      7.7
     ],
     "zoomOutFov": 24.7,
     "zoomInFov": 7.7,
-    "sightInFov": 7.37,
-    "sightOutFov": 18.49,
-    "sightFov": 18.49,
+    "sightInFov": 1.0,
     "headPos": [
       4.8,
       0.92,
@@ -2792,6 +2791,10 @@
       {
         "name": "buccaneer_s2b_lgbu_13",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_lgbu_13.blk"
+      },
+      {
+        "name": "buccaneer_s2b_500lb_drag_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_500lb_drag_bombs.blk"
       }
     ]
   },
@@ -2905,11 +2908,12 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               }
             ]
           },
@@ -2984,27 +2988,30 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 30,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               }
             ]
           }
@@ -3221,6 +3228,20 @@
               "slot": 2,
               "preset": "pave_spike"
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_001"
+            }
           }
         ]
       },
@@ -3370,6 +3391,20 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_mk_n1_x2_left_wing.blk",
               "emitter": "ter_002"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_002"
             }
           },
           {
@@ -3706,6 +3741,20 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_003"
+            }
+          },
+          {
             "iconType": "rls",
             "name": "data_link_pod",
             "reqModification": "fr_aj_168",
@@ -3931,6 +3980,20 @@
               "slot": 2,
               "preset": "pave_spike"
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_004"
+            }
           }
         ]
       }
@@ -4101,10 +4164,7 @@
       "modClass": "lth",
       "prevModification": "hydravlic_power"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,
@@ -4124,7 +4184,7 @@
       "tier": 2,
       "modClass": "armor"
     },
-    "air_extinguisher": {
+    "automatic_air_extinguisher": {
       "prevModification": "f_4c_g_suit",
       "tier": 4,
       "modClass": "armor",

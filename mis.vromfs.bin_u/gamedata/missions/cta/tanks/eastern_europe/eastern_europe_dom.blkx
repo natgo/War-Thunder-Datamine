@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_eastern_europe.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_Dom;eastern_europe/name",
@@ -95,9 +93,11 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -215,41 +215,31 @@
               {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_dom_capture_area_01_hardcore"
+                "target": "briefing_dom_capture_area_01_arcade"
               },
               {
                 "icontype": "basezone_B",
                 "side": "neutral",
-                "target": "briefing_dom_capture_area_02_hardcore"
+                "target": "briefing_dom_capture_area_02_arcade"
               },
               {
                 "icontype": "basezone_C",
                 "side": "neutral",
-                "target": "briefing_dom_capture_area_03_hardcore"
+                "target": "briefing_dom_capture_area_03_arcade"
               },
               {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_dom_t1_tank_spawn_01_hardcore"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_dom_t1_tank_spawn_02_hardcore"
+                "target": "briefing_dom_t1_tank_spawn_01_arcade"
               },
               {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_dom_t2_tank_spawn_01_hardcore"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_dom_t2_tank_spawn_02_hardcore"
+                "target": "briefing_dom_t2_tank_spawn_01_arcade"
               }
             ],
             "battleArea": {
-              "target": "briefing_battlearea_hardcore"
+              "target": "briefing_battlearea"
             }
           }
         ]
@@ -265,11 +255,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -279,11 +271,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -293,11 +287,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -307,26 +303,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/eastern_europe/battleareas/template_eastern_europe_dom_battleareas_hardcore.blk",
-        "difficulty": "hardcore",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -336,12 +319,46 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "importByParameter": "isWorldWar",
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/eastern_europe/objects/template_eastern_europe_bridges_ruined.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/eastern_europe/battleareas/template_eastern_europe_dom_exclude_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -397,6 +414,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -556,195 +575,6 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dom_capture_area_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          0.21644,
-          0.0,
-          0.976296
-        ],
-        [
-          0.0,
-          1.1,
-          0.0
-        ],
-        [
-          -0.976296,
-          0.0,
-          0.21644
-        ],
-        [
-          1808.88,
-          1.85056,
-          1426.11
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "briefing_dom_capture_area_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          0.21644,
-          0.0,
-          0.976296
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.976296,
-          0.0,
-          0.21644
-        ],
-        [
-          2424.12,
-          1.85001,
-          1774.53
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "briefing_dom_capture_area_03_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          0.21644,
-          0.0,
-          0.976296
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.976296,
-          0.0,
-          0.21644
-        ],
-        [
-          2535.6,
-          2.72925,
-          2477.22
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "briefing_dom_t1_tank_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          3623.51,
-          29.3053,
-          2282.39
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_t1_tank_spawn_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          3047.41,
-          24.2296,
-          2843.58
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_t2_tank_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1168.73,
-          1.85001,
-          1489.88
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_t2_tank_spawn_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          2223.77,
-          21.2683,
-          500.465
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "briefing_battlearea": {
       "type": "Box",
       "tm": [
@@ -767,33 +597,6 @@
           2117.86,
           66.0695,
           1770.71
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "briefing_battlearea_hardcore": {
-      "type": "Box",
-      "tm": [
-        [
-          -3100.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          644.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          -3100.0
-        ],
-        [
-          2303.95,
-          59.9919,
-          1919.45
         ]
       ],
       "objLayer": 3,

@@ -74,7 +74,7 @@
       "maxDistance": 7000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
+      "groundRicochetPreset": "apbc_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -289,7 +289,7 @@
       "maxDistance": 8000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -535,7 +535,7 @@
         "maxDistance": 8000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -778,7 +778,7 @@
         "maxDistance": 8000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1021,7 +1021,7 @@
         "maxDistance": 8000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1263,7 +1263,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "apbc",
         "ricochetPreset": "apbc",
-        "groundRicochetPreset": "apbc",
+        "groundRicochetPreset": "apbc_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1483,7 +1483,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1553,6 +1553,48 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.6,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    45.0,
+                    105.0
+                  ],
+                  "countPortion": 0.5
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.5,
+                  "angles": [
+                    130.0,
+                    180.0
+                  ],
+                  "countPortion": 0.1
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -1694,7 +1736,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1764,6 +1806,48 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.6,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    45.0,
+                    105.0
+                  ],
+                  "countPortion": 0.5
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.5,
+                  "angles": [
+                    130.0,
+                    180.0
+                  ],
+                  "countPortion": 0.1
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -1905,7 +1989,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1975,6 +2059,48 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "secondaryShattersPreset": "ap_large_caliber",
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.6,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    45.0,
+                    105.0
+                  ],
+                  "countPortion": 0.5
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.5,
+                  "angles": [
+                    130.0,
+                    180.0
+                  ],
+                  "countPortion": 0.1
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -2115,7 +2241,7 @@
         "maxDistance": 8000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,

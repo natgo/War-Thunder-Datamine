@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { format } = require("string")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
@@ -9,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let { getWishList = @() { units = [] }, getMaxWishListSize = @() 100 } = require("chard")
+let { getWishList, getMaxWishListSize } = require("chard")
 let { requestRemoveFromWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
@@ -18,7 +19,7 @@ let { getUnitTooltipImage, getUnitRoleIcon, getFullUnitRoleText, getUnitClassCol
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
+let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
 let { showAirInfo } = require("%scripts/airInfo.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -37,15 +38,32 @@ let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
+
+let unitButtonDiscount = ["btn_buy_discount_", "btn_shop_discount_"]
 
 let unitButtonTypes = {
   hasMarketPlaceButton = false
+  hasUseCouponButton = false
   hasShopButton = false
   hasBuyButton = false
   hasGiftButton = false
   hasConditionsButton = false
   hasGoToVechicleButton = true
   unitPrice = Cost()
+}
+
+let unitCoupons = {}
+
+function cacheUnitCoupons() {
+  unitCoupons.clear()
+  let items = ::ItemsManager.getInventoryListByShopMask(itemType.VEHICLE)
+  unitCoupons.__update(items.filter(@(it) it.metaBlk?.unit != null && it.canConsume())
+    .reduce(function(res, it) {
+      res[it.metaBlk.unit] <- it
+      return res
+    }, {})
+  )
 }
 
 function getUnitButtonType(unit, friendUid) {
@@ -81,11 +99,13 @@ function getUnitButtonType(unit, friendUid) {
   let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
   let unitPrice = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
 
-  let hasMarketPlaceButton = buyTypes.contains("marketPlace")
+  let hasUseCouponButton = unit.name in unitCoupons
+  let hasMarketPlaceButton = !hasUseCouponButton && buyTypes.contains("marketPlace")
   let hasShopButton = buyTypes.contains("shop")
   let hasBuyButton = isEqual(buyTypes, ["squadron"]) || isEqual(buyTypes, ["premium"]) ||
     (isIntersects(buyTypes, ["researchable", "conditionToReceive"]) && (canBuyNotResearchedUnit || canBuyUnit(unit)))
   return unitButtonTypes.__merge({
+    hasUseCouponButton
     hasMarketPlaceButton
     hasShopButton
     hasBuyButton
@@ -106,8 +126,7 @@ function filterUnitsListFunc(item, nameFilter, fuid) {
   let isFriendWishlist = fuid != null
 
   //name
-  let unitLocName = getUnitName(unit, false)
-  if(nameFilter != "" && ([unitLocName, item.unit].findindex(@(v) utf8ToLower(v).indexof(nameFilter) != null) == null))
+  if(nameFilter != "" && !isUnitLocNameMatchSearchStr(unit, nameFilter))
     return false
 
   let selectedFilters = getSelectedFilters()
@@ -150,8 +169,8 @@ function createUnitViewData(unitData, idx, friendUid) {
   let fonticon = getUnitRoleIcon(air)
   let typeText = getFullUnitRoleText(air)
   let ediff = getCurrentGameModeEdiff()
-  let { hasMarketPlaceButton, hasShopButton, hasBuyButton, unitPrice, hasGiftButton,
-    hasConditionsButton } = getUnitButtonType(air, friendUid)
+  let { hasMarketPlaceButton, hasUseCouponButton, hasShopButton, hasBuyButton, unitPrice,
+    hasGiftButton, hasConditionsButton } = getUnitButtonType(air, friendUid)
 
   return {
     unitName = unit
@@ -167,6 +186,7 @@ function createUnitViewData(unitData, idx, friendUid) {
     hasComment = comment.len() > 0
     time = $"{loc("clan/bannedDate")}{loc("ui/colon")} {buildDateTimeStr(time, true)}"
     priceText = $"{loc("mainmenu/btnOrder")} ({unitPrice.toStringWithParams({ needCheckBalance = true })})"
+    hasUseCouponButton
     hasMarketPlaceButton
     hasShopButton
     hasBuyButton
@@ -199,6 +219,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.unitInfoObj = this.scene.findObject("item_info_nest")
 
     let isFriendWishList = this.friendUid != null
+    cacheUnitCoupons()
 
     openPopupFilter({
       scene = this.scene.findObject("filter_nest")
@@ -270,6 +291,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(this.itemsListObj, data, data.len(), this)
 
     this.showRightPanelAndNavBar(units.len() > 0)
+    this.updateUnitsDiscounts()
   }
 
   unitIdxInList = @(unitName) this.filteredUnits.findindex(@(v) v.unit == unitName)
@@ -296,17 +318,19 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     if(itemObj == null)
       return
     let unit = getAircraftByName(itemObj.id)
-    let { hasMarketPlaceButton, hasShopButton, hasBuyButton, unitPrice, hasGiftButton,
-      hasConditionsButton, hasGoToVechicleButton } = getUnitButtonType(unit, this.friendUid)
+    let { hasMarketPlaceButton, hasUseCouponButton, hasShopButton, hasBuyButton, unitPrice,
+      hasGiftButton, hasConditionsButton, hasGoToVechicleButton } = getUnitButtonType(unit, this.friendUid)
 
     showObjById("btnBuy", hasBuyButton, this.scene)
     showObjById("btnShop", hasShopButton, this.scene)
     showObjById("btnMarketplace", hasMarketPlaceButton, this.scene)
+    showObjById("btnUseCoupon", hasUseCouponButton, this.scene)
     showObjById("btnGift", hasGiftButton, this.scene)
     showObjById("btnConditions", hasConditionsButton, this.scene)
     showObjById("btnTrashBin", this.friendUid == null, this.scene)
     showObjById("btnGoToVechicle", hasGoToVechicleButton, this.scene)
-
+    if (hasShopButton)
+      showUnitDiscount(this.scene.findObject("btn_shop_discount"), unit)
 
     if(hasBuyButton) {
       placePriceTextToButton(this.scene, "btnBuy", loc("mainmenu/btnOrder"), unitPrice)
@@ -314,7 +338,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
         this.scene.findObject("buy_discount").show(false)
         return
       }
-      ::showUnitDiscount(this.scene.findObject("buy_discount"), unit)
+      showUnitDiscount(this.scene.findObject("buy_discount"), unit)
     }
   }
 
@@ -372,6 +396,11 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.updateItemsList()
   }
 
+  function onEventInventoryUpdate(_p) {
+    cacheUnitCoupons()
+    this.updateItemsList()
+  }
+
   function onFilterChange(objId, tName, value) {
     applyFilterChange(objId, tName, value)
     this.fillItemsList()
@@ -380,7 +409,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function applyNameFilter(obj) {
     clearTimer(this.applyFilterTimer)
-    this.unitNameFilter = utf8ToLower(obj.getValue())
+    this.unitNameFilter = obj.getValue()
     if(this.unitNameFilter == "") {
       this.fillItemsList()
       return
@@ -400,6 +429,20 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   function getSelectedUnit(obj) {
     let unitName = obj?.unit ?? this.getCurItemObj()?.id
     return unitName != null ? getAircraftByName(unitName) : null
+  }
+
+  function onUseCoupon(obj) {
+    let unit = this.getSelectedUnit(obj)
+    if(unit == null)
+      return
+
+    let coupon = unitCoupons[unit.name]
+
+    coupon.consume(Callback(function(result) {
+      if (this == null || !result?.success)
+        return
+      this.updateItemsList()
+    }, this), null)
   }
 
   function onMarketplaceFindUnit(obj) {
@@ -531,6 +574,26 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventBeforeStartShowroom(_p) {
     handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+  }
+
+  function updateUnitsDiscounts() {
+    foreach (unitData in this.filteredUnits) {
+      let unitName = unitData.unit
+      let unit = getAircraftByName(unitName)
+      if (unit == null)
+        continue
+      foreach (objPrefix in unitButtonDiscount) {
+        let obj = this.scene.findObject($"{objPrefix}{unitName}")
+        if (obj?.isValid())
+          showUnitDiscount(obj, unit)
+      }
+    }
+
+  }
+
+  function onEventDiscountsDataUpdated(_) {
+    this.updateButtons()
+    this.updateUnitsDiscounts()
   }
 }
 

@@ -20,6 +20,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2434,7 +2435,7 @@
               ]
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_firestreak.blk",
+              "blk": "gameData/Weapons/rocketGuns/uk_firestreak_default.blk",
               "amountPerTier": 1.0,
               "tier": [
                 {
@@ -2471,7 +2472,7 @@
               ]
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_firestreak.blk",
+              "blk": "gameData/Weapons/rocketGuns/uk_firestreak_Javelin.blk",
               "amountPerTier": 1.0,
               "tier": [
                 {
@@ -2488,6 +2489,59 @@
                 },
                 {
                   "idx": 9,
+                  "iconType": "missile_air_to_air"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "javelin_fmk9_firestreak_x4_cannons_x4",
+        "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_firestreak_x4_cannons_x4.blk",
+        "reqModification": "aam_firestreak",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 4,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 8,
+                  "iconType": "cannon_inner"
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/uk_firestreak.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 2,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 3,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 9,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 10,
                   "iconType": "missile_air_to_air"
                 }
               ]

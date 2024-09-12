@@ -9,9 +9,10 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let { fabs } = require("math")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
+let { millisecondsToSeconds } = require("%scripts/time.nut")
 let { MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { get_local_mplayer, get_mp_local_team } = require("mission")
+let { startsWith } = require("%sqstd/string.nut")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
@@ -143,6 +144,12 @@ let g_hud_display_timers = {
       needTimeText = true
     },
     {
+      id = "building_status"
+      color = "@white"
+      icon = "#ui/gameuiskin#icon_building_in_progress.svg"
+      needTimeText = true
+    },
+    {
       id = "inextinguishable_fire_status"
       color = "#DD1111"
       icon = "#ui/gameuiskin#fire_indicator.svg"
@@ -191,6 +198,7 @@ let g_hud_display_timers = {
     g_hud_event_manager.subscribe("TankDebuffs:Battery", this.onBattery, this)
     g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", this.onExtinguishAssist, this)
     g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", this.onMineDetonation, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Building", this.onBuilding, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Rearm", this.onRearm, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Repair", this.onRepair, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", this.onMoveCooldown, this)
@@ -396,14 +404,15 @@ let g_hud_display_timers = {
     this.destoyRepairUpdater()
     this.hideAnimTimer("repair_status")
     this.hideAnimTimer("repair_auto_status")
-
-    if ((debuffs_data?.time ?? 0) <= REPAIR_SHOW_TIME_THRESHOLD && debuffs_data.state != "prepareRepair")
+    let { state = "notInRepair", time, totalTime, repairingParts = null } = debuffs_data
+    if (time <= REPAIR_SHOW_TIME_THRESHOLD && state != "prepareRepair")
       return
 
-    if (debuffs_data.state == "notInRepair")
+    if (state == "notInRepair")
       return
 
-    let objId = debuffs_data.state == "repairingAuto" ? "repair_auto_status" : "repair_status"
+    let isAutoRepairing = state == "repairingAuto"
+    let objId = isAutoRepairing ? "repair_auto_status" : "repair_status"
     let placeObj = this.scene.findObject(objId)
     if (!checkObj(placeObj))
       return
@@ -411,23 +420,30 @@ let g_hud_display_timers = {
     placeObj.animation = "show"
 
     let iconObj = placeObj.findObject("icon")
+    if (isAutoRepairing && this.unitType == ES_UNIT_TYPE_TANK && repairingParts != null) {
+      local partsArray = repairingParts?.name ?? []
+      partsArray = type(partsArray) == "array" ? partsArray : [partsArray] //if datablock contain one part, then it converted to string
+      let tracksPartsArray = partsArray.filter(@(part) startsWith(part, "track_") || startsWith(part, "wheel_"))
+      iconObj["background-image"] = tracksPartsArray.len() == partsArray.len() ? "#ui/gameuiskin#track_state_indicator.svg"
+        : "#ui/gameuiskin#icon_repair_in_progress.svg"
+    }
     let timebarObj = placeObj.findObject("timer")
     let timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue("")
 
     placeObj.show(true)
 
-    if (debuffs_data.state == "prepareRepair") {
+    if (state == "prepareRepair") {
       iconObj.wink = "fast"
       ::g_time_bar.setDirectionBackward(timebarObj)
     }
-    else if (debuffs_data.state == "repairing" || debuffs_data.state == "repairingAuto") {
+    else if (state == "repairing" || isAutoRepairing) {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
-      let createTime = get_time_msec() - (debuffs_data.totalTime - debuffs_data.time) * 1000
+      let createTime = get_time_msec() - (totalTime - time) * 1000
       this.repairUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
-        let timeToShowSeconds = debuffs_data.totalTime - time.millisecondsToSeconds(curTime - createTime)
+        let timeToShowSeconds = totalTime - millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -436,8 +452,8 @@ let g_hud_display_timers = {
       })
     }
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.time)
+    ::g_time_bar.setPeriod(timebarObj, totalTime)
+    ::g_time_bar.setCurrentTime(timebarObj, totalTime - time)
   }
 
   function onMoveCooldown(debuffs_data) {
@@ -477,6 +493,28 @@ let g_hud_display_timers = {
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
+  function onBuilding(debuffs_data) {
+    let placeObj = this.scene.findObject("building_status")
+    if (!checkObj(placeObj))
+      return
+
+    let showTimer = debuffs_data.timer > 0.0
+    placeObj.animation = showTimer ? "show" : "hide"
+
+    let timeTextObj = placeObj.findObject("time_text")
+    timeTextObj.setValue(debuffs_data.timer.tointeger().tostring());
+    let timebarObj = placeObj.findObject("timer")
+
+    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
+    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.timer)
+    if (debuffs_data.pause) {
+      ::g_time_bar.pauseTimer(timebarObj)
+    }
+    else if (debuffs_data.backward == true) {
+      ::g_time_bar.setDirectionBackward(timebarObj)
+    }
+  }
+
   function onInextinguishableFire(debuffs_data) {
     this.destroyInextinguishableFireUpdater()
     if (!this.scene?.isValid())
@@ -494,7 +532,7 @@ let g_hud_display_timers = {
     if (showTimer) {
       let createTime = get_time_msec()
       this.inextinguishableFireUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(get_time_msec() - createTime)
+        let timeToShowSeconds = debuffs_data.time - millisecondsToSeconds(get_time_msec() - createTime)
         if (timeToShowSeconds < 0)
           return true
         obj.setValue(timeToShowSeconds.tointeger().tostring())
@@ -562,7 +600,7 @@ let g_hud_display_timers = {
       let createTime = get_time_msec()
       this.repairBreachesUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        let timeToShowSeconds = debuffs_data.time - millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -640,7 +678,7 @@ let g_hud_display_timers = {
       let createTime = get_time_msec()
       this.extinguishUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        let timeToShowSeconds = debuffs_data.time - millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 

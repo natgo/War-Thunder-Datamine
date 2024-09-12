@@ -31,7 +31,7 @@
       "maxDistance": 3000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -94,11 +94,6 @@
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 0.1,
-      "shutterDamage": true,
-      "shutterDamageRadius": 17.5,
-      "shutterAmount": 120,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 10.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -379,7 +374,7 @@
       "maxDistance": 7000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -448,6 +443,48 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "secondaryShattersPreset": "ap_large_caliber",
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.6,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  45.0,
+                  105.0
+                ],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.5,
+                "angles": [
+                  130.0,
+                  180.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          }
         }
       },
       "pressureDamage": {
@@ -593,7 +630,7 @@
       "maxDistance": 7000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -662,6 +699,48 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "secondaryShattersPreset": "ap_large_caliber",
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.6,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  45.0,
+                  105.0
+                ],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.5,
+                "angles": [
+                  130.0,
+                  180.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          }
         }
       },
       "pressureDamage": {
@@ -807,7 +886,7 @@
       "maxDistance": 3000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -870,11 +949,6 @@
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 0.1,
-      "shutterDamage": true,
-      "shutterDamageRadius": 17.5,
-      "shutterAmount": 120,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 10.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",

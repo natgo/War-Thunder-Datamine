@@ -18,13 +18,13 @@ let { deferOnce } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
-let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
 const SAVE_SEEN_ID = "changelog/lastSeenVersionInfoNum"
 const SAVE_LOADED_ID = "changelog/lastLoadedVersionNum"
-let BASE_URL = getCurCircuitUrl("patchnotesURL", "https://newsfeed.gap.gaijin.net/api/patchnotes/warthunder/")
+let BASE_URL = getCurCircuitOverride("patchnotesURL", "https://newsfeed.gap.gaijin.net/api/patchnotes/warthunder/")
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 
@@ -92,7 +92,8 @@ function mkVersion(v) {
   if (titleshort == "undefined" || utf8(titleshort).charCount() > 50)
     titleshort = null
   let date = v?.date ?? ""
-  return { version, title, tVersion, versionType, titleshort, iVersion = versionToInt(version), id = v.id, date }
+  return { version, title, tVersion, versionType, titleshort,
+    iVersion = versionToInt(version), id = v.id, date, customData = v?.customData }
 }
 
 function filterVersions(vers) {

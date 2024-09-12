@@ -15,6 +15,7 @@ let DataBlock = require("DataBlock")
 let { get_skills_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -23,6 +24,7 @@ local totalSkillsSteps = 5 //steps available for leveling.
 
 let crewSkillPages = []
 let availableCrewSkills = {}
+let unseenIconsNeeds = {}
 let unitCrewTrainReq = {} //[crewUnitType] = array
 
 let minCrewLevel = {
@@ -45,7 +47,7 @@ function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
   return false
 }
 
-let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[idInCountry]
+let getCrew = @(countryId, idInCountry) ::g_crews_list.getCrewsList()?[countryId].crews[idInCountry]
 
 function createCrewBuyPointsHandler(crew) {
   return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
@@ -128,7 +130,7 @@ function getCrewUnit(crew) {
 }
 
 function getCrewCountry(crew) {
-  let countryData = getTblValue(crew.idCountry, ::g_crews_list.get())
+  let countryData = getTblValue(crew.idCountry, ::g_crews_list.getCrewsList())
   return countryData ? countryData.country : ""
 }
 
@@ -170,8 +172,95 @@ function getSkillCrewLevel(skillItem, newValue, prevValue = 0) {
   return stdMath.round_by_value(level, 0.01)
 }
 
+// crewSkillPages : [
+//   {
+//     id = "pilot"
+//     items = [{ name = eyesight, costTbl = [1, 5, 10]}, ...]
+//   }
+// ]
+function loadCrewSkills() {
+  crewSkillPages.clear()
+  unitCrewTrainReq.clear()
+
+  let blk = get_skills_blk()
+  crewLevelBySkill = blk?.skill_to_level_ratio ?? crewLevelBySkill
+  totalSkillsSteps = blk?.max_skill_level_steps ?? totalSkillsSteps
+
+  eachBlock(blk?.crew_skills, function(pageBlk, pName) {
+    let unitTypeTag = pageBlk?.type ?? ""
+    let defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
+    let page = {
+      id = pName,
+      image = blk?.crew_skills_calc[pName].image ?? ""
+      crewUnitTypeMask = defaultCrewUnitTypeMask
+      items = []
+      isVisible = function(crewUnitType) { return (this.crewUnitTypeMask & (1 << crewUnitType)) != 0 }
+    }
+    eachBlock(pageBlk, function(itemBlk, sName) {
+      let item = {
+        name = sName,
+        memberName = page.id
+        crewUnitTypeMask = unitTypes.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
+                        || defaultCrewUnitTypeMask
+        costTbl = []
+        isVisible = function(crewUnitType) { return (this.crewUnitTypeMask & (1 << crewUnitType)) != 0 }
+      }
+      page.crewUnitTypeMask = page.crewUnitTypeMask | item.crewUnitTypeMask
+
+      let costBlk = itemBlk?.skill_level_exp
+      local idx = 1
+      local totalCost = 0
+      while (costBlk?["level" + idx] != null) {
+        totalCost += costBlk["level" + idx]
+        item.costTbl.append(totalCost)
+        idx++
+      }
+      item.useSpecializations <- itemBlk?.use_specializations ?? false
+      item.useLeadership <- itemBlk?.use_leadership ?? false
+      page.items.append(item)
+    })
+    crewSkillPages.append(page)
+  })
+
+  broadcastEvent("CrewSkillsReloaded")
+
+  let reqBlk = blk?.train_req
+  if (reqBlk == null)
+    return
+
+  foreach (t in unitTypes.types) {
+    if (!t.isAvailable() || unitCrewTrainReq?[t.crewUnitType] != null)
+      continue
+
+    let typeBlk = reqBlk?[t.getCrewTag()]
+    if (typeBlk == null)
+      continue
+
+    let trainReq = []
+    local costBlk = null
+    local tIdx = 0
+    do {
+      tIdx++
+      costBlk = typeBlk?["train" + tIdx]
+      if (costBlk) {
+        trainReq.append([])
+        for (local idx = 0; idx <= MAX_COUNTRY_RANK; idx++)
+          trainReq[tIdx - 1].append(costBlk?["rank" + idx] ?? 0)
+      }
+    }
+    while (costBlk != null)
+
+    unitCrewTrainReq[t.crewUnitType] <- trainReq
+  }
+}
+
+function loadCrewSkillsOnce() {
+  if (crewSkillPages.len() == 0)
+    loadCrewSkills()
+}
+
 function getCrewLevel(crew, unit, crewUnitType, countByNewValues = false) {
-  ::load_crew_skills_once()
+  loadCrewSkillsOnce()
 
   local res = 0.0
   foreach (page in crewSkillPages)
@@ -189,7 +278,7 @@ function getCrewLevel(crew, unit, crewUnitType, countByNewValues = false) {
 }
 
 function isAllCrewsMinLevel() {
-  foreach (checkedCountrys in ::g_crews_list.get())
+  foreach (checkedCountrys in ::g_crews_list.getCrewsList())
     foreach (crew in checkedCountrys.crews)
       foreach (unitType in unitTypes.types)
         if (unitType.isAvailable()
@@ -366,119 +455,17 @@ function getCrewSkillPageIdToRunTutorial(crew) {
   return null
 }
 
-function onEventCrewSkillsChanged(params) {
-  if (!params?.isOnlyPointsChanged) {
-    let unit = params?.unit ?? getCrewUnit(params.crew)
-    if (unit)
-      unit.invalidateModificators()
-  }
-  ::update_crew_skills_available(true)
-}
-
-let min_steps_for_crew_status = [1, 2, 3]
-
-local is_crew_skills_available_inited = false
-/*
-  crewSkillPages : [
-    { id = "pilot"
-      items = [{ name = eyesight, costTbl = [1, 5, 10]}, ...]
-    }
-  ]
-*/
-
-::load_crew_skills <- function load_crew_skills() {
-  crewSkillPages.clear()
-  unitCrewTrainReq.clear()
-
-  let blk = get_skills_blk()
-  crewLevelBySkill = blk?.skill_to_level_ratio ?? crewLevelBySkill
-  totalSkillsSteps = blk?.max_skill_level_steps ?? totalSkillsSteps
-
-  eachBlock(blk?.crew_skills, function(pageBlk, pName) {
-    let unitTypeTag = pageBlk?.type ?? ""
-    let defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
-    let page = {
-      id = pName,
-      image = blk?.crew_skills_calc[pName].image ?? ""
-      crewUnitTypeMask = defaultCrewUnitTypeMask
-      items = []
-      isVisible = function(crewUnitType) { return (this.crewUnitTypeMask & (1 << crewUnitType)) != 0 }
-    }
-    eachBlock(pageBlk, function(itemBlk, sName) {
-      let item = {
-        name = sName,
-        memberName = page.id
-        crewUnitTypeMask = unitTypes.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
-                        || defaultCrewUnitTypeMask
-        costTbl = []
-        isVisible = function(crewUnitType) { return (this.crewUnitTypeMask & (1 << crewUnitType)) != 0 }
-      }
-      page.crewUnitTypeMask = page.crewUnitTypeMask | item.crewUnitTypeMask
-
-      let costBlk = itemBlk?.skill_level_exp
-      local idx = 1
-      local totalCost = 0
-      while (costBlk?["level" + idx] != null) {
-        totalCost += costBlk["level" + idx]
-        item.costTbl.append(totalCost)
-        idx++
-      }
-      item.useSpecializations <- itemBlk?.use_specializations ?? false
-      item.useLeadership <- itemBlk?.use_leadership ?? false
-      page.items.append(item)
-    })
-    crewSkillPages.append(page)
-  })
-
-  broadcastEvent("CrewSkillsReloaded")
-
-  let reqBlk = blk?.train_req
-  if (reqBlk == null)
-    return
-
-  foreach (t in unitTypes.types) {
-    if (!t.isAvailable() || unitCrewTrainReq?[t.crewUnitType] != null)
-      continue
-
-    let typeBlk = reqBlk?[t.getCrewTag()]
-    if (typeBlk == null)
-      continue
-
-    let trainReq = []
-    local costBlk = null
-    local tIdx = 0
-    do {
-      tIdx++
-      costBlk = typeBlk?["train" + tIdx]
-      if (costBlk) {
-        trainReq.append([])
-        for (local idx = 0; idx <= ::max_country_rank; idx++)
-          trainReq[tIdx - 1].append(costBlk?["rank" + idx] ?? 0)
-      }
-    }
-    while (costBlk != null)
-
-    unitCrewTrainReq[t.crewUnitType] <- trainReq
-  }
-}
-
-::load_crew_skills_once <- function load_crew_skills_once() {
-  if (crewSkillPages.len() == 0)
-    ::load_crew_skills()
-}
-
-function get_crew_skill_value(crewSkills, crewType, skillName) {
-  return crewSkills?[crewType]?[skillName] ?? 0
-}
+let minStepsForCrewStatus = [1, 2, 3]
 
 function count_available_skills(crew, crewUnitType) { //return part of availbleskills 0..1
   let curPoints = ("skillPoints" in crew) ? crew.skillPoints : 0
   if (!curPoints)
-    return 0.0
+    return {needUnseenIcon = false, count = 0}
 
   let crewSkills = get_aircraft_crew_by_id(crew.id)
   local notMaxTotal = 0
   let available = [0, 0, 0]
+  local maxStepCost = 0
 
   foreach (page in crewSkillPages)
     foreach (item in page.items) {
@@ -486,50 +473,82 @@ function count_available_skills(crew, crewUnitType) { //return part of availbles
         continue
 
       let totalSteps = getCrewTotalSteps(item)
-      let value = get_crew_skill_value(crewSkills, page.id, item.name)
-      let curStep = crewSkillValueToStep(item, value)
+      let crewSkillValue = crewSkills?[page.id][item.name] ?? 0
+      let curStep = crewSkillValueToStep(item, crewSkillValue)
       if (curStep == totalSteps)
         continue
 
       notMaxTotal++
-      foreach (idx, amount in min_steps_for_crew_status) {
+      foreach (idx, amount in minStepsForCrewStatus) {
         if (curStep + amount > totalSteps)
           continue
 
-        if (getNextCrewSkillStepCost(item, value, amount) <= curPoints)
+        let stepCost = getNextCrewSkillStepCost(item, crewSkillValue, amount)
+        if (amount == 1
+          && item?.memberName != "groundService" && (item?.memberName != "gunner" || item?.name != "members"))
+          maxStepCost = max(stepCost, maxStepCost)
+
+        if (stepCost <= curPoints)
           available[idx]++
       }
     }
 
+  let needUnseenIcon = !(maxStepCost == 0 || maxStepCost > curPoints)
+
   if (notMaxTotal == 0)
-    return 0
+    return {needUnseenIcon, count = 0}
 
   for (local i = 2; i >= 0; i--)
     if (available[i] >= 0.5 * notMaxTotal)
-      return i + 1
-  return 0
+      return {needUnseenIcon, count = i + 1}
+  return {needUnseenIcon, count = 0}
 }
 
-::update_crew_skills_available <- function update_crew_skills_available(forceUpdate = false) {
-  if (is_crew_skills_available_inited && !forceUpdate)
-    return
-  is_crew_skills_available_inited = true
+function isCrewNeedUnseenIcon(crew, unit) {
+  unit = unit ?? getAircraftByName(crew?.aircraft ?? "")
+  if (unit == null)
+    return false
+  let crewUnitType = unit.getCrewUnitType()
+  return unseenIconsNeeds?[crew.id][crewUnitType] ?? false
+}
 
-  ::load_crew_skills_once()
+local isCrewSkillsAvailableInited = false
+
+function updateCrewSkillsAvailable(forceUpdate = false) {
+  if (isCrewSkillsAvailableInited && !forceUpdate)
+    return
+  isCrewSkillsAvailableInited = true
+
+  loadCrewSkillsOnce()
   availableCrewSkills.clear()
-  foreach (cList in ::g_crews_list.get())
+  unseenIconsNeeds.clear()
+  foreach (cList in ::g_crews_list.getCrewsList())
     foreach (_idx, crew in cList?.crews || []) {
       let data = {}
+      let unseenIconsData = {}
       foreach (unitType in unitTypes.types) {
         let crewUnitType = unitType.crewUnitType
-        if (!data?[crewUnitType])
-          data[crewUnitType] <- count_available_skills(crew, crewUnitType)
+        if (!data?[crewUnitType]) {
+          let skillsAvailable = count_available_skills(crew, crewUnitType)
+          data[crewUnitType] <- skillsAvailable.count
+          unseenIconsData[crewUnitType] <- skillsAvailable.needUnseenIcon
+        }
       }
       availableCrewSkills[crew.id] <- data
+      unseenIconsNeeds[crew.id] <- unseenIconsData
     }
 }
 
-::get_crew_status <- function get_crew_status(crew, unit) {
+function onEventCrewSkillsChanged(params) {
+  if (!params?.isOnlyPointsChanged) {
+    let unit = params?.unit ?? getCrewUnit(params.crew)
+    if (unit)
+      unit.invalidateModificators()
+  }
+  updateCrewSkillsAvailable(true)
+}
+
+function getCrewStatus(crew, unit) {
   local status = ""
   if (isInFlight())
     return status
@@ -596,4 +615,9 @@ return {
   buyAllCrewSkills
   getCrewSkillPageIdToRunTutorial
   getSkillCrewLevel
+  loadCrewSkills
+  loadCrewSkillsOnce
+  updateCrewSkillsAvailable
+  getCrewStatus
+  isCrewNeedUnseenIcon
 }

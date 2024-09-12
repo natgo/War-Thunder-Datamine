@@ -38,7 +38,7 @@ let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText,
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { items_classes } = require("%scripts/items/itemsClasses/itemsClasses.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
@@ -47,10 +47,13 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
 let { getBonus } = require("%scripts/bonusModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getSkillCrewLevel, crewSkillPages } = require("%scripts/crew/crew.nut")
+let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce
+} = require("%scripts/crew/crew.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
+let imgFormat = @"img {size:t='%s'; background-image:t='%s';
+ background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 let descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
@@ -177,8 +180,9 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   local logName = ::getLogNameByType(logObj.type)
   local priceText = Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
     ("goldCost" in logObj) ? logObj.goldCost : 0).tostring()
+
   if (priceText != "")
-    priceText = " (" + priceText + ")"
+    priceText = loc("ui/parentheses/space", { text = priceText })
 
   if (logObj.type == EULT_SESSION_START ||
       logObj.type == EULT_EARLY_SESSION_LEAVE ||
@@ -443,8 +447,8 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       let wwSpawnScore = logObj?.wwSpawnScore ?? 0
       if (wwSpawnScore > 0)
         descBottom = "".concat(descBottom, "\n",
-          colorize("@userlogColoredText", "".concat(loc("debriefing/total/wwSpawnScore"), loc("ui/colon")),
-          colorize("@activeTextColor", wwSpawnScore)))
+          colorize("@userlogColoredText", "".concat(loc("debriefing/total/wwSpawnScore"), loc("ui/colon"))),
+          colorize("@activeTextColor", wwSpawnScore))
     }
 
     if (desc != "")
@@ -462,7 +466,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
         if (!("descriptionBlk" in res))
           res.descriptionBlk <- ""
         res.descriptionBlk += getLinkMarkup(loc("mainmenu/btnViewServerReplay"),
-                                                loc("url/serv_replay", { roomId = logObj.roomId }), "Y")
+          getCurCircuitOverride("serverReplayURL", loc("url/serv_replay")).subst({ roomId = logObj.roomId }), "Y")
       }
   }
   else if (logObj.type == EULT_AWARD_FOR_PVE_MODE) {
@@ -657,7 +661,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     res.name += priceText
 
     if (logObj.type == EULT_UPGRADING_CREW) {
-      ::load_crew_skills_once()
+      loadCrewSkillsOnce()
       local desc = ""
       local total = 0
       foreach (page in crewSkillPages)
@@ -1322,13 +1326,22 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       itemsNumber ++
     }
 
+    let costString = Cost(("wpCost" in logObj) ? logObj.wpCost * amount : 0,
+      ("goldCost" in logObj) ? logObj.goldCost * amount : 0).tostring()
+
     res.logImg = res.logImg || BaseItem.typeIcon
-    let locId = "userlog/" + logName
+
+    let locId = costString == "" ? $"userlog/{logName}"
+      : amount > 1 ? "userlog/buy_item/multiple"
+      : "userlog/buy_item"
+
     res.name = loc(locId, {
       numItemsColored = colorize("userlogColoredText", amount)
       numItems = amount
       numItemsAdd = amount
       itemName = itemsNumber == 1 ? firstItemName : ""
+      price = costString
+      amount = amount
     })
 
     if (itemsNumber > 1)
@@ -1337,6 +1350,8 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
         numItems = amount
         numItemsAdd = amount
         itemName = itemsListText
+        price = costString
+        amount = amount
       })
   }
   else if (logObj.type == EULT_TICKETS_REMINDER) {
@@ -1572,7 +1587,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
           res.descriptionBlk <- ""
         if ("circuit" in logObj)
           res.descriptionBlk += getLinkMarkup(loc("mainmenu/btnPickTSS"),
-            loc("url/serv_pick_tss", { port = logObj.port, circuit = logObj.circuit }), "Y")
+            getCurCircuitOverride("serverPickTssURL", loc("url/serv_pick_tss")).subst({ port = logObj.port, circuit = logObj.circuit }), "Y")
         desc += loc("invite_to_pick_tss/desc")
       }
       else if (action_tss == "invite_to_tournament") {
@@ -1657,6 +1672,9 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
 
     res.descriptionBlk <- descriptionBlkMultipleFormat.subst("".join(markupArr))
     res.description <- "\n".join(descLines, true)
+  }
+  else if (logObj.type == EULT_COMPLAINT_UPHELD) {
+    res.name = loc($"userlog/{logName}/successful_single")
   }
 
   if (isMissionExtrLog || (res?.description ?? "") != "") {

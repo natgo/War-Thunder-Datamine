@@ -26,6 +26,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2797,11 +2798,12 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 52,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3569,11 +3571,12 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 52,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3749,22 +3752,19 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only_unchecked": {},
-    "countermeasures_launcher_flare_only_unchecked": {},
-    "countermeasures_launcher_chaff_priority_unchecked": {},
-    "countermeasures_launcher_flare_priority_unchecked": {},
-    "countermeasures_belt_pack_unchecked": {
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_belt_pack": {
       "group": "countermeasures",
       "modClass": "weapon",
       "tier": 1,
       "deactivationIsAllowed": false
     },
     "us_aim_9b": {
-      "reqModification": "countermeasures_belt_pack_unchecked",
+      "reqModification": "countermeasures_belt_pack",
       "tier": 3,
       "modClass": "weapon"
     },
-    "air_extinguisher": {
+    "automatic_air_extinguisher": {
       "tier": 4,
       "modClass": "weapon",
       "invertEnableLogic": false

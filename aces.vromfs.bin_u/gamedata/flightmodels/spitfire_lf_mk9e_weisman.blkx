@@ -16,6 +16,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2343,7 +2344,7 @@
             {
               "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
               "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
+              "iconType": "bombs_small",
               "tier": [
                 {
                   "idx": 5
@@ -2651,10 +2652,18 @@
     "hispano_tracers": {},
     "hispano_stealth": {},
     "hispano_belt_pack": {
-      "tier": 2
+      "tier": 1
     },
     "hispano_mk2_new_gun": {
       "reqModification": "hispano_belt_pack",
+      "tier": 2
+    },
+    "hispano_mk_2_narrow_chamber_new_gun": {
+      "reqModification": "hispano_mk2_new_gun",
+      "tier": 3
+    },
+    "hispano_mk_2_1943_new_gun": {
+      "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
       "tier": 4
     },
     "fsbc_mk5": {

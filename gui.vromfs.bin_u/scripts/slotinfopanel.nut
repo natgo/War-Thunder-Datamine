@@ -18,23 +18,24 @@ let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCat
 let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew
+let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus
 } = require("%scripts/crew/crew.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -180,11 +181,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   function onShowExternalDmPartsChange(obj) {
     if (checkObj(obj))
       ::dmViewer.showExternalPartsArmor(obj.getValue())
-  }
-
-  function onShowHiddenXrayPartsChange(obj) {
-    if (checkObj(obj))
-      ::dmViewer.showExternalPartsXray(obj.getValue())
   }
 
   function onShowExtendedHintsChange(obj) {
@@ -388,7 +384,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       crewLevelText  = crewLevelText
       needCurPoints = needCurPoints
       crewPoints = needCurPoints && getCrewSpText(getCrewPoints(crewData))
-      crewStatus = ::get_crew_status(crewData, unit)
+      crewStatus = getCrewStatus(crewData, unit)
       crewSpecializationLabel = loc("crew/trained") + loc("ui/colon")
       crewSpecializationIcon = specType.trainedIcon
       crewSpecialization = specType.getName()
@@ -463,7 +459,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWeaponryDiscounts(unit) {
-    let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
+    let discount = unit ? getMaxWeaponryDiscountByUnitName(unit.name) : 0
     let discountObj = this.scene.findObject("btnAirInfoWeaponry_discount")
     showCurBonus(discountObj, discount, "mods", true, true)
     if (checkObj(discountObj))
@@ -526,6 +522,17 @@ function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
     configSavePath = $"{SLOT_INFO_CFG_SAVE_PATH}/{configSaveId}"
   })
 }
+
+addTooltipTypes({
+  TOPSKILLVALUE = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, id, _params) {
+      obj.getScene().replaceContent(obj, "%gui/airInfo/topValueTooltip.blk", handler)
+      obj.findObject("tooltipName").setValue(loc(id))
+      return true
+    }
+  }
+})
 
 return {
   createSlotInfoPanel

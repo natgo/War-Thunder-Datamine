@@ -32,7 +32,7 @@
       "range7": 0.0,
       "antenna": {
         "angleHalfSens": 0.4,
-        "sideLobesSensitivity": -60.0
+        "sideLobesSensitivity": -120.0
       }
     }
   },
@@ -192,16 +192,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -410,6 +405,12 @@
             "scanPattern": "irstTrack"
           }
         },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
+          }
+        },
         "setRadar": {
           "setTransiver": {
             "transiver": "radarTrack"
@@ -541,10 +542,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "irstCheckLockType1": {
@@ -630,10 +628,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {

@@ -15,6 +15,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2712,9 +2713,6 @@
         "bomb_pylon4"
       ]
     },
-    "HideDmParts": {
-      "node": "tank2_dm"
-    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2810,9 +2808,6 @@
               ],
               "roll": 179.0
             }
-          },
-          "ShowDmParts": {
-            "node": "tank2_dm"
           },
           "Weapon": [
             {
@@ -3000,6 +2995,9 @@
         "tier": 6,
         "order": 3,
         "notUseforDisbalanceCalculation": true,
+        "HideDmParts": {
+          "node": "tank2_dm"
+        },
         "WeaponPreset": [
           {
             "iconType": "bombs_middle_group_x2",
@@ -3026,6 +3024,9 @@
             "iconType": "bombs_large",
             "name": "fab500_internal",
             "reqModification": "tu-2_pkd-2",
+            "HideDmParts": {
+              "node": "tank2_dm"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_500m_44.blk",
@@ -3038,6 +3039,9 @@
             "iconType": "bombs_heavy_middle",
             "name": "fab1000_internal",
             "reqModification": "tu-2_pkd-2",
+            "HideDmParts": {
+              "node": "tank2_dm"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
@@ -3440,6 +3444,7 @@
     },
     "ns45_air_target": {},
     "ns45_armor_target": {},
+    "ns45_ground_targets": {},
     "ns45_belt_pack": {
       "tier": 1
     },

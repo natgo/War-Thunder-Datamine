@@ -58,6 +58,7 @@
   "saclosMissileCrossVelRatioMax": 0.5,
   "saclosMissileRequestedAccelMult": 0.25,
   "saclosMissileRequestedAccelToOmegaMult": 50.0,
+  "missileMaxTicksPerFrame": 15,
   "resyncSaclosGuidanceParams": true,
   "smoothGuidedMissilesResyncOnClient": true,
   "smoothGuidedMissilesResyncPosTimeConst": 2.0,
@@ -73,10 +74,11 @@
   "lockResetMinAcquisitionTime": 5.0,
   "weaponLockDeadUnits": true,
   "weaponLosCheckTimeOut": 1.0,
+  "distributeBulletSetsAmongTriggerGroupWeapons": false,
   "minFreeCrewIntegrity": -1.0,
   "avionicsDamageTreshold": 0.7,
   "maxShipCalcDistanceTimeout": 1.5,
-  "hudForceBombingZoneHeight": 100.0,
+  "hudForceBombingZoneHeight": 10.0,
   "missionSupportPlane": {
     "tank_event_in_random_battles_historical": {
       "UnitPreset": [
@@ -977,7 +979,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1019,7 +1023,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1061,7 +1067,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1103,7 +1111,9 @@
             "speed": [
               550.0,
               550.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1146,6 +1156,8 @@
               680.0,
               600.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           },
           {
@@ -1189,6 +1201,8 @@
               800.0,
               700.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           }
         ],
@@ -1256,7 +1270,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1298,7 +1314,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1340,7 +1358,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1382,7 +1402,9 @@
             "speed": [
               680.0,
               600.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1424,7 +1446,9 @@
             "speed": [
               800.0,
               700.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           }
         ],
         "clearProgress": {
@@ -1551,7 +1575,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1593,7 +1619,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1635,7 +1663,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1677,7 +1707,9 @@
             "speed": [
               550.0,
               550.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1720,6 +1752,8 @@
               680.0,
               600.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           },
           {
@@ -1763,6 +1797,8 @@
               800.0,
               700.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           }
         ],
@@ -1830,7 +1866,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1872,7 +1910,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1914,7 +1954,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1956,7 +1998,9 @@
             "speed": [
               680.0,
               600.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -1998,7 +2042,9 @@
             "speed": [
               800.0,
               700.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           }
         ],
         "clearProgress": {
@@ -2125,7 +2171,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2167,7 +2215,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2209,7 +2259,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2251,7 +2303,9 @@
             "speed": [
               550.0,
               550.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2294,6 +2348,8 @@
               680.0,
               600.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           },
           {
@@ -2337,6 +2393,8 @@
               800.0,
               700.0
             ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
             "bombFuseTimeForKillStreak": 5.0
           }
         ],
@@ -2404,7 +2462,9 @@
             "speed": [
               300.0,
               300.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2446,7 +2506,9 @@
             "speed": [
               400.0,
               400.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2488,7 +2550,9 @@
             "speed": [
               500.0,
               500.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2530,7 +2594,9 @@
             "speed": [
               680.0,
               600.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           },
           {
             "ranks": [
@@ -2572,7 +2638,9 @@
             "speed": [
               800.0,
               700.0
-            ]
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
           }
         ],
         "clearProgress": {
@@ -2694,7 +2762,9 @@
           "speed": [
             200.0,
             200.0
-          ]
+          ],
+          "exit_zone_radius": 500.0,
+          "exit_zone_dist_coeff": 0.3
         },
         "clearProgress": {
           "count": 3,
@@ -2759,7 +2829,9 @@
           "speed": [
             200.0,
             200.0
-          ]
+          ],
+          "exit_zone_radius": 500.0,
+          "exit_zone_dist_coeff": 0.4
         },
         "clearProgress": {
           "count": 2,
@@ -4593,7 +4665,7 @@
       },
       {
         "name": "sea_fury_fb11",
-        "weap": "rockets",
+        "weap": "sea_fury_rockets_x12",
         "rankRange": [
           15,
           18
@@ -6306,8 +6378,8 @@
         ]
       },
       {
-        "name": "tiger_uht",
-        "weap": "tiger_uht_gun_fn_m3p",
+        "name": "tiger_had_block2_france",
+        "weap": "tiger_had_france_default",
         "rankRange": [
           25,
           50
@@ -6315,7 +6387,7 @@
       },
       {
         "name": "mi_24v",
-        "weap": "mi_24v_default",
+        "weap": "mi_24v_guv_8700",
         "rankRange": [
           25,
           50
@@ -6338,28 +6410,118 @@
         ]
       },
       {
-        "name": "sa_341f",
-        "weap": "sa_341f_default",
+        "name": "z_10",
+        "weap": "z_10_default",
         "rankRange": [
           25,
           50
         ]
       },
       {
-        "name": "hkp9a_cb2",
-        "weap": "hkp9a_cb2_ffv_uni_pod",
+        "name": "ah_1w",
+        "weap": "ah_1w_default",
         "rankRange": [
           25,
           50
         ]
+      }
+    ]
+  },
+  "killStreaksExitZoneReward": {
+    "reward": [
+      {
+        "killStreakType": "artillery_attack",
+        "addCount": 1,
+        "rankRange": [
+          0,
+          50
+        ],
+        "weight": 0.8
       },
       {
-        "name": "hkp9a_cb3_fc",
-        "weap": "hkp9a_cb3_fc_ffv_uni_pod",
+        "killStreakType": "artillery_attack",
+        "addCount": 2,
         "rankRange": [
-          25,
+          0,
           50
-        ]
+        ],
+        "weight": 0.4
+      },
+      {
+        "killStreakType": "artillery_attack",
+        "addCount": 3,
+        "rankRange": [
+          0,
+          50
+        ],
+        "weight": 0.2
+      },
+      {
+        "killStreakType": "control_unit_event",
+        "addCount": 1,
+        "rankRange": [
+          0,
+          50
+        ],
+        "weight": 0.8
+      },
+      {
+        "killStreakType": "control_unit_event",
+        "addCount": 2,
+        "rankRange": [
+          0,
+          50
+        ],
+        "weight": 0.4
+      },
+      {
+        "killStreakType": "control_unit_event",
+        "addCount": 3,
+        "rankRange": [
+          0,
+          50
+        ],
+        "weight": 0.2
+      },
+      {
+        "streak": "killStreak_survived_extra_300wp",
+        "rankRange": [
+          0,
+          10
+        ],
+        "weight": 1.0
+      },
+      {
+        "streak": "killStreak_survived_extra_750wp",
+        "rankRange": [
+          0,
+          10
+        ],
+        "weight": 0.5
+      },
+      {
+        "streak": "killStreak_survived_extra_1kwp",
+        "rankRange": [
+          0,
+          20
+        ],
+        "weight": 0.2
+      },
+      {
+        "streak": "killStreak_survived_extra_3kwp",
+        "rankRange": [
+          10,
+          50
+        ],
+        "weight": 0.2
+      },
+      {
+        "streak": "killStreak_survived_extra_5kwp",
+        "rankRange": [
+          20,
+          50
+        ],
+        "weight": 0.2
       }
     ]
   },
@@ -7439,6 +7601,7 @@
     "aimFromServerErrorMax": 6.0,
     "prolongateBeforeTrack": true,
     "interpolationForSanityCheck": true,
+    "useTimeOfFlightFromBallisticComputer": true,
     "DesignationType": {
       "camera": 0,
       "sensor": 1,
@@ -7453,7 +7616,11 @@
     "switchLockToPoint": true,
     "multiRayTrace": true
   },
+  "radarSeeker": {
+    "targetSearchBeamWidthMult": 1.0
+  },
   "radarCommon": {
+    "singleTargetDetectionSensitivityMult": 0.5,
     "directionWithinMainLobe": true,
     "angleFinderZoneToMainBeamWidth": 2.0,
     "useRefWidthForTargets": false,
@@ -7463,6 +7630,7 @@
   "radar": {
     "slavedFsmBlk": "gameData/sensors/slaved_radar_fsm.blk",
     "interpolationForSanityCheck": true,
+    "relativeDiscreteScanZoneCenterMove": true,
     "radarModeName": [
       "standby",
       "search",
@@ -7492,10 +7660,12 @@
       "PD BST",
       "PD VSL",
       "PD track",
+      "PD RAM",
       "PD HDN standby",
       "PD HDN search",
       "PD HDN acquisition",
       "PD HDN ACM",
+      "PD HDN HMD",
       "PD HDN BST",
       "PD HDN VSL",
       "PD HDN track",
@@ -7678,9 +7848,9 @@
     "springRestitutionCoeffToWheelCoeff": 2.0,
     "wingOverloadToBreakProbabilityMult": 6.0,
     "wingOverloadStress": [
-      -0.05,
+      -3.0,
       -5.0,
-      0.05,
+      3.0,
       5.0
     ],
     "wingOverspeedToBreakProbabilityMult": 0.03,
@@ -8443,6 +8613,7 @@
       "allowNode": [
         "compartment_<n>_dm",
         "cover_<n>_dm",
+        "superstructure_<n>_dm",
         "superstructure_dm",
         "superstructure_front_dm",
         "superstructure_back_dm",
@@ -8555,5 +8726,13 @@
   "reloadingTorpedoMults": {
     "exp_destroyer_0": 2.0,
     "exp_cruiser_0": 2.0
+  },
+  "depthChargeSalvoParams": {
+    "duration": 16.5,
+    "relativeCount": 1.0,
+    "explosionDepth": [
+      20.0,
+      40.0
+    ]
   }
 }

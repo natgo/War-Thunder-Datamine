@@ -3,11 +3,6 @@
     "id": "protection_analysis_container",
     "position": "relative",
     "size": "pw, ph",
-    "div": {
-      "size": "sw, sh",
-      "position": "root",
-      "cursor": "invisible"
-    },
     "tdiv": [
       {
         "id": "hint_scene",
@@ -63,6 +58,10 @@
             {
               "id": "rowSeparator",
               "pos": "0, 1@blockInterval"
+            },
+            {
+              "id": "rowSeparator",
+              "pos": "0, 1@blockInterval"
             }
           ],
           "CheckBox": [
@@ -78,6 +77,16 @@
               "textareaNoTab": {
                 "text": "#mainmenu/btnSaveChoice"
               }
+            },
+            {
+              "id": "checkboxTestProjectileProps",
+              "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+              "position": "relative",
+              "text": "#mainmenu/btnTestProjectileProps",
+              "on_change_value": "onTestProjectileProps",
+              "btnName": "Y",
+              "ButtonImg": {},
+              "CheckBoxImg": {}
             },
             {
               "id": "checkboxVerticalAngle",
@@ -98,17 +107,30 @@
           ],
           "tdiv": {
             "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-            "Button_text": {
-              "id": "btnProtectionMap",
-              "position": "relative",
-              "text": "#mainmenu/protectionMap",
-              "on_click": "onProtectionMap",
-              "btnName": "X",
-              "noMargin": "yes",
-              "display": "hide",
-              "enable": "no",
-              "ButtonImg": {}
-            },
+            "Button_text": [
+              {
+                "id": "btnProtectionMap",
+                "position": "relative",
+                "text": "#mainmenu/protectionMap",
+                "on_click": "onProtectionMap",
+                "btnName": "X",
+                "noMargin": "yes",
+                "display": "hide",
+                "enable": "no",
+                "ButtonImg": {}
+              },
+              {
+                "id": "btnCrewMap",
+                "position": "relative",
+                "text": "#mainmenu/crewMap",
+                "on_click": "onCrewMap",
+                "btnName": "X",
+                "noMargin": "yes",
+                "display": "hide",
+                "enable": "no",
+                "ButtonImg": {}
+              }
+            ],
             "tdiv": {
               "id": "pa_info_block",
               "height": "1@buttonHeight",
@@ -242,7 +264,9 @@
         ]
       }
     ],
-    "hangarControlTracking": {},
+    "hangarControlTracking": {
+      "cursor": "invisible"
+    },
     "gamercard_div": {
       "id": "chapter_gamercard",
       "gamercard": [
@@ -401,23 +425,36 @@
                   "smallFont": "yes",
                   "commonTextColor": "yes",
                   "text": "",
-                  "max-width": "pw",
-                  "text-shade": "blur:24",
-                  "text-shade-x": "1",
-                  "text-shade-y": "1",
-                  "text-shade-color": "#88000000"
+                  "max-width": "pw"
                 },
-                "Button_text": {
-                  "id": "custom_lang_info",
-                  "hasWarningText": "yes",
-                  "position": "relative",
-                  "visualStyle": "noBgr",
-                  "isTextArea": "yes",
-                  "display": "hide",
-                  "on_click": "onCustomLangInfo",
-                  "focus_border": {},
-                  "ButtonImg": {}
-                },
+                "Button_text": [
+                  {
+                    "id": "custom_lang_info",
+                    "hasWarningText": "yes",
+                    "position": "relative",
+                    "visualStyle": "noBgr",
+                    "isTextArea": "yes",
+                    "display": "hide",
+                    "on_click": "onCustomLangInfo",
+                    "reduceHeight": "yes",
+                    "smallFont": "yes",
+                    "focus_border": {}
+                  },
+                  {
+                    "id": "custom_sound_mods",
+                    "hasWarningText": "yes",
+                    "position": "relative",
+                    "visualStyle": "noBgr",
+                    "isTextArea": "yes",
+                    "text": "#mainmenu/customSoundMods",
+                    "tooltip": "#mainmenu/customSoundMods/tooltip",
+                    "display": "hide",
+                    "on_click": "onCustomSoundMods",
+                    "reduceHeight": "yes",
+                    "smallFont": "yes",
+                    "focus_border": {}
+                  }
+                ],
                 "tdiv": {
                   "id": "mission_texts_block_left",
                   "flow": "vertical",
@@ -709,7 +746,8 @@
                 "size": "0.4@sf+10, 0.075*@sf+10",
                 "position": "absolute",
                 "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                "flow": "vertical"
+                "flow": "vertical",
+                "skip-cursor": "skip"
               }
             ],
             "infoBlock": {

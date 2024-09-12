@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -206,6 +207,17 @@
       },
       "tank6_dm": {
         "hp": 120.5
+      },
+      "tank7_dm": {
+        "hp": 120.5
+      },
+      "tank8_dm": {
+        "hp": 120.5
+      }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -1265,6 +1277,130 @@
         ]
       },
       {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -1950,8 +2086,8 @@
       6.0,
       0.5
     ],
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
+    "sightInFov": 0.5,
+    "sightOutFov": 6.0,
     "sightFov": 1.0,
     "headPos": [
       4.2,
@@ -2384,6 +2520,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_rocket_lrf1.blk"
       },
       {
+        "name": "jaguar_a_phimat_counteiner",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_phimat_counteiner.blk"
+      },
+      {
         "name": "jaguar_a_atlis2",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_atlis2.blk"
       }
@@ -2413,6 +2553,13 @@
         "fr_phimat_container_cap",
         "alkan_ll_5020_l",
         "alkan_ll_5020_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank7_dm",
+        "tank8_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
@@ -2480,19 +2627,43 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 126,
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 24,
+              "bulletsCartridge": 1,
               "external": true,
-              "separate": false
+              "separate": false,
+              "order": 25
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 126,
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 24,
+              "bulletsCartridge": 1,
               "external": true,
-              "separate": false
+              "separate": false,
+              "order": 26
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 72,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": false,
+              "order": 27
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 72,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": false,
+              "order": 28
             }
           ]
         }
@@ -2827,6 +2998,24 @@
               "slot": 3,
               "preset": "atlis2"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot2",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/fr_1200l_rp36_drop_tank_1.blk",
+              "emitter": "uk_264gal_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -2917,6 +3106,24 @@
               "emitter": "au_f1_2",
               "bullets": 1,
               "dragCx": 0.025
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_4"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/fr_1200l_rp36_drop_tank_3.blk",
+              "emitter": "uk_264gal_drop_tank_002",
+              "bullets": 1,
+              "external": true
             }
           }
         ]
@@ -3105,6 +3312,24 @@
               "slot": 3,
               "preset": "atlis2"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot4",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/fr_1200l_rp36_drop_tank_2.blk",
+              "emitter": "uk_264gal_drop_tank_003",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -3250,6 +3475,26 @@
               "external": true,
               "blk": "gameData/Weapons/containers/lr_100_4_tba_100_multi_dart.blk",
               "emitter": "tba_type100_4_4"
+            }
+          },
+          {
+            "iconType": "ltc",
+            "name": "phimat_counteiner",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon_marta_magic_r",
+                "phimat_container"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": false,
+              "emitter": "phimat_container",
+              "bullets": 216,
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3455,10 +3700,8 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,

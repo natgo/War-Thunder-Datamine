@@ -18,7 +18,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { read_text_from_file, file_exists } = require("dagor.fs")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { get_cur_circuit_block } = require("blkGetters")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" //For break auto login on PS for new user, if no EULA has been accepted on this console.
 
@@ -53,7 +53,7 @@ function loadAndProcessText(){
   let shortLang = getCurLangShortName()
   local langPostfix = shortLangToEulaLang?[shortLang] ?? shortLang
   langPostfix = langPostfix == "" ? "" : $"_{langPostfix}"
-  let eulaPrefixForCircuit = get_cur_circuit_block()?.eulaPrefix ?? ""
+  let eulaPrefixForCircuit = getCurCircuitOverride("eulaPrefix", "")
   let fileName = getExistFileNameByPrefixAndPostfix(eulaPrefixForCircuit, langPostfix)
     ?? getExistFileNameByPrefixAndPostfix("", langPostfix)
 
@@ -99,8 +99,10 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     showObjById("accept", !hasOneOkBtn, this.scene)
     showObjById("decline", !hasOneOkBtn, this.scene)
 
-    if (this.isNewEulaVersion)
-      this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))
+    let eulaTitle = getCurCircuitOverride("eulaPrefix", "") != "" ? ""
+      : this.isNewEulaVersion ? loc("eula/eulaUpdateTitle")
+      : loc("eula/eulaTitle")
+    this.scene.findObject("eula_title").setValue(eulaTitle)
   }
 
   function onAcceptEula() {

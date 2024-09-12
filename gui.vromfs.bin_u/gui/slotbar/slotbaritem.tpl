@@ -19,18 +19,26 @@ massTransp {
     }
 
     slotsScrollDiv {
-      height:t='1@slotbarHeight -1@slotbar_top_shade +2@slotbarInvisPad' // @slotbarInvisPad here is to exclude overflow-y:hidden troubles (in respawn)
-      pos:t='0, 1@slotbar_top_shade -1@slotbarInvisPad'; position:t='relative'
+      height:t='1@slotbarHeight -1@slotbar_top_shade +2@slotbarInvisPad + 1@slotBattleButtonHeight' // @slotbarInvisPad here is to exclude overflow-y:hidden troubles (in respawn)
+      pos:t='0, 1@slotbar_top_shade -1@slotbarInvisPad - 1@slotBattleButtonHeight'; position:t='relative'
       input-transparent:t='yes'
       overflow-x:t='auto'
 
       slotbarTable {
+        <<#selectOnHover>>
+        on_mouse_leave:t='onSlotbarMouseLeave'
+        canSelectNone:t='yes'
+        <</selectOnHover>>
+        <<#highlightSelected>>
+        highlightSelected:t=yes
+        <</highlightSelected>>
         id:t='airs_table_<<countryIdx>>'
-        pos:t='0, 1@slotbarInvisPad'
+        pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin+1@slotBattleButtonHeight+@slotbar_top_shade+1@sf/@pf'
         position:t='relative'
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'
         alwaysShowBorder:t='<<alwaysShowBorder>>'
+        css-hier-invalidate:t='yes'
 
         on_select:t = 'onSlotbarSelect'
         _on_activate:t='onSlotbarActivate'
@@ -44,7 +52,7 @@ massTransp {
 
       tdiv {
         id:t='slotbarHint'
-        size:t='2.5@slot_width, @slot_height + 1@slotbar_pad_top + 1@slotbar_pad_bottom'
+        size:t='2.5@slot_width, @slotbarHeight'
         position:t='relative'
         pos:t='0, 1@slotbarInvisPad'
         padding:t='@slot_interval, 0'

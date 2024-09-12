@@ -3,6 +3,10 @@ position:t='<<position>>'
 pos:t='<<posX>>w, <<posY>>h'
 <</position>>
 
+<<#selectOnHover>>
+on_mouse_enter:t='onUnitSlotMouseEnter'
+<</selectOnHover>>
+
 <<#isInTable>>
 id:t='<<slotId>>'
 
@@ -11,33 +15,37 @@ inactive:t='yes'
 <</slotInactive>>
 
 <<#isSlotbarItem>>
-slotbarCurAir {}
 chosen:t='no'
+selected:t='no'
 <</isSlotbarItem>>
 <</isInTable>>
 
 <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
-
+<<#crewId>>crewId:t='<<crewId>>'<</crewId>>
 shopItem {
   id:t='<<shopItemId>>'
+  interactive:t='yes'
   behavior:t='Timer'
   timer_interval_msec:t='1000'
   unit_name:t='<<unitName>>'
+  proxyEventsParentTag:t='slotbarTable';
   <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
+  <<#crewInfoTranslucent>>crewInfoTranslucent:t='<<crewInfoTranslucent>>'<</crewInfoTranslucent>>
 
   <<^isInTable>>
   isInTable:t='no'
   <</isInTable>>
-
+  on_hover:t='onUnitHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
   <</isTooltipByHold>>
 
-  <<#refuseOpenHoverMenu>>refuseOpenHoverMenu:t='yes'<</refuseOpenHoverMenu>>
+  refuseOpenHoverMenu:t='<<refuseOpenHoverMenu>>'
+  <<#hasContextCursor>>cursor:t='context-menu'<</hasContextCursor>>
 
   <<@extraInfoBlock>>
+  <<@extraInfoBlockTop>>
 
   <<#showInService>>
   shopInServiceImg {
@@ -61,7 +69,7 @@ shopItem {
     }
   }
 
-  hoverHighlight {}
+  slotHoverHighlight {}
 
   shopStat:t='<<shopStatus>>'
   unitRarity:t='<<unitRarity>>'
@@ -92,6 +100,10 @@ shopItem {
 
   eliteIcon {}
 
+  <<#isSlotbarItem>>
+  slotTopGradientLine {}
+  slotBottomGradientLine {}
+  <</isSlotbarItem>>
 
   <<#isRecentlyReleased>>
   recentlyReleasedIcon {}
@@ -147,7 +159,6 @@ shopItem {
     }
 
     shopItemPrice {
-      id:t='bottom_item_price_text'
       <<#isLongPriceText>>
       tinyFont:t='yes'
       <</isLongPriceText>>
@@ -198,6 +209,10 @@ shopItem {
         shopItemType:t='<<shopItemType>>'
       }
     }
+    crewNumText {
+      text:t='<<crewNumWithTitle>>'
+      display:t='hide'
+    }
   }
 
   <<@itemButtons>>
@@ -223,5 +238,15 @@ shopItem {
 
   focus_border {}
 
-  <<@bottomButton>>
+  <<#needDnD>>
+  on_drag_start:t='onUnitCellDragStart'
+  on_drag_drop:t='onUnitCellDrop'
+  on_move:t='onUnitCellMove'
+  dragParent:t='yes'
+  <</needDnD>>
 }
+<<#needDnD>>
+on_end_edit:t='onCrewDropFinish'
+on_drag_drop:t='onCrewDrop'
+on_move:t='onCrewMove'
+<</needDnD>>

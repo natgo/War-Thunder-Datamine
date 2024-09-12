@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, local_player_has_feature
+from "%scripts/dagui_natives.nut" import disable_network, local_player_has_feature, has_ray_query
 
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -262,6 +262,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   BuyAllPresets = false
   enableFollowBulletCamera = disable_network()
   ProtectionMap = false
+  CrewMap = true
   OrderAutoActivate = false
   WeaponryCustomPresets = false
   BattleAutoStart = false
@@ -279,6 +280,9 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   DevShopMode = false
   CustomNicks = false
   Wishlist = false
+  optionMotionBlur = true
+  optionRT = has_ray_query()
+  amdfsr = true
 })
 
 let override = Watched({})

@@ -63,7 +63,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let lottie = require("%scripts/utils/lottie.nut")
-let { checkLegalRestrictions } = require("%scripts/items/itemRestrictions.nut")
+let { checkLegalRestrictions, isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
@@ -141,6 +141,7 @@ let BaseItem = class {
   lottieAnimation = null
 
   restrictedInCountries = null
+  hiddenInCountries = null
 
   constructor(blk, invBlk = null, slotData = null) {
     this.id = blk.getBlockName() || invBlk?.id || ""
@@ -157,6 +158,8 @@ let BaseItem = class {
     this.forceExternalBrowser = blk?.forceExternalBrowser ?? false
     this.shouldAutoConsume = blk?.shouldAutoConsume ?? false
     this.restrictedInCountries = blk?.restrictedInCountries
+    let hiddenInCountriesStr = blk?.hiddenInCountries ?? ""
+    this.hiddenInCountries = hiddenInCountriesStr == "" ? [] : hiddenInCountriesStr.split(",")
 
     this.shopFilterMask = this.iType
     let types = blk % "additionalShopItemType"
@@ -319,11 +322,10 @@ let BaseItem = class {
 
   function getItemTypeDescription(loc_params = {}) {
     local idText = ""
-    if (this.locId != null) {
-      idText = loc(this.locId, this.locId + "/typeDesc", loc_params)
-      if (idText != "")
-        return idText
-    }
+
+    idText = loc($"{this.locId}/typeDesc", "", loc_params)
+    if (idText != "")
+      return idText
 
     idText = loc($"item/{this.id}/typeDesc", "", loc_params)
     if (idText != "")
@@ -401,6 +403,7 @@ let BaseItem = class {
     if (getTblValue("contentIcon", params, true))
       res.contentIconData <- this.getContentIconData()
 
+    res.isPrizeUnitBought <- this?.isPrizeUnitBought() ?? false
     return this.getSubstitutionViewData(res, params)
   }
 
@@ -551,13 +554,15 @@ let BaseItem = class {
   }
 
   function getMainActionData(isShort = false, _params = {}) {
-    if (this.isCanBuy())
+    if (this.isCanBuy()) {
+      let isPrizeUnitBought = this?.isPrizeUnitBought() ?? false
       return {
         btnName = this.getBuyText(false, isShort)
         btnColoredName = this.getBuyText(true, isShort)
-        isInactive = this.hasReachedMaxAmount()
+        isInactive = this.hasReachedMaxAmount() || isPrizeUnitBought
+        btnStyle = isPrizeUnitBought ? "" : null
       }
-
+    }
     return null
   }
 
@@ -777,7 +782,7 @@ let BaseItem = class {
   isCraftResult = @() false
   getCraftResultItem = @() null
   hasCraftResult = @() !!this.getCraftResultItem()
-  isHiddenItem = @() !this.isEnabled() || this.isCraftResult() || this.shouldAutoConsume
+  isHiddenItem = @() !this.isEnabled() || this.isCraftResult() || this.shouldAutoConsume || isHiddenByCountry(this.hiddenInCountries)
   getAdditionalTextInAmmount = @(_needColorize = true, _showOnlyIcon = false) ""
   cancelCrafting = @(...) false
   getRewardListLocId = @() "mainmenu/rewardsList"
@@ -791,7 +796,7 @@ let BaseItem = class {
   isVisibleInWorkshopOnly = @() false
   getIconName = @() this.getSmallIconName()
   canCraftOnlyInCraftTree = @() false
-  getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
+  getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount", vehicleAlreadyBought = "item/vehicle_already_bought" }
   consume = @(_cb, _params) false
   showAllowableRecipesOnly = @() false
   hasUsableRecipe = @() false

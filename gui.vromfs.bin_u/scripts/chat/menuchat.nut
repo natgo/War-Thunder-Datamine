@@ -26,7 +26,7 @@ let penalties = require("%scripts/penitentiary/penalties.nut")
 let { isPlayerFromXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
+let { isChatEnabled, checkChatEnableWithPlayer, hasMenuChat,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby
 } = require("%scripts/user/matchingFeature.nut")
@@ -276,14 +276,18 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     return false
   }
 
-  function isChatAvailableInCurRoom() {
-    if (this.curRoom == null || this.curRoom.hasCustomViewHandler)
-      return false
+  function checkChatAvailableInCurRoom(callback) {
+    if (this.curRoom == null || this.curRoom.hasCustomViewHandler) {
+      callback?(false)
+      return
+    }
 
-    if (this.curRoom.type == g_chat_room_type.PRIVATE)
-      return isChatEnableWithPlayer(this.curRoom.id)
+    if (this.curRoom.type == g_chat_room_type.PRIVATE) {
+      checkChatEnableWithPlayer(this.curRoom.id, callback)
+      return
+    }
 
-    return isChatEnabled()
+    callback?(isChatEnabled())
   }
 
   function reloadChatScene() {
@@ -296,13 +300,15 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.guiScene.replaceContent(this.scene, "%gui/chat/menuChat.blk", this)
       this.setSavedSizes()
       this.scene.findObject("menu_chat_update").setUserData(this)
-      let canChat = this.isChatAvailableInCurRoom()
-      this.showChatInput(canChat)
-      this.scene.findObject("menuchat_input")["max-len"] = ::g_chat.MAX_MSG_LEN.tostring()
-      this.searchInited = false
-      initChatMessageListOn(this.scene.findObject("menu_chat_messages_container"), this)
-      this.updateRoomsList()
-      this.updateButtonCreateRoom()
+      local thisCapture = this
+      this.checkChatAvailableInCurRoom(function(canChat) {
+        thisCapture.showChatInput(canChat)
+        thisCapture.scene.findObject("menuchat_input")["max-len"] = ::g_chat.MAX_MSG_LEN.tostring()
+        thisCapture.searchInited = false
+        initChatMessageListOn(thisCapture.scene.findObject("menu_chat_messages_container"), thisCapture)
+        thisCapture.updateRoomsList()
+        thisCapture.updateButtonCreateRoom()
+      })
     }
   }
 
@@ -406,8 +412,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     this.curRoom = roomData
     showObjById("btn_showPlayersList", !this.alwaysShowPlayersList() && roomData.havePlayersList, this.scene)
     showObjById("btn_showSearchList", true, this.scene)
-    this.showChatInput(this.isChatAvailableInCurRoom())
     showObjById("menu_chat_text_block", !roomData.hasCustomViewHandler, this.scene)
+
+    local thisCapture = this
+    this.checkChatAvailableInCurRoom(function(canChat) {
+      thisCapture.showChatInput(canChat)
+    })
 
     this.updateUsersList()
     this.updateChatText()
@@ -490,8 +500,10 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     let roomVisible = room.type.isVisible()
 
     roomTab.canClose = room.canBeClosed ? "yes" : "no"
-    roomTab.enable(!room.hidden && !room.concealed() && roomVisible)
-    roomTab.show(!room.hidden && !room.concealed() && roomVisible)
+    room.concealed(function(is_concealed) {
+      roomTab.enable(!room.hidden && !is_concealed && roomVisible)
+      roomTab.show(!room.hidden && !is_concealed && roomVisible)
+    })
     roomTab.tooltip = room.type.getTooltip(room.id)
     let textObj = roomTab.findObject("room_txt_" + idx)
     textObj.colorTag = room.type.getRoomColorTag(room.id)
@@ -734,11 +746,15 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     else if (!gchat_is_connected()) {
       if (gchat_is_connecting() || ::g_chat.rooms.len() == 0) {
         roomToDraw = newRoom("#___empty___")
-        roomToDraw.addMessage(newMessage("", loc("chat/connecting")))
+        newMessage("", loc("chat/connecting"), false, false, null, false, false, function(new_message) {
+          roomToDraw.addMessage(new_message)
+        })
       }
       else {
         roomToDraw = this.emptyChatRoom
-        roomToDraw.addMessage(newMessage("", loc("chat/disconnected")))
+        newMessage("", loc("chat/disconnected"), false, false, null, false, false, function(new_message) {
+          roomToDraw.addMessage(new_message)
+        })
       }
     }
     if (roomToDraw)
@@ -1017,7 +1033,10 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     }
     else if (event == GCHAT_EVENT_CONNECTED) {
       if (this.roomsInited) {
-        this.showRoomPopup(newMessage("", loc("chat/connected")), ::g_chat.getSystemRoomId())
+        local thisCapture = this
+        newMessage("", loc("chat/connected"), false, false, null, false, false, function(new_message) {
+          thisCapture.showRoomPopup(new_message, ::g_chat.getSystemRoomId())
+        })
       }
       this.rejoinDefaultRooms()
       if (::g_chat.rooms.len() > 0) {
@@ -1316,56 +1335,58 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     important = false) {
     if (!g_chat_room_type.getRoomType(roomId).isVisible())
       return
-    let mBlock = newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor,
-      important, !::g_chat.isRoomSquad(roomId))
-    if (!mBlock)
-      return
 
-    if (::g_chat.rooms.len() == 0) {
-      if (important) {
-        this.delayedChatRoom.addMessage(mBlock)
-        this.newMessagesGC()
+    local thisCapture = this
+    newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, important, !::g_chat.isRoomSquad(roomId), function(mBlock) {
+      if (!mBlock)
+        return
+
+      if (::g_chat.rooms.len() == 0) {
+        if (important) {
+          thisCapture.delayedChatRoom.addMessage(mBlock)
+          thisCapture.newMessagesGC()
+        }
+        else if (roomId == "") {
+          thisCapture.emptyChatRoom.addMessage(mBlock)
+          thisCapture.updateChatText()
+        }
       }
-      else if (roomId == "") {
-        this.emptyChatRoom.addMessage(mBlock)
-        this.updateChatText()
-      }
-    }
-    else {
-      foreach (roomData in ::g_chat.rooms) {
-        if ((roomId == "") || roomData.id == roomId) {
-          roomData.addMessage(mBlock)
+      else {
+        foreach (roomData in ::g_chat.rooms) {
+          if ((roomId == "") || roomData.id == roomId) {
+            roomData.addMessage(mBlock)
 
-          if (!this.curRoom)
-            continue
+            if (!thisCapture.curRoom)
+              continue
 
-          if (roomData == this.curRoom || roomData.hidden)
-            this.updateChatText()
+            if (roomData == thisCapture.curRoom || roomData.hidden)
+              thisCapture.updateChatText()
 
-          if (roomId != ""
-              && (roomData.type.needCountAsImportant || mBlock.important)
-              && !(mBlock.isMeSender || mBlock.isSystemSender)
-              && (!::last_chat_scene_show || this.curRoom != roomData)
-             ) {
-            roomData.newImportantMessagesCount++
-            this.newMessagesGC()
+            if (roomId != ""
+                && (roomData.type.needCountAsImportant || mBlock.important)
+                && !(mBlock.isMeSender || mBlock.isSystemSender)
+                && (!::last_chat_scene_show || thisCapture.curRoom != roomData)
+               ) {
+              roomData.newImportantMessagesCount++
+              thisCapture.newMessagesGC()
 
-            if (roomData.type.needShowMessagePopup)
-              this.showRoomPopup(mBlock, roomData.id)
-          }
-          else if (roomId == "" && mBlock.important
-            && this.curRoom.type == g_chat_room_type.SYSTEM && !::last_chat_scene_show) {
-            roomData.newImportantMessagesCount++
-            this.newMessagesGC()
+              if (roomData.type.needShowMessagePopup)
+                thisCapture.showRoomPopup(mBlock, roomData.id)
+            }
+            else if (roomId == "" && mBlock.important
+              && thisCapture.curRoom.type == g_chat_room_type.SYSTEM && !::last_chat_scene_show) {
+              roomData.newImportantMessagesCount++
+              thisCapture.newMessagesGC()
+            }
           }
         }
       }
-    }
 
-    if (privateMsg && roomId == "" && !::last_chat_scene_show)
-      this.newMessagesGC()
+      if (privateMsg && roomId == "" && !::last_chat_scene_show)
+        thisCapture.newMessagesGC()
 
-    this.updateRoomsIcons()
+      thisCapture.updateRoomsIcons()
+    })
   }
 
   function newMessagesGC() {
@@ -1397,21 +1418,38 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       return
 
     if (db?.type == "xpost") {
-      if ((db?.message.len() ?? 0) > 0)
-        foreach (room in ::g_chat.rooms)
-          if (room.id == db?.sender.name) {
-            let idxLast = db.message.indexof(">")
-            if ((db.message.slice(0, 1) == "<") && (idxLast != null)) {
-              room.addMessage(newMessage(db.message.slice(1, idxLast), db.message.slice(idxLast + 1), false, false, this.mpostColor))
-            }
-            else
-              room.addMessage(newMessage("", db.message, false, false, this.xpostColor))
+      if ((db?.message.len() ?? 0) == 0)
+        return
+      local chat_rooms = ::g_chat.rooms // workaround for global variables check
+      for (local idx = 0; idx < chat_rooms.len(); ++idx) {
+        local room = chat_rooms[idx]
+        if (room.id != db?.sender.name)
+          continue
 
-            if (room == this.curRoom)
-              this.updateChatText();
-          }
+        let idxLast = db.message.indexof(">")
+        local thisCapture = this
+        local onMessageAddedCB = function() {
+          if (room == thisCapture.curRoom)
+            thisCapture.updateChatText();
+        }
+
+        if (idxLast != null && db.message.slice(0, 1) == "<")
+          newMessage(db.message.slice(1, idxLast), db.message.slice(idxLast + 1), false, false,
+            this.mpostColor, false, false, function(new_message) {
+              room.addMessage(new_message)
+              onMessageAddedCB()
+            })
+        else
+          newMessage("", db.message, false, false, this.xpostColor, false, false, function(new_message) {
+            room.addMessage(new_message)
+            onMessageAddedCB()
+          })
+        break
+      }
+      return
     }
-    else if (db?.type == "groupchat" || db?.type == "chat") {
+
+    if (db?.type == "groupchat" || db?.type == "chat") {
       local roomId = ""
       local user = ""
       local userContact = null
@@ -1426,30 +1464,45 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       if (u.isEmpty(message))
         return
 
-      if (!db?.sender.service) {
-        clanTag = db?.tag ?? ""
-        user = db.sender.nick
-        if (db?.userId && db.userId != "0")
-          userContact = ::getContact(db.userId, db.sender.nick, clanTag, true)
-        else if (db.sender.nick != userName.value)
-          ::clanUserTable[db.sender.nick] <- clanTag
-        roomId = db?.sender.name
-        privateMsg = (db.type == "chat") || !this.roomRegexp.match(roomId)
-        let isSystemMessage = ::g_chat.isSystemUserName(user)
+      if (db?.sender.service) {
+        this.addRoomMsg(roomId, userContact ?? user, message, privateMsg, myPrivate)
+        return
+      }
 
-        if (!isSystemMessage && !isCrossNetworkMessageAllowed(user))
-          return
+      clanTag = db?.tag ?? ""
+      user = db.sender.nick
+      if (db?.userId && db.userId != "0")
+        userContact = ::getContact(db.userId, db.sender.nick, clanTag, true)
+      else if (db.sender.nick != userName.value)
+        ::clanUserTable[db.sender.nick] <- clanTag
+      roomId = db?.sender.name
+      privateMsg = (db.type == "chat") || !this.roomRegexp.match(roomId)
+      let isSystemMessage = ::g_chat.isSystemUserName(user)
 
-        if (privateMsg) {  //private message
-          if (::isUserBlockedByPrivateSetting(db.userId, user) ||
-              !isChatEnableWithPlayer(user))
+      if (!isSystemMessage && !isCrossNetworkMessageAllowed(user))
+        return
+
+      // System message
+      if (isSystemMessage) {
+        let nameLen = userName.value.len()
+        if (message.len() >= nameLen && message.slice(0, nameLen) == userName.value)
+          sync_handler_simulate_signal("profile_reload")
+      }
+
+      if (privateMsg) {  //private message
+        local thisCapture = this
+        let dbType = db.type
+        let { userId = null, sender } = db
+        let { name, nick } = sender
+        checkChatEnableWithPlayer(user, function(chatEnabled) {
+          if (::isUserBlockedByPrivateSetting(userId, user) || !chatEnabled)
             return
 
-          if (db.type == "chat")
-            roomId = db.sender.nick
-          myPrivate = db.sender.nick == userName.value
+          if (dbType == "chat")
+            roomId = nick
+          myPrivate = nick == userName.value
           if (myPrivate) {
-            user = db.sender.name
+            user = name
             userContact = null
           }
 
@@ -1462,27 +1515,19 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
           if (!haveRoom) {
             if (::isPlayerNickInContacts(user, EPL_BLOCKLIST))
               return
-            this.addRoom(roomId)
-            this.updateRoomsList()
+            thisCapture.addRoom(roomId)
+            thisCapture.updateRoomsList()
           }
-        }
-
-        // System message
-        if (isSystemMessage) {
-          let nameLen = userName.value.len()
-          if (message.len() >= nameLen && message.slice(0, nameLen) == userName.value)
-            sync_handler_simulate_signal("profile_reload")
-        }
+          thisCapture.addRoomMsg(roomId, userContact ?? user, message, privateMsg, myPrivate)
+        })
+        return
       }
-      this.addRoomMsg(
-        roomId,
-        userContact || user,
-        message,
-        privateMsg,
-        myPrivate
-      )
+
+      this.addRoomMsg(roomId, userContact ?? user, message, privateMsg, myPrivate)
+      return
     }
-    else if (db?.type == "error") {
+
+    if (db?.type == "error") {
       if (db?.error == null)
         return
 
@@ -1561,11 +1606,16 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.addRoomMsg(roomToSend, "", errMsg)
       if (roomId != roomToSend)
         this.addRoomMsg(roomId, "", errMsg)
-      if (roomType.isErrorPopupAllowed)
-        this.showRoomPopup(newMessage("", errMsg), roomId)
+      if (roomType.isErrorPopupAllowed) {
+        local thisCapture = this
+        newMessage("", errMsg, false, false, null, false, false, function(new_message) {
+          thisCapture.showRoomPopup(new_message, roomId)
+        })
+      }
+      return
     }
-    else
-      log("Chat error: Received message of unknown type = " + (db?.type ?? "null"))
+
+    log("Chat error: Received message of unknown type = " + (db?.type ?? "null"))
   }
 
   function joinRoom(id, password = "", onJoinFunc = null, customScene = null, ownerHandler = null, reconnect = false) {
@@ -1623,10 +1673,14 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.guiScene.playSound("chat_join")
     ::g_chat.addRoom(r)
 
-    if (this.unhiddenRoomsCount() == 1) {
-      if (isChatEnabled())
-        this.addRoomMsg(id, "", loc("menuchat/hello"))
-    }
+    local thisCapture = this
+    this.countUnhiddenRooms(function(unhiddenRoomsCount) {
+      if (unhiddenRoomsCount == 1) {
+        if (isChatEnabled())
+          thisCapture.addRoomMsg(id, "", loc("menuchat/hello"))
+      }
+    })
+
     if (selectRoom || r.type.needSwitchRoomOnJoin)
       this.switchCurRoom(r, false)
 
@@ -1683,12 +1737,23 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.updateRoomsList()
   }
 
-  function unhiddenRoomsCount() {
-    local count = 0
-    foreach (room in ::g_chat.rooms)
-      if (!room.hidden && !room.concealed())
-        count++
-    return count
+  function countUnhiddenRooms(callback) {
+    local concealedRooms = 0
+    local countRoomsInternal = null
+    countRoomsInternal = function(rooms, idx) {
+      if (idx >= rooms.len()) {
+        callback?(concealedRooms)
+      } else {
+        local room = rooms[idx]
+        room.concealed(function(isConcealed) {
+          if (!room.hidden && !isConcealed)
+            concealedRooms++
+          countRoomsInternal(rooms, idx + 1)
+        })
+      }
+    }
+
+    countRoomsInternal(::g_chat.rooms, 0)
   }
 
   function onRoomClose(obj) {
@@ -2601,12 +2666,13 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!roomData || !checkObj(roomData.customScene))
       return
 
-    let isChatAvailable = this.isChatAvailableInCurRoom()
-    foreach (objName in ["menuchat_input", "btn_send"]) {
-      let obj = roomData.customScene.findObject(objName)
-      if (checkObj(obj))
-        obj.enable(isChatAvailable)
-    }
+    this.checkChatAvailableInCurRoom(function(isChatAvailable) {
+      foreach (objName in ["menuchat_input", "btn_send"]) {
+        let obj = roomData.customScene.findObject(objName)
+        if (checkObj(obj))
+          obj.enable(isChatAvailable)
+      }
+    })
   }
 
   function checkListValue(obj) {
@@ -2735,8 +2801,11 @@ if (::g_login.isLoggedIn())
     if (contact.xboxId == "")
       return contact.updateXboxIdAndDo(@() ::g_chat.openPrivateRoom(contact.name, ownerHandler))
 
-    if (contact.canChat())
-      ::g_chat.openPrivateRoom(contact.name, ownerHandler)
+    contact.checkCanChat(function(is_enabled) {
+      if (is_enabled) {
+        ::g_chat.openPrivateRoom(contact.name, ownerHandler)
+      }
+    })
   })
 }
 

@@ -42,6 +42,9 @@
           {
             "id": "aircraft-battle_rating-value",
             "overlayTextColor": "active"
+          },
+          {
+            "id": "aircraft-battle_rating-value_by_battle_types"
           }
         ]
       }
@@ -94,8 +97,38 @@
             }
           },
           {
-            "textarea": {
-              "id": "aircraft-turnTurretTime"
+            "tdiv": {
+              "flow": "horizontal",
+              "textarea": {
+                "id": "aircraft-turnTurretTime"
+              },
+              "tdiv": {
+                "id": "aircraft-turnTurretTime-topValueDiv",
+                "display": "hide",
+                "tooltip": "$tooltipObj",
+                "textarea": [
+                  {
+                    "text": " ("
+                  },
+                  {
+                    "id": "aircraft-turnTurretTime-topValue"
+                  },
+                  {
+                    "text": ")"
+                  }
+                ],
+                "img": {
+                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                  "background-svg-size": "@sIco,@sIco",
+                  "size": "@sIco,@sIco"
+                },
+                "tooltipObj": {
+                  "tooltipId": "{\"id\":\"shop/turnTurretTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                }
+              }
             }
           }
         ]
@@ -145,8 +178,38 @@
             }
           },
           {
-            "textarea": {
-              "id": "aircraft-reloadTime"
+            "tdiv": {
+              "flow": "horizontal",
+              "textarea": {
+                "id": "aircraft-reloadTime"
+              },
+              "tdiv": {
+                "id": "aircraft-reloadTime-topValueDiv",
+                "display": "hide",
+                "tooltip": "$tooltipObj",
+                "textarea": [
+                  {
+                    "text": " ("
+                  },
+                  {
+                    "id": "aircraft-reloadTime-topValue"
+                  },
+                  {
+                    "text": ")"
+                  }
+                ],
+                "img": {
+                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                  "background-svg-size": "@sIco,@sIco",
+                  "size": "@sIco,@sIco"
+                },
+                "tooltipObj": {
+                  "tooltipId": "{\"id\":\"shop/reloadTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                }
+              }
             }
           }
         ]
@@ -583,6 +646,74 @@
           {
             "textarea": {
               "id": "aircraft-thrustToWeightRatio"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aircraft-wingPlaneStrengthVne-tr",
+        "tooltip": "#airLimits/wing_plane_strength_vne/tooltip",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#airLimits/wing_plane_strength_vne"
+            }
+          },
+          {
+            "textarea": {
+              "id": "aircraft-wingPlaneStrengthVne"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aircraft-wingPlaneStrengthMne-tr",
+        "tooltip": "#airLimits/wing_plane_strength_mne/tooltip",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#airLimits/wing_plane_strength_mne"
+            }
+          },
+          {
+            "textarea": {
+              "id": "aircraft-wingPlaneStrengthMne"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aircraft-gearDestructionIndSpeed-tr",
+        "tooltip": "#airLimits/gear_destruction_ind_speed/tooltip",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#airLimits/gear_destruction_ind_speed"
+            }
+          },
+          {
+            "textarea": {
+              "id": "aircraft-gearDestructionIndSpeed"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aircraft-flapsDestructionIndSpeed-tr",
+        "tooltip": "#airLimits/flaps_destruction_ind_speed/tooltip",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#airLimits/flaps_destruction_ind_speed"
+            }
+          },
+          {
+            "textarea": {
+              "id": "aircraft-flapsDestructionIndSpeed"
             }
           }
         ]

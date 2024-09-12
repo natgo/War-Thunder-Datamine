@@ -20,7 +20,7 @@ let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGu
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionType.nut")
 let { missionsListCampaignId } = require("%scripts/missions/getMissionsListCampaignId.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -919,8 +919,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkFilterData(filterData) {
-    local res = !this.filterText.len() || filterData.locString.indexof(this.filterText) != null
-      || (filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
+    local res = !this.filterText.len()
+      || utf8ToLower(filterData.locString).indexof(this.filterText) != null
+      || utf8ToLower(filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
     if (res && this.isOnlyFavorites)
       res = this.misListType.isMissionFavorite(filterData.mission)
     return res
@@ -1068,7 +1069,7 @@ let SingleMissionsModal = class (SingleMissions) {
     openPopupFilter({
       scene = nestObj
       onChangeFn = this.onFilterCbChange.bindenv(this)
-      filterTypes = this.getFiltersView()
+      filterTypesFn = this.getFiltersView.bindenv(this)
       popupAlign = "bottom"
       btnName = "RB"
     })

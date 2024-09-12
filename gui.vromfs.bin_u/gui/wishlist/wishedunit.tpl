@@ -134,11 +134,18 @@ wishedItem{
         buttonWink{}
         buttonGlance{}
         btnName:t='X'
+        unit:t=<<unitName>>
         ButtonImg {
           showOnSelect:t='yes'
         }
         img{ background-image:t='#ui/gameuiskin#store_icon.svg' }
-        unit:t=<<unitName>>
+        discount {
+          id:t='btn_shop_discount_<<unitName>>'
+          text:t=''
+          pos:t='pw-70%w, -80%h'
+          position:t='absolute'
+          rotation:t='-30'
+        }
       }
       <</hasShopButton>>
       <<#hasBuyButton>>
@@ -155,6 +162,7 @@ wishedItem{
         buttonWink{}
         buttonGlance{}
         btnName:t='X'
+        unit:t=<<unitName>>
         ButtonImg {
           showOnSelect:t='yes'
         }
@@ -163,7 +171,13 @@ wishedItem{
           class:t='buttonText'
           text:t='<<priceText>>'
         }
-        unit:t=<<unitName>>
+        discount {
+          id:t='btn_buy_discount_<<unitName>>'
+          text:t=''
+          pos:t='pw-70%w, -80%h'
+          position:t='absolute'
+          rotation:t='-30'
+        }
       }
       <</hasBuyButton>>
       <<#hasMarketPlaceButton>>
@@ -186,21 +200,41 @@ wishedItem{
         unit:t=<<unitName>>
       }
       <</hasMarketPlaceButton>>
-      <<#hasConditionsButton>>
-        Button_text {
-          enableOn:t='select'
-          not-input-transparent:t='yes'
-          text:t='#sm_conditions'
-          on_click:t='onShowConditions'
-          showButtonImageOnConsole:t='no'
-          visualStyle:t='secondary'
-          skip-navigation:t='yes'
-          buttonWink{}
-          buttonGlance{}
-          ButtonImg {}
-          btnName:t='X'
-          unit:t=<<unitName>>
+      <<#hasUseCouponButton>>
+      Button_text {
+        enableOn:t='select'
+        not-input-transparent:t='yes'
+        text:t='#item/consume/coupon'
+        on_click:t='onUseCoupon'
+        showButtonImageOnConsole:t='no'
+        visualStyle:t='secondary'
+        skip-navigation:t='yes'
+        class:t='image'
+        noMargin:t='yes'
+        buttonWink{}
+        img{ background-image:t='#ui/gameuiskin#gc.svg' }
+        btnName:t='X'
+        ButtonImg {
+          showOnSelect:t='yes'
         }
+        unit:t=<<unitName>>
+      }
+      <</hasUseCouponButton>>
+      <<#hasConditionsButton>>
+      Button_text {
+        enableOn:t='select'
+        not-input-transparent:t='yes'
+        text:t='#sm_conditions'
+        on_click:t='onShowConditions'
+        showButtonImageOnConsole:t='no'
+        visualStyle:t='secondary'
+        skip-navigation:t='yes'
+        buttonWink{}
+        buttonGlance{}
+        ButtonImg {}
+        btnName:t='X'
+        unit:t=<<unitName>>
+      }
       <</hasConditionsButton>>
       <<#hasGiftButton>>
       Button_text {

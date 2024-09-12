@@ -58,6 +58,11 @@ let AimLockPitch = Watched(0.0)
 let ScreenFwdDirPos = [0, 0]
 let HmdTargetPos = [0, 0]
 let HmdTargetPosValid = Watched(false)
+let CustomPages = Watched({})
+let HmdGunTargeting = Watched(false)
+let MfdRwrColor = Watched(Color(0, 255, 0, 240))
+let IsLightsOn = Watched(false)
+let HmdBrightnessMult = Watched(1.0)
 
 let planeState = {
   BlkFileName,
@@ -109,12 +114,17 @@ let planeState = {
   HmdPitch,
   HmdVisible,
   HmdBlockIls,
+  HmdBrightnessMult,
   RwrBlkName,
   AimLockYaw,
   AimLockPitch,
   ScreenFwdDirPos,
   HmdTargetPos,
-  HmdTargetPosValid
+  HmdTargetPosValid,
+  CustomPages,
+  HmdGunTargeting,
+  MfdRwrColor,
+  IsLightsOn
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

@@ -20,6 +20,8 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec } = require("%scripts/myStats.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { rnd_int } = require("dagor.random")
 
 let logP = log_with_prefix("[ShowRate] ")
 let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) //need this, because debriefing data destroys after debriefing modal is closed
@@ -37,9 +39,11 @@ let configSteamReviewWnd = {
     wndTimeSaveId = RATE_WND_TIME_SAVE_ID
     showRateFromPromoBlockSaveId = "seen/showRateWnd"
     feedbackRateSaveId = "seen/feedbackRateWnd"
+    bqKey = "SteamRateGame"
     feature = "SteamRateGame"
     descLocId = "msgbox/steam/rate_review"
-    backgroundImg = "#ui/images/cat_fix"
+    backgroundImg = "#ui/images/kittens"
+    backgroundImgRatio = 1080.0/1920
   }
   SteamRateImprove = {
     wndTimeSaveId = "seen/afterImprovementRateWndTime"
@@ -47,14 +51,8 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackAfterImprovementRateWnd"
     feature = "SteamRateImprove"
     descLocId = "msgbox/steam/rate_review_after_improve"
-    backgroundImg = "#ui/images/cat_fix"
-  }
-  SteamRateImproveB = {
-    wndTimeSaveId = "seen/afterImprovementRateWndBTime"
-    showRateFromPromoBlockSaveId = "seen/showAfterImprovementRateWndB"
-    feedbackRateSaveId = "seen/feedbackAfterImprovementRateWndB"
-    feature = "SteamRateImproveB"
-    descLocId = "msgbox/steam/rate_review_after_improve"
+    backgroundImg = "#ui/images/kittens"
+    backgroundImgRatio = 1080.0/1920
   }
   SteamRateMoreImprove = {
     wndTimeSaveId = "seen/moreImprovementRateWndTime"
@@ -62,14 +60,18 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackMoreImprovementRateWnd"
     feature = "SteamRateMoreImprove"
     descLocId = "msgbox/steam/rate_review_more_improvement"
-    backgroundImg = "#ui/images/cat_fix"
+    backgroundImg = "#ui/images/kittens"
+    backgroundImgRatio = 1080.0/1920
   }
 }
+
+let regularSteamRateReview = [
+  configSteamReviewWnd.SteamRateGame,
+]
 
 let sortedAdditionalSteamRateReview = [
   configSteamReviewWnd.SteamRateMoreImprove,
   configSteamReviewWnd.SteamRateImprove,
-  configSteamReviewWnd.SteamRateImproveB
 ]
 
 local isConfigInited = false
@@ -186,16 +188,18 @@ function tryOpenXboxRateReviewWnd() {
 }
 
 function implOpenSteamRateReview(popupConfig) {
-  let { wndTimeSaveId, feedbackRateSaveId, feature, descLocId, backgroundImg = null } = popupConfig
+  let { wndTimeSaveId, feedbackRateSaveId, feature, descLocId,
+    backgroundImg = null, bqKey = null } = popupConfig
+  let reason = bqKey ?? feature
   saveLocalAccountSettings(wndTimeSaveId, get_charserver_time_sec())
-  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason = feature })
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason })
   steamOpenReviewWnd.open({
     descLocId
     backgroundImg
-    reason = feature
+    reason
     onApplyFunc = function(openedBrowser) {
       saveLocalAccountSettings(feedbackRateSaveId, openedBrowser)
-      sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser, reason = feature })
+      sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser, reason })
     }
   })
 }
@@ -229,9 +233,20 @@ function checkShowRateWnd() {
   foreach (config in sortedAdditionalSteamRateReview)
     if (tryOpenSteamRateReview(config))
       return
-  if (needShowRateWnd.value)
-    tryOpenSteamRateReview(configSteamReviewWnd.SteamRateGame)
-  needShowRateWnd(false)
+  if (!needShowRateWnd.get())
+    return
+
+  let rateGameCount = regularSteamRateReview.len()
+  let idx = rateGameCount > 1 ? rnd_int(0, rateGameCount - 1)
+    : 0
+  tryOpenSteamRateReview(regularSteamRateReview[idx])
+  needShowRateWnd.set(false)
+}
+
+function updateSteamReviewBtnVisible() {
+  if (!steam_is_running())
+    return
+  updateExtWatched({ canShowSteamReviewBtn = hasFeature("SteamReviewBtnInChangelog") })
 }
 
 addListenersWithoutEnv({
@@ -248,6 +263,7 @@ addListenersWithoutEnv({
     if (p?.purchData.chapter == ONLINE_SHOP_TYPES.PREMIUM)
       havePurchasedPremium(true)
   }
+  ProfileUpdated = @(_p) updateSteamReviewBtnVisible()
 })
 
 register_command(

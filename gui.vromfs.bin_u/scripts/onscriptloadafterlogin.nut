@@ -323,6 +323,7 @@ foreach (fn in [
   "%scripts/matching/serviceNotifications/mrpc.nut"
   "%scripts/matching/serviceNotifications/msquad.nut"
 
+  "%scripts/items/buyAndOpenChestWnd.nut"
   "%scripts/gamepadSceneSettings.nut"
 ]) {
   loadOnce(fn)
@@ -330,6 +331,7 @@ foreach (fn in [
 
 require("%scripts/controls/controlsFootballNy2021Hack.nut")
 require("%scripts/slotbar/elems/unlockMarkerElem.nut")
+require("%scripts/slotbar/elems/nationBonusMarkerElem.nut")
 require("%scripts/items/trophyShowTime.nut")
 require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")
@@ -361,6 +363,8 @@ require("%scripts/debugTools/dbgHudObjects.nut")
 require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
+
+require("%scripts/exportInfo/skinsLocExporter.nut")
 
 if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
   require("%scripts/worldWar/worldWar.nut")

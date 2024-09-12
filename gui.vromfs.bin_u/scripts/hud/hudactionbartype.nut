@@ -21,11 +21,11 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN, EII_AGM_RELEASE_LOCKED_TARGET,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
-  EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_RAGE_SCANNER_ACTION,
+  EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
   EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE
+  EII_MISSION_SUPPORT_PLANE, EII_BUILDING
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -127,6 +127,23 @@ let guidanceModesCaptions =
   ]
 ]
 
+function getHudKillStreakShortcutId() {
+  let hudUnitType = getHudUnitType()
+  if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
+    return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
+  if (hudUnitType == HUD_UNIT_TYPE.SHIP)
+    return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
+  if (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT)
+    return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+  //
+
+
+
+  if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
+    return "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
+  return "ID_KILLSTREAK_WHEEL_MENU"
+}
+
 g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
@@ -187,19 +204,8 @@ g_hud_action_bar_type.template <- {
 
     if (this.isForMFM)
       return "ID_SHOW_MULTIFUNC_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
-      return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.SHIP)
-      return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT)
-      return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
-    //
 
-
-
-    if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
-      return "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
-    return "ID_KILLSTREAK_WHEEL_MENU"
+    return getHudKillStreakShortcutId()
   }
 }
 
@@ -434,6 +440,13 @@ enumsAddTypes(g_hud_action_bar_type, {
         : this._name
   }
 
+  MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE = {
+    code = EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE
+    _name = "multiple_choice_special_weapon_activate"
+    _title = loc("hotkeys/ID_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE")
+    _icon = "#ui/gameuiskin#naval_mine"
+  }
+
   SCOUT = {
     code = EII_SCOUT
     _name = "scout_active"
@@ -640,7 +653,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       ::get_option(USEROPT_WHEEL_CONTROL_SHIP)?.value
         && (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
-          : null
+          : "ID_SHIP_SWITCH_TRIGGER_GROUP"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let currentTrigger = actionItem?.userHandle ?? TRIGGER_GROUP_PRIMARY
       return shipTriggerGroupIcon?[currentTrigger] ?? shipTriggerGroupIcon[TRIGGER_GROUP_PRIMARY]
@@ -891,7 +904,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_SUPPORT_PLANE_GROUP_RETURN
     _name = "support_plane_group_return"
     _icon = "#ui/gameuiskin#stealth_camo"
-    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_RETURN_SHIP")
+    _title = loc("actionBarItem/support_plane_group_return")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_RETURN_SHIP"
   }
@@ -944,7 +957,7 @@ enumsAddTypes(g_hud_action_bar_type, {
   }
 
   SIGHT_STABILIZATION = {
-    code = EII_SIGHT_STABILIZATION,
+    code = EII_SIGHT_STABILIZATION
     _name = "sight_stabilization"
     _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
     _title = loc("hotkeys/ID_LOCK_TARGETING")
@@ -953,6 +966,18 @@ enumsAddTypes(g_hud_action_bar_type, {
       hudUnitType == HUD_UNIT_TYPE.HELICOPTER
         ? "ID_LOCK_TARGETING_AT_POINT_HELICOPTER"
         : "ID_LOCK_TARGETING"
+  }
+
+  SIGHT_STABILIZATION_OFF = {
+    code = EII_SIGHT_STABILIZATION_OFF
+    _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
+    _title = loc("hotkeys/ID_UNLOCK_TARGETING")
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+    isForWheelMenu = @() false
+    getShortcut = @(_actionItem, hudUnitType = null)
+      hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+        ? "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER"
+        : "ID_UNLOCK_TARGETING"
   }
 
   RAGE_SCANNER_ACTION = {
@@ -982,6 +1007,8 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = function(_actionItem, hudUnitType = null){
       if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
         return "ID_WEAPON_LOCK_HUMAN"
+      if (hudUnitType == HUD_UNIT_TYPE.SHIP)
+        return "ID_WEAPON_LOCK_SHIP"
       return "ID_WEAPON_LOCK_TANK"
     }
   }
@@ -1185,8 +1212,18 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "special_unit_bomber_nuclear"
     _title = loc("hotkeys/ID_ACTION_BAR_ITEM_9")
     _icon = "#ui/gameuiskin#bomber_nuclear_streak"
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
   }
+  //
+
+
+
+
+
+
+
+
 
 })
 
@@ -1200,4 +1237,5 @@ g_hud_action_bar_type.getByActionItem <- function getByActionItem(actionItem) {
 
 return {
   g_hud_action_bar_type
+  getHudKillStreakShortcutId
 }

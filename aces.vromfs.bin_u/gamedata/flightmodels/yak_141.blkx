@@ -61,6 +61,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -276,18 +277,18 @@
         "hp": 20.0
       }
     },
-    "steel_tank_armor": {
+    "steel_tank_m": {
       "tank1_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank2_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank3_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank4_dm": {
-        "hp": 120.5
+        "hp": 75.5
       }
     }
   },
@@ -1207,30 +1208,26 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1248,30 +1245,26 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1289,30 +1282,26 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1330,30 +1319,26 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1965,7 +1950,7 @@
     ]
   },
   "ikPilot": {
-    "model": "su_pilot_late_char",
+    "model": "su_pilot_late_zsh_7ap_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2055,6 +2040,13 @@
   "cockpit": {
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "headPos": [
       6.02,
       0.572,
@@ -2283,9 +2275,8 @@
             1.0
           ],
           "page": {
-            "type": "radar",
-            "scale": 0.95,
-            "hideRadarBackground": true
+            "type": "ils_duplicate",
+            "scale": 2.3
           }
         },
         {
@@ -2540,19 +2531,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2868,8 +2861,7 @@
           },
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "r27r",
-            "reqModification": "mig_29_r_27r",
+            "name": "r27r_default",
             "ShowNodes": {
               "node": [
                 "pylon002",
@@ -2878,7 +2870,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_27r.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_27r_default.blk",
               "emitter": "r_27_002",
               "bullets": 1,
               "external": true,
@@ -3198,8 +3190,7 @@
           },
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "r27r",
-            "reqModification": "mig_29_r_27r",
+            "name": "r27r_default",
             "ShowNodes": {
               "node": [
                 "pylon003",
@@ -3208,7 +3199,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_27r.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_27r_default.blk",
               "emitter": "r_27_003",
               "bullets": 1,
               "external": true,
@@ -4126,10 +4117,7 @@
       "prevModification": "new_cover",
       "tier": 4
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,
@@ -4331,6 +4319,16 @@
       0.0,
       0.0
     ],
-    "finCut": false
+    "finCut": false,
+    "emtr_break_tail_from": [
+      -3.21985,
+      -0.1292358,
+      0.0
+    ],
+    "emtr_break_tail_to": [
+      -5.19516,
+      -0.1292358,
+      0.0
+    ]
   }
 }

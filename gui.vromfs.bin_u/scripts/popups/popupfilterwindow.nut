@@ -6,7 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.MODAL
+  wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
   sceneTplName         = "%gui/popup/popupFilterWindow.tpl"
@@ -90,13 +90,30 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     let popupSize = popupObj.getSize()
     local posX = 0
     local posY = 0
-    if (this.popupAlign == "bottom-center") {
-      posX = this.btnPosition[0] + this.btnWidth / 2 - popupSize[0] / 2
-      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
+
+    if (this.popupAlign == "top") {
+      posX = 0
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
     }
-    else if (this.popupAlign == "top") {
-      posX = this.btnPosition[0]
-      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+    else if (this.popupAlign == "top-center") {
+      posX = this.btnWidth / 2 - popupSize[0] / 2
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "top-right") {
+      posX = this.btnWidth - popupSize[0]
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "bottom") {
+      posX = 0
+      posY = this.btnHeight + to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "bottom-center") {
+      posX = this.btnWidth / 2 - popupSize[0] / 2
+      posY = this.btnHeight + to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "bottom-right") {
+      posX = this.btnWidth - popupSize[0]
+      posY = this.btnHeight + to_pixels("1@blockInterval")
     }
     popupObj["pos"] = $"{posX}, {posY}"
   }
@@ -137,6 +154,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     this.onChangeFn(obj.id, obj.typeName, false)
     broadcastEvent("UpdateFiltersCount")
     this.updateButton()
+    this.updatePopupPosition()
   }
 
   function onCheckBoxChange(obj) {
@@ -160,7 +178,14 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   getSelectedFiltersCount = @() this.stateList.filter(@(inst) inst.value).len()
 
   function close() {
-    this.goBack()
+    if (!this.isValid())
+      return
+    this.guiScene.destroyElement(this.scene.findObject("filter_popup_nest"))
+  }
+
+  function isValid() {
+    return base.isValid()
+      && (this.scene.findObject("filter_popup_nest")?.isValid() ?? false)
   }
 }
 

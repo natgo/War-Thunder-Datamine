@@ -54,6 +54,8 @@ let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
 let { showOrdersContainer } = require("%scripts/items/orders.nut")
+let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
+let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -199,7 +201,7 @@ let sensorFiltersTable = {
   ]
 }
 
-::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
+let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM
@@ -510,7 +512,7 @@ let sensorFiltersTable = {
 
   function loadGameChat() {
     if (this.isMultiplayer) {
-      this.chatData = ::loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
+      this.chatData = loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
                                      { selfHideInput = true, hiddenInput = !this.canSendChatMessages })
 
       let objGameChat = this.scene.findObject("gamechat")
@@ -840,7 +842,7 @@ let sensorFiltersTable = {
       ::session_player_rmenu(
         this,
         player,
-        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
+        getLogForBanhammer()
       )
   }
 
@@ -889,7 +891,7 @@ let sensorFiltersTable = {
       ::session_player_rmenu(
         this,
         player,
-        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? "",
+        getLogForBanhammer(),
         [
           selectedPlayerBlock.getPosRC()[0] + selectedPlayerBlock.getSize()[0] / 2,
           selectedPlayerBlock.getPosRC()[1]
@@ -1551,8 +1553,10 @@ let sensorFiltersTable = {
   }
 }
 
+gui_handlers.Spectator <- Spectator
+
 ::spectator_debug_mode <- function spectator_debug_mode() {
-  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
@@ -1574,13 +1578,13 @@ let sensorFiltersTable = {
 
 function on_player_requested_artillery(data) { // called from client
   let { userId } = data
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (handler)
     handler.onPlayerRequestedArtillery(userId)
 }
 
 function on_spectator_tactical_map_request() { // called from client
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (handler)
     handler.onMapClick()
 }

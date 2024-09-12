@@ -11,12 +11,13 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, loadHandler, handlersManager
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty, set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
+let { getCdBaseDifficulty, set_gui_option, get_gui_option } = require("guiOptions")
 let { getActionBarUnitName } = require("hudActionBar")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
@@ -34,6 +35,9 @@ let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarSt
 let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -71,7 +75,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (this.hasMissionBuilder)
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     showObjById("btn_select", true, this.scene)
-
+    this.updateWishlistButton()
     this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
@@ -396,7 +400,10 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     ::aircraft_for_weapons = this.unit.name
 
-    this.updateBulletCountOptions(this.unit)
+    if(this.weaponsSelectorWeak)
+      this.weaponsSelectorWeak.bulletsManager.updateBulletCountOptions()
+    else
+      ::UnitBulletsManager(this.unit).updateBulletCountOptions([])
 
     enable_bullets_modifications(::aircraft_for_weapons)
     ::enable_current_modifications(::aircraft_for_weapons)
@@ -407,31 +414,6 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         isLimitedFuel = limitedFuel.value,
         isLimitedAmmo = limitedAmmo.value,
         fuelAmount    = (fuelValue.tofloat() / 1000000.0),
-    }
-  }
-
-  function updateBulletCountOptions(updUnit) {
-    local bulIdx = 0
-    let bulletGroups = this.weaponsSelectorWeak ? this.weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
-    foreach (idx, bulGroup in bulletGroups) {
-      bulIdx = idx
-      local name = ""
-      local count = 0
-      if (bulGroup.active) {
-        name = bulGroup.getBulletNameForCode(bulGroup.selectedName)
-        count = bulGroup.bulletsCount * bulGroup.guns
-      }
-      set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, name)
-      set_option(USEROPT_BULLETS0 + bulIdx, name)
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
-    }
-    ++bulIdx
-
-    while (bulIdx < BULLETS_SETS_QUANTITY) {
-      set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, "")
-      set_option(USEROPT_BULLETS0 + bulIdx, "")
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
-      ++bulIdx
     }
   }
 
@@ -465,7 +447,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1) {
-      let battleType = ::get_battle_type_by_unit(this.unit)
+      let battleType = getBattleTypeByUnit(this.unit)
       return difficulty.getEdiff(battleType)
     }
     return getCurrentGameModeEdiff()
@@ -645,5 +627,36 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function onEventModificationPurchased(_p) {
     this.doWhenActiveOnce("updateCountermeasureOptions")
+  }
+
+  function onAddToWishlist() {
+    if(isWishlistFull())
+      return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+
+    addToWishlist(this.unit)
+  }
+
+  function updateWishlistButton() {
+    showObjById("btn_add_to_wishlist", hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought(), this.scene)
+    if(isWishlistFull())
+      this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
+  }
+
+  function onEventAddedToWishlist(_p) {
+    this.updateWishlistButton()
+  }
+
+  function getHandlerRestoreData() {
+    return {
+      openData = {
+        unit = this.unit
+        afterCloseFunc = this.afterCloseFunc
+        shouldSkipUnitCheck = this.shouldSkipUnitCheck
+      }
+    }
+  }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this)
   }
 }

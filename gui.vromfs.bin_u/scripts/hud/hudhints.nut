@@ -804,6 +804,20 @@ enums.addTypes(g_hud_hints, {
     delayTime = 2.0
   }
 
+  WINCH_USE_SHIP_HINT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/winch_use_ship"
+    noKeyLocId = "hints/winch_use_ship_no_key"
+    showEvent = "hint:winch_use_ship:show"
+    hideEvent = "hint:winch_use_ship:hide"
+    priority = DEFAULT_MISSION_HINT_PRIORITY
+    getShortcuts = @(_) isXInputDevice()
+      ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+      : "ID_SHOW_VOICE_MESSAGE_LIST"
+    lifeTime = 10.0
+    delayTime = 1.0
+  }
+
   WINCH_DETACH_HINT = {
     hintType = g_hud_hint_types.COMMON
     locId = "hints/winch_detach"
@@ -814,6 +828,19 @@ enums.addTypes(g_hud_hints, {
     getShortcuts = @(_data) g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 4.0
+  }
+
+  WINCH_DETACH_SHIP_HINT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/winch_detach"
+    noKeyLocId = "hints/winch_detach_no_key"
+    showEvent = "hint:winch_detach_ship:show"
+    hideEvent = "hint:winch_detach_ship:hide"
+    priority = DEFAULT_MISSION_HINT_PRIORITY
+    getShortcuts = @(_) isXInputDevice()
+      ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+      : "ID_SHOW_VOICE_MESSAGE_LIST"
+    delayTime = 2.0
   }
 
   F1_CONTROLS_HINT = {
@@ -1585,6 +1612,41 @@ enums.addTypes(g_hud_hints, {
     totalCount = 3
   }
 
+  BUILDING_EXIT_HINT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_BUILDING_EXIT"
+    noKeyLocId = "HUD/TXT_BUILDING_EXIT_NOKEY"
+    shortcuts = "ID_TOGGLE_CONSTRUCTION_MODE"
+    showEvent = "hint:building_exit:show"
+    hideEvent = "hint:building_exit:hide"
+    shouldBlink = true
+    delayTime = 1.0
+  }
+
+  BUILDING_FORBIDDEN_OBSTACLES = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_BUILDING_FORBIDDEN_OBSTACLES"
+    showEvent = "hint:building_forbidden_obstacles:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
+
+  BUILDING_FORBIDDEN_SLOPE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_BUILDING_FORBIDDEN_SLOPE"
+    showEvent = "hint:building_forbidden_slope:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
+
+  BUILDING_FORBIDDEN_RANGE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_BUILDING_FORBIDDEN_RANGE"
+    showEvent = "hint:building_forbidden_range:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
+
   OFFER_REPAIR = {
     hintType = g_hud_hint_types.REPAIR
     getLocId = function (data) {
@@ -1642,6 +1704,14 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/have_not_bullets"
     showEvent = "hint:no_bullets"
+    lifeTime = 5.0
+    priority = CATASTROPHIC_HINT_PRIORITY
+  }
+
+  SHIP_NO_ROCKETS = {
+    hintType = g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/ship_has_no_rockets"
+    showEvent = "hint:ship_no_rockets"
     lifeTime = 5.0
     priority = CATASTROPHIC_HINT_PRIORITY
   }
@@ -2491,6 +2561,47 @@ enums.addTypes(g_hud_hints, {
     totalCount=2
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
+  }
+
+  RANGEFINDER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/rangefinder_damaged"
+    showEvent = "hint:rangefinder_damaged"
+    lifeTime = 5.0
+  }
+
+  NIGHT_VISION_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/night_vision_damaged"
+    showEvent = "hint:night_vision_damaged"
+    lifeTime = 5.0
+  }
+
+  AUTOLOADER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/autoloader_damaged"
+    showEvent = "hint:autoloader_damaged"
+    lifeTime = 5.0
+  }
+
+  KILL_STREAK_SAFE_EXIT = {
+    hintType = g_hud_hint_types.COMMON
+    getLocId = function(_hintData) {
+      return getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER
+        ? "hints/kill_streak_safe_exit_helicopter"
+        : "hints/kill_streak_safe_exit"
+    }
+    showEvent = "hint:kill_streak_safe_exit"
+  }
+
+  KILL_STREAK_REWARD = {
+    getHintNestId = @() "hud_messages_reward_messages"
+    getLocId = @(hintData) $"hints/kill_streak_reward_{hintData.streakType}"
+    getLocParams = @(hintData) { points = hintData.points }
+    showEvent = "hint:kill_streak_reward"
+    lifeTime = 5.0
+    isHideOnDeath = false
+    isHideOnWatchedHeroChanged = false
   }
 
 },

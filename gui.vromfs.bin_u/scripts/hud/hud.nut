@@ -18,7 +18,7 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible, getHudUnitType } = require("hudState")
@@ -26,7 +26,7 @@ let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
-let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
+let { hitCameraInit, hitCameraReinit, getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
@@ -41,6 +41,9 @@ let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
+let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
+let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
+let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -55,11 +58,20 @@ function getCurActionBar() {
   return handler?.currentHud.actionBar
 }
 
-subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
-subscribe("getActionBarState", function(_) {
+eventbus_subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
+eventbus_subscribe("getActionBarState", function(_) {
   let actionBar = getCurActionBar()
   if (actionBar != null)
-    send("setActionBarState", actionBar.getState())
+    eventbus_send("setActionBarState", actionBar.getState())
+})
+eventbus_subscribe("getHudHitCameraState", function(_) {
+  eventbus_send("setHudHitCameraState", getHitCameraAABB())
+})
+
+eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
+  handlersManager.clearScene()
+  handlersManager.loadHandler(gui_handlers.Hud)
+  initMpChatStates()
 })
 
 gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -128,7 +140,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
-    send("updateIsSpectatorMode", this.spectatorMode)
+    eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())
@@ -177,11 +189,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function loadGameChat() {
     if (this.curChatData) {
-      ::detachGameChatSceneData(this.curChatData)
+      detachGameChatSceneData(this.curChatData)
       this.curChatData = null
     }
     if (::is_multiplayer())
-      this.curChatData = ::loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
+      this.curChatData = loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
         { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }
 
@@ -246,12 +258,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(hudObj))
       return false
 
+    this.currentHud?.onDestroy()
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)
       this.currentHud = handlersManager.loadHandler(HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(gui_handlers.Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
       this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
@@ -275,7 +288,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onHudSwitched() {
     handlersManager.updateWidgets()
-    this.updateHudVisMode(::FORCE_UPDATE)
+    this.updateHudVisModeForce()
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
     // All required checks are performed internally.
@@ -334,14 +347,15 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.curHudVisMode = visMode
 
-    let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
-      is_tank_damage_indicator_visible()
+    let isDmgPanelVisible = !isInKillerCamera.get()
+      && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
+      && is_tank_damage_indicator_visible()
 
     let objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
-      hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
+      hud_tank_tactical_map     = !isInKillerCamera.get() && visMode.isPartVisible(HUD_VIS_PART.MAP)
       hud_kill_log              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
       chatPlace                 = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
@@ -358,7 +372,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  updateHudVisModeForce = @() this.updateHudVisMode(::FORCE_UPDATE)
+  updateHudVisModeForce = @() this.updateHudVisMode(true)
   onEventChangedPartHudVisible = @(_) this.doWhenActiveOnce("updateHudVisModeForce")
 
   function onHudUpdate(_obj = null, dt = 0.0) {
@@ -549,7 +563,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMissionProgressPlace() {
     let curHud = this.getHudType()
     if (curHud == HUD_TYPE.SHIP || curHud == HUD_TYPE.AIR) {
-      send("updateMissionProgressHeight", getMissionProgressHeight())
+      eventbus_send("updateMissionProgressHeight", getMissionProgressHeight())
       return
     }
 

@@ -11,8 +11,8 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
-let { hangar_protection_map_update, set_protection_analysis_editing,
-  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test } = require("hangarEventCommand")
+let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing,
+  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
@@ -23,6 +23,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 local switch_damage = false
 local allow_cutting = false
 local explosionTest = false
+local testProjectileProps = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
@@ -84,11 +85,14 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     switch_damage = true //value is off by default it will be changed in AllowSimulation
     allow_cutting = false
     explosionTest = false
+    testProjectileProps = false
 
     this.scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
     showObjById("btnProtectionMap", isShowProtectionMapOptions)
+    let isShowCrewMapOptions = hasFeature("CrewMap") && this.unit.isShip()
+    showObjById("btnCrewMap", isShowCrewMapOptions)
     let cbVerticalAngleObj = showObjById("checkboxVerticalAngle", isShowProtectionMapOptions)
     showObjById("rowSeparator", isShowProtectionMapOptions)
     if (isShowProtectionMapOptions) {
@@ -160,6 +164,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function onTestProjectileProps(sObj) {
+    if (checkObj(sObj)) {
+      testProjectileProps = !testProjectileProps
+      set_test_projectile_props(testProjectileProps)
+    }
+  }
+
   function onAllowSimulation(sObj) {
     if (checkObj(sObj)) {
       switch_damage = !switch_damage
@@ -217,6 +228,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onProtectionMap = @() this.buildProtectionMap()
+
+  function buildCrewMap() {
+    hangar_crew_map_update()
+  }
+
+  onCrewMap = @() this.buildCrewMap()
+
   onConsiderVerticalAngle = function(obj) {
     let value = obj.getValue()
     saveLocalAccountSettings(CB_VERTICAL_ANGLE, value)
@@ -301,6 +319,17 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function getHandlerRestoreData() {
+    return {
+      openData = {
+        backSceneParams = this.backSceneParams
+      }
+    }
+  }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this, this.getclass())
+  }
 }
 
 

@@ -7,10 +7,11 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_send } = require("eventbus")
 let { isShowTankMinimap } = require("gameplayBinding")
 let { is_replay_playing } = require("replays")
-
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 
-let HudHeli = class (gui_handlers.BaseUnitHud) {
+gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
@@ -19,12 +20,14 @@ let HudHeli = class (gui_handlers.BaseUnitHud) {
     this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
+    this.createAirWeaponSelector(getPlayerCurUnit())
 
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       @(_) this.updateDmgIndicatorState(), this)
   }
 
-  function reinitScreen(_params = {}) {
+  function reinitScreen(_params = null) {
+    base.reinitScreen()
     this.actionBar.reinit()
     this.updateTacticalMapVisibility()
     ::hudEnemyDamage.reinit()
@@ -49,5 +52,5 @@ let HudHeli = class (gui_handlers.BaseUnitHud) {
 }
 
 return {
-  HudHeli
+  HudHeli = gui_handlers.HudHeli
 }

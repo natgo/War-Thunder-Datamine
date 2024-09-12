@@ -38,6 +38,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2431,12 +2432,12 @@
   "cockpit": {
     "headPos": [
       6.38,
-      0.73,
+      0.715,
       0.323
     ],
     "headPosOnShooting": [
       6.48,
-      0.73,
+      0.715,
       0.323
     ],
     "collimatorSize": 0.15,
@@ -2493,7 +2494,6 @@
     "sightInFov": 1.5,
     "sightOutFov": 6.5,
     "sightFov": 1.0,
-    "staticAimPitch": 0.1,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2765,11 +2765,11 @@
       ],
       "oil_pressure": [
         0.0,
-        100.0
+        200.0
       ],
       "oil_pressure1": [
         0.0,
-        100.0
+        200.0
       ],
       "water_temperature": [
         0.0,
@@ -2836,7 +2836,7 @@
           "page": {
             "type": "radar_b_round",
             "scale": 1.15,
-            "hideRadarBackground": true
+            "hideBackground": true
           }
         },
         {
@@ -3068,17 +3068,19 @@
           "Weapon": [
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 26,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 26,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -5829,10 +5831,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

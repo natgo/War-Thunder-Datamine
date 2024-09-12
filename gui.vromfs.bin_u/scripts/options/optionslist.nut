@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair, is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode, get_user_alt_crosshairs
+from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
@@ -10,7 +10,8 @@ let soundDevice = require("soundDevice")
 let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
+let { is_xboxone_X } = require("%sqstd/platform.nut")
 //
 
 
@@ -20,6 +21,8 @@ let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
+let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -43,6 +46,10 @@ function getPrivacyOptionsList() {
     [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasPrivacyFeature],
     [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasPrivacyFeature && is_platform_pc]
   ]
+}
+
+function hasConsolePresets() {
+  return is_xboxone_X || isPlatformXboxScarlett
 }
 
 let otherOptionsList = @() [
@@ -82,6 +89,7 @@ let getMainOptions = function() {
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
       [USEROPT_HDR_SETTINGS, "button", is_hdr_enabled()],
+      [USEROPT_CONSOLE_GFX_PRESET, "combobox", hasConsolePresets()],
 
       ["options/header/commonBattleParameters"],
       [USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
@@ -94,7 +102,7 @@ let getMainOptions = function() {
       [USEROPT_ORDER_AUTO_ACTIVATE, "spinner", hasFeature("OrderAutoActivate")],
       [USEROPT_TANK_ALT_CROSSHAIR, "spinner", can_add_tank_alt_crosshair()
                                                 && (hasFeature("TankAltCrosshair")
-                                                    || get_user_alt_crosshairs().len()
+                                                    || get_user_alt_crosshairs("", "").len()
                                                    )],
 
       ["options/header/air"],
@@ -127,11 +135,14 @@ let getMainOptions = function() {
       [USEROPT_CROSSHAIR_TYPE, "combobox"],
       [USEROPT_CROSSHAIR_COLOR, "combobox"],
       [USEROPT_INDICATED_SPEED_TYPE, "spinner"],
+      [USEROPT_INDICATED_ALTITUDE_TYPE, "spinner"],
+      [USEROPT_RADAR_ALTITUDE_ALERT, "slider"],
       [USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
       [USEROPT_GYRO_SIGHT_DEFLECTION, "spinner", hasFeature("allowShowGyroSightDeflection")],
       [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! isInFlight()],
       [USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
+      [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
 
       ["options/header/helicopter"],
@@ -152,6 +163,7 @@ let getMainOptions = function() {
       [USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT, "slider"],
 
       ["options/header/tank"],
+      [TANK_SIGHT_SETTINGS, "button", hasFeature("enableCustomTankSights")],
       [USEROPT_GRASS_IN_TANK_VISION, "spinner"],
       [USEROPT_XRAY_DEATH, "spinner", hasFeature("XrayDeath")],
       [USEROPT_XRAY_KILL, "spinner", hasFeature("XrayKill")],
@@ -219,6 +231,7 @@ let getMainOptions = function() {
       [USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, "switchbox"],
       [USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, "switchbox"],
       [USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, "switchbox"],
+      [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, "switchbox"],
       [USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
       [USEROPT_HUD_VISIBLE_CHAT_PLACE, "switchbox"],
       [USEROPT_SHOW_ACTION_BAR, "switchbox"],
@@ -295,6 +308,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   name = "sound"
   options = [
     [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
+    [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
     [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
     [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
     [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],

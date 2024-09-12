@@ -18,9 +18,9 @@ struct CanvasParams
   fontId : int = -1
   fontSize : int = 20
 
-let lod0DistSq = 20000. * 20000.
-let lod1DistSq = 30000. * 30000.
-let maxDistSq = 50000. * 50000.
+let lod0DistSq = 30000. * 30000.
+let lod1DistSq = 70000. * 70000.
+let maxDistSq = 100000. * 100000.
 
 [export]
 def setup_data(props : Properties&; var storage : CanvasParams&)
@@ -38,6 +38,8 @@ def foreach_shells(blk : block<(shell : ShellSensorViewData const const#) : void
   get_shell_sensor_view_data() <| $(shells : array<ShellSensorViewData const> const#)
     for shell in shells
       invoke(blk, shell)
+
+let guidanceStateNames = [[string[] ""; "hud/search"; "hud/iog"; "hud/iog_dl"; "hud/track"]]
 
 [export]
 def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -157,7 +159,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var mach = ""
       var machBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
-        mach = "M: {format("%.2f", shell.mach)}"
+        mach = "M: {fmt(":.2f", shell.mach)}"
         machBox = get_str_bbox(mach, mach |> length(), fctx)
         width = max(width, machBox.width.x + padding * 2.)
         height += machBox.width.y + padding
@@ -181,7 +183,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var timeStr = ""
       var timeBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
-        timeStr = "{loc("hud/lifeTime")}: {format("%.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
+        timeStr = "{loc("hud/lifeTime")}: {fmt(":.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
         timeBox = get_str_bbox(timeStr, timeStr |> length(), fctx)
         width = max(width, timeBox.width.x + padding * 2.)
         height += timeBox.width.y + padding
@@ -189,7 +191,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var overloadStr = ""
       var overloadBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
-        overloadStr = "{loc("hud/overload")}: {format("%.1f", shell.overload)} {loc("measureUnits/gForce")}"
+        overloadStr = "{loc("hud/overload")}: {fmt(":.1f", shell.overload)} {loc("measureUnits/gForce")}"
         overloadBox = get_str_bbox(overloadStr, overloadStr |> length(), fctx)
         width = max(width, overloadBox.width.x + padding * 2.)
         height += overloadBox.width.y + padding
@@ -197,15 +199,15 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var aoaStr = ""
       var aoaBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
-        aoaStr = "{loc("hud/aoa")}: {format("%.1f", shell.aoa)} {loc("measureUnits/deg")}"
+        aoaStr = "{loc("hud/aoa")}: {fmt(":.1f", shell.aoa)} {loc("measureUnits/deg")}"
         aoaBox = get_str_bbox(aoaStr, aoaStr |> length(), fctx)
         width = max(width, aoaBox.width.x + padding * 2.)
         height += aoaBox.width.y + padding
 
       var stateStr = ""
       var stateBox = BBox2()
-      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.guidanceState != int(SensorViewGuidanceState SVGS_NO_GUID)
-        stateStr = "{loc("hud/guidanceState")}: {loc(shell.guidanceState == int(SensorViewGuidanceState SVGS_SEARCH) ? "hud/search" : "hud/track")}"
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.guidanceState > int(SensorViewGuidanceState SVGS_NO_GUID) && shell.guidanceState < int(SensorViewGuidanceState SVGS_MAX)
+        stateStr = "{loc("hud/guidanceState")}: {loc(guidanceStateNames[shell.guidanceState])}"
         stateBox = get_str_bbox(stateStr, stateStr |> length(), fctx)
         width = max(width, stateBox.width.x + padding * 2.)
         height += stateBox.width.y + padding

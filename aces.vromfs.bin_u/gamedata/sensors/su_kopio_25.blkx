@@ -4,6 +4,8 @@
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
   "canMoveCamera": true,
+  "weaponTargetsMax": 2,
+  "launchedMissilesPredictedPositionsMax": 2,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -12,6 +14,12 @@
       "rcs": 5.0,
       "range": 30000.0,
       "rangeMax": 45000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -32.0
@@ -24,6 +32,12 @@
       "rcs": 5.0,
       "range": 60000.0,
       "rangeMax": 80000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -32.0
@@ -36,6 +50,12 @@
       "rcs": 40.0,
       "range": 14000.0,
       "rangeMax": 20000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "azimuth": {
           "angleHalfSens": 0.5,
@@ -63,8 +83,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -82,8 +102,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -101,8 +121,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -120,8 +140,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -139,8 +159,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -158,15 +178,15 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "period": 1.1,
       "width": 25.0,
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": false,
-      "centerElevation": -15.0,
+      "centerElevation": 0.0,
       "indicate": true
     },
     "boresightLock": {
@@ -176,8 +196,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "period": 0.3,
       "width": 1.75,
@@ -190,8 +210,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -209,8 +229,8 @@
         40.0
       ],
       "elevationLimits": [
-        -40.0,
-        10.0
+        -55.0,
+        25.0
       ]
     }
   },
@@ -403,8 +423,8 @@
       "scanPattern3": "searchAutoNarrow"
     },
     "acmLock": {
-      "scanPattern1": "verticalLock",
-      "scanPattern2": "boresightLock",
+      "scanPattern1": "boresightLock",
+      "scanPattern2": "verticalLock",
       "scanPattern3": "hudLock"
     }
   },
@@ -437,8 +457,8 @@
             ],
             "azimuthWidth": 5.0,
             "elevationLimits": [
-              -40.0,
-              10.0
+              -55.0,
+              25.0
             ],
             "distanceRange": [
               0.0,
@@ -631,6 +651,9 @@
           },
           "setSignal": {
             "signal": "acmLock"
+          },
+          "setModeName": {
+            "name": "PD ACM"
           }
         },
         "resetAcmLockMode": {
@@ -1092,20 +1115,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
@@ -1801,9 +1836,8 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
-              "timeOut": 2.0,
               "radius": 1000.0,
-              "blend": 0.5
+              "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}

@@ -18,7 +18,7 @@ let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
@@ -33,10 +33,11 @@ let { updateModItem, createModItem, createModBundle, createModItemLayout
 } = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
+  getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup
+} = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
   checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
-  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
+  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd,
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
@@ -72,6 +73,7 @@ let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.n
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -298,6 +300,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (groupIndex < this.air.unitType.bulletSetsQuantity)
         this.lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
+        continue
+      if (isPairBulletsGroup(bulletsList))
         continue
       this.bulletsByGroupIndex[groupIndex] <- bulletsList
     }
@@ -1313,7 +1317,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.checkResearchOperation(item))
       return
     if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air)) {
-      weaponryPresetsModal.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
+      weaponryPresetsWnd.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
       return
     }
     if (!this.canPerformAction(item, amount))
@@ -1696,14 +1700,16 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getHandlerRestoreData() {
     if (this.shouldBeRestoredOnMainMenu)
       return {}
+    let openData = {
+      curEdiff = this.curEdiff
+      needHideSlotbar = this.needHideSlotbar
+    }
     if (this.researchMode && (!this.setResearchManually || this.availableFlushExp))
-      return {
-        openData = {
-          researchMode = this.researchMode
-          researchBlock = this.researchBlock
-        }
-      }
-    return null
+      openData.__update({
+        researchMode = this.researchMode
+        researchBlock = this.researchBlock
+      })
+    return { openData }
   }
 
   function onEventUniversalSpareActivated(_p) {
@@ -1993,6 +1999,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.markSeenNightBattleIfNeed(item)
     this.markSeenModTutorialIfNeeded(item)
   }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this)
+  }
 }
 
 gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -2036,7 +2046,7 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let discountType = this.item.type == weaponsItem.spare ? "spare" : (this.item.type == weaponsItem.weapon) ? "weapons" : "mods"
-    ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
+    showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
     move_mouse_on_obj(this.scene.findObject("skillSlider"))

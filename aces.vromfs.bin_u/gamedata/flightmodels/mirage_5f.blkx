@@ -36,6 +36,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -220,6 +221,12 @@
       },
       "tank6_dm": {
         "hp": 97.5
+      },
+      "tank7_dm": {
+        "hp": 120.5
+      },
+      "tank8_dm": {
+        "hp": 120.5
       }
     },
     "wood": {
@@ -1136,6 +1143,88 @@
       },
       {
         "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2150,7 +2239,8 @@
       "node": [
         "cannon1_dm",
         "cannon2_dm",
-        "tank7_dm"
+        "tank7_dm",
+        "tank8_dm"
       ]
     },
     "WeaponSlot": [
@@ -2316,7 +2406,8 @@
               "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_left_wing.blk",
               "emitter": "pylon_rpk10_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2331,7 +2422,27 @@
               "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_left_wing.blk",
               "emitter": "pylon_rpk10_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_1700_slot2",
+            "showInWeaponMenu": true,
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/fr_1700l_rp30_drop_tank_1.blk",
+              "emitter": "1700l_rp30_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_1700_slot6"
             }
           }
         ]
@@ -2441,7 +2552,8 @@
               "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25.blk",
               "emitter": "pylon_pm3",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2456,7 +2568,8 @@
               "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
               "emitter": "pylon_pm3",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2471,7 +2584,8 @@
               "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2486,7 +2600,8 @@
               "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2639,7 +2754,8 @@
               "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_right_wing.blk",
               "emitter": "pylon_rpk10_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2654,7 +2770,27 @@
               "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_right_wing.blk",
               "emitter": "pylon_rpk10_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_1700_slot6",
+            "showInWeaponMenu": true,
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/fr_1700l_rp30_drop_tank_2.blk",
+              "emitter": "1700l_rp30_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 2,
+              "preset": "ptb_1700_slot2"
             }
           }
         ]

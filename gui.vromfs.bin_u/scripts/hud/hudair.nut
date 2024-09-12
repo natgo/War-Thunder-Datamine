@@ -10,10 +10,10 @@ let { getOwnerUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
 let { get_game_type } = require("mission")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 
-let HudAir = class (gui_handlers.BaseUnitHud) {
+gui_handlers.HudAir <- class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudAir.blk"
-
   function initScreen() {
     base.initScreen()
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_AIRCRAFT)
@@ -23,13 +23,15 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
     this.updateDmgIndicatorSize()
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
+    this.createAirWeaponSelector(getPlayerCurUnit())
 
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       function(_ed) { this.updateDmgIndicatorSize() },
       this)
   }
 
-  function reinitScreen(_params = {}) {
+  function reinitScreen(_params = null) {
+    base.reinitScreen()
     ::g_hud_display_timers.reinit()
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
@@ -57,8 +59,9 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
   function updateShowHintsNest() {
     showObjById("actionbar_hints_nest", false, this.scene)
   }
+
 }
 
 return {
-  HudAir
+  HudAir = gui_handlers.HudAir
 }

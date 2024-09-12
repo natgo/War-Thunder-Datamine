@@ -10,6 +10,13 @@ let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
 let { radarComponent } = require("shipHudComponents.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let shipObstacleRf = require("shipObstacleRangefinder.nut")
+let aamAim = require("rocketAamAim.nut")
+let { hitNotifications } = require("shipHitNotification.nut")
+
+let greenColor = Color(10, 202, 10, 250)
+let redColor = Color(255, 35, 30, 255)
+let colorWacthed = Watched(greenColor)
+let colorAlertWatched = Watched(redColor)
 
 let shipHud = @() {
   watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
@@ -35,6 +42,8 @@ return {
     actionBarTopPanel
     fireControl
     radarComponent
+    hitNotifications
+    aamAim(colorWacthed, colorAlertWatched)
     shipObstacleRf
   ]
 }

@@ -1313,21 +1313,31 @@
       -1
     ],
     "ammo_stowage__timeAmmoFire": -1.0,
+    "ammo_stowage__numAmmoFsForHud": 0,
     "ammo_stowage__ammoLost": 0,
     "ammo_stowage__combustionTime": 10.0,
     "ammo_stowage__detonateProb": 0.1,
-    "ammo_stowage__detonatePortion": [
+    "ammo_stowage__fatalDetonatePortion": [
       0.3,
       0.6
     ],
-    "ammo_stowage__detonateMinCaliber": 0.035,
+    "ammo_stowage__nonFatalDetonatePortion": [
+      1.0,
+      1.0
+    ],
     "ammo_stowage__fxEvAmmoFireId": -1,
     "ammo_stowage__ammoState:u32": {},
     "ammo_stowage__explosiveProperties": {},
     "ammo_stowage__splashProperties": {},
     "ammo_stowage__delayedOffender": {},
+    "ammo_stowage__ammoTypeRemap:list<ip4>": {},
+    "ammo_stowage__weaponsIds:list<i>": {},
+    "ammo_stowage__ammoTypeToMask:list<u32>": {},
     "ammo_stowage__partIdRemap:list<ip4>": {},
-    "ammo_stowage__triggerIdRemap:list<i>": {},
+    "ammo_stowage__weaponsRemap:list<i16>": {},
+    "ammo_per_type_data__state:list<u32>": {},
+    "ammo_per_type_data__numAmmoFs:list<i>": {},
+    "ammo_per_type_data__numAmmoFsSync:list<i>": {},
     "ammo_stowages__state:list<u32>": {},
     "ammo_stowages__bulletsCartridge:list<i>": {},
     "ammo_stowages__replenishmentStartEnd:list<p2>": {},
@@ -1336,25 +1346,26 @@
     "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
+    "ammo_stowages__cachedAmmoHash:list<u32>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
     "ammo_clusters__typeAndStage:list<u16>": {},
-    "ammo_clusters__numAmmo:list<ip3>": {},
     "ammo_clusters__state:list<u32>": {},
     "ammo_clusters__fireEvtId:list<i>": {},
     "ammo_clusters__fireParamsId:list<i>": {},
     "ammo_clusters__explosionEvtId:list<i>": {},
     "ammo_clusters__damageEffectPresetId:list<i>": {},
     "ammo_clusters__reloadTimeMult:list<r>": {},
+    "ammo_clusters__ammoClassConstraints:list<u32>": {},
     "ammo_clusters__splashConstraints:list<p3>": {},
     "ammo_clusters__shatterConstraints:list<p3>": {},
-    "ammo_clusters__exterminatedAmmo:list<i>": {},
     "ammo_clusters__entityMunition:list<t>": {},
     "ammo_clusters__slotsRange:list<ip2>": {},
     "ammo_clusters__wreckageRange:list<ip2>": {},
-    "ammo_clusters__elevatorPartsRange:list<ip2>": {},
+    "ammo_clusters__relatedPartsRange:list<ip2>": {},
     "ammo_stowage__wreckageIds:list<i>": {},
-    "ammo_stowage__elevatorPartsIds": {},
+    "ammo_stowage__relatedPartsIds": {},
     "ammo_slots__state:list<u32>": {},
+    "ammo_slots__ammoMaskAndType:list<u32>": {},
     "ammo_slots__partId": {},
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
@@ -1379,6 +1390,21 @@
         "tank_engine__overheatOffender": {}
       }
     ]
+  },
+  "tank_phys_tracks": {
+    "physical_tracks__meshName": "",
+    "physical_tracks__nonSymmetric": false,
+    "physical_tracks__trackCount": 0,
+    "physical_tracks": {
+      "_tags": "render"
+    },
+    "physical_tracks__isLeft:list<b>": {
+      "_tags": "render"
+    },
+    "physical_tracks_force_update:b": {
+      "_tags": "render",
+      "value": true
+    }
   },
   "ground_unit": {
     "_use": [
@@ -1422,7 +1448,8 @@
   "tank": {
     "_use": [
       "ground_unit",
-      "gm_engine_sound"
+      "gm_engine_sound",
+      "tank_phys_tracks"
     ],
     "mods:list<t>": {
       "mod": [
@@ -1434,16 +1461,6 @@
     },
     "track_sound": {
       "_tags": "sound"
-    },
-    "physical_tracks": {
-      "_tags": "render"
-    },
-    "physical_tracks__isLeft:list<b>": {
-      "_tags": "render"
-    },
-    "physical_tracks_force_update:b": {
-      "_tags": "render",
-      "value": true
     }
   },
   "simple_ship": {
@@ -1639,7 +1656,9 @@
       ]
     ],
     "background_model__canOutline": false,
-    "background_model_res": {},
+    "background_model_res": {
+      "_tags": "gameClient"
+    },
     "background_model__bullets:list<t>": {},
     "background_model__spawnEid:eid": {}
   },
@@ -1814,6 +1833,7 @@
       1.0
     ],
     "ecs_fx__light_radius_mult": 1.0,
+    "ecs_fx__with_sound": true,
     "ecs_fx__effect_ref": {
       "_tags": "render"
     }
@@ -2149,8 +2169,8 @@
       },
       {
         "_tags": "server",
-        "damage_area__offenderId": 0,
-        "damage_area__nextUpdateTime": 0.0
+        "damage_area__nextUpdateTime": 0.0,
+        "damage_area__offender": {}
       },
       {
         "_tags": "gameClient",
@@ -2200,7 +2220,7 @@
     "music__cooldownBattle": 5.0,
     "music__cooldownCalm": 5.0,
     "music__curUnitRank": 0,
-    "music__curUnitType": 0,
+    "music__curUnitType": -1,
     "music__curHangarCountry_id": -1,
     "music__curForcedEvtName": "",
     "music__lockedHangar": false,
@@ -2296,8 +2316,12 @@
     "active": false,
     "proj_trace_handle": -1
   },
+  "projectile_physics": {
+    "projectile_phys_obj": {}
+  },
   "bullet": {
     "_use": "projectile",
+    "bullet_client_lod:u8": {},
     "bullet_component": {}
   },
   "shell_delayed": {
@@ -2425,6 +2449,21 @@
     "gm_engine_sound__stop_event:SoundEvent": {},
     "gm_engine_sound__start_inside_event:SoundEvent": {},
     "gm_engine_sound__stop_inside_event:SoundEvent": {}
+  },
+  "gm_additional_engine_sound": {
+    "_tags": "sound",
+    "gm_additional_engine_sound__event_name": "",
+    "gm_additional_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__event:SoundEvent": {}
   },
   "asset_manager": {
     "_tags": "render",
@@ -2713,5 +2752,97 @@
   "loot_carrier_capacity_100": {
     "_use": "loot_carrier",
     "loot_carrier__capacity": 100
+  },
+  "dafx_rain": {
+    "_singleton": true,
+    "_group": {
+      "_track": true,
+      "far_rain__density": 10.0,
+      "far_rain__speed": 1.0,
+      "far_rain__width": 1.0,
+      "far_rain__length": 1.0,
+      "far_rain__alpha": 1.0,
+      "far_rain__maxDensity": 10.0,
+      "far_rain__effectTemplates:array": {
+        "template": [
+          "camera_rain_light_effect",
+          "camera_rain_drop_splashes_effect"
+        ]
+      }
+    },
+    "rain_tag:tag": {}
+  },
+  "camera_bound_rain_effect_template": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        20.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "camera_effect__distance": 0.0,
+      "effect__name": "",
+      "is_ground_effect": false
+    },
+    "effect": {
+      "_tags": "render"
+    },
+    "rain_effect_tag:tag": {}
+  },
+  "camera_rain_light_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_light_cmps_fx"
+    }
+  },
+  "camera_rain_heavy_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_heavy_cmps_fx"
+    }
+  },
+  "camera_rain_drop_splashes_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "camera_rain_drops_cmps_fx",
+      "is_ground_effect": true
+    }
   }
 }

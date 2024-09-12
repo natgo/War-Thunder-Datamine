@@ -12,6 +12,7 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "ilsElbit967": true,
+  "mfdCamTads": true,
   "hasPointOfInterestMemory": true,
   "hmdF16c": true,
   "hasMissileCommandLine": false,
@@ -69,6 +70,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1908,7 +1910,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1924,7 +1926,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          0.2
+          0.3
         ],
         "type": "leftHand",
         "detachedNodeYpr": [
@@ -1946,7 +1948,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          -0.5
+          -0.3
         ],
         "type": "rightHand",
         "detachedNodeYpr": [
@@ -1968,7 +1970,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.3
+          0.2
         ]
       },
       {
@@ -1979,7 +1981,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.3
+          -0.2
         ]
       }
     ]
@@ -2035,11 +2037,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      12.0,
-      3.2
+      18.0,
+      1.5
     ],
-    "sightInFov": 12.299,
-    "sightOutFov": 12.299,
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
@@ -2058,6 +2060,7 @@
       0.85,
       0.0
     ],
+    "hmdEnabledByDefault": true,
     "lightPos": [
       4.95,
       0.5,
@@ -2331,17 +2334,70 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
+              "type": "radar",
+              "scale": 0.92,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                20,
+                90,
+                200
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                255,
+                255,
+                255
+              ],
+              "verAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "horAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "scaleColor": [
+                255,
+                255,
+                255
+              ],
+              "targetColor": [
+                255,
+                255,
+                255
+              ],
+              "showCueHeights": true,
+              "showScanAzimuth": true,
+              "cueTopHeiColor": [
+                200,
+                200,
+                200
+              ],
+              "cueLowHeiColor": [
+                20,
+                90,
+                200
+              ],
+              "cueUndergroundColor": [
+                255,
+                20,
+                20
+              ],
+              "centerRadar": true
+            },
+            {
               "type": "thermal",
               "turretIdx": 0
             },
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "scale": 0.92,
-              "hideRadarBackground": true
             },
             {
               "type": "map"
@@ -2371,7 +2427,60 @@
             {
               "type": "radar",
               "scale": 0.92,
-              "hideRadarBackground": true
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                20,
+                90,
+                200
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                255,
+                255,
+                255
+              ],
+              "verAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "horAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "scaleColor": [
+                255,
+                255,
+                255
+              ],
+              "targetColor": [
+                255,
+                255,
+                255
+              ],
+              "showCueHeights": true,
+              "showScanAzimuth": true,
+              "cueTopHeiColor": [
+                200,
+                200,
+                200
+              ],
+              "cueLowHeiColor": [
+                20,
+                90,
+                200
+              ],
+              "cueUndergroundColor": [
+                255,
+                20,
+                20
+              ],
+              "centerRadar": true
             }
           ]
         },
@@ -2384,7 +2493,9 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hideBackground": true,
+            "hidePlaneSymbol": true
           }
         },
         {
@@ -2496,7 +2607,7 @@
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 2
+      "nvIndex": 1
     }
   },
   "commonWeapons": {
@@ -2639,10 +2750,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -2698,12 +2806,6 @@
         }
       }
     },
-    "air_extinguisher": {
-      "prevModification": "f_4c_g_suit",
-      "tier": 4,
-      "modClass": "armor",
-      "invertEnableLogic": false
-    },
     "M60_air_targets": {},
     "M60_armor_targets": {},
     "M60_stealth": {},
@@ -2728,18 +2830,18 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82": {
+    "us_500lb_mk82_gbu38_jdam": {
       "modClass": "weapon",
       "tier": 2,
       "prevModification": "us_blu27_b"
     },
-    "us_2000lb_mk84": {
+    "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "us_500lb_mk82"
+      "reqModification": "us_500lb_mk82_gbu38_jdam"
     },
     "us_agm_65d": {
-      "prevModification": "us_2000lb_mk84",
+      "prevModification": "us_2000lb_mk84_gbu31_jdam",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -2763,17 +2865,22 @@
       "modClass": "weapon",
       "tier": 3
     },
+    "us_aim_9l": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_aim_7m": {
+      "reqModification": "us_aim_9l",
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
+    "us_aim_9m": {
       "reqModification": "us_aim_7m",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_9m": {
-      "reqModification": "us_aim_9l",
+    "us_aim_120a": {
+      "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"
     }
@@ -2894,6 +3001,112 @@
       5.18666e-7
     ]
   },
+  "lerxVapors": {
+    "lerxVapor": [
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          -0.855,
+          0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          -0.478,
+          0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      },
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          -0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          -2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          -0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          -1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          0.855,
+          -0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          0.478,
+          -0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -3005,19 +3218,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 60,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -3029,7 +3244,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_120a_wingtip",
+            "name": "aim_120a_wingtip_slot1",
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
@@ -3059,7 +3274,7 @@
         "order": 3,
         "WeaponPreset": {
           "iconType": "missile_air_to_air_midrange_special",
-          "name": "aim_120a",
+          "name": "aim_120a_default",
           "ShowNodes": {
             "node": [
               "pylon1",
@@ -3162,7 +3377,7 @@
         "order": 4,
         "WeaponPreset": {
           "iconType": "missile_air_to_air_midrange_special",
-          "name": "aim_120a",
+          "name": "aim_120a_default",
           "ShowNodes": {
             "node": [
               "pylon8",
@@ -3186,7 +3401,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_120a_wingtip",
+            "name": "aim_120a_wingtip_slot10",
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",

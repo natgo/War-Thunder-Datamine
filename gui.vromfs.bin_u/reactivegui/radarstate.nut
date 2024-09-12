@@ -37,11 +37,13 @@ let modeNames = [
   "hud/PD BST",
   "hud/PD VSL",
   "hud/PD track",
+  "hud/PD RAM",
 
   "hud/PD HDN standby",
   "hud/PD HDN search",
   "hud/PD HDN acquisition",
   "hud/PD HDN ACM",
+  "hud/PD HDN HMD",
   "hud/PD HDN BST",
   "hud/PD HDN VSL",
   "hud/PD HDN track",
@@ -146,6 +148,7 @@ let Speed = Watched(0.0)
   //radar 1
 let IsRadarVisible = Watched(false)
 let IsRadarEmitting = Watched(false)
+let IsRadarDamaged = Watched(false)
 let RadarModeNameId = Watched(-1)
 let Azimuth = Watched(0.0)
 let Elevation = Watched(0.0)
@@ -211,9 +214,11 @@ let UseLockZoneRotated = Watched(false)
 let FoV = Watched(0)
 let ScanZoneWatched = Watched({ x0 = 0, x1 = 0, x2 = 0, x3 = 0, y0 = 0, y1 = 0, y2 = 0, y3 = 0 })
 let LockZoneWatched = Watched({ x0 = 0, y0 = 0, x1 = 0, y1 = 0, x2 = 0, y2 = 0, x3 = 0, y3 = 0 })
+let LockZoneIlsWatched = Watched({ x0 = 0, y0 = 0, x1 = 0, y1 = 0, x2 = 0, y2 = 0, x3 = 0, y3 = 0 })
 let IsScanZoneAzimuthVisible = Watched(false)
 let IsScanZoneElevationVisible = Watched(false)
 let IsLockZoneVisible = Watched(false)
+let IsLockZoneIlsVisible = Watched(false)
 let LockDistMin = Watched(0)
 let LockDistMax = Watched(0)
 
@@ -243,7 +248,7 @@ radarState.__update({
     Speed,
 
     //radar 1
-    IsRadarVisible, IsRadarEmitting, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
+    IsRadarVisible, IsRadarEmitting, IsRadarDamaged, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
 
     //radar 2
     IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
@@ -258,7 +263,7 @@ radarState.__update({
     IsForestallVisible, forestall, selectedTarget,
 
     UseLockZoneRotated, FoV, ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible, IsScanZoneElevationVisible, IsLockZoneVisible,
-    LockDistMin, LockDistMax, radarPosSize,
+    LockDistMin, LockDistMax, radarPosSize, LockZoneIlsWatched, IsLockZoneIlsVisible,
 
     IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax,
 
@@ -458,6 +463,14 @@ interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
   if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
     || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
     LockZoneWatched({ x0, x1, x2, x3, y0, y1, y2, y3 })
+  }
+}
+
+interop.updateLockZoneIls <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
+  let curVal = LockZoneIlsWatched.get()
+  if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
+    || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
+    LockZoneIlsWatched.set({ x0, x1, x2, x3, y0, y1, y2, y3 })
   }
 }
 

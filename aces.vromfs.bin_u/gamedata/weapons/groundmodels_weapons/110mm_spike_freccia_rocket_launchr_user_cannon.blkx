@@ -64,7 +64,7 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-    "bulletName": "110mm_spike_mr",
+    "bulletName": "110mm_spike_lr2",
     "caliber": 0.11,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
@@ -90,6 +90,7 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "bulletName": "110mm_spike_lr2",
       "statType": "hydra",
       "caliber": 0.11,
       "length": 1.2,
@@ -98,21 +99,24 @@
         0.1,
         0.1
       ],
-      "CxK": 1.35,
-      "wingAreaMult": 1.5,
+      "CxK": 1.85,
+      "wingAreaMult": 2.25,
       "finsAoaHor": 0.2,
       "finsAoaVer": 0.2,
       "distFromCmToStab": 0.02,
-      "mass": 13.0,
-      "massEnd": 12.0,
-      "timeFire": 2.0,
-      "force": 550.0,
+      "mass": 13.5,
+      "massEnd": 12.35,
+      "massEnd1": 11.7,
+      "timeFire": 2.5,
+      "timeFire1": 15.0,
+      "force": 759.0,
+      "force1": 95.0,
       "fireDelay": 0.15,
-      "timeLife": 35.0,
+      "timeLife": 45.0,
       "useStartSpeed": true,
-      "startSpeed": 100.0,
+      "startSpeed": 45.0,
       "endSpeed": 180.0,
-      "maxDistance": 4000.0,
+      "maxDistance": 5500.0,
       "minDistance": 200.0,
       "guidanceType": "ir",
       "maxDeltaAngle": 0.03,
@@ -198,17 +202,17 @@
         "guidanceAutopilot": {
           "timeOut": 0.0,
           "loftEnabled": true,
-          "loftElevation": 20.0,
-          "loftTargetElevation": -15.0,
-          "loftAngleToAccelMult": 20.0,
-          "loftTargetOmegaMax": 0.95,
-          "reqAccelMax": 4.0,
+          "loftElevation": 12.5,
+          "loftTargetElevation": -20.0,
+          "loftAngleToAccelMult": 2.0,
+          "loftTargetOmegaMax": 1.25,
+          "reqAccelMax": 6.0,
           "baseIndSpeed": 1800.0,
           "propNavMult": 4.0,
-          "accelControlProp": 0.0055,
-          "accelControlIntg": 0.025,
+          "accelControlProp": 0.0096,
+          "accelControlIntg": 0.0356,
           "accelControlIntgLim": 1.0,
-          "accelControlDiff": 0.0008
+          "accelControlDiff": 0.0015
         }
       },
       "stabilityRicochetModifier": {
@@ -580,7 +584,7 @@
       },
       "damage": {
         "explosive": {
-          "radius": 0.25,
+          "radius": 0.3,
           "offset": 0.2
         },
         "shatter": {
@@ -732,7 +736,7 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-      "bulletName": "110mm_spike_mr",
+      "bulletName": "110mm_spike_lr2",
       "caliber": 0.11,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
@@ -758,6 +762,7 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "110mm_spike_lr2",
         "statType": "hydra",
         "caliber": 0.11,
         "length": 1.2,
@@ -766,21 +771,24 @@
           0.1,
           0.1
         ],
-        "CxK": 1.35,
-        "wingAreaMult": 1.5,
+        "CxK": 1.85,
+        "wingAreaMult": 2.25,
         "finsAoaHor": 0.2,
         "finsAoaVer": 0.2,
         "distFromCmToStab": 0.02,
-        "mass": 13.0,
-        "massEnd": 12.0,
-        "timeFire": 2.0,
-        "force": 550.0,
+        "mass": 13.5,
+        "massEnd": 12.35,
+        "massEnd1": 11.7,
+        "timeFire": 2.5,
+        "timeFire1": 15.0,
+        "force": 759.0,
+        "force1": 95.0,
         "fireDelay": 0.15,
-        "timeLife": 35.0,
+        "timeLife": 45.0,
         "useStartSpeed": true,
-        "startSpeed": 100.0,
+        "startSpeed": 45.0,
         "endSpeed": 180.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 5500.0,
         "minDistance": 200.0,
         "guidanceType": "ir",
         "maxDeltaAngle": 0.03,
@@ -866,17 +874,17 @@
           "guidanceAutopilot": {
             "timeOut": 0.0,
             "loftEnabled": true,
-            "loftElevation": 20.0,
-            "loftTargetElevation": -15.0,
-            "loftAngleToAccelMult": 20.0,
-            "loftTargetOmegaMax": 0.95,
-            "reqAccelMax": 4.0,
+            "loftElevation": 12.5,
+            "loftTargetElevation": -20.0,
+            "loftAngleToAccelMult": 2.0,
+            "loftTargetOmegaMax": 1.25,
+            "reqAccelMax": 6.0,
             "baseIndSpeed": 1800.0,
             "propNavMult": 4.0,
-            "accelControlProp": 0.0055,
-            "accelControlIntg": 0.025,
+            "accelControlProp": 0.0096,
+            "accelControlIntg": 0.0356,
             "accelControlIntgLim": 1.0,
-            "accelControlDiff": 0.0008
+            "accelControlDiff": 0.0015
           }
         },
         "stabilityRicochetModifier": {
@@ -1248,7 +1256,7 @@
         },
         "damage": {
           "explosive": {
-            "radius": 0.25,
+            "radius": 0.3,
             "offset": 0.2
           },
           "shatter": {

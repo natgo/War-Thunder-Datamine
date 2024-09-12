@@ -13,6 +13,7 @@
   "haveCCRPForGun": true,
   "ilsElbit967": true,
   "hmdF16c": true,
+  "mfdCamTads": true,
   "hasMissileCommandLine": false,
   "havePointOfInterestDesignator": true,
   "isBwOpticSight": true,
@@ -69,6 +70,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1912,7 +1914,10 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": [
+      "usaf_pilot_1977_1991_char",
+      "usaf_pilot_1977_1991_char"
+    ],
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1928,7 +1933,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          0.2
+          0.3
         ],
         "type": "leftHand",
         "detachedNodeYpr": [
@@ -1950,7 +1955,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          -0.5
+          -0.3
         ],
         "type": "rightHand",
         "detachedNodeYpr": [
@@ -1972,7 +1977,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.3
+          0.2
         ]
       },
       {
@@ -1983,13 +1988,13 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.3
+          -0.2
         ]
       }
     ]
   },
   "ikGunner": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2006,7 +2011,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          0.1
+          0.3
         ]
       },
       {
@@ -2017,7 +2022,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          -0.1
+          -0.3
         ]
       },
       {
@@ -2028,7 +2033,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.2
+          0.2
         ]
       },
       {
@@ -2039,7 +2044,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.2
+          -0.2
         ]
       }
     ]
@@ -2146,13 +2151,13 @@
     }
   },
   "cockpit": {
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
-    "sightFov": 1.0,
     "targetingPodFov": [
-      12.0,
-      3.2
+      18.0,
+      1.5
     ],
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
+    "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
       0.37,
@@ -2170,6 +2175,7 @@
       0.85,
       0.0
     ],
+    "hmdEnabledByDefault": true,
     "lightPos": [
       4.95,
       0.5,
@@ -2440,13 +2446,50 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "radar",
+              "scale": 0.92,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
+            },
             {
               "type": "thermal",
               "turretIdx": 0
@@ -2454,11 +2497,6 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "scale": 0.92,
-              "hideRadarBackground": true
             },
             {
               "type": "map"
@@ -2488,7 +2526,44 @@
             {
               "type": "radar",
               "scale": 0.92,
-              "hideRadarBackground": true
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
@@ -2501,7 +2576,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.1
+            "scale": 1.15,
+            "hideBackground": true
           }
         },
         {
@@ -2579,24 +2655,6 @@
     ]
   },
   "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        1.0,
-        -0.2,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 2
-    },
     "TV": {
       "pos": [
         2.6,
@@ -2614,6 +2672,24 @@
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 2
+    },
+    "Target": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -155.0,
+        35.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "commonWeapons": {
@@ -2629,12 +2705,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_default.blk"
       },
       {
-        "name": "f_16d_block_40_barak_2_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9l_default.blk"
-      },
-      {
-        "name": "f_16d_block_40_barak_2_aim_9p",
-        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9p.blk"
+        "name": "f_16d_block_40_barak_2_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9m_default.blk"
       },
       {
         "name": "f_16d_block_40_barak_2_aim_9l",
@@ -2647,6 +2719,10 @@
       {
         "name": "f_16d_block_40_barak_2_aim_7",
         "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_7.blk"
+      },
+      {
+        "name": "f_16d_block_40_barak_2_6x_derby",
+        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_6x_derby.blk"
       },
       {
         "name": "f_16d_block_40_barak_2_mk82",
@@ -2691,6 +2767,10 @@
       {
         "name": "f_16d_block_40_barak_2_gbu_15v1",
         "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_gbu_15v1.blk"
+      },
+      {
+        "name": "f_16d_block_40_barak_2_gbu_31",
+        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_gbu_31.blk"
       }
     ]
   },
@@ -2821,35 +2901,57 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
-              "bullets": 70,
+              "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
-              "bullets": 70,
+              "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2873,11 +2975,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -2885,12 +2986,12 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p_wingtip",
-            "reqModification": "us_aim_9p",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby_wingtip",
+            "reqModification": "il_derby",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -2943,9 +3044,8 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p",
-            "reqModification": "us_aim_9p",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby_default",
             "ShowNodes": {
               "node": [
                 "pylon1",
@@ -2954,7 +3054,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
               "emitter": "aim_9e_002",
               "bullets": 1,
               "external": true,
@@ -3007,25 +3107,6 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p",
-            "reqModification": "us_aim_9p",
-            "ShowNodes": {
-              "node": [
-                "pylon3",
-                "launcher_aim9_3"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
-              "emitter": "aim_9e_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "aim_7m",
             "reqModification": "us_aim_7m",
@@ -3036,6 +3117,25 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_16.blk",
               "emitter": "aim_7e_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon3",
+                "launcher_aim9_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
+              "emitter": "aim_9e_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3135,7 +3235,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon2",
@@ -3262,6 +3362,26 @@
                 0.1
               ]
             }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_slot3",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -3364,7 +3484,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon4",
@@ -3647,7 +3767,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon5",
@@ -3819,25 +3939,6 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p",
-            "reqModification": "us_aim_9p",
-            "ShowNodes": {
-              "node": [
-                "pylon7",
-                "launcher_aim9_4"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
-              "emitter": "aim_9e_004",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "aim_7m",
             "reqModification": "us_aim_7m",
@@ -3848,6 +3949,25 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_16.blk",
               "emitter": "aim_7e_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon7",
+                "launcher_aim9_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
+              "emitter": "aim_9e_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3947,7 +4067,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon6",
@@ -4074,6 +4194,26 @@
                 0.1
               ]
             }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_slot8",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4121,9 +4261,8 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p",
-            "reqModification": "us_aim_9p",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby_default",
             "ShowNodes": {
               "node": [
                 "pylon8",
@@ -4132,7 +4271,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
               "emitter": "aim_9e_005",
               "bullets": 1,
               "external": true,
@@ -4160,11 +4299,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -4172,12 +4310,12 @@
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim_9p_wingtip",
-            "reqModification": "us_aim_9p",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "derby_wingtip",
+            "reqModification": "il_derby",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -4322,10 +4460,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -4381,12 +4516,6 @@
         }
       }
     },
-    "air_extinguisher": {
-      "prevModification": "heli_night_vision_system",
-      "tier": 4,
-      "modClass": "armor",
-      "invertEnableLogic": false
-    },
     "us_500lb_mk82": {
       "modClass": "weapon",
       "tier": 1
@@ -4401,7 +4530,7 @@
       "tier": 3,
       "reqModification": "us_750lb_m117a1"
     },
-    "us_2000lb_mk84": {
+    "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "us_1000lb_mk83"
@@ -4441,22 +4570,22 @@
       "prevModification": "M60_new_gun",
       "reqModification": "us_gbu_10"
     },
-    "us_aim_9p": {
+    "us_aim_9l": {
       "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_7m": {
-      "reqModification": "us_aim_9p",
+      "reqModification": "us_aim_9l",
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
+    "us_aim_9m": {
       "reqModification": "us_aim_7m",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_9m": {
-      "reqModification": "us_aim_9l",
+    "il_derby": {
+      "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"
     }

@@ -10,6 +10,12 @@
       "rcs": 5.0,
       "range": 80000.0,
       "rangeMax": 100000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.0,
         "sideLobesSensitivity": -34.0
@@ -22,6 +28,12 @@
       "rcs": 5.0,
       "range": 120000.0,
       "rangeMax": 150000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.0,
         "sideLobesSensitivity": -34.0
@@ -34,6 +46,12 @@
       "rcs": 5.0,
       "range": 150000.0,
       "rangeMax": 180000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.0,
         "sideLobesSensitivity": -34.0
@@ -1045,20 +1063,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
@@ -1666,9 +1696,8 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 12,
-              "timeOut": 2.0,
               "radius": 1000.0,
-              "blend": 0.5
+              "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}

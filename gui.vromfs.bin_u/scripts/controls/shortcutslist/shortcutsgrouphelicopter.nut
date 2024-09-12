@@ -262,6 +262,15 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_BOMBS_AUTO_RELEASE_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE_HELICOPTER"
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
     checkAssign = false
   }
@@ -322,6 +331,14 @@ return [
   }
   {
     id = "ID_FLARES_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_COUNTERMEASURE_FLARES_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_COUNTERMEASURE_CHAFF_HELICOPTER"
     checkAssign = false
   }
   {
@@ -452,13 +469,6 @@ return [
     id = "ID_AIM_CAMERA_HELICOPTER"
     checkAssign = false
     condition = @() isPlatformSony || isPlatformXboxOne
-  }
-  {
-    id = "target_camera_helicopter"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
-    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
     id = "helicopter_zoom"
@@ -631,6 +641,14 @@ return [
   }
   {
     id = "ID_TOGGLE_HMD_HELI"
+    checkAssign = false
+  }
+  {
+    id = "ID_INC_HMD_BRIGHTNESS_HELI"
+    checkAssign = false
+  }
+  {
+    id = "ID_DEC_HMD_BRIGHTNESS_HELI"
     checkAssign = false
   }
   {

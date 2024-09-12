@@ -25,6 +25,7 @@ let math = require("math")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isUsedCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -57,6 +58,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     this.reinitScreen()
 
     this.updateCustomLangInfo()
+    this.updateCustomSoundModsBtn()
   }
 
   function reinitScreen(_params = null) {
@@ -82,6 +84,8 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
         {
           hasResearchesBtn = true
           mainMenuSlotbar = true
+          hasExtraInfoBlock = true
+          hasExtraInfoBlockTop = true
           onCountryDblClick = function() {
             if (!topMenuShopActive.value)
               this.shopWndSwitch()
@@ -216,6 +220,11 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     infoObj.setValue(getLocalization("mainmenu/custom_lang_info"))
   }
 
+  function updateCustomSoundModsBtn() {
+    let isShowBtn = !topMenuShopActive.value && isUsedCustomSoundMods()
+    showObjById("custom_sound_mods", isShowBtn, this.scene)
+  }
+
   function shopWndSwitch(unitType = null) {
     if (!this.isValid())
       return
@@ -243,6 +252,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       this.shopWeak.updateSlotbarDifficulty()
 
     this.updateCustomLangInfo()
+    this.updateCustomSoundModsBtn()
     broadcastEvent("ShopWndSwitched")
   }
 
@@ -458,8 +468,8 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       { obj = "dmviewer_protection_analysis_btn"
         msgId = "hint_dmviewer_protection_analysis_btn"
       }
-      { obj = "dmviewer_show_extra_xray"
-        msgId = "hint_dmviewer_show_extra_xray"
+      { obj = "filter_nest"
+        msgId = "hint_dmviewer_xray_part_filter"
       }
       { obj = "dmviewer_show_extended_hints"
         msgId = "hint_dmviewer_show_extended_hints"

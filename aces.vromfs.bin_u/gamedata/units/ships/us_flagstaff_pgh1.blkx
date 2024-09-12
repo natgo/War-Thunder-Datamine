@@ -1198,7 +1198,7 @@
     }
   },
   "tank_crew": {
-    "minCrewMemberRepairCount": 5,
+    "minCrewMemberRepairCount": 0,
     "minCrewMemberAliveCount": 4,
     "sailor1": {
       "dmPart": "bridge_dm",
@@ -1874,9 +1874,9 @@
     "mass": {
       "Empty": 90000.0,
       "momentOfInertia": [
-        10.0,
-        48.0,
-        33.0
+        19.0,
+        80.0,
+        50.0
       ],
       "CenterOfGravity": [
         -2.0,
@@ -1958,88 +1958,166 @@
           -2.2,
           0.0
         ],
-        "area": 5.0,
-        "deflection": 35.0,
+        "area": 4.0,
+        "deflection": 33.0,
         "dmPart": "steering_gear_01_dm"
       },
       "hydrofoils": {
         "hydrofoil": [
           {
             "euler": [
-              -2.8,
+              -4.6,
               90.0,
-              10.0
+              7.0
             ],
             "pos": [
-              3.8,
-              -2.9,
+              2.8,
+              -3.2,
               -4.0
             ],
             "size": [
-              3.7,
-              2.5
+              3.8,
+              1.7
             ],
             "maxV": 60.0,
             "polar": {
-              "Cl0": 0.04,
-              "CdMin": 0.002,
-              "lineClCoeff": 0.05,
+              "Cl0": 0.045,
+              "CdMin": 0.01,
+              "lineClCoeff": 0.033,
               "ClCritHigh": 0.6,
               "ClCritLow": -0.5,
-              "alphaCritHigh": 2.5,
-              "alphaCritLow": -1.5
+              "alphaCritHigh": 3.5,
+              "alphaCritLow": -3.5
             }
           },
           {
             "euler": [
-              -2.8,
+              -4.6,
               90.0,
-              -10.0
+              -7.0
             ],
             "pos": [
-              3.8,
-              -2.9,
+              2.8,
+              -3.2,
               4.0
             ],
             "size": [
-              3.7,
-              2.5
+              3.8,
+              1.7
             ],
             "maxV": 60.0,
             "polar": {
-              "Cl0": 0.04,
-              "CdMin": 0.002,
-              "lineClCoeff": 0.05,
+              "Cl0": 0.045,
+              "CdMin": 0.01,
+              "lineClCoeff": 0.033,
               "ClCritHigh": 0.6,
               "ClCritLow": -0.5,
-              "alphaCritHigh": 2.5,
-              "alphaCritLow": -1.5
+              "alphaCritHigh": 3.5,
+              "alphaCritLow": -3.5
             }
           },
           {
             "euler": [
-              -0.2,
+              1.1,
               90.0,
               0.0
             ],
             "pos": [
               -11.8,
-              -2.8,
+              -3.1,
               0.0
             ],
             "size": [
-              3.7,
-              2.5
+              4.5,
+              1.2
             ],
             "maxV": 60.0,
             "polar": {
-              "Cl0": 0.04,
-              "CdMin": 0.002,
-              "lineClCoeff": 0.05,
+              "Cl0": 0.06,
+              "CdMin": 0.008,
+              "lineClCoeff": 0.1,
               "ClCritHigh": 0.6,
               "ClCritLow": -0.5,
-              "alphaCritHigh": 2.5,
-              "alphaCritLow": -1.5
+              "alphaCritHigh": 5.5,
+              "alphaCritLow": -5.5
+            }
+          },
+          {
+            "euler": [
+              0.0,
+              90.0,
+              90.0
+            ],
+            "pos": [
+              -11.8,
+              -2.4,
+              0.0
+            ],
+            "size": [
+              3.8,
+              0.5
+            ],
+            "maxV": 80.0,
+            "polar": {
+              "Cl0": 0.04,
+              "CdMin": 0.002,
+              "lineClCoeff": 0.022,
+              "ClCritHigh": 0.8,
+              "ClCritLow": -0.8,
+              "alphaCritHigh": 15.0,
+              "alphaCritLow": -15.0
+            }
+          },
+          {
+            "euler": [
+              0.0,
+              90.0,
+              80.0
+            ],
+            "pos": [
+              3.8,
+              -2.1,
+              4.0
+            ],
+            "size": [
+              2.9,
+              0.5
+            ],
+            "maxV": 80.0,
+            "polar": {
+              "Cl0": 0.04,
+              "CdMin": 0.002,
+              "lineClCoeff": 0.022,
+              "ClCritHigh": 0.8,
+              "ClCritLow": -0.8,
+              "alphaCritHigh": 15.0,
+              "alphaCritLow": -15.0
+            }
+          },
+          {
+            "euler": [
+              0.0,
+              90.0,
+              100.0
+            ],
+            "pos": [
+              3.8,
+              -2.1,
+              -4.0
+            ],
+            "size": [
+              2.9,
+              0.5
+            ],
+            "maxV": 80.0,
+            "polar": {
+              "Cl0": 0.04,
+              "CdMin": 0.002,
+              "lineClCoeff": 0.022,
+              "ClCritHigh": 0.8,
+              "ClCritLow": -0.8,
+              "alphaCritHigh": 15.0,
+              "alphaCritLow": -15.0
             }
           }
         ]
@@ -4655,6 +4733,13 @@
       "nameLocId": "ship_flag_italy_04/name",
       "texture": "flag_italy_04_c*"
     },
+    "ship_flag_france_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_france_02",
+      "nameLocId": "ship_flag_france_02/name",
+      "descLocId": "ship_flag_france_02/desc",
+      "texture": "flag_france_02_c*"
+    },
     "ship_flag_afganistan_01": {
       "category": "national",
       "unlockId": "ship_flag_afganistan_01",
@@ -5795,6 +5880,12 @@
       "nameLocId": "ship_flag_northern_ireland_01/name",
       "texture": "flag_northern_ireland_01_c*"
     },
+    "flag_italy_05": {
+      "category": "national",
+      "unlockId": "flag_italy_05",
+      "nameLocId": "flag_italy_05/name",
+      "texture": "flag_italy_05_c*"
+    },
     "ship_flag_pirate_01": {
       "category": "pirate",
       "unlockId": "ship_flag_pirate_01",
@@ -5951,6 +6042,13 @@
       "nameLocId": "flag_ussr_victory_01/name",
       "descLocId": "flag_ussr_victory_01/desc",
       "texture": "flag_ussr_victory_01_c*"
+    },
+    "flag_d_day_anniversary_01": {
+      "category": "other",
+      "unlockId": "flag_d_day_anniversary_01",
+      "nameLocId": "flag_d_day_anniversary_01/name",
+      "descLocId": "flag_d_day_anniversary_01/desc",
+      "texture": "flag_d_day_anniversary_01_c*"
     }
   }
 }

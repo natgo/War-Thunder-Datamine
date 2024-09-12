@@ -31,6 +31,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2517,6 +2518,13 @@
     "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
+    "targetingPodFov": [
+      24.7,
+      7.7
+    ],
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.7,
+    "sightInFov": 1.0,
     "headPos": [
       5.4,
       0.434,
@@ -2588,15 +2596,6 @@
       0.0
     ],
     "lightRadius3": 0.2,
-    "targetingPodFov": [
-      12.0,
-      3.2
-    ],
-    "zoomOutFov": 24.7,
-    "zoomInFov": 7.7,
-    "sightInFov": 7.37,
-    "sightOutFov": 18.49,
-    "sightFov": 18.49,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2845,8 +2844,32 @@
           ],
           "page": {
             "type": "radar",
-            "scale": 0.95,
-            "hideRadarBackground": true
+            "font": "usa_ils",
+            "fontScale": 0.65,
+            "scale": 0.75,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "hasAviaHorizont": true,
+            "hideBackground": true,
+            "hideScale": false,
+            "hideHorAngle": false,
+            "hideVerAngle": false,
+            "netRowCnt": 4,
+            "netColor": [
+              0,
+              255,
+              0
+            ],
+            "hideWeaponIndication": true,
+            "modeColor": [
+              0,
+              255,
+              0
+            ],
+            "centerRadar": true
           }
         },
         {
@@ -3181,33 +3204,37 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3703,6 +3730,24 @@
             }
           },
           {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot3_default",
+            "ShowNodes": {
+              "node": "pylon_l_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_left_wing_default.blk",
+              "emitter": "aero_3b_001",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "agm_65d_x3"
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "aim_9l",
             "reqModification": "us_aim_9l",
@@ -3752,9 +3797,10 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
             "emitter": "emtr_flare5",
             "bullets": 100,
+            "bulletsCartridge": 1,
             "external": true,
             "separate": true
           }
@@ -3768,7 +3814,8 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
-            "name": "aim_9g_default",
+            "name": "aim_9g_fuse",
+            "reqModification": "us_aim_9g",
             "ShowNodes": {
               "node": [
                 "f_4e_iaf_pylon1",
@@ -3779,7 +3826,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "lau_7_001_aim_9",
               "bullets": 1,
               "external": true,
@@ -3818,8 +3865,7 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "python3_fuse",
-            "reqModification": "il_python_3",
+            "name": "python3_fuse_default",
             "ShowNodes": {
               "node": [
                 "f_4e_iaf_pylon1",
@@ -3831,7 +3877,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3_default.blk",
               "emitter": "lau_7_001_aim_9",
               "bullets": 1,
               "external": true,
@@ -4077,7 +4123,8 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
-            "name": "aim_9g_default",
+            "name": "aim_9g_fuse",
+            "reqModification": "us_aim_9g",
             "ShowNodes": {
               "node": [
                 "f_4e_iaf_pylon3",
@@ -4088,7 +4135,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "lau_7_002_aim_9",
               "bullets": 1,
               "external": true,
@@ -4127,8 +4174,7 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "python3_fuse",
-            "reqModification": "il_python_3",
+            "name": "python3_fuse_default",
             "ShowNodes": {
               "node": [
                 "f_4e_iaf_pylon3",
@@ -4140,7 +4186,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3_default.blk",
               "emitter": "lau_7_002_aim_9",
               "bullets": 1,
               "external": true,
@@ -4167,9 +4213,10 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
             "emitter": "emtr_flare6",
             "bullets": 100,
+            "bulletsCartridge": 1,
             "external": true,
             "separate": true
           }
@@ -4190,6 +4237,24 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/lau_7a_aim9g.blk",
+              "emitter": "aero_3b_002",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 10,
+              "preset": "agm_65d_x3"
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot9_default",
+            "ShowNodes": {
+              "node": "pylon_r_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_right_wing_default.blk",
               "emitter": "aero_3b_002",
               "external": true,
               "separate": true
@@ -4715,7 +4780,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_alr_46.blk"
+        "blk": "gameData/sensors/us_an_alr_46_v3.blk"
       },
       {
         "blk": "gameData/sensors/tv_tracker_tgp.blk",
@@ -5030,10 +5095,8 @@
       "tier": 3,
       "reqModification": "us_1000lb_mk83"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,
@@ -5158,13 +5221,13 @@
       -4.78873
     ],
     "emtr_break_wing_tail": [
-      -4.72282,
+      -5.43957,
       0.0,
       0.0
     ],
     "finCut": true,
     "emtr_break_tail_from": [
-      -4.33957,
+      -5.43957,
       -0.0996002,
       4.57764e-7
     ],

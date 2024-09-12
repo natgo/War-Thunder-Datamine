@@ -45,7 +45,7 @@ require("%globalScripts/version.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
-let { get_local_unixtime } = require("dagor.time")
+let { ref_time_ticks } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
 ::INVALID_USER_ID <- make_invalid_user_id()
@@ -62,15 +62,13 @@ let { set_rnd_seed } = require("dagor.random")
   hasFeature = require("%scripts/user/features.nut").hasFeature
 }
 
-::FORCE_UPDATE <- true
-
 registerPersistentData("MainGlobals", getroottable(),
   [
     "is_debug_mode_enabled", "first_generation",
     "showConsoleButtons.value"
   ])
 
-set_rnd_seed(get_local_unixtime())
+set_rnd_seed(ref_time_ticks())
 
 //------- vvv files before login vvv ----------
 
@@ -220,6 +218,7 @@ local isFullScriptsLoaded = false
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
   require("%scripts/bhvHangarControlTracking.nut")
   require("%scripts/hangar/hangarEvent.nut")
+  require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
 
   if (platform.isPlatformXboxOne)
     require("%scripts/global/xboxCallbacks.nut")
@@ -254,8 +253,7 @@ local isFullScriptsLoaded = false
   }
 }
 
-if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null
-    && (get_cur_circuit_name().indexof("production") == null || getSystemConfigOption("releaseChannel", "") != ""))
+if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null)
     setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload

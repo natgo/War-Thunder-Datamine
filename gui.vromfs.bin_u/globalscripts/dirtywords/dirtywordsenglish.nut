@@ -34,6 +34,7 @@ excludesdata =
     key = "h",
     arr =
     [
+      "homochka",
       "hor[adimnorstu]",
     ]
   },
@@ -42,6 +43,13 @@ excludesdata =
     arr =
     [
       "japan"
+    ]
+  },
+  {
+    key = "k",
+    arr =
+    [
+      "^kukuruz"
     ]
   },
   {
@@ -253,7 +261,6 @@ fouldata =
       "^fujinoyamai",
       "^fupa",
       "^fxuxcxk",
-      "^fu$"
     ]
   },
   {
@@ -513,7 +520,6 @@ fouldata =
       "^reggin",
       "^reipu",
       "^retard",
-      "^reet",
       "^ricchione",
       "^rimjob",
       "^rizzape",
@@ -680,10 +686,13 @@ fouldata =
 
 badphrases =
 [
+  "h[i1İl]tl[e3]r"
+  "n[il1][qg6]([qg6]?[e3]r|[qg6]a)"
 ]
 
 badcombination =
 [
+  "14.{0,3}88",
   "bin laden",
   "coon hunt",
   "coon kill",
@@ -714,11 +723,13 @@ badcombination =
   "porch monkey",
   "porche monkey",
   "red tube",
+  "s[i1l][e3]g[\\s]*h[ae][i1l]l",
   "sofa king",
   "suck my",
   "succhia cazzi",
   "tea bag",
   "testa di cazzo",
+  "waffen.?ss",
   "white power",
   "xbl pet",
   "8(=)+[d@]",

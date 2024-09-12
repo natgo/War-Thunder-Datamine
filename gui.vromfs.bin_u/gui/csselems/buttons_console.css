@@ -60,6 +60,7 @@
 @const bigButtonWidth: 0.25*@sf\1;
 @const buttonHeight: @cIco + 2@buttonImgPadding;
 @const battleButtonHeight: 20*@sf/@pf_outdated + 3*@scrn_tgt/100.0;
+@const slotBattleButtonHeight: 3*@scrn_tgt/100.0;
 @const bigButtonHeight: 1@frameHeaderHeight - 2@frameHeaderPad;
 @const smallButtonHeight: 1@sIco + 2@smallButtonImgPadding;
 @const headerButtonHeight: 1@dIco + 2@buttonImgPadding;
@@ -420,7 +421,7 @@ Button_text.battle > pattern {
 shopItem Button_text.battle {
   pos:0, -h;
   position:absolute;
-  size:1@slot_button_fullWidth, 3*@scrn_tgt/100.0;
+  size:1@slot_button_fullWidth, 1@slotBattleButtonHeight;
   padding:1*@sf/@pf_outdated, 0;
   margin-bottom:1*@buttonMargin;
   not-input-transparent:yes; }
@@ -504,7 +505,9 @@ Button_text[visualStyle=common] > btnText {
   color: @commonTextColor;
 }
 
-bottomButtonsDiv > Button_text[visualStyle=common] {
+bottomButtonsDiv > Button_text[visualStyle=common],
+Button_text.swapCrew ,
+Button_text.openCrewPopup {
   background-color:#54656e;
   background-position:0;
   background-image:'';
@@ -517,7 +520,11 @@ bottomButtonsDiv > Button_text[visualStyle=common]:pushed,
 bottomButtonsDiv > Button_text[visualStyle=common][active=yes],
 bottomButtonsDiv > Button_text[visualStyle=common][selected=yes],
 bottomButtonsDiv > Button_text[visualStyle=common]:disabled,
-bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes] {
+bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes],
+Button_text.swapCrew:hover,
+Button_text.swapCrew:pushed,
+Button_text.openCrewPopup:hover,
+Button_text.openCrewPopup:pushed {
   background-color:@white;
   background-position:3, 4, 3, 4;
   foreground-color:@transparent;
@@ -1921,6 +1928,14 @@ button_text[tfont=small], button[tfont=small] {
   font:@fontSmall;
 }
 
+shopItem > Button_text.battle[showAboveInfoBlock=yes] {
+  pos:0, -@slotExtraInfoHeight-h-@blockInterval;
+}
+
+shopItem > Button_text.battle[showAboveInfoBlock=no] {
+  pos:0, -@sIco/2-h+@blockInterval/2;
+}
+
 [show_console_buttons=yes] button.link[btnName] {
   height:0.7@buttonHeight;
   padding-left:h;
@@ -2132,15 +2147,21 @@ Button_text.smallButton {
   min-width:@smallButtonHeight;
 }
 
+slotCrewHintContainer Button_text.smallButton {
+  min-width:1@slot_width - 2@slot_interval;
+}
+
 Button_text.bottomAirItem {
   height:@sIco;
   pos:50%pw-50%w, 0;
   position:relative;
   min-width: 0.33@slot_width;
   padding:1@smallButtonImgPadding;
-  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   not-input-transparent:yes;
-  order-popup:no;
-  skip-navigation:yes;
+  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   skip-navigation:yes;
+}
+
+Button_text.bottomAirItem[isSlotbar=yes] {
+  min-width:51@sf/@pf;
 }
 
 Button_text.bottomAirItem > img {
@@ -2150,6 +2171,14 @@ Button_text.bottomAirItem > img {
   size:ph, ph;
   position:absolute;
   pos:50%pw-50%w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.bottomAirItem[isSlotbar=yes] > img {
+  pos:pw-w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.bottomAirItem[isSlotbar=yes] > ButtonImg {
+  left:0;
 }
 
 Button_text.bottomAirItem > textareaNoTab {
@@ -2202,14 +2231,12 @@ Button_text[type=weaponryAmount] {
   text:'+';
 }
 
-[show_console_buttons=yes] [move=yes] weaponBundleBlock:focus weaponry_item[selected=yes] Button_text {
-  display:hide;
+weaponry_item Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
+  left:50%pw-50%w;
 }
 
-[show_console_buttons=no] unitCell[selected=yes] :hover Button_text.bottomAirItem,
-[show_console_buttons=no] unitItemContainer[selected=yes] :hover Button_text.bottomAirItem,
-Button_text.bottomAirItem:hover {
-  order-popup:yes;
+[show_console_buttons=yes] [move=yes] weaponBundleBlock:focus weaponry_item[selected=yes] Button_text {
+  display:hide;
 }
 
 
@@ -2515,6 +2542,10 @@ Button_text[visualStyle=noBgr][isTextArea=yes] {
   re-type:textarea;
 }
 
+Button_text[visualStyle=noBgr][reduceHeight=yes] {
+  min-height:0;
+}
+
 Button_text[visualStyle=noBgr] > img {
   background-color:@buttonFontColor;
 }
@@ -2732,4 +2763,88 @@ Button_text[type=trashBin] > img {
 
 Button_text[type=trashBin]:hover {
   background-color:@buttonCloseColorHover;
+}
+
+Button_text.swapCrew,
+Button_text.openCrewPopup {
+  min-width:51@sf/@pf;
+  height:ph;
+  margin:0;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  padding:1@smallButtonImgPadding;
+  input-transparent:yes;
+  order-popup:yes;
+  skip-navigation:yes;
+}
+
+Button_text.swapCrew > img {
+  background-image:#ui/gameuiskin#slot_change_aircraft.svg;
+  background-rotation:90;
+  background-position:0;
+  background-repeat:expand;
+  background-svg-size:@sIco, @sIco;
+  size:ph, ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-color: @buttonFontColor;
+  re-type:rotation;
+}
+
+Button_text.openCrewPopup > img {
+  background-image:#ui/gameuiskin#slot_menu.svg;
+  background-position:0;
+  background-repeat:expand;
+  background-svg-size:@sIco, @sIco;
+  size:ph, ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-color: @buttonFontColor;
+}
+
+[show_console_buttons=yes] Button_text.openCrewPopup > img {
+  pos:pw-w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.openCrewPopup > ButtonImg {
+  left:0;
+}
+
+Button_text[status=red] {
+  color: @redMenuButtonColor;
+}
+
+Button_text.smallButton:hover > tdiv > text {
+  color:@buttonFontColorHover;
+}
+
+[show_console_buttons=no] Button_text[isSwapCrewButton=yes] {
+  tooltip:#slotbar/dragCrewHint;
+}
+
+[show_console_buttons=no] Button_text[isSwapCrewButton=yes] > tdiv > dragCrewHint{
+  display:show;
+}
+
+[show_console_buttons=no] Button_text[isShowDragAndDropHint=yes] {
+  padding-left: 1@buttonImgPadding;
+  padding-right: h+1@buttonImgPadding;
+}
+
+[show_console_buttons=yes] Button_text[isShowDragAndDropHint=yes] > dragAndDropIcon {
+  display:hide;
+}
+
+[show_console_buttons=yes] Button_text[isShowDragAndDropHint=yes] {
+  tooltip:"";
+}
+
+Button_text.smallButton:hover > tdiv > dragCrewHint > text,
+Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > text {
+  color: @buttonFontColorHover;
+}
+
+Button_text.smallButton:hover > tdiv > dragCrewHint > img,
+Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
+  background-color: @buttonFontColorHover;
 }

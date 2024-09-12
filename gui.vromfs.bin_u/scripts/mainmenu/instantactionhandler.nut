@@ -68,10 +68,11 @@ let { guiStartSessionList, setMatchSearchGm, guiStartFlight, setCurrentCampaignM
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
   getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
-  setLeaderGameMode, isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
+  isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -133,6 +134,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
 
     this.initToBattleButton()
+    this._lastGameModeId = getCurrentGameModeId()
     this.setCurrentGameModeName()
 
     this.setCurQueue(::queues.findQueue({}, this.queueMask))
@@ -382,7 +384,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let queue = this.getCurQueue()
     let slots = queue == null ? null : ::queues.getQueueSlots(queue)
     if (slots && (country in slots)) {
-      foreach (_cIdx, c in ::g_crews_list.get())
+      foreach (_cIdx, c in getCrewsList())
         if (c.country == country)
           return getCrewUnit(country.crews?[slots[country]])
       return null
@@ -456,13 +458,6 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       let id = g_squad_manager.getLeaderGameModeId()
       if (id == "" || id == getCurrentGameModeId())
         this.updateNoticeGMChanged()
-      else
-        setLeaderGameMode(id)
-    }
-    else {
-      let id = getUserGameModeId()
-      if (id && id != "")
-        setCurrentGameModeById(id, true)
     }
     this.setCurrentGameModeName()
     this.doWhenActiveOnce("updateStartButton")
@@ -887,7 +882,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       countryToCheckArr.append(country)
 
-    foreach (countryCrews in ::g_crews_list.get()) {
+    foreach (countryCrews in getCrewsList()) {
       if (!isInArray(countryCrews.country, countryToCheckArr))
         continue
 
@@ -985,18 +980,14 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.tryToStartUpgradeCrewTutorial()
   }
 
-  function getCurrentCrewSlot() {
-    let slotbar = this.getSlotbar()
-    return slotbar && slotbar.getCurrentCrewSlot()
-  }
-
   function tryToStartUpgradeCrewTutorial() {
     let curCrew = this.getCurCrew()
     if (curCrew == null || curCrew.isEmpty)
       return
 
-    let curCrewSlot = this.getCurrentCrewSlot()
-    if (!curCrewSlot)
+    let slotbar = this.getSlotbar()
+    let curSlotExtraInfoObj = slotbar?.getCurrentCrewSlot().findObject("extra_info_block")
+    if (!curSlotExtraInfoObj)
       return
 
     let tutorialPageId = getCrewSkillPageIdToRunTutorial(curCrew)
@@ -1005,21 +996,19 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let steps = [
       {
-        obj = [curCrewSlot]
+        obj = [curSlotExtraInfoObj]
         text = loc("tutorials/upg_crew/skill_points_info") + " " + loc("tutorials/upg_crew/press_to_crew")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() this.openUnitActionsList(curCrewSlot, true, true)
+        cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj)
       },
       {
         actionType = tutorAction.WAIT_ONLY
         waitTime = 0.5
       },
       {
-        obj = [function() {
-          return curCrewSlot.findObject("crew")
-        }]
+        obj = [@() curSlotExtraInfoObj.findObject("open_crew_wnd_btn")]
         text = loc("tutorials/upg_crew/select_crew")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT

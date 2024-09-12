@@ -2758,6 +2758,9 @@
         "hp": 400.0
       },
       "ammunition_storage_02_dm": {
+        "hp": 400.0
+      },
+      "ammunition_storage_03_dm": {
         "hp": 600.0
       }
     },
@@ -3457,7 +3460,7 @@
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_2",
         "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_02_dm": {
+        "ammunition_storage_03_dm": {
           "count": 2000
         }
       }
@@ -3465,7 +3468,6 @@
     "ammo2": {
       "weaponTrigger": [
         "gunner0",
-        "gunner1",
         "gunner2"
       ],
       "shells": {
@@ -3474,11 +3476,23 @@
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 10000
+          "count": 8000
         }
       }
     },
     "ammo3": {
+      "weaponTrigger": "gunner1",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_02_dm": {
+          "count": 2000
+        }
+      }
+    },
+    "ammo4": {
       "weaponTrigger": "mines",
       "removeLoadedAmmo": false,
       "fatalFire": false,
@@ -3819,6 +3833,13 @@
       "unlockId": "ship_flag_italy_04",
       "nameLocId": "ship_flag_italy_04/name",
       "texture": "flag_italy_04_c*"
+    },
+    "ship_flag_france_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_france_02",
+      "nameLocId": "ship_flag_france_02/name",
+      "descLocId": "ship_flag_france_02/desc",
+      "texture": "flag_france_02_c*"
     },
     "ship_flag_afganistan_01": {
       "category": "national",
@@ -4960,6 +4981,12 @@
       "nameLocId": "ship_flag_northern_ireland_01/name",
       "texture": "flag_northern_ireland_01_c*"
     },
+    "flag_italy_05": {
+      "category": "national",
+      "unlockId": "flag_italy_05",
+      "nameLocId": "flag_italy_05/name",
+      "texture": "flag_italy_05_c*"
+    },
     "ship_flag_pirate_01": {
       "category": "pirate",
       "unlockId": "ship_flag_pirate_01",
@@ -5116,6 +5143,13 @@
       "nameLocId": "flag_ussr_victory_01/name",
       "descLocId": "flag_ussr_victory_01/desc",
       "texture": "flag_ussr_victory_01_c*"
+    },
+    "flag_d_day_anniversary_01": {
+      "category": "other",
+      "unlockId": "flag_d_day_anniversary_01",
+      "nameLocId": "flag_d_day_anniversary_01/name",
+      "descLocId": "flag_d_day_anniversary_01/desc",
+      "texture": "flag_d_day_anniversary_01_c*"
     }
   }
 }

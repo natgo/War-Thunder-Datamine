@@ -30,6 +30,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -37,22 +38,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "volumetricAfterBurner": {
-    "maxHeight": 13.0,
-    "maxRadius": 0.46,
-    "relativeCylinderHeightMax": 0.2,
-    "absorption": 3.0,
-    "colorIntensityMax": 2.5,
-    "colorOverHeightMult": 15.0,
-    "colorOverDepthMult": 5.0,
-    "colorOverRadiusMult": 0.3,
-    "ringOffset": 0.0,
-    "ringAbsorption": 5.0,
-    "ringFrequency": 4.83322,
-    "ringIntensity": 5.0,
-    "ringPower": 1,
-    "rampTextureOffset": 0
-  },
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1845,7 +1830,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1922,7 +1907,7 @@
     ]
   },
   "ikGunner": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2367,16 +2352,16 @@
             {
               "type": "radar_b_round",
               "scale": 1.0,
-              "hideRadarBackground": true,
+              "hideBackground": true,
               "offset": [
-                0.0,
-                -150.0
+                0,
+                -150
               ]
             },
             {
               "type": "rwr",
               "scale": 1.0,
-              "nightRadarColor": [
+              "nightColor": [
                 10,
                 10,
                 202,
@@ -2589,11 +2574,12 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2766,8 +2752,7 @@
           },
           {
             "iconType": "missile_air_to_air_ir_large_special",
-            "name": "aim_54a",
-            "reqModification": "us_aim_54a",
+            "name": "aim_54a_default",
             "ShowNodes": {
               "node": "pylon_phoenix1"
             },
@@ -2775,7 +2760,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim_54a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
               "emitter": "aim_54_1",
               "bullets": 1
             }
@@ -3968,8 +3953,7 @@
           },
           {
             "iconType": "missile_air_to_air_ir_large_special",
-            "name": "aim_54a",
-            "reqModification": "us_aim_54a",
+            "name": "aim_54a_default",
             "ShowNodes": {
               "node": "pylon_phoenix6"
             },
@@ -3977,7 +3961,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim_54a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
               "emitter": "aim_54_6",
               "bullets": 1
             }
@@ -4336,10 +4320,7 @@
     "new_cover": {
       "tier": 4
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,
