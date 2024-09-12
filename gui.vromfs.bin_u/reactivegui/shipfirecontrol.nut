@@ -339,6 +339,7 @@ function drawForestallIndicator(
   showVertical,
   showHorizontal,
   showMarker,
+  showProgress,
   showCentral) {
 
   let circleSize = sh(4)
@@ -362,16 +363,17 @@ function drawForestallIndicator(
       fillColor =  Color(0, 0, 0, 0)
       commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
     },
-    @() {
-      watch = fcsState.CalcProgress
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [circleSize * 0.7, circleSize * 0.7]
-      pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
-      color = greenColorGrid
-      fillColor =  Color(0, 0, 0, 0)
-      commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360]]
-    },
     drawDashLineToCircle(targetX, targetY, forestallX, forestallY, circleSize))
+    if (showProgress)
+      indicatorElements.append(
+        @() {
+          watch = fcsState.CalcProgress
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = [circleSize * 0.7, circleSize * 0.7]
+          pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
+          color = greenColorGrid
+          fillColor =  Color(0, 0, 0, 0)
+          commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360]]})
   }
   if (showHorizontal) {
     indicatorElements.append(drawArrow(forestallX, sh(50), 0, -1, isYawMatch ? greenColorGrid : redColor))
@@ -410,6 +412,7 @@ let forestallIndicator = @() {
     fcsState.IsBinocular.value && fcsState.IsHorizontalAxisVisible.value,
     fcsState.IsBinocular.value && fcsState.IsVerticalAxisVisible.value,
     fcsState.IsForestallMarkerVisible.value,
+    !fcsState.IsBinocular.value,
     fcsState.IsBinocular.value)
 }
 
@@ -614,7 +617,7 @@ let root = @() {
     fcsState.IsForestallVisible.value ? forestallIndicator
         : (fcsState.IsBinocular.value ? crosshairZeroMark : null)
     isExtraElementVisible ? roundIndicator : null
-    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value && (!fcsState.IsForestallVisible.value || !fcsState.IsForestallMarkerVisible.value) ? progressBar : null
+    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value ? progressBar : null
   ]
 }
 

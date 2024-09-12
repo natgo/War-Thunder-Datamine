@@ -5,7 +5,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { findChildIndex, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
@@ -14,6 +14,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
+let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 let MAX_SLOT_COUNT_X = 4
 
@@ -61,7 +62,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     openPopupFilter({
       scene = nestObj
       onChangeFn = this.onChangeFilterItem.bindenv(this)
-      filterTypes = this.getFiltersView()
+      filterTypesFn = this.getFiltersView.bindenv(this)
     })
   }
 
@@ -234,7 +235,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateAdditionalProp(unit, placeObj) {
     fillUnitSlotTimers(placeObj.findObject(unit.name), unit)
-    ::showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
+    showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
 
     local bonusData = unit.name
     if (isUnitGroup(unit))

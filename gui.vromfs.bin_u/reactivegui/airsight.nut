@@ -7,10 +7,11 @@ let {
   TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
   FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat,
   IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning,
+  GuidedBombsTimeToHit, GuidedBombsTimeToWarning,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime,
-  BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleaseOpacity,
-  BombReleasePoints, BombReleaseRelativToTarget,
+  BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseBlockedStates, BombReleaseDirY, BombReleaseOpacity,
+  BombReleasePoints, BombReleaseRelativToTarget, BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY
   RocketSightOpacity, RocketSightShadowOpacity,
   CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor,
   CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor,
@@ -396,8 +397,11 @@ function laserDesignatorStatusComponent(colorWatch, posX, posY) {
     pos = [posX, posY]
     halign = ALIGN_CENTER
     size = [0, 0]
-    watch = [IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning]
-    children = IsLaserDesignatorEnabled.value || (AgmTimeToHit.value > 0 && AgmTimeToWarning.value <= 0) ? laserDesignatorStatus : null
+    watch = [IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning, GuidedBombsTimeToHit, GuidedBombsTimeToWarning]
+    children = IsLaserDesignatorEnabled.value
+      || (AgmTimeToHit.value > 0 && AgmTimeToWarning.value <= 0)
+      || (GuidedBombsTimeToHit.value > 0 && GuidedBombsTimeToWarning.value <= 0)
+      ? laserDesignatorStatus : null
   }
   return resCompoment
 }
@@ -519,6 +523,13 @@ function laserPointComponent(colorWatch) {
   }
 }
 
+function getBombBlockedStateText(state) {
+  if (state == BombReleaseBlockedStates.notBlocked)
+    return ""
+
+  return state == BombReleaseBlockedStates.highSpeed ? loc("HUD/BOMB_SIGHT_HIGH_SPEED") : loc("HUD/BOMB_SIGHT_BOMB_BAY")
+}
+
 let bombSightComponent = @(width, height, crosshairColorWatch) function() {
   let res = { watch = [BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleasePoints,
     BombReleaseRelativToTarget, AlertColorHigh, HudColor, BombReleaseOpacity, BombSightShadowOpacity,
@@ -560,11 +571,16 @@ let bombSightComponent = @(width, height, crosshairColorWatch) function() {
     commands
   })
 
+  let sightWarningText = @() styleText.__merge({
+    rendObj = ROBJ_TEXT
+    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosX, BombReleaseBlockedState]
+    pos = [BombReleaseBlockedTextPosX.value, BombReleaseBlockedTextPosY.value]
+    text = getBombBlockedStateText(BombReleaseBlockedState.value)
+  })
+
   return res.__update({
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
     pos = [0, 0]
-    children = [shadowLines, lines]
+    children = [shadowLines, lines, sightWarningText]
   })
 }
 

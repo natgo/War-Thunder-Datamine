@@ -34,6 +34,9 @@ let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarSt
 let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -71,7 +74,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (this.hasMissionBuilder)
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     showObjById("btn_select", true, this.scene)
-
+    this.updateWishlistButton()
     this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
@@ -419,11 +422,12 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       local count = 0
       if (bulGroup.active) {
         name = bulGroup.getBulletNameForCode(bulGroup.selectedName)
-        count = bulGroup.bulletsCount * bulGroup.guns
+        count = bulGroup.bulletsCount
       }
       set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, name)
       set_option(USEROPT_BULLETS0 + bulIdx, name)
       set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
+      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, bulGroup.getWeaponName())
     }
     ++bulIdx
 
@@ -431,6 +435,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, "")
       set_option(USEROPT_BULLETS0 + bulIdx, "")
       set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
+      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, "")
       ++bulIdx
     }
   }
@@ -465,7 +470,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1) {
-      let battleType = ::get_battle_type_by_unit(this.unit)
+      let battleType = getBattleTypeByUnit(this.unit)
       return difficulty.getEdiff(battleType)
     }
     return getCurrentGameModeEdiff()
@@ -645,5 +650,22 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function onEventModificationPurchased(_p) {
     this.doWhenActiveOnce("updateCountermeasureOptions")
+  }
+
+  function onAddToWishlist() {
+    if(isWishlistFull())
+      return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+
+    addToWishlist(this.unit)
+  }
+
+  function updateWishlistButton() {
+    showObjById("btn_add_to_wishlist", hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought(), this.scene)
+    if(isWishlistFull())
+      this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
+  }
+
+  function onEventAddedToWishlist(_p) {
+    this.updateWishlistButton()
   }
 }

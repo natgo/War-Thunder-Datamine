@@ -1,20 +1,35 @@
 id:t='<<slotId>>'
-
 <<#position>>
 position:t='<<position>>'
 pos:t='<<posX>>w, <<posY>>h'
 <</position>>
 
+<<#selectOnHover>>
+on_mouse_enter='onUnitSlotMouseEnter'
+<</selectOnHover>>
+
 <<#isSlotbarItem>>
-slotbarCurAir {}
+chosen:t='no'
+selected:t='no'
 <</isSlotbarItem>>
 
+hasSelectedState:t='no'
+
+unhoverDiv {
+  size:t='pw, ph'
+  display:t='hide'
+  position:t='absolute'
+  not-input-transparent:t='yes'
+}
+<<#crewId>>crewId:t='<<crewId>>'<</crewId>>
 shopItem {
   id:t='<<shopItemId>>'
+  interactive:t='yes'
   <<#shopStatus>>
   shopStat:t='<<shopStatus>>'
   <</shopStatus>>
-
+  proxyEventsParentTag:t='slotbarTable'
+  <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
   <<@extraInfoBlock>>
 
   slotPlate {
@@ -23,38 +38,46 @@ shopItem {
     bottomShade {}
   }
 
+  slotHoverHighlight {}
   focus_border {}
 
   <<#crewImage>>
   img {
     position:t='absolute'
+    pos:t='-@blockInterval, ph-h-@slotBottomShadeHeight'
     size:t='2.074ph, 1.037ph'
     background-svg-size:t='2.074ph, 1.037ph'
     background-repeat:t='aspect-ratio'
     background-image:t='<<crewImage>>'
+    background-align:t='left'
     <<#isCrewRecruit>>
     style:t='background-color:#808080'
-    pos:t='0.06ph, ph-h - 1@slotBottomShadeHeight'
-    <</isCrewRecruit>>
-    <<^isCrewRecruit>>
-    pos:t='0.15ph, ph-h - 1@slotBottomShadeHeight'
     <</isCrewRecruit>>
   }
+
+  <<#isSlotbarItem>>
+  slotTopGradientLine {}
+  slotBottomGradientLine {}
+  <</isSlotbarItem>>
 
   topline {
-    shopItemPrice {
-      text:t='<<shopItemPriceText>>'
-      header:t='yes'
-    }
-  }
-
-  bottomline {
     shopItemText {
       id:t='<<shopItemTextId>>'
       margin-right:t='0.008@sf'
       width:t='pw'
       text-align:t='right'
       text:t='<<shopItemTextValue>>'
+    }
+  }
+
+  bottomline {
+    shopItemPrice {
+      text:t='<<shopItemPriceText>>'
+      header:t='yes'
+    }
+    crewNumText {
+      text:t='<<crewNumWithTitle>>'
+      display:t='hide'
     }
   }
   <</crewImage>>
@@ -64,8 +87,40 @@ shopItem {
       id:t='<<shopItemTextId>>'
       text:t='<<shopItemTextValue>>'
     }
+    <<#isShowDragAndDropIcon>>
+    isShowDragAndDropIcon:t='yes'
+    tooltip:t='#slotbar/dragUnitHint'
+    dragAndDropIcon {
+      position:t='relative'
+      top:t='50%ph-50%h'
+      flow:t='horizontal'
+      margin-right:t='0.5@blockInterval'
+      text {
+        text:t=' ('
+        smallFont:t='yes'
+      }
+      icon {
+        position:t='relative'
+        top:t='50%ph-50%h'
+        size:t='1@tIco, 1@tIco'
+        background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+        background-svg-size:t='@tIco, @tIco'
+        background-color:t='@buttonFontColor'
+      }
+      text {
+        text:t=')'
+        smallFont:t='yes'
+      }
+    }
+    <</isShowDragAndDropIcon>>
   }
   <</crewImage>>
 
   <<@itemButtons>>
+  on_hover:t='onUnitHover'
 }
+<<#needDnD>>
+on_end_edit:t='onCrewDropFinish'
+on_drag_drop:t='onCrewDrop'
+on_move:t='onCrewMove'
+<</needDnD>>

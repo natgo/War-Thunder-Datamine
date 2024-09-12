@@ -1646,6 +1646,14 @@ enums.addTypes(g_hud_hints, {
     priority = CATASTROPHIC_HINT_PRIORITY
   }
 
+  SHIP_NO_ROCKETS = {
+    hintType = g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/ship_has_no_rockets"
+    showEvent = "hint:ship_no_rockets"
+    lifeTime = 5.0
+    priority = CATASTROPHIC_HINT_PRIORITY
+  }
+
   REQUEST_REPAIR_HELP_HINT = {
     hintType = g_hud_hint_types.REPAIR
     locId     = "hints/request_repair_help"
@@ -2491,6 +2499,47 @@ enums.addTypes(g_hud_hints, {
     totalCount=2
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
+  }
+
+  RANGEFINDER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/rangefinder_damaged"
+    showEvent = "hint:rangefinder_damaged"
+    lifeTime = 5.0
+  }
+
+  NIGHT_VISION_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/night_vision_damaged"
+    showEvent = "hint:night_vision_damaged"
+    lifeTime = 5.0
+  }
+
+  AUTOLOADER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/autoloader_damaged"
+    showEvent = "hint:autoloader_damaged"
+    lifeTime = 5.0
+  }
+
+  KILL_STREAK_SAFE_EXIT = {
+    hintType = g_hud_hint_types.COMMON
+    getLocId = function(_hintData) {
+      return getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER
+        ? "hints/kill_streak_safe_exit_helicopter"
+        : "hints/kill_streak_safe_exit"
+    }
+    showEvent = "hint:kill_streak_safe_exit"
+  }
+
+  KILL_STREAK_REWARD = {
+    getHintNestId = @() "hud_messages_reward_messages"
+    getLocId = @(hintData) $"hints/kill_streak_reward_{hintData.streakType}"
+    getLocParams = @(hintData) { points = hintData.points }
+    showEvent = "hint:kill_streak_reward"
+    lifeTime = 5.0
+    isHideOnDeath = false
+    isHideOnWatchedHeroChanged = false
   }
 
 },

@@ -18,7 +18,7 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible, getHudUnitType } = require("hudState")
@@ -41,6 +41,8 @@ let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
+let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
+let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -55,11 +57,17 @@ function getCurActionBar() {
   return handler?.currentHud.actionBar
 }
 
-subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
-subscribe("getActionBarState", function(_) {
+eventbus_subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
+eventbus_subscribe("getActionBarState", function(_) {
   let actionBar = getCurActionBar()
   if (actionBar != null)
-    send("setActionBarState", actionBar.getState())
+    eventbus_send("setActionBarState", actionBar.getState())
+})
+
+eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
+  handlersManager.clearScene()
+  handlersManager.loadHandler(gui_handlers.Hud)
+  initMpChatStates()
 })
 
 gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -128,7 +136,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
-    send("updateIsSpectatorMode", this.spectatorMode)
+    eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())
@@ -177,11 +185,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function loadGameChat() {
     if (this.curChatData) {
-      ::detachGameChatSceneData(this.curChatData)
+      detachGameChatSceneData(this.curChatData)
       this.curChatData = null
     }
     if (::is_multiplayer())
-      this.curChatData = ::loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
+      this.curChatData = loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
         { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }
 
@@ -246,12 +254,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(hudObj))
       return false
 
+    this.currentHud?.onDestroy()
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)
       this.currentHud = handlersManager.loadHandler(HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(gui_handlers.Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
       this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
@@ -549,7 +558,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMissionProgressPlace() {
     let curHud = this.getHudType()
     if (curHud == HUD_TYPE.SHIP || curHud == HUD_TYPE.AIR) {
-      send("updateMissionProgressHeight", getMissionProgressHeight())
+      eventbus_send("updateMissionProgressHeight", getMissionProgressHeight())
       return
     }
 

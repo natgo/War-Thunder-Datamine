@@ -6,7 +6,7 @@ tdiv {
   background-image:t='!#ui/images/chests/prizes_bg.avif'
   background-color:t='#FFFFFF'
   re-type:t='9rect'
-  background-position:t='86@sf/@pf, 0, 86@sf/@pf, 0'
+  background-position:t='18, 25, 18, 50'
   background-svg-size:t='246@sf/@pf, 160@sf/@pf'
   background-repeat:t='expand'
   color-factor:t="0"
@@ -24,7 +24,7 @@ tdiv {
   behaviour:t='basicTransparency'
   transp-base:t='0'
   transp-func:t='linear'
-  transp-end:t='125'
+  transp-end:t='191'
   transp-time:t='150'
   transp-delay:t='<<bgDelay>>'
 }
@@ -73,13 +73,13 @@ tdiv {
       size:t='1.5*<<chestItemWidth>>, 1.5*<<chestItemWidth>>'
       pos:t='-w/2, -h/2'
       position:t='absolute'
-      background-image:t='!#ui/images/chests/chest_bg_cloud'
-      background-color:t='#FFFFFFFF'
+      background-image:t='!#ui/images/chests/chest_bg_cloud_white'
+      background-color:t='<<chestItemRarityColor>>'
       color-factor:t="0"
       behaviour:t='basicTransparency'
       transp-base:t='0'
       transp-func:t='linear'
-      transp-end:t='255'
+      transp-end:t='191'
       transp-time:t='125'
     }
   }
@@ -97,7 +97,6 @@ tdiv {
     _blink:t='no'
 
     <<#prizeTooltipId>>
-    title:t='$tooltipObj'
     tooltipObj  {
       tooltipId:t='<<prizeTooltipId>>'
       display:t='hide'
@@ -126,6 +125,7 @@ tdiv {
       flow:t='vertical'
       <<#textBlock>>
       tdiv {
+        id:t='text_block_<<idx>>'
         <<#iconBeforeText>>
         img {
           size:t='1@sIco, 1@sIco'
@@ -138,6 +138,7 @@ tdiv {
         <</iconBeforeText>>
         <<#text>>
         textareaNoTab {
+          id:t='prize_text'
           max-width:t='p.p.p.w'
           pos:t='0, 0.5ph-0.5h'
           position:t='relative'
@@ -154,6 +155,35 @@ tdiv {
           background-svg-size:t='1@sIco, 1@sIco'
         }
         <</iconAfterText>>
+        <<#isTextNeedStroke>>
+        tdiv {
+          id:t='stroke_0'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        tdiv {
+          id:t='stroke_1'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        tdiv {
+          id:t='stroke_2'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        <</isTextNeedStroke>>
       }
       <</textBlock>>
     }

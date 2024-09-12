@@ -42,6 +42,7 @@ let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 /*
   dmViewer API:
@@ -73,6 +74,7 @@ const MAX_VIEW_MODE_TUTOR_SHOWS = 2
 let extHintIconByPartType = {
   ammo_turret = "#ui/gameuiskin#icon_weapons_relocation_in_progress.svg"
   bridge = "#ui/gameuiskin#ship_crew_driver.svg"
+  engine = "#ui/gameuiskin#engine_state_indicator.svg"
   engine_room = "#ui/gameuiskin#engine_state_indicator.svg"
   shaft = "#ui/gameuiskin#ship_transmission_state_indicator.svg"
   transmission = "#ui/gameuiskin#ship_transmission_state_indicator.svg"
@@ -202,6 +204,28 @@ function distanceToStr(val) {
   return measureType.DISTANCE.getMeasureUnitsText(val)
 }
 
+function getRadarSensorType(sensorPropsBlk) {
+  local isRadar = false
+  local isIrst = false
+  local isTv = false
+  let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
+  for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
+    let transiverBlk = transiversBlk.getBlock(t)
+    let targetSignatureType = transiverBlk?.targetSignatureType ?? transiverBlk?.visibilityType
+    if (targetSignatureType == "infraRed")
+      isIrst = true
+    else if (targetSignatureType == "optic")
+      isTv = true
+    else
+      isRadar = true
+  }
+  return isRadar && isIrst ? "radar_irst"
+    : isRadar ? "radar"
+    : isIrst ? "irst"
+    : isTv ? "tv"
+    : "radar"
+}
+
 local dmViewer
 dmViewer = {
   active = false
@@ -209,6 +233,7 @@ dmViewer = {
   // view mode after player returns from somewhere.
   view_mode = DM_VIEWER_NONE
   unit = null
+  maxValuesParams = null
   crew = null
   unitBlk = null
   unitWeaponBlkList = null
@@ -331,6 +356,7 @@ dmViewer = {
     this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
+    this.maxValuesParams = ::g_skill_parameters_request_type.MAX_VALUES.getParameters(-1, this.unit)
     this.crew = getCrewByAir(this.unit)
     this.loadUnitBlk()
     let map = getTblValue("xray", this.unitBlk)
@@ -682,7 +708,8 @@ dmViewer = {
     if (!isVisible)
       return
 
-    local info = { title = "", desc = "" }
+    let handler = handlersManager.getActiveBaseHandler()
+    local info = { title = "", desc = [] }
     let isUseCache = this.view_mode == DM_VIEWER_XRAY && !this.isDebugMode
     let cacheId = getTblValue("name", params, "")
 
@@ -691,18 +718,20 @@ dmViewer = {
     else {
       info = this.getPartTooltipInfo(nameId, params)
       info.title = ::stringReplace(info.title, " ", nbsp)
-      info.desc  = ::stringReplace(info.desc,  " ", nbsp)
 
       if (isUseCache)
         this.xrayDescriptionCache[cacheId] <- info
     }
 
     obj.findObject("dmviewer_title").setValue(info.title)
-
     let descObj = obj.findObject("dmviewer_desc")
-    descObj.setValue(info.desc)
+    if (info.desc != null) {
+      let items = info.desc.map(@(v) "value" in v ? v : { value = v })
+      let data = handyman.renderCached("%gui/dmViewer/dmViewerHintDescItem.tpl", { items })
+      handler.guiScene.replaceContentFromText(descObj, data, data.len(), handler)
 
-    let handler = handlersManager.getActiveBaseHandler()
+      obj.findObject("topValueHint").show(info.desc.findindex(@(v) "topValue" in v) != null)
+    }
     showObjById("dmviewer_anim", !!info.animation, handler.scene)["movie-load"] = info.animation
 
     let needShowExtHint = info.extDesc != ""
@@ -780,12 +809,14 @@ dmViewer = {
   function getPartTooltipInfo(nameId, params) {
     let res = {
       title       = ""
-      desc        = ""
+      desc        = []
       extDesc     = ""
       extIcon     = ""
       extShortcut = ""
       animation   = null
     }
+
+    let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
 
     let isHuman = nameId == "steel_tankman"
     if (isHuman || nameId == "")
@@ -795,12 +826,13 @@ dmViewer = {
     if (this.view_mode == DM_VIEWER_ARMOR)
       res.desc = this.getDescriptionInArmorMode(params)
     else if (this.view_mode == DM_VIEWER_XRAY) {
-      res.desc = this.getDescriptionInXrayMode(params)
+      if (!hideDescription)
+        res.desc = this.getDescriptionInXrayMode(params)
       res.animation = this.getDmPartAnimationSrc(params.name)
       res.__update(this.getExtendedHintInfo(params))
     }
 
-    res.title = this.getPartTitle(params, this.unit)
+    res.title = overrideTitle == "" ? this.getPartTitle(params, this.unit) : this.getPartNameLocText(overrideTitle)
 
     return res
   }
@@ -903,7 +935,7 @@ dmViewer = {
     if (rawPartName)
       desc.append(rawPartName)
 
-    return "\n".join(desc, true)
+    return desc
   }
 
   function getFirstFound(dataArray, getter, defValue = null) {
@@ -1113,10 +1145,12 @@ dmViewer = {
         lookUp = true
     }
 
-    let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+    let hasTws = this.findBlockByName(sensorPropsBlk, "tws")
+    let hasRam = this.findBlockByName(sensorPropsBlk, "ram")
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
     let hasMG = this.findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
+    let datalinkChannelsNum = sensorPropsBlk.getInt("weaponTargetsMax", 0)
 
     local radarType = ""
     if (isRadar)
@@ -1204,6 +1238,8 @@ dmViewer = {
       desc.append("".concat(indent, loc("radar_iff")))
     if (isSearchRadar && hasTws)
       desc.append("".concat(indent, loc("radar_tws")))
+    if (isSearchRadar && hasRam)
+      desc.append("".concat(indent, loc("radar_ram")))
     if (isTrackRadar) {
       let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
       if (hasBVR)
@@ -1218,6 +1254,8 @@ dmViewer = {
         desc.append("".concat(indent, loc("radar_sarh")))
       if (hasMG)
         desc.append("".concat(indent, loc("radar_mg")))
+      if (datalinkChannelsNum > 0)
+        desc.append("".concat(indent, loc("radar_dl_channels"), loc("ui/colon"), format("%d", datalinkChannelsNum)))
     }
   }
 
@@ -1232,7 +1270,7 @@ dmViewer = {
     let partName = params.name
     local weaponPartName = null
 
-    let desc = []
+    let desc = descByPartId?[partId].getDescriptionInXrayMode(params, this.unit, this.unitBlk) ?? []
 
     if (partId in tankPartsIds) {
       if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
@@ -1481,10 +1519,10 @@ dmViewer = {
     }
     else if (partId in shipAmmunitionPartsIds) {
       let isShipOrBoat = this.unit.isShipOrBoat()
+      let ammoSlotInfo = this.getAmmoStowageSlotInfo(partName)
       if (isShipOrBoat) {
-        let ammoQuantity = this.getAmmoQuantityByPartName(partName)
-        if (ammoQuantity > 1)
-          desc.append(loc("shop/ammo") + loc("ui/colon") + ammoQuantity)
+        if (ammoSlotInfo.count > 1)
+          desc.append(loc("shop/ammo") + loc("ui/colon") + ammoSlotInfo.count)
       }
       let stowageInfo = this.getAmmoStowageInfo(null, partName, isShipOrBoat)
       if (stowageInfo.isCharges)
@@ -1497,6 +1535,8 @@ dmViewer = {
       }
       if (stowageInfo.isAutoLoad)
         desc.append(loc("xray/ammo/mechanized_ammo_rack"))
+      if (ammoSlotInfo.isConstrainedInert)
+        desc.append(loc("xray/ammo/constrained_inert"))
     }
     else if (partId == "drive_turret_h" || partId == "drive_turret_v") {
       weaponPartName = ::stringReplace(partName, partId, "gun_barrel")
@@ -1553,30 +1593,8 @@ dmViewer = {
         let sensorPropsBlk = DataBlock()
         sensorPropsBlk.load(sensorFilePath)
         local sensorType = sensorPropsBlk.getStr("type", "")
-        if (sensorType == "radar") {
-          local isRadar = false
-          local isIrst = false
-          local isTv = false
-          let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-          for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
-            let transiverBlk = transiversBlk.getBlock(t)
-            let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
-            if (targetSignatureType == "infraRed")
-              isIrst = true
-            else if (targetSignatureType == "optic")
-              isTv = true
-            else
-              isRadar = true
-          }
-          if (isRadar && isIrst)
-            sensorType = "radar_irst"
-          else if (isRadar)
-            sensorType = "radar"
-          else if (isIrst)
-            sensorType = "irst"
-          else if (isTv)
-            sensorType = "tv"
-        }
+        if (sensorType == "radar")
+          sensorType = getRadarSensorType(sensorPropsBlk)
         else if (sensorType == "lds")
           continue
         desc.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
@@ -1884,6 +1902,67 @@ dmViewer = {
           desc.append($"{loc("ui/bullet")}{loc("xray/fire_control/num_fire_directors", {n = numFireDirectors})}")
       }
     }
+    else if (partId == "autoloader" || partId == "driver_controls")
+      desc.append(loc($"armor_class/desc/{partId}"))
+    else if (partId == "power_system") {
+      let partsList = [loc("armor_class/fire_control_system"), loc("armor_class/gun_stabilizer"),
+        loc("armor_class/radar")]
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
+    else if (partId == "fire_control_system") {
+      let partsList = []
+      foreach (weapon in this.getUnitWeaponList()) {
+        if (weapon?.stabilizerDmPart == partName) {
+          u.appendOnce(loc("armor_class/gun_stabilizer"), partsList)
+          continue
+        }
+        if (weapon?.guidedWeaponControlsDmPart == partName)
+          u.appendOnce(loc("armor_class/guided_weapon_controls"), partsList)
+
+        let turretBlk = weapon?.turret
+        if (turretBlk == null)
+          continue
+
+        let { verDriveDm = null, horDriveDm = null, shootingDmPart = null } = turretBlk
+        if (verDriveDm == partName)
+          u.appendOnce(loc("armor_class/drive_turret_v"), partsList)
+        if (horDriveDm == partName)
+          u.appendOnce(loc("armor_class/drive_turret_h"), partsList)
+        if (shootingDmPart == partName)
+          u.appendOnce(loc("xray/firing"), partsList)
+      }
+
+      let rangefinderDmPart = this.findAnyModEffectValue("rangefinderDmPart")
+      if (rangefinderDmPart == partName)
+        partsList.append(loc("modification/laser_rangefinder_lws"))
+
+      let nightVisionBlk = this.findAnyModEffectValue("nightVision")
+      if (nightVisionBlk?.nightVisionDmPart == partName)
+        partsList.append(loc("modification/night_vision_system"))
+
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
+    else if (partId == "electronic_equipment") {
+      let partsList = []
+      foreach (sensorBlk in this.getUnitSensorsList()) {
+        if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
+          continue
+
+        let sensorFilePath = sensorBlk.getStr("blk", "")
+        if (sensorFilePath == "")
+          continue
+        let sensorPropsBlk = DataBlock()
+        sensorPropsBlk.load(sensorFilePath)
+        local sensorType = sensorPropsBlk.getStr("type", "")
+        if (sensorType == "radar")
+          sensorType = getRadarSensorType(sensorPropsBlk)
+        else if (sensorType == "lds")
+          continue
+        partsList.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
+          this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+      }
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
 
     if (this.isDebugMode)
       desc.append("\n" + colorize("badTextColor", partName))
@@ -1892,8 +1971,7 @@ dmViewer = {
     if (rawPartName)
       desc.append(rawPartName)
 
-    let description = "\n".join(desc, true)
-    return description
+    return desc
   }
 
   function getEngineModelName(infoBlk) {
@@ -2081,17 +2159,26 @@ dmViewer = {
     return null
   }
 
-  function getAmmoQuantityByPartName(partName) {
+  function getAmmoStowageSlotInfo(partName) {
+    let res = {
+      count = 0,
+      isConstrainedInert = false
+    }
     let ammoStowages = this.unitBlk?.ammoStowages
     if (ammoStowages)
       for (local i = 0; i < ammoStowages.blockCount(); i++) {
         let blk = ammoStowages.getBlock(i)
         foreach (blockName in [ "shells", "charges" ])
-          foreach (shells in blk % blockName)
-            if (shells?[partName])
-              return shells[partName].count
+          foreach (shells in blk % blockName) {
+            let slotBlk = shells?[partName]
+            if (slotBlk) {
+              res.count = slotBlk.count
+              res.isConstrainedInert = slotBlk?.type == "inert";
+              return res
+            }
+          }
       }
-    return 0
+    return res
   }
 
   function getWeaponByXrayPartName(weaponPartName, linkedPartName = null) {
@@ -2197,21 +2284,26 @@ dmViewer = {
     if (needSingleAxis || status.isPrimary || this.unit?.isShipOrBoat()) {
       let unitModificators = this.unit?.modificators?[this.difficulty.crewSkillName]
       foreach (a in [
-        { need = needAxisX, modifName = "turnTurretSpeed",      blkName = "speedYaw",
-          shipFxName = [ "mainSpeedYawK",   "auxSpeedYawK",   "aaSpeedYawK"   ] },
+        { need = needAxisX, modifName = "turnTurretSpeed", blkName = "speedYaw",
+          shipFxName = [ "mainSpeedYawK", "auxSpeedYawK", "aaSpeedYawK" ],
+          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" }
+        },
         { need = needAxisY, modifName = "turnTurretSpeedPitch", blkName = "speedPitch",
-          shipFxName = [ "mainSpeedPitchK", "auxSpeedPitchK", "aaSpeedPitchK" ] },
+          shipFxName = [ "mainSpeedPitchK", "auxSpeedPitchK", "aaSpeedPitchK" ],
+          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" }},
       ]) {
         if (!a.need)
           continue
 
         local speed = 0
+        local speedMul = 1
         if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
           let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
           let value = weaponInfoBlk?[a.blkName] ?? 0
           let weapons = this.getUnitWeaponList()
           let mainTurretValue = weapons?[0]?[a.blkName] ?? 0
-          speed = mainTurretValue ? (mainTurretSpeed * value / mainTurretValue) : mainTurretSpeed
+          speedMul = value / mainTurretValue
+          speed = mainTurretValue ? (mainTurretSpeed * speedMul) : mainTurretSpeed
         }
         else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
           let modId   = status.isPrimary    ? "new_main_caliber_turrets"
@@ -2229,8 +2321,14 @@ dmViewer = {
 
         if (speed) {
           let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
-          desc.append(loc("crewSkillParameter/" + a.modifName) + loc("ui/colon") +
-            speedTxt + loc("measureUnits/deg_per_sec"))
+          let res = { value = "".concat(loc("crewSkillParameter/" + a.modifName), loc("ui/colon"), speedTxt, loc("measureUnits/deg_per_sec")) }
+          local topValue = this.maxValuesParams?[this.difficulty.crewSkillName][a.crewMemberTopSkill.crewMember][a.crewMemberTopSkill.skill][a.modifName]
+          topValue = topValue ? topValue * speedMul : topValue
+          if (topValue != null && topValue > speed) {
+            let topValueTxt = topValue < 10 ? format("%.1f", topValue) : format("%d", round(topValue))
+            res.topValue <- "".concat(topValueTxt, loc("measureUnits/deg_per_sec"))
+          }
+          desc.append(res)
         }
       }
     }
@@ -2262,10 +2360,36 @@ dmViewer = {
     return null
   }
 
+  function getShipArtilleryReloadTime(weaponName) {
+    let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
+    let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.ship_artillery
+    foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ]) {
+      let reloadTime = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
+      if (reloadTime) {
+        let reloadTimeTop = this.maxValuesParams?[this.difficulty.crewSkillName]["ship_artillery"][c][$"weapons/{weaponName}"]
+        return { reloadTime, reloadTimeTop }
+      }
+    }
+    return { reloadTime = 0, reloadTimeTop = 0 }
+  }
+
+  function getShipArtilleryReloadTimeBase(weaponName) {
+    let baseValuesParams = ::g_skill_parameters_request_type.BASE_VALUES.getParameters(-1, this.unit)
+    foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ]) {
+      let reloadTimeBase = baseValuesParams?[this.difficulty.crewSkillName]["ship_artillery"][c][$"weapons/{weaponName}"]
+      if (reloadTimeBase)
+        return reloadTimeBase
+    }
+    return 0
+  }
+
   function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status) {
     local shotFreqRPM = 0.0 // rounds/min
     local reloadTimeS = 0 // sec
     local firstStageShotFreq = 0.0
+    local topValue = 0.0
+    local firstStageShotFreqTop = 0.0
+    local shotFreqRPMTop = 0.0
 
     let weaponBlk = blkOptFromPath(weaponInfoBlk?.blk)
     let isCartridge = weaponBlk?.reloadTime != null
@@ -2299,28 +2423,33 @@ dmViewer = {
                 if (mainGunReloadTimeMax)
                   reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
               }
+              topValue = round_by_value(thisGunReloadTimeMax, 0.1)
             }
           }
+          if(topValue == 0)
+            topValue = this.maxValuesParams?[this.difficulty.crewSkillName]["loader"]["loading_time_mult"]["tankLoderReloadingTime"]
         }
       }
     }
     else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
       if (isCartridge) {
         if (this.crew) {
-          let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
-          let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.ship_artillery
-          foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ]) {
-            reloadTimeS = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
-            if (reloadTimeS)
-              break
-          }
+          let { reloadTime, reloadTimeTop } = this.getShipArtilleryReloadTime(weaponName)
+          reloadTimeS = reloadTime
+          topValue = reloadTimeTop
         }
         else {
           let wpcostUnit = get_wpcost_blk()?[this.unit.name]
           foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ]) {
             reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
-            if (reloadTimeS)
+            if (reloadTimeS) {
+              let reloadTimeBase = this.getShipArtilleryReloadTimeBase(weaponName)
+              if(reloadTimeBase != 0) {
+                topValue = reloadTimeS
+                reloadTimeS = reloadTimeBase
+              }
               break
+            }
           }
         }
       }
@@ -2334,24 +2463,61 @@ dmViewer = {
           firstStageShotFreq = shotFreqRPM
           shotFreqRPM *= 1 / this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
         }
+
+        if (this.crew) {
+          let { reloadTime, reloadTimeTop } = this.getShipArtilleryReloadTime(weaponName)
+          if (reloadTime != 0 && reloadTimeTop != 0) {
+            let coeff = reloadTimeTop / reloadTime
+            firstStageShotFreqTop = firstStageShotFreq
+            shotFreqRPMTop = shotFreqRPM
+            firstStageShotFreq *= coeff
+            shotFreqRPM *= coeff
+          }
+        }
+        else {
+          let reloadTimeBase = this.getShipArtilleryReloadTimeBase(weaponName)
+          if (reloadTimeBase) {
+            if (firstStageShotFreq) {
+              firstStageShotFreqTop = firstStageShotFreq
+              shotFreqRPMTop = shotFreqRPM
+              firstStageShotFreq = 60 / reloadTimeBase
+              shotFreqRPM = firstStageShotFreq * shotFreqRPMTop / firstStageShotFreqTop
+            }
+            else {
+              shotFreqRPMTop = shotFreqRPM
+              shotFreqRPM = 60 / reloadTimeBase
+            }
+          }
+        }
       }
     }
 
     let desc = []
-    if (firstStageShotFreq)
-      desc.append(" ".join([loc("shop/shotFreq/firstStage"),
-        round(firstStageShotFreq),
-        loc("measureUnits/rounds_per_min")], true))
+    if (firstStageShotFreq) {
+      let res = { value = " ".concat(loc("shop/shotFreq/firstStage"), round(firstStageShotFreq), loc("measureUnits/rounds_per_min")) }
+      if (firstStageShotFreq < firstStageShotFreqTop)
+        res.topValue <- " ".concat(round(firstStageShotFreqTop), loc("measureUnits/rounds_per_min"))
+      desc.append(res)
+    }
 
     if (shotFreqRPM) {
       shotFreqRPM = round_by_value(shotFreqRPM, shotFreqRPM > 600 ? 10
         : shotFreqRPM < 10 ? 0.1
         : 1)
-      desc.append(" ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")))
+      shotFreqRPMTop = round_by_value(shotFreqRPMTop, shotFreqRPMTop > 600 ? 10
+        : shotFreqRPMTop < 10 ? 0.1
+        : 1)
+      let res = { value = " ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")) }
+      if (shotFreqRPM < shotFreqRPMTop)
+        res.topValue <- " ".concat(shotFreqRPMTop, loc("measureUnits/rounds_per_min"))
+      desc.append(res)
     }
     if (reloadTimeS) {
       reloadTimeS = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
-      desc.append(loc("shop/reloadTime") + " " + reloadTimeS + " " + loc("measureUnits/seconds"))
+      let res = { value = " ".concat(loc("shop/reloadTime"), reloadTimeS, loc("measureUnits/seconds")) }
+      if (topValue != 0 && topValue < to_float_safe(reloadTimeS, 0))
+        res.topValue <- " ".concat(topValue, loc("measureUnits/seconds"))
+      desc.append(res)
     }
     return desc
   }

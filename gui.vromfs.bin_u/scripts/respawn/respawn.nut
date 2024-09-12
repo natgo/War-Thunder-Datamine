@@ -15,14 +15,13 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
 let { ceil } = require("math")
 let { format } = require("string")
 let { is_has_multiplayer } = require("multiplayer")
 let { get_current_mission_name, get_game_mode,
-  get_game_type, get_mplayers_list, get_local_mplayer, get_mp_local_team } = require("mission")
+  get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team } = require("mission")
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
   selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer,
@@ -80,7 +79,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
 let { markUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText,
-  isUnitPriceTextLong, getUnitSlotPriceText
+  getUnitSlotPriceText, getUnitSlotPriceHintText
 } = require("%scripts/slotbar/slotbarView.nut")
 let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
@@ -90,7 +89,9 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
 let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
-
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
+} = require("%scripts/chat/mpChat.nut")
 
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 
@@ -140,7 +141,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   ]
 
   shouldBlurSceneBg = true
-  shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
@@ -640,10 +640,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           && (this.needRefreshSlotbarOnReinit || !this.slotbarWeak)) {
         this.slotbarInited = false
         this.beforeRefreshSlotbar()
-        this.createSlotbar(this.getSlotbarParams()
-          .__update({ slotbarHintText = getEventSlotbarHint(
-            ::SessionLobby.getRoomEvent(), get_local_player_country()) }),
-          "flight_menu_bgd")
+        this.createSlotbar(this.getSlotbarParams().__update({
+          slotbarHintText = getEventSlotbarHint(::SessionLobby.getRoomEvent(), get_local_player_country())
+          draggableSlots = false
+          showCrewUnseenIcon = false
+        }), "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
         this.slotbarInited = true
@@ -693,6 +694,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       checkRespawnBases = true
       missionRules = this.missionRules
       hasExtraInfoBlock = true
+      hasExtraInfoBlockTop = true
+      showAdditionExtraInfo = true
+      showCrewHintUnderSlot = true
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
         icon = this.missionRules.getOverrideCountryIconByTeam(get_mp_local_team())
@@ -819,7 +823,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function getSlotsSpawnCostSumNoWeapon() {
     local res = 0
-    let crewsCountry = ::g_crews_list.get()?[this.getCurCrew()?.idCountry]
+    let crewsCountry = getCrewsList()?[this.getCurCrew()?.idCountry]
     if (!crewsCountry)
       return res
 
@@ -992,13 +996,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (spawnId != -1)
       foreach (idx, spawn in this.respawnBasesList)
         if (spawn.id == spawnId && spawn.isMapSelectable) {
-          selIdx = idx
-          break
-        }
-
-    if (selIdx == -1)
-      foreach (idx, spawn in this.respawnBasesList)
-        if (!spawn.isMapSelectable) {
           selIdx = idx
           break
         }
@@ -1261,7 +1258,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (!modName)
         continue
 
-      let count = bulGroup.bulletsCount * bulGroup.guns
+      let count = bulGroup.bulletsCount
       if (bulGroup.canChangeBulletsCount() && bulGroup.bulletsCount <= 0)
         continue
 
@@ -1270,11 +1267,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       else
         res[$"bullets{bulletInd}"] <- ""
       res[$"bulletCount{bulletInd}"] <- count
+      res[$"bulletsWeapon{bulletInd}"] <- bulGroup.getWeaponName()
       bulletInd++;
     }
     while (bulletInd < BULLETS_SETS_QUANTITY) {
       res[$"bullets{bulletInd}"] <- ""
       res[$"bulletCount{bulletInd}"] <- 0
+      res[$"bulletsWeapon{bulletInd}"] <- ""
       bulletInd++;
     }
 
@@ -1283,6 +1282,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       for (local i = 0; i < BULLETS_SETS_QUANTITY; i++) {
         res[$"bullets{i}"] = editSlotbarBullets?[$"bullets{i}"] ?? ""
         res[$"bulletCount{i}"] = editSlotbarBullets?[$"bulletsCount{i}"] ?? 0
+        res[$"bulletsWeapon{i}"] <- editSlotbarBullets?[$"bulletsWeapon{i}"] ?? ""
       }
 
     let optionsParams = this.getOptionsParams()
@@ -1484,7 +1484,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let infoTextsArr = []
     let costTextArr = []
     local shortCostText = "" //for slot battle button
-    local shortCostUncoloredText = ""
 
     if (this.isApplyPressed)
       this.applyText = loc("mainmenu/btnCancel")
@@ -1495,17 +1494,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         tooltipEndText = format(" [%s]", loc("key/Enter"))
 
       if (this.haveSlotbar) {
-        if (crew != null && isRespawnWithUniversalSpare(crew, unit)) {
+        if (crew != null && (isRespawnWithUniversalSpare(crew, unit) || isSpareAircraftInSlot(crew.idInCountry))) {
           shortCostText = loc("icon/universalSpare")
-          shortCostUncoloredText = loc("icon/spare")
           costTextArr.append(shortCostText)
-        }
-        let wpCost = this.getRespawnWpTotalCost()
-        if (wpCost > 0) {
-          let uncoloredCostText = Cost(wpCost).getUncoloredText()
-          shortCostText = $"{shortCostText} {uncoloredCostText}"
-          shortCostUncoloredText = $"{shortCostUncoloredText} {uncoloredCostText}"
-          costTextArr.append(uncoloredCostText)
         }
 
         if (this.missionRules.isScoreRespawnEnabled && unit) {
@@ -1537,17 +1528,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     //******************** combine final texts ********************************
 
-    local applyTextShort = this.applyText //for slot battle button
-    let comma = loc("ui/comma")
+    local battleBtnText = this.applyText //for slot battle button
 
     if (shortCostText.len()) {
       let shortToBattleText = loc("mainmenu/toBattle/short")
-      if (getStringWidthPx($"{shortToBattleText} {shortCostUncoloredText}", "fontNormalBold", this.guiScene)
-          < toPixels(this.guiScene, "1@slot_button_fullWidth"))
-        applyTextShort = $"{shortToBattleText} {shortCostText}"
-      else
-        applyTextShort = $"{shortToBattleText}<b> {shortCostText}</b>"
+      battleBtnText = $"{shortToBattleText} {shortCostText}"
     }
+
+    let comma = loc("ui/comma")
 
     let costText = comma.join(costTextArr, true)
     if (costText.len())
@@ -1564,13 +1552,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       buttonSelectObj.tooltip = this.isSpectate ? tooltipText : "".concat(tooltipText, tooltipEndText)
       buttonSelectObj.isCancel = this.isApplyPressed ? "yes" : "no"
       buttonSelectObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
+
+      if (shortCostText.len() && !this.isApplyPressed)
+        buttonSelectObj["visualStyle"] = "purchase"
+      else
+        buttonSelectObj["visualStyle"] = ""
     }
 
     let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)
-    let slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", applyTextShort)
+    let slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", battleBtnText)
     if (slotBtnObj) {
       slotBtnObj.isCancel = this.isApplyPressed ? "yes" : "no"
       slotBtnObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
+      if (shortCostText.len() && !this.isApplyPressed)
+        slotBtnObj["visualStyle"] = "purchase"
     }
 
     this.showRespawnTr(isAvailResp && !isCrewDelayed)
@@ -1608,7 +1603,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return true
 
     if (bulletsManager.canChangeBulletsCount())
-      return bulletsManager.checkChosenBulletsCount(true, Callback(@() applyFunc(), this))
+      return bulletsManager.checkChosenBulletsCount(Callback(@() applyFunc(), this))
 
     let air = this.getCurSlotUnit()
     if (!air)
@@ -1839,6 +1834,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         this.updateApplyText()
       this.updateCrewSlot(crew)
     }
+
+    this.getSlotbar()?.updateMissionInfoVisibility()
   }
 
   //only for crews of current country
@@ -1862,11 +1859,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       slotDelayData = this.slotDelayDataByCrewIdx?[idInCountry]
     })
 
-    let priceTextObj = slotObj.findObject("bottom_item_price_text")
+    let priceTextObj = slotObj.findObject("extraInfoPriceText")
     if (checkObj(priceTextObj)) {
-      let bottomText = getUnitSlotPriceText(unit, params)
-      priceTextObj.tinyFont = isUnitPriceTextLong(bottomText) ? "yes" : "no"
-      priceTextObj.setValue(bottomText)
+      let priceText = getUnitSlotPriceText(unit, params)
+      let hasPriceText = priceText != ""
+      priceTextObj.show(hasPriceText)
+      priceTextObj.hasInfo = hasPriceText ? "yes" : "no"
+      if (hasPriceText)
+        priceTextObj.setValue(priceText)
+
+      let priceTextHintObj = showObjById("extraInfoPriceTextHint", hasPriceText, slotObj)
+      if (hasPriceText && priceTextHintObj?.isValid())
+        priceTextHintObj.setValue(getUnitSlotPriceHintText(unit, params))
+
+      this.getSlotbar().updateTopExtraInfoBlock(slotObj)
     }
 
     let nameObj = slotObj.findObject($"{getSlotObjId(countryId, idInCountry)}_txt")
@@ -1880,6 +1886,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function updateAllCrewSlots() {
     foreach (crew in getCrewsListByCountry(get_local_player_country()))
       this.updateCrewSlot(crew)
+
+    this.getSlotbar()?.updateMissionInfoVisibility()
   }
 
   function get_mp_autostart_countdown() {
@@ -1962,7 +1970,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!this.curChatData || chatBlkName != this.curChatBlk)
       this.loadChatScene(chatBlkName)
     if (this.curChatData)
-      ::hide_game_chat_scene_input(this.curChatData, !this.isRespawn && !this.isSpectate)
+      hideGameChatSceneInput(this.curChatData, !this.isRespawn && !this.isSpectate)
   }
 
   function loadChatScene(chatBlkName) {
@@ -1973,10 +1981,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (this.curChatData) {
       if (checkObj(this.curChatData.scene))
         this.guiScene.replaceContentFromText(this.curChatData.scene, "", 0, null)
-      ::detachGameChatSceneData(this.curChatData)
+      detachGameChatSceneData(this.curChatData)
     }
 
-    this.curChatData = ::loadGameChatToObj(chatObj, chatBlkName, this,
+    this.curChatData = loadGameChatToObj(chatObj, chatBlkName, this,
       { selfHideInput = this.isSpectate, isInSpectateMode = this.isSpectate, isInputSelected = this.isSpectate })
     this.curChatBlk = chatBlkName
 
@@ -2007,9 +2015,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.shouldBlurSceneBg = !this.isSpectate ? needUseHangarDof() : false
     handlersManager.updateSceneBgBlur()
-
-    this.shouldFadeSceneInVr = !this.isSpectate
-    handlersManager.updateSceneVrParams()
 
     this.updateTacticalMapUnitType()
 
@@ -2088,7 +2093,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let text = $"{name} {title}"
 
     let targetId = getSpectatorTargetId()
-    let player = get_mplayers_list(GET_MPLAYERS_LIST, true).findvalue(@(p) p.id == targetId)
+    let player = get_mplayer_by_id(targetId)
     let color = player != null ? ::get_mplayer_color(player) : "teamBlueColor"
 
     this.scene.findObject("spectator_name").setValue(colorize(color, text))
@@ -2243,8 +2248,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!unit)
       return
 
-    if (this.missionRules.hasRespawnCost)
+    if (this.missionRules.hasRespawnCost) {
       this.updateCrewSlot(crew)
+      this.getSlotbar()?.updateMissionInfoVisibility()
+    }
 
     this.updateOptions(RespawnOptUpdBit.UNIT_WEAPONS)
     this.checkReady()
@@ -2252,8 +2259,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function onEventBulletsGroupsChanged(_p) {
     let crew = this.getCurCrew()
-    if (this.missionRules.hasRespawnCost)
+    if (this.missionRules.hasRespawnCost) {
       this.updateCrewSlot(crew)
+      this.getSlotbar()?.updateMissionInfoVisibility()
+    }
 
     this.checkReady()
   }
@@ -2465,6 +2474,24 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   log("has_available_slots false")
   return false
 }
+
+function respawnInfoUpdated(data) {
+  let { unitName = null } = data
+  if (unitName == null)
+    return
+  let respawn = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
+  if (respawn == null)
+    return
+
+  let { crew = null } = respawn.getSlotbar()?.getSlotsData(unitName)[0]
+  if (crew == null)
+    return
+
+  respawn.updateCrewSlot(crew)
+  respawn.getSlotbar().updateMissionInfoVisibility()
+}
+
+eventbus_subscribe("respawnInfoUpdated", respawnInfoUpdated)
 
 register_command(function() {
   needSkipAvailableCrewToSelect.value = !needSkipAvailableCrewToSelect.value

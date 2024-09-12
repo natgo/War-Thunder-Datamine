@@ -6,8 +6,10 @@ let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/ba
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -54,8 +56,8 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateRows() {
     let tblObj = this.scene.findObject("buy_table")
     foreach (idx, pack in this.buyPointsPacks)
-      ::showDiscount(tblObj.findObject($"buy_discount_{idx}"),
-                     "skills", ::g_crews_list.get()[this.crew.idCountry].country, pack.name)
+      showDiscount(tblObj.findObject($"buy_discount_{idx}"),
+                     "skills", getCrewsList()[this.crew.idCountry].country, pack.name)
   }
 
   function getRowId(i) {

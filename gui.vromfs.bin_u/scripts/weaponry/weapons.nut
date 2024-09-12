@@ -33,10 +33,11 @@ let { updateModItem, createModItem, createModBundle, createModItemLayout
 } = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
+  getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup
+} = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
   checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
-  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
+  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd,
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
@@ -72,6 +73,7 @@ let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.n
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -298,6 +300,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (groupIndex < this.air.unitType.bulletSetsQuantity)
         this.lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
+        continue
+      if (isPairBulletsGroup(bulletsList))
         continue
       this.bulletsByGroupIndex[groupIndex] <- bulletsList
     }
@@ -2036,7 +2040,7 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let discountType = this.item.type == weaponsItem.spare ? "spare" : (this.item.type == weaponsItem.weapon) ? "weapons" : "mods"
-    ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
+    showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
     move_mouse_on_obj(this.scene.findObject("skillSlider"))

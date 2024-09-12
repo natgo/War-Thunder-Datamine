@@ -195,16 +195,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -413,6 +408,12 @@
             "scanPattern": "irstTrack"
           }
         },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
+          }
+        },
         "setRadar": {
           "setTransiver": {
             "transiver": "radarTrack"
@@ -439,6 +440,44 @@
             "init": {},
             "setRadarStandbyMode": {},
             "setRadar": {}
+          }
+        },
+        "unparkRadar": {
+          "stateFrom": "radarParked",
+          "event": "enable",
+          "stateTo": "radarStandby"
+        },
+        "unparkIrst": {
+          "stateFrom": "irstParked",
+          "event": "enable",
+          "stateTo": "irstStandby"
+        },
+        "parkRadar": {
+          "stateFrom": "radarStandby",
+          "event": "disable",
+          "stateTo": "radarParked"
+        },
+        "parkIrst": {
+          "stateFrom": "irstStandby",
+          "event": "disable",
+          "stateTo": "irstParked"
+        },
+        "disableFromRadarTrack": {
+          "stateFrom": "radarTrack",
+          "event": "disable",
+          "stateTo": "radarParked",
+          "actions": {
+            "setRadarStandbyMode": {},
+            "resetTrackMode": {}
+          }
+        },
+        "disableFromIrstTrack": {
+          "stateFrom": "irstTrack",
+          "event": "disable",
+          "stateTo": "irstParked",
+          "actions": {
+            "setIrstStandbyMode": {},
+            "resetTrackMode": {}
           }
         },
         "radarCheckLockType0": {
@@ -544,10 +583,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "irstCheckLockType1": {
@@ -633,10 +669,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {

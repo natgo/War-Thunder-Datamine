@@ -273,6 +273,9 @@
                         {
                           "id": "aircraft-battle_rating-value",
                           "overlayTextColor": "active"
+                        },
+                        {
+                          "id": "aircraft-battle_rating-value_by_battle_types"
                         }
                       ]
                     }
@@ -312,6 +315,20 @@
                     "id": "aircraft_price_text_block",
                     "max-width": "0.5@sf",
                     "halign": "center"
+                  }
+                },
+                {
+                  "id": "topValueHint",
+                  "display": "hide",
+                  "halign": "center",
+                  "img": {
+                    "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                    "background-svg-size": "@sIco,@sIco",
+                    "size": "@sIco,@sIco"
+                  },
+                  "textareaNoTab": {
+                    "text": "#crewSkillParameter/topSkillValue",
+                    "overlayTextColor": "faded"
                   }
                 }
               ],
@@ -432,8 +449,31 @@
                         }
                       },
                       {
-                        "textareaNoTab": {
-                          "id": "aircraft-turnTurretTime"
+                        "tdiv": {
+                          "flow": "horizontal",
+                          "textareaNoTab": {
+                            "id": "aircraft-turnTurretTime"
+                          },
+                          "tdiv": {
+                            "id": "aircraft-turnTurretTime-topValueDiv",
+                            "display": "hide",
+                            "textareaNoTab": [
+                              {
+                                "text": " ("
+                              },
+                              {
+                                "id": "aircraft-turnTurretTime-topValue"
+                              },
+                              {
+                                "text": ")"
+                              }
+                            ],
+                            "img": {
+                              "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                              "background-svg-size": "@sIco,@sIco",
+                              "size": "@sIco,@sIco"
+                            }
+                          }
                         }
                       }
                     ]
@@ -477,8 +517,31 @@
                         }
                       },
                       {
-                        "textareaNoTab": {
-                          "id": "aircraft-reloadTime"
+                        "tdiv": {
+                          "flow": "horizontal",
+                          "textareaNoTab": {
+                            "id": "aircraft-reloadTime"
+                          },
+                          "tdiv": {
+                            "id": "aircraft-reloadTime-topValueDiv",
+                            "display": "hide",
+                            "textareaNoTab": [
+                              {
+                                "text": " ("
+                              },
+                              {
+                                "id": "aircraft-reloadTime-topValue"
+                              },
+                              {
+                                "text": ")"
+                              }
+                            ],
+                            "img": {
+                              "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                              "background-svg-size": "@sIco,@sIco",
+                              "size": "@sIco,@sIco"
+                            }
+                          }
                         }
                       }
                     ]
@@ -1383,6 +1446,23 @@
               "text": "#msgbox/btn_find_on_marketplace",
               "btnName": "X",
               "on_click": "onMarketplaceFindUnit",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "skip-navigation": "yes",
+              "class": "image",
+              "display": "hide",
+              "enable": "no",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btnUseCoupon",
+              "text": "#item/consume/coupon",
+              "btnName": "X",
+              "on_click": "onUseCoupon",
               "showButtonImageOnConsole": "no",
               "visualStyle": "secondary",
               "skip-navigation": "yes",

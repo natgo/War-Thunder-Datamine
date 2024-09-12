@@ -1,6 +1,7 @@
 {
   "type": "radar",
   "name": "N010 Zhuk",
+  "weaponTargetsMax": 1,
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
   "fsms": {
@@ -1028,20 +1029,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
@@ -1978,11 +1991,15 @@
           }
         },
         "setIrst": {
-          "setIrstLockTrack": {},
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
           },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setIrstLockTrack": {},
           "clearTargets": {},
           "setFsmActive": [
             {
@@ -2160,9 +2177,8 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 20,
-              "timeOut": 2.0,
               "radius": 1000.0,
-              "blend": 0.5
+              "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
@@ -2902,6 +2918,12 @@
       "rcs": 5.0,
       "range": 40000.0,
       "rangeMax": 55000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -32.0
@@ -2914,6 +2936,12 @@
       "rcs": 5.0,
       "range": 80000.0,
       "rangeMax": 100000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -32.0
@@ -3123,7 +3151,7 @@
       ],
       "elevationLimits": [
         -45.0,
-        60.0
+        55.0
       ],
       "period": 0.3,
       "width": 1.75,
@@ -3137,7 +3165,7 @@
       ],
       "elevationLimits": [
         -45.0,
-        60.0
+        55.0
       ],
       "period": 1.8,
       "width": 10.0,
@@ -3251,7 +3279,7 @@
       ],
       "elevationLimits": [
         -15.0,
-        15.0
+        30.0
       ],
       "period": 0.2,
       "width": 2.0,

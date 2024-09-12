@@ -1,7 +1,7 @@
 <<#tabs>>
 shopFilter {
   <<#id>>id:t='<<id>>'<</id>>
-
+  tooltip:t=''
   <<#hidden>>
   display:t='hide'
   enable:t='no'
@@ -66,6 +66,23 @@ shopFilter {
     display:t='hide'
   }
   <</remainingTimeUnitPageMarker>>
+
+  nationBonusMarker {
+    behavior:t='bhvUpdater'
+    value:t='{"viewId": "SHOP_PAGES_NATION_BONUS_MARKER"}'
+    type:t='inTab'
+    display:t='hide'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    tooltip:t='$tooltipObj'
+    tooltipObj {
+      id:t='nationBonusMarkerTooltip'
+      tooltipId:t=''
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+  }
 
   <<#seenIconCfg>>
   unlockMarker {

@@ -32,6 +32,7 @@ let { getCurrentGameMode, getCurrentGameModeEdiff
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -143,7 +144,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   isSelectByGroups = false
 
   function initScreen() {
-    this.country = ::g_crews_list.get()[this.countryId].country
+    this.country = getCrewsList()[this.countryId].country
     this.curOptionsMasks = []
     this.filterOptionsList = this.getFilterOptionsList()
     this.optionsMaskByUnits = {}
@@ -287,7 +288,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     return bestIdx >= 0 && bestIdx != this.crew.idInCountry
   }
 
-  getTextSlotMarkup = @(id, text) buildUnitSlot(id, null, { emptyText = text })
+  getTextSlotMarkup = @(id, text, isShowDragAndDropIcon = false) buildUnitSlot(id, null, { emptyText = text, isShowDragAndDropIcon })
 
   function fillUnitsList() {
     let markupArr = []
@@ -298,7 +299,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       else if (unit == SEL_UNIT_BUTTON.SHOP)
         rowData = this.getTextSlotMarkup("shop_item", "#mainmenu/btnShop")
       else if (unit == SEL_UNIT_BUTTON.EMPTY_CREW)
-        rowData = this.getTextSlotMarkup("empty_air", "#shop/emptyCrew")
+        rowData = this.getTextSlotMarkup("empty_air", "#shop/emptyCrew", true)
       else if (unit == SEL_UNIT_BUTTON.SHOW_MORE)
         rowData = this.getTextSlotMarkup("show_more", "#mainmenu/showMore")
       markupArr.append(rowData)
@@ -306,7 +307,6 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let markup = "\n".join(markupArr)
     let tblObj = this.scene.findObject("airs_table")
-    tblObj.alwaysShowBorder = "yes"
     this.guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
 
     this.showMoreObj = tblObj.findObject("td_show_more")

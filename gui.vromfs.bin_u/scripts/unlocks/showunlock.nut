@@ -23,7 +23,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoAction,
+let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
@@ -51,7 +51,7 @@ function guiStartUnlockWnd(config) {
   return true
 }
 
-::showUnlockWnd <- function showUnlockWnd(config) {
+function showUnlockWnd(config) {
   if (isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
       isHandlerInScene(gui_handlers.RankUpModal) ||
       isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
@@ -59,6 +59,8 @@ function guiStartUnlockWnd(config) {
 
   guiStartUnlockWnd(config)
 }
+
+::showUnlockWnd <- showUnlockWnd
 
 ::check_delayed_unlock_wnd <- function check_delayed_unlock_wnd(prevUnlockData = null) {
   disableSeenUserlogs([prevUnlockData?.disableLogId])
@@ -110,8 +112,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.unit)
       return
 
-    let params = { hasActions = true }
-    let data = buildUnitSlot(this.unit.name, this.unit, params)
+    let data = buildUnitSlot(this.unit.name, this.unit)
     let airObj = this.scene.findObject("reward_aircrafts")
     this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = getTooltipType("UNIT").getTooltipId(this.unit.name)
@@ -178,7 +179,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     showObjById("btn_sendEmail", this.config?.showSendEmail ?? false, this.scene)
 
-    local linkText = getPromoLinkText(this.config)
+    local linkText = getLocTextFromConfig(this.config, "link", "")
     if (this.config?.pollId && this.config?.link) {
       setPollBaseUrl(this.config.pollId, this.config.link)
       linkText = generatePollUrl(this.config.pollId)
@@ -349,4 +350,5 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 return {
   guiStartUnlockWnd
+  showUnlockWnd
 }

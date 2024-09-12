@@ -1,8 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
-let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
+let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
+let { secondsToString } = require("%scripts/time.nut")
+let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let visibleRewards = [
   {
@@ -11,7 +13,18 @@ let visibleRewards = [
   }
   {
     id = "eventKillGround"
-    locId = "expEventScore/killGround"
+    getLocId = function(rewardTable) {
+      if(!("event" in rewardTable))
+        return ""
+      let victimUnitCount = rewardTable.event.len()
+      let victimShipsCount = rewardTable.event.map(@(e)e?.victimUnitFileName).filter(
+        @(u) u != null && u.indexof("ships/") == 0).len()
+      if (victimShipsCount == victimUnitCount)
+        return "expEventScore/killOnlyShips"
+      else if (victimShipsCount == 0)
+        return "expEventScore/killOnlyGround"
+      return "expEventScore/killGround"
+    }
   }
   {
     id = "eventAssist"
@@ -81,11 +94,15 @@ let visibleRewards = [
 
 return function(logObj) {
   let rewards = visibleRewards
-    .map(@(reward) logObj?.container[reward.id].__merge({
-      name = loc(reward.locId)
-      locId = reward.locId
-      id = reward.id
-    }))
+    .map(function(reward) {
+      let rewardTable = getBattleRewardTable(logObj?.container[reward.id])
+      let locId = reward?.getLocId(rewardTable) ?? reward.locId
+      return rewardTable.__merge({
+        name = loc(locId)
+        locId
+        id = reward.id
+      })
+    })
     .reduce(function(acc, reward) {
       let rewardDetails = getBattleRewardDetails(reward)
       if (rewardDetails.len() == 0)
@@ -94,10 +111,15 @@ return function(logObj) {
         .reduce(@(total, e) total + (e?.wpNoBonus ?? 0) + (e?.wpPremAcc ?? 0) + (e?.wpBooster ?? 0), 0)
       let totalRewardExp = rewardDetails
         .reduce(@(total, e) total + (e?.expNoBonus ?? 0) + (e?.expPremAcc ?? 0) + (e?.expBooster ?? 0) + (e?.expPremMod ?? 0), 0)
+      local count = rewardDetails.len()
+      if (reward.id == "unitSessionAward")
+        count = secondsToString(rewardDetails.reduce(@(total, e) total + (e?.lifetime ?? 0), 0), false, false)
+      else if (reward.id == "eventBattletime")
+        count = ""
 
       return acc.append({  // -unwanted-modification
         battleRewardTooltipId = getTooltipType("USER_LOG_REWARD").getTooltipId(logObj.idx, reward.id)
-        count = rewardDetails.len()
+        count
         wp = Cost(totalRewardWp)
         exp = Cost().setRp(totalRewardExp)
         totalRewardWp
@@ -130,8 +152,8 @@ return function(logObj) {
         totalSkillBonus += bonus.exp
         battleRewardDetails.append({
           offenderUnit = bonus.unit
-          expSkillBonusLevel = bonus.bonusLevel
-          expSkillBonus = bonus.exp
+          bonusLevel = bonus.bonusLevel
+          exp = bonus.exp
         })
       }
 
@@ -146,6 +168,30 @@ return function(logObj) {
         wp = Cost(0)
       })
     }
+  }
+
+  let researchPointsUnits = logObj?.container.researchPoints.unit ?? []
+  let newNationUnitBonuses = (isArray(researchPointsUnits) ? researchPointsUnits : [researchPointsUnits])
+    .filter(@(unit) unit?.newNationBonusExp)
+    .map(@(unit) unit.__merge({
+      exp = null  // for hiding exp column in the plain text
+      invUnitRank = getRomanNumeralRankByUnitName(unit?.invUnitName) ?? loc("ui/hyphen")
+    }))
+
+  if (newNationUnitBonuses.len() > 0) {
+    let exp = newNationUnitBonuses
+      .reduce(@(total, unit) total + unit.newNationBonusExp, 0)
+    let battleRewardTooltipId = getTooltipType("USER_LOG_REWARD").getTooltipId(logObj.idx, "researchPoints")
+    rewards.append({
+      id = "nationResearchBonus"
+      name = loc("debriefing/nationResearchBonus")
+      battleRewardTooltipId
+      battleRewardDetails = newNationUnitBonuses
+      totalRewardExp = exp
+      exp = Cost().setRp(exp)
+      totalRewardWp = 0
+      wp = Cost(0)
+    })
   }
 
   let allRewardsWp = rewards.reduce(@(total, reward) total + reward.totalRewardWp, 0)
