@@ -41,7 +41,6 @@
     2.0,
     0.0
   ],
-  "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
@@ -3875,7 +3874,6 @@
       "fireProtectionHp": 120.0,
       "armorClass": "ship_RHA",
       "armorThickness": 40.0,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.5,
@@ -3974,7 +3972,6 @@
       "armorClass": "ship_RHA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.2,
@@ -14664,20 +14661,18 @@
       "name": "jp_camo_navy_green",
       "nameLocId": "skin/jp_camo_navy_green",
       "descLocId": "skin/jp_camo_navy_green/desc",
-      "replace_tex": {
-        "from": "camo_warshipgray*",
-        "to": "jp_camo_navy_green*"
-      },
-      "set_tex": [
+      "replace_tex": [
         {
-          "from": "cruiser_myoko_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_navy_green*"
         },
         {
-          "from": "turret_203mm_type3_mod_c_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_navy_green*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_navy_green*"
         }
       ]
     },
@@ -14685,20 +14680,18 @@
       "name": "jp_camo_multicolor",
       "nameLocId": "skin/jp_camo_multicolor",
       "descLocId": "skin/jp_camo_multicolor/desc",
-      "replace_tex": {
-        "from": "camo_warshipgray*",
-        "to": "jp_camo_multicolor*"
-      },
-      "set_tex": [
+      "replace_tex": [
         {
-          "from": "cruiser_myoko_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_multicolor*"
         },
         {
-          "from": "turret_203mm_type3_mod_c_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_multicolor*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_multicolor*"
         }
       ]
     },
@@ -14706,20 +14699,37 @@
       "name": "jp_camo_asiatic_fleet",
       "nameLocId": "skin/jp_camo_asiatic_fleet",
       "descLocId": "skin/jp_camo_asiatic_fleet/desc",
-      "replace_tex": {
-        "from": "camo_warshipgray*",
-        "to": "jp_camo_asiatic_fleet*"
-      },
-      "set_tex": [
+      "replace_tex": [
         {
-          "from": "cruiser_myoko_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_asiatic_fleet*"
         },
         {
-          "from": "turret_203mm_type3_mod_c_c*",
-          "to": "ccvl_noskin_body_c*",
-          "param": "camo_skin_tex"
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_asiatic_fleet*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_asiatic_fleet*"
+        }
+      ]
+    },
+    {
+      "name": "jp_camo_multicolor_spots",
+      "nameLocId": "skin/jp_camo_multicolor_spots",
+      "descLocId": "skin/jp_camo_multicolor_spots/desc",
+      "replace_tex": [
+        {
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_multicolor_spots*"
+        },
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_multicolor_spots*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_multicolor_spots*"
         }
       ]
     }
@@ -14794,6 +14804,12 @@
       "unlockId": "ship_flag_uk_02",
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
     },
     "ship_flag_egypt_01": {
       "category": "naval",
@@ -16219,6 +16235,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

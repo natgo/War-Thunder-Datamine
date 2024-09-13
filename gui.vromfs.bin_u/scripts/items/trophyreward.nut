@@ -6,12 +6,13 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
+let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getPrizeText, getPrizeCurrencyCfg, getDescriptonView, getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
 
 function rewardsSortComparator(a, b) {
   if (!a || !b)
@@ -82,7 +83,7 @@ function rewardsSortComparator(a, b) {
     local checkBuffer = type(typeVal) == "string" ? typeVal : $"{rType}_{typeVal}"
     if (rType == "resourceType" && getTypeByResourceType(typeVal))
       checkBuffer = $"{checkBuffer}_{idx}"
-    else if (::PrizesView.isPrizeMultiAward(config) && "parentTrophyRandId" in config)
+    else if (isPrizeMultiAward(config) && "parentTrophyRandId" in config)
       checkBuffer = $"{checkBuffer}_{config.parentTrophyRandId}"
 
     if (checkBuffer not in tempBuffer)
@@ -193,7 +194,7 @@ function rewardsSortComparator(a, b) {
   if (!imageAsItem)
     return resultImage
 
-  let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
+  let tooltipConfig = getPrizeTooltipConfig(config)
   return handyman.renderCached(("%gui/items/reward_item.tpl"), { items = [tooltipConfig.__update({
     layered_image = resultImage,
     hasFocusBorder = true })] })
@@ -224,7 +225,7 @@ function rewardsSortComparator(a, b) {
 }
 
 ::trophyReward.getMoneyLayer <- function getMoneyLayer(config) {
-  let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+  let currencyCfg = getPrizeCurrencyCfg(config)
   if (!currencyCfg)
     return  ""
 
@@ -303,7 +304,7 @@ function rewardsSortComparator(a, b) {
 }
 
 ::trophyReward.getRewardText <- function getRewardText(config, isFull = false, color = "") {
-  return ::PrizesView.getPrizeText(DataBlockAdapter(config), true, false, true, isFull, color)
+  return getPrizeText(DataBlockAdapter(config), true, false, true, isFull, color)
 }
 
 ::trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray) {
@@ -311,7 +312,7 @@ function rewardsSortComparator(a, b) {
   local currencies = {}
 
   foreach (config in configsArray) {
-    let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+    let currencyCfg = getPrizeCurrencyCfg(config)
     if (currencyCfg) {
       if (!(currencyCfg.type in currencies))
         currencies[currencyCfg.type] <- currencyCfg
@@ -428,8 +429,8 @@ function rewardsSortComparator(a, b) {
   let view = {
     textTitle = this.getRewardText(prizeConfig, false)
     prizeImg = this.getImageByConfig(prizeConfig, true)
-    textDesc = ::PrizesView.getDescriptonView(prizeConfig).textDesc
-    markupDesc = ::PrizesView.getDescriptonView(prizeConfig).markupDesc
+    textDesc = getDescriptonView(prizeConfig).textDesc
+    markupDesc = getDescriptonView(prizeConfig).markupDesc
   }
 
   return handyman.renderCached("%gui/items/trophyRewardDesc.tpl", view)

@@ -10,9 +10,4 @@ from "%scripts/dagui_library.nut" import *
 // -----------can be removed after version reach all platforms--------//
 //--------------------------------------------------------------------//
 
-let {apply_compatibilities} = require("%sqStdLibs/helpers/backCompatibility.nut")
-
-//----------------------------wop_2_37_0_X---------------------------------//
-apply_compatibilities({
-  EULT_COMPLAINT_UPHELD = 61
-})
+//let {apply_compatibilities} = require("%sqStdLibs/helpers/backCompatibility.nut")

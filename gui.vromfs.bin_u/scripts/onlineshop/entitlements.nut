@@ -342,6 +342,7 @@ function getWarpointsGoldCost(amount) {
 
   return Cost(0, (entitlementGoldCost.tofloat() * amount / entitlementWpAmount).tointeger())
 }
+
 return {
   getEntitlementConfig
   getEntitlementLocId

@@ -87,6 +87,10 @@
       },
       "turret_02_side_dm": {
         "armorThickness": 10.0
+      },
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
@@ -328,6 +332,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -362,8 +370,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1642,6 +1651,17 @@
           }
         }
       ]
+    }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
     }
   },
   "MetaParts": {

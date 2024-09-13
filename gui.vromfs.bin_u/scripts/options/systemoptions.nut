@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, get_available_amd_fsr_modes, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,7 +9,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-let { get_available_monitors, get_monitor_info } = require("graphicsOptions")
+let { get_available_monitors, get_monitor_info, has_broken_recreate_image } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -21,6 +21,7 @@ let { stripTags } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -131,15 +132,17 @@ local mUiStruct = [
     container = "sysopt_bottom_right"
     items = [
       "mirrorQuality"
+      "motionBlurStrength"
+      "motionBlurCancelCamera"
       "rendinstGlobalShadows"
       "staticShadowsOnEffects"
       "advancedShore"
       "haze"
       "lastClipSize"
       "lenseFlares"
-      "enableSuspensionAnimation"
       "alpha_to_coverage"
       "jpegShots"
+      "hiResShots"
       "compatibilityMode"
       "enableHdr"
       "enableVr"
@@ -406,12 +409,12 @@ function getAvailableXessModes() {
 function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
-    values.append("performance")
-  if (is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
-    values.append("balanced")
   if (is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
     values.append("quality")
+  if (is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
 
   return values;
 }
@@ -549,11 +552,13 @@ mShared = {
   modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
 
   dlssClick = function() {
+    setGuiValue("xess", "off")
     foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
   xessClick = function() {
+    setGuiValue("dlss", "off")
     foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
@@ -860,7 +865,7 @@ mSettings = {
   dlssSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/dlssSharpness" restart = false
     enabled = @() getGuiValue("dlss", "off") != "off"
   }
-  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = true
+  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = false
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 2)
@@ -948,7 +953,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = true
+  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -1044,8 +1049,6 @@ mSettings = {
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
   }
-  enableSuspensionAnimation = { widgetType = "checkbox" def = false blk = "graphics/enableSuspensionAnimation" restart = true
-  }
   alpha_to_coverage = { widgetType = "checkbox" def = false blk = "video/alpha_to_coverage" restart = false
   }
   tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
@@ -1090,6 +1093,14 @@ mSettings = {
   }
   mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
   }
+  motionBlurStrength = { widgetType = "slider" def = 0 min = 0 max = 10 blk = "graphics/motionBlurStrength" restart = false
+    isVisible = @() hasFeature("optionMotionBlur")
+    enabled = @() !getGuiValue("compatibilityMode")
+  }
+  motionBlurCancelCamera = { widgetType = "checkbox" def = false blk = "graphics/motionBlurCancelCamera" restart = false
+    isVisible = @() hasFeature("optionMotionBlur")
+    enabled = @() !getGuiValue("compatibilityMode")
+  }
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
   }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
@@ -1100,6 +1111,7 @@ mSettings = {
   lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
   }
   jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
+  hiResShots = { widgetType = "checkbox" def = false blk = "debug/screenshotHiRes" restart = false enabled = @() getGuiValue("ssaa") == "4X" }
   compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true
     onChanged = "compatibilityModeClick"
   }
@@ -1596,14 +1608,21 @@ function fillGuiOptions(containerObj, handler) {
   onGuiLoaded()
 }
 
-function setQualityPreset(presetName) {
+function setQualityPreset(presetName, force = false) {
   if (mCfgInitial.len() == 0)
     configRead()
 
   setGuiValue("graphicsQuality", presetName, mHandler == null)
   getOptionDesc("graphicsQuality")?.onChanged(true)
   updateGuiNavbar(true)
+  if (force)
+    configWrite()
 }
+
+eventbus_subscribe("on_force_graphics_preset", function(event) {
+  let {graphicsPreset} = event
+  setQualityPreset(graphicsPreset, true)
+})
 
 //------------------------------------------------------------------------------
 init()

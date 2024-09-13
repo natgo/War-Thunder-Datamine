@@ -9,6 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
@@ -1939,13 +1940,15 @@ local __types_for_coutries = null //for avoid recalculations
   return hangar_is_high_quality()
 }
 
-::get_units_list <- function get_units_list(filterFunc) {
+function get_units_list(filterFunc) {
   let res = []
   foreach (unit in getAllUnits())
     if (filterFunc(unit))
       res.append(unit)
   return res
 }
+
+::get_units_list <- get_units_list
 
 function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought) {
   // Keep this in sync with getUnitsCountAtRank() in chard
@@ -1983,6 +1986,11 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
     }
     return unitCacheBlk
   }
+
+  eventbus_subscribe("clearCacheForBullets", function clear_unit_blk_cache(_) {
+    unitCacheName = null
+    unitCacheBlk = null
+  })
 }
 
 ::get_fm_file <- function get_fm_file(unitId, unitBlkData = null) {
@@ -2003,4 +2011,5 @@ return {
   showAirInfo
   getBattleTypeByUnit
   getFontIconByBattleType
+  get_units_list
 }

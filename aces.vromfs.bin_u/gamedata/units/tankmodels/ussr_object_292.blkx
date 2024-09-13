@@ -607,6 +607,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -641,8 +645,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2212,12 +2217,6 @@
       "animationMultiplier": -0.68,
       "height": 0.062,
       "width": 0.54,
-      "fricSideRot": [
-        5.0,
-        0.0,
-        0.6,
-        0.3
-      ],
       "tracksTensionK": [
         5.0,
         10.0,
@@ -2229,7 +2228,13 @@
       "trackFadeTime": 1.5,
       "trackConnector": true,
       "trackStartOffset": 0.08,
-      "trackMaxHeight": 1.17
+      "trackMaxHeight": 1.17,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.6,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",

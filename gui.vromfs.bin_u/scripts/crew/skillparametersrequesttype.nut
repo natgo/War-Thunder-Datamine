@@ -152,7 +152,6 @@ enums.addTypes(skillParametersRequestType, {
   }
 }, null, "typeName")
 
-::g_skill_parameters_request_type <- skillParametersRequestType
 return {
   skillParametersRequestType
 }

@@ -245,7 +245,7 @@ let cfg = {
       { section = "gunners_ship" }
       null
       { section = "weapons_ship" }
-      null
+      { shortcut = [ "ID_SHIP_ACTION_BAR_ITEM_10" ] }
       null
       null
       voiceMessagesMenuFunc
@@ -596,6 +596,8 @@ let cfg = {
       { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = @(_unitId) hasMissionBombingZones() && hasCCRPSightMode() }
       { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) hasCCIPSightMode() }
       { shortcut = [ "ID_TOGGLE_HMD", "ID_TOGGLE_HMD_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
+      { shortcut = [ "ID_INC_HMD_BRIGHTNESS", "ID_INC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
+      { shortcut = [ "ID_DEC_HMD_BRIGHTNESS", "ID_DEC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
     ]
   },
 

@@ -418,6 +418,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -452,8 +456,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2255,17 +2260,19 @@
       "maxBrakeForce": 190000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.1,
-      "sideGearRatio": 4.25,
-      "neutralGearRatio": 3.0,
+      "sideGearRatio": 0.227,
+      "neutralGearRatio": 56.16,
       "gearRatios": {
         "ratio": [
-          -0.598,
-          -1.5,
+          -11.2,
+          -35.6,
           0.0,
-          1.5,
-          1.0,
-          0.428,
-          0.24
+          26.0,
+          18.5,
+          13.0,
+          10.16,
+          7.33,
+          4.5
         ]
       }
     },

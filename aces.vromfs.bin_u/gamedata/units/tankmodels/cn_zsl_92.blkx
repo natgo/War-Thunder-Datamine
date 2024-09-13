@@ -663,6 +663,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -697,8 +701,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2391,7 +2396,7 @@
         ],
         "name": "bone_suspension_$1_$2"
       },
-      "suspension_01": {
+      "suspension_01_01": {
         "limitMin": [
           -1.0,
           -1.0,
@@ -2404,7 +2409,7 @@
         ],
         "name": "bone_suspension_$1_$2_01"
       },
-      "whee": {
+      "wheel": {
         "searchChildren": {
           "occurence": 1,
           "limitMin": [
@@ -2417,21 +2422,21 @@
             1.0,
             0.0
           ],
-          "parent": "lever",
-          "find": "bone_wheel_"
+          "find": "bone_wheel_",
+          "parent": "lever"
         }
       }
     },
     "constraints": {
       "edge": [
         {
-          "to": "whee",
+          "to": "wheel",
           "from": "lever",
           "moveNodes": false
         },
         {
-          "to": "whee",
-          "from": "suspension_01",
+          "to": "wheel",
+          "from": "suspension_01_01",
           "moveNodes": false
         }
       ]

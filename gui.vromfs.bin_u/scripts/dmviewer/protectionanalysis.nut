@@ -12,7 +12,7 @@ let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.n
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
 let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing,
-  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test } = require("hangarEventCommand")
+  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
@@ -25,6 +25,7 @@ local allow_cutting = false
 local explosionTest = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
+const CB_TEST_PROJECTILE = "protectionAnalysis/cbTestProjectileValue"
 
 let helpHintsParams = [
   {hintName = "hint_filter_edit_box", objName = "filter_edit_box", shiftX = "- 1@bw", shiftY = "- 1@bh -h - 1.5@helpInterval"}
@@ -100,6 +101,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
         set_protection_map_y_nulling(!value)
     }
 
+    let cbTestProjectileObj = showObjById("checkboxTestProjectileProps", true)
+    if (cbTestProjectileObj?.isValid()) {
+      let testProjectileProps = loadLocalAccountSettings(CB_TEST_PROJECTILE, false)
+      cbTestProjectileObj.setValue(testProjectileProps)
+      set_test_projectile_props(testProjectileProps)
+    }
+
     let isSimulationEnabled = this.unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
     let obj = showObjById("switch_damage", isSimulationEnabled, this.scene)
     if (isSimulationEnabled)
@@ -159,6 +167,14 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(sObj)) {
       explosionTest = !explosionTest
       set_explosion_test(explosionTest)
+    }
+  }
+
+  function onTestProjectileProps(sObj) {
+    if (checkObj(sObj)) {
+      let value = sObj.getValue()
+      set_test_projectile_props(value)
+      saveLocalAccountSettings(CB_TEST_PROJECTILE, value)
     }
   }
 
@@ -310,6 +326,17 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function getHandlerRestoreData() {
+    return {
+      openData = {
+        backSceneParams = this.backSceneParams
+      }
+    }
+  }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this, this.getclass())
+  }
 }
 
 

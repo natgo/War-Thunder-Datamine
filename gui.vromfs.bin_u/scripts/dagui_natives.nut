@@ -1,4 +1,6 @@
 //pseudo-module for native code
+//ATTENTION! This file cannot be increased. Need to remove functions from root of dagui VM, not add them.
+//shouldDecreaseSize, allowedSizeIncrease = 5
 
 let r = getroottable()
 
@@ -91,6 +93,7 @@ return freeze({
   is_low_latency_available = r["is_low_latency_available"]
   is_xess_quality_available_at_resolution = r["is_xess_quality_available_at_resolution"]
   is_dlss_quality_available_at_resolution = r["is_dlss_quality_available_at_resolution"]
+  get_available_amd_fsr_modes = r["get_available_amd_fsr_modes"]
   epic_is_running = r["epic_is_running"]
   get_cur_circuit_name = r["get_cur_circuit_name"]
   is_online_available = r["is_online_available"]
@@ -386,6 +389,8 @@ return freeze({
   get_option_hud_show_fuel = r["get_option_hud_show_fuel"]
   get_option_hud_show_temperature = r["get_option_hud_show_temperature"]
   get_option_indicatedSpeedType = r["get_option_indicatedSpeedType"]
+  get_option_indicatedAltitudeType = r?["get_option_indicatedAltitudeType"] ?? @(...) null
+  get_option_radarAltitudeAlert = r?["get_option_radarAltitudeAlert"] ?? @(...) null
   get_option_indicators_mode = r["get_option_indicators_mode"]
   get_option_radar_target_cycling = r["get_option_radar_target_cycling"]
   get_option_rocket_fuse_dist = r["get_option_rocket_fuse_dist"]
@@ -420,7 +425,7 @@ return freeze({
   get_premium_reward_wp = r["get_premium_reward_wp"]
   get_premium_reward_xp = r["get_premium_reward_xp"]
   get_preset_by_skin_tags = r["get_preset_by_skin_tags"]
-  get_race_checkpioints_count = r["get_race_checkpioints_count"]
+  get_race_checkpoints_count = r["get_race_checkpoints_count"]
   get_race_laps_count = r["get_race_laps_count"]
   get_race_winners_count = r["get_race_winners_count"]
   get_replay_status = r["get_replay_status"]
@@ -467,7 +472,6 @@ return freeze({
   hangar_get_attachable_tm = r["hangar_get_attachable_tm"]
   hangar_prem_vehicle_view_close = r["hangar_prem_vehicle_view_close"]
   hangar_show_external_dm_parts_change = r["hangar_show_external_dm_parts_change"]
-  hangar_show_hidden_xray_parts_change = r["hangar_show_hidden_xray_parts_change"]
   has_entitlement = r["has_entitlement"]
   have_you_valid_tournament_ticket = r["have_you_valid_tournament_ticket"]
   hud_request_hud_crew_state = r["hud_request_hud_crew_state"]
@@ -647,6 +651,8 @@ return freeze({
   set_option_hud_show_fuel = r["set_option_hud_show_fuel"]
   set_option_hud_show_temperature = r["set_option_hud_show_temperature"]
   set_option_indicatedSpeedType = r["set_option_indicatedSpeedType"]
+  set_option_indicatedAltitudeType = r?["set_option_indicatedAltitudeType"] ?? @(...) null
+  set_option_radarAltitudeAlert = r?["set_option_radarAltitudeAlert"] ?? @(...) null
   set_option_indicators_mode = r["set_option_indicators_mode"]
   set_option_radar_target_cycling = r["set_option_radar_target_cycling"]
   set_option_rocket_fuse_dist = r["set_option_rocket_fuse_dist"]
@@ -827,4 +833,6 @@ return freeze({
 
   run_reactive_gui = r["run_reactive_gui"]
   get_cur_gui_scene = r["get_cur_gui_scene"]
+
+  has_ray_query = r["has_ray_query"]
 })

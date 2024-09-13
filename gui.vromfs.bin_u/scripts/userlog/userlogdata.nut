@@ -43,6 +43,8 @@ let { guiStartModTierResearched } = require("%scripts/modificationsTierResearche
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
+let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -697,7 +699,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     return false
   if (haveHiddenItem(blk?.body.itemDefId))
     return false
-  if (blk.type == EULT_OPEN_TROPHY && !::PrizesView.hasKnowPrize(blk.body))
+  if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk.body))
     return false
   return true
 }
@@ -760,7 +762,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
       //can be 2 aircrafts with the same name (cant foreach)
       //trophyMultiAward logs have spare in body too. they no need strange format hacks.
       if (name == "aircrafts"
-          || (name == "spare" && !::PrizesView.isPrizeMultiAward(blk.body))) {
+          || (name == "spare" && !isPrizeMultiAward(blk.body))) {
         if (!(name in logObj))
           logObj[name] <- []
 

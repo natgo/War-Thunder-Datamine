@@ -1924,6 +1924,11 @@ Button_text[noMargin=yes], button[noMargin=yes],
   margin:0;
 }
 
+[flow=vertical][needButtonsMargin=yes] > Button_text
+{
+  margin:1@buttonMargin;
+}
+
 button_text[tfont=small], button[tfont=small] {
   font:@fontSmall;
 }
@@ -2818,10 +2823,6 @@ Button_text.smallButton:hover > tdiv > text {
   color:@buttonFontColorHover;
 }
 
-Button_text.smallButton:hover > tdiv > dragCrewHint > text {
-  color:@buttonFontColorHover;
-}
-
 [show_console_buttons=no] Button_text[isSwapCrewButton=yes] {
   tooltip:#slotbar/dragCrewHint;
 }
@@ -2843,6 +2844,12 @@ Button_text.smallButton:hover > tdiv > dragCrewHint > text {
   tooltip:"";
 }
 
+Button_text.smallButton:hover > tdiv > dragCrewHint > text,
 Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > text {
   color: @buttonFontColorHover;
+}
+
+Button_text.smallButton:hover > tdiv > dragCrewHint > img,
+Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
+  background-color: @buttonFontColorHover;
 }

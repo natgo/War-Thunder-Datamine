@@ -2127,7 +2127,6 @@
       "armorClass": "ship_RHA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.6,
@@ -2355,7 +2354,6 @@
       "armorClass": "ship_RGA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.4,
@@ -2894,7 +2892,6 @@
       "stopChanceOnDeadPart": 0.05,
       "variableThickness": true,
       "kineticProtectionEquivalentPerMeter": 27.3,
-      "hidableInXrayViewer": true,
       "coal_bunker_01_dm": {
         "hp": 3500.0
       },
@@ -10132,6 +10129,12 @@
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
     },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
+    },
     "ship_flag_egypt_01": {
       "category": "naval",
       "unlockId": "ship_flag_egypt_01",
@@ -11556,6 +11559,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   },
   "default_skin": {
@@ -11606,6 +11616,20 @@
       "replace_tex": {
         "from": "camo_light_ghostgrey*",
         "to": "it_camo_bluelight_geometry*"
+      },
+      "set_tex": {
+        "from": "battleship_leonardo_da_vinci_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "it_camo_blackgray_spots",
+      "nameLocId": "skin/it_camo_blackgray_spots",
+      "descLocId": "skin/it_camo_blackgray_spots/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_blackgray_spots*"
       },
       "set_tex": {
         "from": "battleship_leonardo_da_vinci_c*",

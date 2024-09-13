@@ -19,7 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "rearmTimeOnField": 70.0,
   "canReloadNonGuns": [
     true,
     true
@@ -499,6 +498,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -533,8 +536,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -3628,6 +3632,15 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "ammo_turret_23_dm": {
+            "count": 1
+          },
+          "ammo_turret_24_dm": {
+            "count": 1
+          },
+          "ammo_turret_25_dm": {
+            "count": 1
+          },
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -3758,15 +3771,6 @@
             "count": 1
           },
           "ammo_body_20_dm": {
-            "count": 1
-          },
-          "ammo_turret_23_dm": {
-            "count": 1
-          },
-          "ammo_turret_24_dm": {
-            "count": 1
-          },
-          "ammo_turret_25_dm": {
             "count": 1
           },
           "ammo_body_l_01_dm": {

@@ -42,12 +42,8 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "rearmTimeOnField": 120.0,
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
   "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -521,6 +517,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -555,8 +555,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1618,7 +1619,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
@@ -1863,6 +1867,7 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -1926,7 +1931,8 @@
         "turret": {
           "head": "bone_mg_twin",
           "gun": "bone_mg_twin",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -2956,6 +2962,7 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm",
                 "rotatedTurret": "bone_turret"
               },
               "limits": {
@@ -3019,7 +3026,8 @@
               "turret": {
                 "head": "bone_mg_twin",
                 "gun": "bone_mg_twin",
-                "gunnerDm": "gunner_dm"
+                "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [

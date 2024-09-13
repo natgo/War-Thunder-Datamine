@@ -5,7 +5,7 @@
   "resetViralAcquisitionDaysCounter": 1,
   "moderatorPresenceCheckMaxCode": 65536,
   "moderatorPresenceCheckPeriodSec": 1200,
-  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr",
+  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr;sead",
   "ordersPerSession": 3,
   "randomBattle": {
     "classiness": {
@@ -198,7 +198,8 @@
       "_aadefa": 3,
       "_aadefb": 3,
       "_aconq": 0,
-      "_extr": 3
+      "_extr": 3,
+      "_sead": 0
     }
   },
   "mapIntDiffToName": {
@@ -2057,11 +2058,7 @@
       ]
     },
     "CardHelicopterClimbParameter": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
+      "condition": ""
     },
     "AnyTankEntitlements": {
       "condition": [
@@ -2320,12 +2317,7 @@
       ]
     },
     "WorldWarReplay": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER",
-        "role_ALPHA_TESTER"
-      ]
+      "condition": "WorldWar"
     },
     "WorldWarClansQueue": {
       "condition": "WorldWar"
@@ -2399,11 +2391,7 @@
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
     },
     "SkinsPreviewOnUnboughtUnits": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
+      "condition": ""
     },
     "SkinAutoSelect": {
       "condition": ""
@@ -2600,16 +2588,7 @@
     "ActiveScouting": {
       "condition": ""
     },
-    "RadarTargetCue": {
-      "condition": ""
-    },
-    "RadarElevationControl": {
-      "condition": ""
-    },
     "ReportAnIssue": {
-      "condition": ""
-    },
-    "WeaponJettison": {
       "condition": ""
     },
     "UpdateGMInThreads": {
@@ -2849,7 +2828,7 @@
       ]
     },
     "SteamReviewBtnInChangelog": {
-      "condition": "wt_show_review_btn"
+      "condition": ""
     },
     "Tournaments": {
       "condition": ""
@@ -2991,6 +2970,15 @@
     "FranceShipsUnlocked": {
       "condition": ""
     },
+    "FranceBoatsUnlocked": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER",
+        "wt_access_france_boats_unlocks"
+      ]
+    },
     "MissionsChapterHidden": {
       "condition": [
         "role_GAIJIN",
@@ -3085,13 +3073,6 @@
     },
     "SCEJAccount": {
       "condition": "scej_account"
-    },
-    "TencentAccount": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
     },
     "newFontsSizes": {
       "condition": ""
@@ -3223,20 +3204,6 @@
     "Parachute": {
       "condition": ""
     },
-    "UfoControl": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
-    },
-    "WalkerControl": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
-    },
     "AchievementsUrl": {
       "condition": "",
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
@@ -3326,6 +3293,9 @@
     "physicalTracks": {
       "condition": ""
     },
+    "enableCustomTankSights": {
+      "condition": ""
+    },
     "BulletAnimation": {
       "condition": ""
     },
@@ -3395,13 +3365,6 @@
     },
     "ProtectionMap": {
       "condition": ""
-    },
-    "ClusterWind": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
     },
     "WeaponryCustomPresets": {
       "condition": ""
@@ -3499,6 +3462,14 @@
     },
     "AirVisualWeaponSelector": {
       "condition": ""
+    },
+    "optionMotionBlur": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
     },
     "ExpNewNationBonus": {
       "condition": [

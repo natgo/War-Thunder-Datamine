@@ -921,6 +921,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -955,8 +959,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2369,8 +2374,8 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 518.0,
-      "maxRPM": 2100.0,
+      "horsePowers": 550.0,
+      "maxRPM": 2300.0,
       "minRPM": 600.0,
       "rpmTau": 1.9
     },
@@ -2378,7 +2383,7 @@
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.7,
       "mainGearRatio": 6.0,
-      "sideGearRatio": 1.085,
+      "sideGearRatio": 1.185,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -4051,6 +4056,15 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "rsa_camo_gray_earth_stone*"
+      }
+    },
+    {
+      "name": "us_camo_modern_green",
+      "nameLocId": "skin/us_camo_modern_green",
+      "descLocId": "skin/us_camo_modern_green/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "us_camo_modern_green*"
       }
     }
   ]

@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
+let { getGamepadAxisTexture, getButtonNameByIdx } = require("%scripts/controls/gamepadIcons.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getHudUnitType } = require("hudState")
@@ -15,6 +15,10 @@ let { getComplexAxesId, isComponentsAssignedToSingleInputItem
 let { PI } = require("math")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { hasXInputDevice } = require("controls")
+let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut")
+let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo,
+  getAxisData } = require("%scripts/joystickInterface.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -121,8 +125,8 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.showScene(true)
     this.fill(true)
     if (this.axisEnabled) {
-      this.watchAxis = ::joystickInterface.getWheelMenuAxisWatch(unitTypeByHudUnitType?[getHudUnitType()])
-      this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
+      this.watchAxis = getWheelMenuAxisWatch(unitTypeByHudUnitType?[getHudUnitType()])
+      this.stuckAxis = getAxisStuck(this.watchAxis)
       this.joystickSelection = null
       this.isKbdShortcutDown = false
 
@@ -242,7 +246,16 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     objPageInfo.setValue(shouldShowPages
       ? loc("mainmenu/pageNumOfPages", { num = this.pageIdx + 1, total = this.pagesTotal })
       : "")
-    showObjById("btnSwitchPage", shouldShowPages, this.scene)
+
+    local needLbBtn = true
+    if (shouldShowPages && hasXInputDevice()) {
+      let shortcutId = getHudKillStreakShortcutId()
+      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+      let scInput = shType.getFirstInput(shortcutId)
+      needLbBtn = scInput?.elements.findvalue(@(btn) (getButtonNameByIdx(btn?.buttonId ?? -1) == "l_shoulder")) == null
+    }
+    showObjById("btnSwitchPage_LB", needLbBtn && shouldShowPages, this.scene)
+    showObjById("btnSwitchPage_LT", !needLbBtn && shouldShowPages, this.scene)
   }
 
   function updateTitlePos() {
@@ -277,8 +290,8 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.axisEnabled || this.isKbdShortcutDown)
       return
 
-    let axisData = ::joystickInterface.getAxisData(this.watchAxis, this.stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, this.joystickMinDeviation)
+    let axisData = getAxisData(this.watchAxis, this.stuckAxis)
+    let joystickData = getMaxDeviatedAxisInfo(axisData, this.joystickMinDeviation)
     if (joystickData == null || joystickData.normLength == 0)
       return
 

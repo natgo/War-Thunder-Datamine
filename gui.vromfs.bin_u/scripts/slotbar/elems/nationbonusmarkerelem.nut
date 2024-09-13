@@ -83,6 +83,7 @@ elemViewType.addTypes({
         maxRank = maxRanks?[obj.countryId][obj.armyId] ?? 0
         rank = bonus.unit.rank
         unitTypeName = bonus.unit.unitType.name
+        isRecentlyReleased = bonus.unit.isRecentlyReleased()
       })
       obj.findObject("nationBonusMarkerTooltip").tooltipId = nationBonusTooltipId
     }

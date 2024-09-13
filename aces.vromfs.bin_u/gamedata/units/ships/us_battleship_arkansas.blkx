@@ -4587,7 +4587,6 @@
       "armorClass": "ship_RHA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.6,
@@ -4671,7 +4670,6 @@
       "armorClass": "ship_RGA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.4,
@@ -5146,8 +5144,7 @@
       "armorClass": "ships_coal_bunker",
       "stopChanceOnDeadPart": 0.05,
       "variableThickness": true,
-      "kineticProtectionEquivalentPerMeter": 27.3,
-      "hidableInXrayViewer": true
+      "kineticProtectionEquivalentPerMeter": 27.3
     },
     "gun_masks": {
       "armorClass": "ship_RHA",
@@ -16931,6 +16928,34 @@
         "to": "ccvl_noskin_body_c*",
         "param": "camo_skin_tex"
       }
+    },
+    {
+      "name": "usa_camo_threecolors_deforming",
+      "nameLocId": "skin/usa_camo_threecolors_deforming",
+      "descLocId": "skin/usa_camo_threecolors_deforming/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_threecolors_deforming*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_threecolors_deforming*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_threecolors_deforming*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_threecolors_deforming*"
+        }
+      ],
+      "set_tex": {
+        "from": "battleship_arkansas_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -17003,6 +17028,12 @@
       "unlockId": "ship_flag_uk_02",
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
     },
     "ship_flag_egypt_01": {
       "category": "naval",
@@ -18428,6 +18459,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

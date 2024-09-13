@@ -28,7 +28,7 @@ let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, 
 let { ShopLines } = require("shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
-let { findChildIndex, show_obj } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
 let { hasMarkerByUnitName, getUnlockIdByUnitName,
@@ -827,6 +827,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let topBonusLabel = topUnitBonusObj.findObject("top_units_bonus_label")
         let armyLoc = armyDataByPageName?[this.curPage] ? loc(armyDataByPageName[this.curPage].locString) : ""
         topBonusLabel.setValue(loc("shop/exp_top_units_bonus", {type = armyLoc}))
+
+        local tooltipText = ""
         if (isNationBonusPlateActive) {
           let updateTime = buildTimeStr(getUtcMidnight(), false, false)
           local countriesBonusText = ""
@@ -840,11 +842,14 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           }
           if (countriesBonusText == "")
             countriesBonusText = "0"
-          topBonusLabel.tooltip = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
+          tooltipText = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
         } else {
           let battlesCount = expNewNationBonusDailyBattleCount
-          topBonusLabel.tooltip = loc("shop/top_units_bonus_off", {battlesCount})
+          tooltipText = loc("shop/top_units_bonus_off", {battlesCount})
         }
+        let tooltipPlace = topBonusLabel.getParent()
+        if (tooltipPlace)
+          tooltipPlace.tooltip = tooltipText
       }
     }
 
@@ -1108,6 +1113,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         rank = unitInResearchStatus.rank
         isOver = isNationBonusOver
         unitTypeName = unitInResearchStatus.unitTypeName
+        isRecentlyReleased = unitInResearchStatus.isRecentlyReleased
       })
     }
   }
@@ -1419,11 +1425,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           discount = {
             discountId = this.getDiscountIconTabId(countryData.name, name)
           }
-          squadronExpIconId = this.curCountry + ";" + name
           seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
             getUnlockIdsByArmyId(this.curCountry, name, ediff))
           navImagesText = ::get_navigation_images_text(idx, countryData.pages.len())
-          remainingTimeUnitPageMarker = true
           countryId = countryData.name
           armyId = name
         })
@@ -2360,7 +2364,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             let hasObjective = isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
               : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
-            show_obj(unitObj.findObject("unlockMarker"), hasObjective)
+            unitObj.findObject("unlockMarker")["isActive"] = hasObjective ? "yes" : "no"
           }
         }
       }

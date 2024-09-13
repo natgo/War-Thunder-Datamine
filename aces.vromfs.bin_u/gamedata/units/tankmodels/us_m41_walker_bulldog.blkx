@@ -103,7 +103,8 @@
         "armorThickness": 19.0
       },
       "turret_commander_dm": {
-        "armorThickness": 31.7
+        "armorThickness": 31.7,
+        "armorClass": "CHA_tank"
       }
     },
     "mask": {
@@ -132,7 +133,8 @@
       "ex_decor_r_05_dm": {},
       "ex_decor_r_06_dm": {},
       "ex_decor_r_07_dm": {},
-      "ex_decor_04_dm": {}
+      "ex_decor_04_dm": {},
+      "turret_01_side_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -221,7 +223,13 @@
       "wheel_l_top_01_dm": {},
       "wheel_l_top_02_dm": {},
       "wheel_l_top_03_dm": {},
-      "wheel_support_dm": {}
+      "wheel_support_dm": {},
+      "submodule": {
+        "armorClass": "tank_traks",
+        "armorThickness": 15.0,
+        "hp": 300.0,
+        "ex_decor_l_09_dm": {}
+      }
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -364,6 +372,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -398,8 +410,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1961,17 +1974,17 @@
         -0.1,
         0.05
       ],
-      "defaultGearRadius": 0.31,
-      "topGearRadius": 0.13,
+      "defaultGearRadius": 0.315,
+      "topGearRadius": 0.14,
       "defaultDampeningForce": [
         100000.0,
         100000.0
       ],
-      "frontBackGearRadius": 0.27,
+      "frontBackGearRadius": 0.3,
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
-      "wheel_r_drive": 0.29,
-      "wheel_l_drive": 0.29
+      "wheel_r_drive": 0.28,
+      "wheel_l_drive": 0.28
     }
   },
   "PhysSys": {

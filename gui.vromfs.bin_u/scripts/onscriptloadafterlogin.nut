@@ -130,7 +130,6 @@ foreach (fn in [
   "%scripts/controls/aircraftHelpers.nut"
   "%scripts/controls/gamepadCursorControlsSplash.nut"
   "%scripts/help/helpInfoHandlerModal.nut"
-  "%scripts/joystickInterface.nut"
 
   "%scripts/loading/loadingHangar.nut"
   "%scripts/loading/loadingBrief.nut"
@@ -323,6 +322,7 @@ foreach (fn in [
   "%scripts/matching/serviceNotifications/mrpc.nut"
   "%scripts/matching/serviceNotifications/msquad.nut"
 
+  "%scripts/items/buyAndOpenChestWnd.nut"
   "%scripts/gamepadSceneSettings.nut"
 ]) {
   loadOnce(fn)

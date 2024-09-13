@@ -106,11 +106,15 @@
       "turret_02_back_dm": {
         "armorThickness": 25.0
       },
+      "turret_01_bottom_dm": {
+        "armorThickness": 10.0
+      },
       "turret_01_top_dm": {
         "armorThickness": 25.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 25.0,
+        "hidableInViewer": true
       },
       "turret_02_top_dm": {
         "armorThickness": 30.0
@@ -385,6 +389,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -419,8 +427,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
