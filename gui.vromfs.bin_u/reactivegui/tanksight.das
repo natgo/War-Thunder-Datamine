@@ -12,6 +12,7 @@ require Weapon
 require WTCamera
 require hud
 require DagorTexture3D
+require Mission
 
 let black = E3DCOLOR(Color4(float4(0, 0, 0, 1)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
@@ -60,15 +61,26 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   var dist = data.isPreviewMode ? 1234. : -1.
   var progress = -1.
   var isOver = false
+  var isCorrection = false
   if !data.isPreviewMode && gm == null
     return
   if !data.isPreviewMode
     if get_difficulty_config().hudShowTankDistance && get_targeting_gun_intersect()
       dist = get_targeting_dist()
+      let corDist = get_current_dist_correction()
+      if corDist > 0.
+        dist = corDist
+        isOver = get_current_dist_correction_over()
+        isCorrection = true
     elif gm.rangefinder != null && get_difficulty_config().hudUseRangefinder
       if gm.rangefinder.ready || gm.rangefinder.progress < 0.
-        dist = gm.rangefinder.distance
-        isOver = gm.rangefinder.isOverDistance
+        dist = max(0., get_current_dist_correction())
+        isOver = get_current_dist_correction_over()
+        isCorrection = true
+        if gm.rangefinder.hideTime > float(get_total_time()) || dist == gm.rangefinder.distance
+          dist = gm.rangefinder.distance
+          isOver = gm.rangefinder.isOverDistance
+          isCorrection = false
       else
         progress = gm.rangefinder.progress
 
@@ -79,7 +91,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   let textColor = (is_thermal ? settings.rangefinderThTextColor :
    (is_night_vision ? settings.rangefinderNvTextColor :
    (get_crosshair_light_on() ? settings.rangefinderLightTextColor : settings.rangefinderTextColor)))
-  if dist > 0.
+  if dist >= 0.
     ctx |> set_font(fontId, 0, 0)
     ctx |> set_font_ht(settings.rangefinderTextSize)
 
@@ -91,8 +103,8 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       ctx |> set_color(backColor)
       let tc = float2(0., 0.)
       let fullStrBox = get_str_bbox("8888", 4, fctx)
-      let backPos = float2(pos.x - fullStrBox.width.x * 0.5 - ctx |> hdpx(10.), pos.y - fullStrBox.width.y - ctx |> hdpx(5.))
-      let backBR = float2(pos.x + fullStrBox.width.x * 0.5 + ctx |> hdpx(10.), pos.y + ctx |> hdpx(5.))
+      let backPos = float2(pos.x + (size.x - fullStrBox.width.x) * 0.5 - ctx |> hdpx(10.), pos.y - ctx |> hdpx(5.))
+      let backBR = float2(pos.x + (size.x + fullStrBox.width.x) * 0.5 + ctx |> hdpx(10.), pos.y + fullStrBox.width.y + ctx |> hdpx(5.))
       ctx |> render_rect(backPos.x, backPos.y, backBR.x, backBR.y, tc, tc, tc)
 
     ctx |> set_color(textColor)
@@ -101,6 +113,14 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
     let textPos = float2(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + strBox.width.y)
     ctx |> goto_xy(textPos.x, textPos.y)
     ctx |> draw_str_scaled(1.0, distText, distText |> length())
+
+    if isCorrection
+      ctx |> set_font(0, 0, 0)
+      ctx |> set_font_ht(settings.rangefinderTextSize)
+      let correctionSymbol = "*"
+      let symBox = get_str_bbox(correctionSymbol, correctionSymbol |> length(), fctx)
+      ctx |> goto_xy(textPos.x - symBox.width.x, textPos.y)
+      ctx |> draw_str_scaled(1.0, correctionSymbol, correctionSymbol |> length())
 
     if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_RANGEFINDER
       ctx |> set_color(highlightColor)
@@ -235,24 +255,30 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
       return
 
   let settings = get_tank_sight_settings()
-  var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, settings.gunReadyTextSize)
+  if isInoperable || timeToShot <= 0.
+    let sphCenter = pos + size * 0.3
+    let color = isInoperable ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF00FF00)
+    ctx |> render_ellipse_aa(sphCenter, float2(ctx |> hdpx(10.)), ctx |> hdpx(1.), black, color)
+  else
+    var fctx : StdGuiFontContext
+    let fontId = settings.gunReadyFontId != -1 ? settings.gunReadyFontId : get_font_id("digital")
+    get_font_context(fctx, fontId, 0, 0, settings.gunReadyTextSize)
 
-  ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(settings.gunReadyTextSize)
-  let color = (is_thermal ? settings.gunReadyThColor :
-   (is_night_vision ? settings.gunReadyNvColor :
-   (get_crosshair_light_on() ? settings.gunReadyLightColor : settings.gunReadyColor)))
-  ctx |> set_color(color)
-  let timeText = isInoperable ? loc("tankSight/broken") : (timeToShot > 0. ? fmt(":.1f", timeToShot) : loc("tankSight/ready"))
-  let strBox = get_str_bbox(timeText, timeText |> length(), fctx)
-  ctx |> goto_xy(pos.x + ctx |> hdpx(10.), pos.y + strBox.width.y)
-  ctx |> draw_str_scaled(1.0, timeText, timeText |> length())
+    ctx |> set_font(fontId, 0, 0)
+    ctx |> set_font_ht(settings.gunReadyTextSize)
+    let color = (is_thermal ? settings.gunReadyThColor :
+    (is_night_vision ? settings.gunReadyNvColor :
+    (get_crosshair_light_on() ? settings.gunReadyLightColor : settings.gunReadyColor)))
+    ctx |> set_color(color)
+    let timeText = fmt(":.1f", timeToShot)
+    let strBox = get_str_bbox(timeText, timeText |> length(), fctx)
+    ctx |> goto_xy(pos.x + ctx |> hdpx(10.), pos.y + strBox.width.y)
+    ctx |> draw_str_scaled(1.0, timeText, timeText |> length())
 
-  if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_GUN_READY
-    ctx |> set_color(highlightColor)
-    ctx |> render_frame(pos.x, pos.y - ctx |> hdpx(5.),
-    pos.x + strBox.width.x + ctx |> hdpx(20.), pos.y + strBox.width.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
+    if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_GUN_READY
+      ctx |> set_color(highlightColor)
+      ctx |> render_frame(pos.x, pos.y - ctx |> hdpx(5.),
+      pos.x + strBox.width.x + ctx |> hdpx(20.), pos.y + strBox.width.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
 
 [export]
 def draw_inner_fov_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)

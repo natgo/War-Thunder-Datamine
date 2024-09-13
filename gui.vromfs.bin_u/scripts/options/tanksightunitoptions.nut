@@ -4,7 +4,6 @@ let { format } = require("string")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { hasUnitAtRank, get_units_list } = require("%scripts/airInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
@@ -71,13 +70,13 @@ sightUnitOptions.addTypes({
 
     function updateOptions() {
       this.options = shopCountriesList
-        .filter(@(c) isCountryHaveUnitType(c, ES_UNIT_TYPE_TANK))
+        .filter(@(c) hasUnitAtRank(0, ES_UNIT_TYPE_TANK, c, false))
         .map(@(country) {
           value = country
           text = loc(country)
           image = getCountryIcon(country)
         })
-      if (this.value == null) {
+      if (this.value == null || !this.options.contains(this.value)) {
         let curCountry = profileCountrySq.value
         let isCurCountryAvailable = this.options.findvalue(@(opt) opt.value == curCountry) != null
 
