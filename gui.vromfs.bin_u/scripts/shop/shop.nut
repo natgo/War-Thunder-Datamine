@@ -61,7 +61,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { setNationBonusMarkState, getNationBonusMarkState, hasNationBonus } = require("%scripts/nationBonuses/nationBonuses.nut")
+let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
 
 local lastUnitType = null
 
@@ -812,8 +812,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let topUnitBonusObj = rankTable.findObject("top_units_bonus")
       topUnitBonusObj.show(hasUnitForNationBonus)
 
+      let isNationBonusPlateActive = this.isPageNationBonusPlateActive(this.curCountry, lastUnitType.esUnitType)
       let showNationBonusObj = topUnitBonusObj.findObject("show_nation_bonus_in_tab")
-      showNationBonusObj.show(hasNationBonus(this.curCountry, this.curPage) && hasFeature("ExpNewNationBonus"))
+      showNationBonusObj.show(isNationBonusPlateActive && hasFeature("ExpNewNationBonus"))
       showNationBonusObj.setValue(getNationBonusMarkState(this.curCountry, this.curPage))
 
       if (hasUnitForNationBonus) {
@@ -822,7 +823,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let heightWithoutBonus = this.animData.ranksHeights[containerIndex-1].tofloat()
         this.animData.ranksHeights[containerIndex-1] = $"{heightForTopUnitsBonus + heightWithoutBonus}"
 
-        let isNationBonusPlateActive = this.isPageNationBonusPlateActive(this.curCountry, lastUnitType.esUnitType)
         topUnitBonusObj["isRed"] = isNationBonusPlateActive ? "no" : "yes"
         let topBonusLabel = topUnitBonusObj.findObject("top_units_bonus_label")
         let armyLoc = armyDataByPageName?[this.curPage] ? loc(armyDataByPageName[this.curPage].locString) : ""
@@ -1202,7 +1202,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function findCloneGroupObjById(id) {
     if (checkObj(this.groupChooseObj))
-      return this.groupChooseObj.findObject("clone_td_" + id)
+      return this.groupChooseObj.findObject($"clone_td_{id}")
 
     return null
   }
@@ -1421,7 +1421,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let name = page.name
         view.tabs.append({
           id = name
-          tabName = "#mainmenu/" + name
+          tabName = $"#mainmenu/{name}"
           discount = {
             discountId = this.getDiscountIconTabId(countryData.name, name)
           }
@@ -1474,10 +1474,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let discountData = this.getDiscountByCountryAndArmyId(this.curCountry, page.name)
 
         let maxDiscount = discountData?.maxDiscount ?? 0
-        let discountTooltip = getTblValue("discountTooltip", discountData, "")
-        tabObj.tooltip = discountTooltip
         discountObj.setValue(maxDiscount > 0 ? ("-" + maxDiscount + "%") : "")
-        discountObj.tooltip = discountTooltip
       }
       break
     }
@@ -1494,7 +1491,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && unit.shopCountry == country) {
         let discount = ::g_discount.getUnitDiscount(unit)
         if (discount > 0)
-          discountsList[unit.name + "_shop"] <- discount
+          discountsList[$"{unit.name}_shop"] <- discount
       }
 
     return ::g_discount.generateDiscountInfo(discountsList)

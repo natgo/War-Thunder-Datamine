@@ -30,6 +30,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -337,7 +338,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       return
 
     let oldName = slotbarPresets[countryId][idx].title
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
                       title = loc("mainmenu/newPresetName"),
                       maxLen = 16,
                       value = oldName,
@@ -382,7 +383,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       countryId = profileCountrySq.value
     if (!this.canEditCountryPresets(countryId) || !(countryId in slotbarPresets))
       return false
-    let cfgBlk = loadLocalByAccount("slotbar_presets/" + countryId)
+    let cfgBlk = loadLocalByAccount($"slotbar_presets/{countryId}")
     local blk = null
     if (slotbarPresets[countryId].len() > 0) {
       let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresets[countryId])
@@ -418,7 +419,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (u.isEqual(blk, cfgBlk))
       return false
 
-    saveLocalByAccount("slotbar_presets/" + countryId, blk, shouldSaveProfile ? forceSaveProfile : @() null)
+    saveLocalByAccount($"slotbar_presets/{countryId}", blk, shouldSaveProfile ? forceSaveProfile : @() null)
     return true
   }
 
@@ -610,7 +611,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
   function getPresetsList(countryId) {
     let res = []
-    let blk = loadLocalByAccount("slotbar_presets/" + countryId)
+    let blk = loadLocalByAccount($"slotbar_presets/{countryId}")
     if (blk) {
       let presetsBlk = blk % "preset"
       let countryCrews = getCrewsList().findvalue(@(crews) crews.country == countryId)?.crews.map(@(c) c.id) ?? []
@@ -627,12 +628,24 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
         if(data.len() > 5 && data[5] != "") {
           preset.crewInSlots = data[5].split(",").map(@(v) to_integer_safe(v, 0, false))
-          if(preset.crewInSlots.findvalue(@(crewId) countryCrews.indexof(crewId) == null) != null) {
+          local lastExistingCrewIdx = -1
+          local isBrokenCrewSort = false
+          foreach (crewIdx, crewId in preset.crewInSlots) {
+            if (countryCrews.indexof(crewId) == null)
+              continue
+            if ((crewIdx - 1) != lastExistingCrewIdx) {
+              isBrokenCrewSort = true
+              break
+            }
+            lastExistingCrewIdx = crewIdx
+          }
+          if (isBrokenCrewSort) {
             preset.crewInSlots.replace(countryCrews)
             let presetTitle = preset.title // -declared-never-used
             debug_dump_stack()
-            logerr("the list of crews does not match the crews in the preset")
-          }
+            logerr("List of crews does not match crews in the preset")
+          } else if (lastExistingCrewIdx != (preset.crewInSlots.len() -1))
+            preset.crewInSlots.resize(lastExistingCrewIdx + 1)
         }
 
         let canHaveEmptyPresets = this.canHaveEmptyPresets(countryId)

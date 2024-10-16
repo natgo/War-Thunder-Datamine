@@ -213,11 +213,11 @@ function getShipMaterialTexts(unitId) {
   let blk = get_wpcost_blk()?[unitId ?? ""]?.Shop
   let parts = [ "hull", "superstructure" ]
   foreach (part in parts) {
-    let material  = blk?[part + "Material"]  ?? ""
-    let thickness = blk?[part + "Thickness"] ?? 0.0
+    let material  = blk?[$"{part}Material"]  ?? ""
+    let thickness = blk?[$"{part}Thickness"] ?? 0.0
     if (thickness && material) {
-      res[part + "Label"] <- loc($"info/ship/part/{part}")
-      res[part + "Value"] <- loc("armor_class/" + material + "/short", loc("armor_class/" + material)) +
+      res[$"{part}Label"] <- loc($"info/ship/part/{part}")
+      res[$"{part}Value"] <- loc("armor_class/" + material + "/short", loc($"armor_class/{material}")) +
         loc("ui/comma") + round(thickness) + " " + loc("measureUnits/mm")
     }
   }
@@ -278,6 +278,8 @@ function getUnitClassColor(unit) {
   return $"{role}Color"
 }
 
+let getUnitClassIco = @(unit) unit.customClassIco ?? $"#ui/gameuiskin#{unit.name}_ico.svg"
+
 return {
   getUnitRole
   getUnitBasicRole
@@ -290,4 +292,5 @@ return {
   getUnitItemStatusText
   getUnitRarity
   getUnitClassColor
+  getUnitClassIco
 }
