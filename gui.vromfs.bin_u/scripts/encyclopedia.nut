@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -86,7 +85,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, chapter in persistent.encyclopediaData)
       view.tabs.append({
         id = chapter.id
-        tabName = "#encyclopedia/" + chapter.id
+        tabName =$"#encyclopedia/{chapter.id}"
         navImagesText = ::get_navigation_images_text(idx, persistent.encyclopediaData.len())
       })
 
@@ -100,7 +99,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let canShowLinkButtons = !isChineseHarmonized() && hasFeature("AllowExternalLink")
     foreach (btn in ["faq", "support", "wiki"])
-      showObjById("button_" + btn, canShowLinkButtons, this.scene)
+      showObjById($"button_{btn}", canShowLinkButtons, this.scene)
     move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
@@ -123,7 +122,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
       view.items.append({
         id = article.id
         isSelected = idx == 0
-        itemText = (this.curChapter.id == "aircrafts") ? "#" + article.id + "_0" : "#encyclopedia/" + article.id
+        itemText = (this.curChapter.id == "aircrafts") ? $"#{article.id}_0" : $"#encyclopedia/{article.id}"
       })
 
     let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
@@ -144,7 +143,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
     let txtDescr = loc($"encyclopedia/{article.id}/desc")
     let objDesc = this.scene.findObject("item_desc")
     objDesc.findObject("item_desc_text").setValue(txtDescr)
-    objDesc.findObject("item_name").setValue(loc("encyclopedia/" + article.id))
+    objDesc.findObject("item_name").setValue(loc($"encyclopedia/{article.id}"))
 
     let objImgDiv = this.scene.findObject("div_before_text")
     local data = ""
@@ -153,13 +152,19 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
       let h = article.imgSize[1]
       let maxWidth = this.guiScene.calcString("1@rw", null).tointeger()
       let maxHeight = (maxWidth * (h.tofloat() / w)).tointeger()
-      let sizeText = (w >= h) ? ["0.333p.p.p.w - 8@imgFramePad", h + "/" + w + "w"] : [w + "/" + h + "h", "0.333p.p.p.w - 8@imgFramePad"]
+      let sizeText = (w >= h) ? ["0.333p.p.p.w - 8@imgFramePad", $"{h}/{w}w"] : [$"{w}/{h}h", "0.333p.p.p.w - 8@imgFramePad"]
       foreach (imageName in article.images) {
-        let image = "ui/slides/encyclopedia/" + imageName + ""
-        data += format("imgFrame { img { width:t='%s'; height:t='%s'; max-width:t='%d'; max-height:t='%d'; " +
-                       "background-image:t='%s'; click_to_resize:t='yes'; ButtonImg {}}} ",
-                       sizeText[0], sizeText[1], maxWidth, maxHeight,
-                       image)
+        let image = $"ui/slides/encyclopedia/{imageName}"
+        data = "".concat(
+          data,
+          format(
+            "".concat(
+              "imgFrame { img { width:t='%s'; height:t='%s'; max-width:t='%d'; max-height:t='%d'; ",
+              "background-image:t='%s'; click_to_resize:t='yes'; ButtonImg {}}} "
+            ),
+            sizeText[0], sizeText[1], maxWidth, maxHeight, image
+          )
+        )
       }
     }
     this.guiScene.replaceContentFromText(objImgDiv, data, data.len(), this)

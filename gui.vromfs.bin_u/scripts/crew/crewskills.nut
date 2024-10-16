@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_skills_blk } = require("blkGetters")
@@ -168,7 +167,7 @@ function getMinSkillsUnitRepairRank(unitRank) {
   if (!repairRanksBlk)
     return -1
   for (local i = 1; ; i++) {
-    let rankValue = repairRanksBlk?["rank" + i]
+    let rankValue = repairRanksBlk?[$"rank{i}"]
     if (!rankValue)
       break
     if (rankValue >= unitRank)

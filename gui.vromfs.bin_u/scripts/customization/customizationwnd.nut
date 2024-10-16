@@ -371,7 +371,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let allowCurrentSkin = this.access_SkinsUnrestrictedExport // true - current skin, false - default skin.
     let success = save_current_skin_template(allowCurrentSkin)
 
-    let templateName = "template_" + this.unit.name
+    let templateName =$"template_{this.unit.name}"
     let message = success ? format(loc("decals/successfulLoadedSkinSample"), templateName) : loc("decals/failedLoadedSkinSample")
     this.msgBox("skin_template_export", message, [["ok", function() {}]], "ok")
 
@@ -558,7 +558,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let option = ::get_option(optType)
       view.rows.append({
         id = option.id
-        name = "#options/" + option.id
+        name =$"#options/{option.id}"
         option = ::create_option_slider(option.id, option.value, option.cb, true, "slider", option)
       })
     }
@@ -579,18 +579,22 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let skinDecorator = this.skinList?.decorators[skinIndex]
     let curUserSkin = getCurUserSkin()
 
-    let needDisableEditing = skinDecorator?.blk.needDisableEditing ?? false
+    let isMarketSkin = skinDecorator?.getCouponItemdefId() ?? false
+    let needDisableEditing = skinDecorator?.blk.needDisableEditing
+    let canAlterSkin = !(needDisableEditing ?? isMarketSkin)
+
     let have_premium = havePremium.value
     let hasSkinCondition = curUserSkin?.condition != null
-    let canScale = curUserSkin?.scale == null && skinDecorator?.getCouponItemdefId() == null && !needDisableEditing
-    let canRotate = curUserSkin?.rotation == null && skinDecorator?.getCouponItemdefId() == null && !needDisableEditing
+
+    let canScale = curUserSkin?.scale == null && canAlterSkin
+    let canRotate = curUserSkin?.rotation == null && canAlterSkin
     let canChangeCondition = have_premium && !hasSkinCondition && !needDisableEditing
 
     local option = null
 
     option = ::get_option(USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
-    let tscTrObj = this.scene.findObject("tr_" + tscId)
+    let tscTrObj = this.scene.findObject($"tr_{tscId}")
     if (checkObj(tscTrObj)) {
       tscTrObj.inactiveColor = canChangeCondition ? "no" : "yes"
       tscTrObj.tooltip = (hasSkinCondition || needDisableEditing) ? loc("guiHints/not_available_on_this_camo")
@@ -605,7 +609,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     option = ::get_option(USEROPT_TANK_CAMO_SCALE)
     let tcsId = option.id
-    let tcsTrObj = this.scene.findObject("tr_" + tcsId)
+    let tcsTrObj = this.scene.findObject($"tr_{tcsId}")
     if (checkObj(tcsTrObj)) {
       tcsTrObj.tooltip = canScale ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcsId)
@@ -617,7 +621,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     option = ::get_option(USEROPT_TANK_CAMO_ROTATION)
     let tcrId = option.id
-    let tcrTrObj = this.scene.findObject("tr_" + tcrId)
+    let tcrTrObj = this.scene.findObject($"tr_{tcrId}")
     if (checkObj(tcrTrObj)) {
       tcrTrObj.tooltip = canRotate ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcrId)
@@ -789,7 +793,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       onDeleteClick = null
       ratio = slotRatio
       statusLock = slot.unlocked ? getDecorLockStatusText(decorator, this.unit)
-        : hasFeature("EnablePremiumPurchase") ? "noPremium_" + slotRatio
+        : hasFeature("EnablePremiumPurchase") ? $"noPremium_{slotRatio}"
         : "achievement"
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
       emptySlot = slot.isEmpty || !decorator
@@ -1683,7 +1687,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let skinNum = obj.getValue()
     if (!this.skinList || !(skinNum in this.skinList.values)) {
       debug_dump_stack()
-      assert(false, "Error: try to set incorrect skin " + this.skinList + ", value = " + skinNum)
+      assert(false, $"Error: try to set incorrect skin {this.skinList}, value = {skinNum}")
       return
     }
 

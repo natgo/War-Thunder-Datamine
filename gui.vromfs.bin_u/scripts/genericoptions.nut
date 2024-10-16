@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import update_volume_for_music, set_option_gamma
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
@@ -118,7 +117,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
         let obj = this.getObj(option.id)
         if (!checkObj(obj)) {
           script_net_assert_once("Bad option",
-            "Error: not found obj for option " + option.id + ", type = " + option.type)
+            $"Error: not found obj for option {option.id}, type = {option.type}")
           continue
         }
 
@@ -630,7 +629,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
         continue
       let isShow = !!(allowedUnitTypesMask & unitType.bit)
-      let itemObj = optionTrObj.findObject("bit_" + unitType.tag)
+      let itemObj = optionTrObj.findObject($"bit_{unitType.tag}")
       if (!checkObj(itemObj))
         continue
       itemObj.show(isShow)
@@ -676,7 +675,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateOptionValueText(option, value) {
-    let obj = this.scene.findObject("value_" + option.id)
+    let obj = this.scene.findObject($"value_{option.id}")
     if (checkObj(obj))
       obj.setValue(option.getValueLocText(value))
   }

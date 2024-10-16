@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
@@ -89,7 +88,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     local tooltip = loc("mainmenu/btnRefresh")
     let timeLeft = ::g_chat_latest_threads.getTimeToRefresh()
     if (timeLeft > 0)
-      tooltip += " (" + time.secondsToString(0.001 * timeLeft, true, true) + ")"
+      tooltip = $"{tooltip} ({time.secondsToString(0.001 * timeLeft, true, true)})"
     btnObj.tooltip = tooltip
     this.guiScene.updateTooltip(btnObj)
   }
@@ -183,7 +182,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local pos = null
-    let nameObj = this.listObj.findObject("ownerName_" + actionThread.roomId)
+    let nameObj = this.listObj.findObject($"ownerName_{actionThread.roomId}")
     if (checkObj(nameObj)) {
       pos = nameObj.getPosRC()
       pos[0] += nameObj.getSize()[0]
@@ -242,7 +241,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let threadInfo = ::g_chat.getThreadInfo(id)
     if (threadInfo)
-      threadInfo.updateInfoObj(this.scene.findObject("room_" + id), !showConsoleButtons.value)
+      threadInfo.updateInfoObj(this.scene.findObject($"room_{id}"), !showConsoleButtons.value)
   }
 
   function goBack() {

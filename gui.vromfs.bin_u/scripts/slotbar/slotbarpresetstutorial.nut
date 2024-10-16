@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount
@@ -198,8 +197,8 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
   function createMessageWhithUnitType(partLocId = "selectPreset") {
     let types = getRequiredUnitTypes(this.tutorialGameMode)
     let unitType = unitTypes.getByEsUnitType(u.max(types))
-    let unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
-    return loc("slotbarPresetsTutorial/" + partLocId, { unitType = loc(unitTypeLocId) })
+    let unitTypeLocId =$"options/chooseUnitsType/{unitType.lowerName}"
+    return loc($"slotbarPresetsTutorial/{partLocId}", { unitType = loc(unitTypeLocId) })
   }
 
   function createMessage_pressToBattleButton() {

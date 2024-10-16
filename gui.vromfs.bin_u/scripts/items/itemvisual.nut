@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
@@ -139,8 +138,8 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
     let iconSetParams = {
       addItemName = !shopDesc
     }
-    item.setIcon(obj, iconSetParams)
     obj["isPrizeUnitBought"] = item?.isPrizeUnitBought() ? "yes" : "no"
+    item.setIcon(obj, iconSetParams)
   }
 
   if (item && item?.getDescTimers)

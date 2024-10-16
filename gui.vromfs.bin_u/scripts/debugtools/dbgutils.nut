@@ -1,7 +1,9 @@
 //-file:plus-string
+// warning disable: -file:forbidden-function
+
 from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
-// warning disable: -file:forbidden-function
+
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { getLocalLanguage } = require("language")
@@ -17,6 +19,7 @@ let { register_command } = require("console")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
@@ -41,7 +44,7 @@ function debug_change_language(isNext = true) {
   let newIdx = curIdx + (isNext ? 1 : -1 + list.len())
   let newLang = list[newIdx % list.len()]
   setGameLocalization(newLang.id, true, false)
-  dlog("Set language: " + newLang.id)
+  dlog($"Set language: {newLang.id}")
 }
 
 function debug_change_resolution(shouldIncrease = true) {
@@ -50,7 +53,7 @@ function debug_change_resolution(shouldIncrease = true) {
   let curIdx = list.indexof(curResolution) || 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
-  let done = @() dlog("Set resolution: " + newResolution +
+  let done = @() dlog($"Set resolution: {newResolution}" +
     " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()
@@ -79,7 +82,7 @@ function debug_check_dirty_words(path = null) {
     let text = blk.getParamValue(i)
     let filteredText = dirtyWordsFilter.checkPhrase(text)
     if (text == filteredText) {
-      log("DIRTYWORDS: PASSED " + text)
+      log($"DIRTYWORDS: PASSED {text}")
       failed++
     }
   }
@@ -136,7 +139,7 @@ if (dbgFocusData.debugFocusTask != -1) {
   debug_focus()
 }
 
-let debug_open_url = @() ::gui_modal_editbox_wnd({
+let debug_open_url = @() openEditBoxDialog({
   title = "Enter url"
   allowEmpty = false
   okFunc = openUrl

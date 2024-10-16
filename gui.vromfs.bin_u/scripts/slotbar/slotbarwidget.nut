@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
@@ -56,6 +55,9 @@ let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nu
 let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
 let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { getCountryMarkersWidth } = require("%scripts/markers/markerUtils.nut")
+let { floor } = require("math")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -176,6 +178,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   showAlwaysFullSlotbar = false
   needCheckUnitUnlock = false
   slotbarHintText = ""
+
+  initialCountriesWidths = null
 
   static function create(params) {
     let nest = params?.scene
@@ -575,6 +579,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let needUpdateCountryContent = this.headerObj.getValue() == selCountryIdx
     this.headerObj.setValue(selCountryIdx)
+    this.updateMarkers()
     if (needUpdateCountryContent)
       this.onHeaderCountry(this.headerObj)
 
@@ -599,7 +604,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       && ((this.curSlotCountryId >= 0 && this.curSlotCountryId != this.selectedCrewData.idCountry)
         || (this.curSlotIdInCountry >= 0 && this.curSlotIdInCountry != this.selectedCrewData.idInCountry))
     if (needEvent) {
-      let cObj = this.scene.findObject("airs_table_" + this.selectedCrewData.idCountry)
+      let cObj = this.scene.findObject($"airs_table_{this.selectedCrewData.idCountry}")
       if (checkObj(cObj)) {
         this.skipCheckAirSelect = true
         this.onSlotbarSelect(cObj)
@@ -651,7 +656,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!countryData)
       return
 
-    this.fillCountryContent(countryData, this.scene.findObject("airs_table_" + countryData.id))
+    this.fillCountryContent(countryData, this.scene.findObject($"airs_table_{countryData.id}"))
   }
 
   function getCurSlotUnit() {
@@ -677,7 +682,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentAirsTable() {
-    return this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    return this.scene.findObject($"airs_table_{this.curSlotCountryId}")
   }
 
   function getCurrentCrewSlot() {
@@ -694,7 +699,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSlotIdByObjId(slotObjId, countryId) {
-    let prefix = "td_slot_" + countryId + "_"
+    let prefix = $"td_slot_{countryId}_"
     if (!startsWith(slotObjId, prefix))
       return -1
     return to_integer_safe(slotObjId.slice(prefix.len()), -1)
@@ -855,7 +860,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
    * as if player clicked slot himself.
    */
   function selectCrew(crewIdInCountry) {
-    let objId = "airs_table_" + this.curSlotCountryId
+    let objId =$"airs_table_{this.curSlotCountryId}"
     let obj = this.scene.findObject(objId)
     if (checkObj(obj))
       this.selectTblAircraft(obj, crewIdInCountry)
@@ -873,13 +878,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry) {
     if (!tblObj.childrenCount())
       return -1
-    if (tblObj?.id != "airs_table_" + this.curSlotCountryId) {
+    if (tblObj?.id != $"airs_table_{this.curSlotCountryId}") {
       let tblObjId = tblObj?.id         // warning disable: -declared-never-used
       let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
       script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
-    let prefix = "td_slot_" + this.curSlotCountryId + "_"
+    let prefix = $"td_slot_{this.curSlotCountryId}_"
     for (local i = 0; i < tblObj.childrenCount(); i++) {
       let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
@@ -922,7 +927,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkCreateCrewsNest(countryData) {
     let countriesCount = this.crewsObj.childrenCount()
-    let animBlockId = "crews_anim_" + countryData.idx
+    let animBlockId =$"crews_anim_{countryData.idx}"
     for (local i = 0; i < countriesCount; i++) {
       let animObj = this.crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
@@ -965,6 +970,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     else {
       this.switchSlotbarCountry(this.headerObj, countryData)
     }
+
+    this.updateMarkers()
   }
 
   function onCountriesListDblClick() {
@@ -1007,6 +1014,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         this.skipCheckCountrySelect = true
         this.skipCheckAirSelect = true
         this.headerObj.setValue(idx)
+        this.updateMarkers()
         break
       }
   }
@@ -1044,10 +1052,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       switchProfileCountry(countryData.country)
       if (isCrewListOverrided.get() && !this.slotbarOninit && !this.skipCheckCountrySelect)
         selectCountryForCurrentOverrideSlotbar(countryData.country)
-      this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
+      this.onSlotbarSelect(this.crewsObj.findObject($"airs_table_{countryData.idx}"))
     }
     else
-      this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
+      this.onSlotbarSelect(this.crewsObj.findObject($"airs_table_{countryData.idx}"))
 
     this.skipActionWithEmptySlot = false
     this.onSlotbarCountryChanged()
@@ -1073,8 +1081,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let curValue = this.headerObj.getValue()
     let value = getNearestSelectableChildIndex(this.headerObj, curValue, way)
-    if (value != curValue)
+    if (value != curValue) {
       this.headerObj.setValue(value)
+      this.updateMarkers()
+    }
   }
 
   function onSlotChangeAircraft(obj = null) {
@@ -1186,7 +1196,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   //return GuiBox of visible slotbar units
   function getBoxOfUnits() {
-    let obj = this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    let obj = this.scene.findObject($"airs_table_{this.curSlotCountryId}")
     if (!checkObj(obj))
       return null
 
@@ -1361,11 +1371,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         toBattleBtnObj["showAboveInfoBlock"] = hasAllMissionBlocksEmpty ? "no" : "yes"
     }
 
-    let crewNestObj = this.scene.findObject("crew_nest_" + this.curSlotCountryId)
+    let crewNestObj = this.scene.findObject($"crew_nest_{this.curSlotCountryId}")
     if (crewNestObj?.isValid())
       crewNestObj["noMissionBlock"] = hasAllMissionBlocksEmpty ? "yes" : "no"
 
-    let slotbarTableObj = this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    let slotbarTableObj = this.scene.findObject($"airs_table_{this.curSlotCountryId}")
     if (slotbarTableObj?.isValid())
       slotbarTableObj["noMissionBlock"] = hasAllMissionBlocksEmpty ? "yes" : "no"
 
@@ -1711,6 +1721,62 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hideAllPopups()
   }
 
+  function updateMarkers() {
+    if (!this.hasResearchesBtn || this.singleCountry != null)
+      return
+    this.guiScene.applyPendingChanges(false)
+    let shopVisibleCountries = getShopVisibleCountries()
+    let countriesCount = shopVisibleCountries.len()
+    if (!topMenuShopActive.get()) {
+      if (this.initialCountriesWidths != null) {
+        for (local i = 0; i < countriesCount; i++)
+          this.headerObj.findObject($"header_country{i}")["width"] = this.initialCountriesWidths[shopVisibleCountries[i]]
+      }
+      return
+    }
+
+    if (this.initialCountriesWidths == null) {
+      this.initialCountriesWidths = {}
+      for (local i = 0; i < countriesCount; i++)
+        this.initialCountriesWidths[shopVisibleCountries[i]] <- this.headerObj.findObject($"header_country{i}").getSize()[0]
+    }
+
+    let countryIndex = this.headerObj.getValue()
+    for (local i = 0; i < countriesCount; i++) {
+      let countryObj = this.headerObj.findObject($"header_country{i}")
+      let countryId = countryObj.countryId
+      let countryMarkersWidth = getCountryMarkersWidth(countryId)
+      let needStack = (countryIndex != i) && this.initialCountriesWidths[countryId] * 0.95 < countryMarkersWidth
+      let markersHolder = countryObj.findObject("markersHolder")
+      let markersCount = markersHolder.childrenCount() - 1
+      local counter = 0;
+
+      for (local j = 0; j < markersCount; j++) {
+        local markerObj = markersHolder.getChild(j)
+        if (markerObj?.id == "unlockMarkerDiv")
+          markerObj = markerObj.getChild(0)
+        if (!markerObj.isVisible())
+          continue
+
+        markerObj["stacked"] = needStack ? "yes" : "no"
+        markerObj["left"] = needStack ? $"{counter * 0.5}@markerWidth"
+          : $"{counter}@markerWidth + {counter * 0.5}@blockInterval"
+
+        counter++
+      }
+
+      countryObj["width"] = needStack ? $"{this.initialCountriesWidths[countryId]}"
+        : $"{max(this.initialCountriesWidths[countryId], floor(countryMarkersWidth / 0.95))}"
+
+      let tooltipArea = markersHolder.findObject("tooltipArea")
+      tooltipArea["enable"] = needStack ? "yes" : "no"
+      if (needStack)
+        tooltipArea["width"] = $"{1 + 0.5 * (counter - 1)}@markerWidth"
+    }
+  }
+
+  onEventShopWndSwitched = @(_p) this.updateMarkers()
+  onEventCountryMarkersInvalidate = @(_p) this.updateMarkers()
   onUnitCellDrop = @() null
   onUnitCellMove = @() null
   onCrewDropFinish = @() null

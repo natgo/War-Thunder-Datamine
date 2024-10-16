@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
@@ -347,7 +346,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach (diff in g_difficulty.types)
         if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
-          let field = "repairCost" + mode
+          let field = $"repairCost{mode}"
           local value = get_wpcost_blk()?[unit.name]?[field] ?? 0
           value =  value * (get_warpoints_blk()?.avgRepairMul ?? 1.0) //avgRepairMul same as in tooltip
           value *= costMultiplier
@@ -389,7 +388,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach (diff in g_difficulty.types)
         if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
-          let field = "repairTimeHrs" + mode
+          let field = $"repairTimeHrs{mode}"
           let value = get_wpcost_blk()?[unit.name]?[field] ?? 0.0
           if (value == 0.0) {
             blk.hide = true

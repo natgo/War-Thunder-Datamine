@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -583,7 +582,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           view.items.append(
             {
               image = getCountryIcon(item)
-              tooltip = "#" + item
+              tooltip = $"#{item}"
             }
           )
         }
@@ -611,7 +610,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function showSheetDiv(name, pages = false, subPages = false) {
     foreach (div in ["profile", "unlocks", "stats", "medals", "decals"]) {
       let show = div == name
-      let divObj = this.scene.findObject(div + "-container")
+      let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
         divObj.show(show)
         divObj.enable(show)
@@ -965,7 +964,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       view.items.append({
         itemTag = "campaign_item"
         id = chapterName
-        itemText = "#unlocks/chapter/" + chapterName
+        itemText = $"#unlocks/chapter/{chapterName}"
         isCollapsable = chapterItem.groups.len() > 0
         unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
           makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
@@ -975,7 +974,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
       if (chapterItem.groups.len() > 0)
         foreach (groupName, groupItem in chapterItem.groups) {
-          let id = chapterName + "/" + groupName
+          let id = $"{chapterName}/{groupName}"
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 
@@ -1220,7 +1219,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function openCollapsedGroup(group, name) {
     this.collapse(group)
-    let reqBlockName = group + (name ? ("/" + name) : "")
+    let reqBlockName = group + (name ? ($"/{name}") : "")
     let listBoxObj = this.scene.findObject("unlocks_group_list")
     if (!checkObj(listBoxObj))
       return
@@ -1466,7 +1465,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function getUnlockBlockId(unlockId) {
-    return unlockId + "_block"
+    return $"{unlockId}_block"
   }
 
   function onMedalSelect(obj) {
@@ -1493,7 +1492,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let progressData = config.getProgressBarData()
 
     let view = {
-      title = loc(name + "/name")
+      title = loc($"{name}/name")
       image = getUnlockableMedalImage(name, true)
       unlockProgress = progressData.value
       hasProgress = progressData.show
@@ -1783,7 +1782,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       unlocksList = this.unlocksTree[id].rootItems
     else
       foreach (chapterName, chapterItem in this.unlocksTree) {
-        let subsectionName = cutPrefix(id, chapterName + "/", null)
+        let subsectionName = cutPrefix(id,$"{chapterName}/", null)
         if (!subsectionName)
           continue
 
@@ -1845,7 +1844,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 let openProfileSheetParamsFromPromo = {
   UnlockAchievement = @(p1, p2, ...) {
     uncollapsedChapterName = p2 != "" ? p1 : null
-    curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
+    curAchievementGroupName = p1 + (p2 != "" ? ($"/{p2}") : "")
   }
   Medal = @(p1, _p2, ...) { filterCountryName = p1 }
   UnlockSkin = @(p1, p2, p3) {

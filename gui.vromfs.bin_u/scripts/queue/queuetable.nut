@@ -242,7 +242,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return
 
-    let genCode = event.name + "_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
+    let genCode = $"{event.name}_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
     if (nestObj?._queueTableGenCode == genCode) {
       this.updateTabContent()
       return
@@ -267,7 +267,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContent(queueBoxObj, "%gui/events/eventQueue.blk", this)
 
     foreach (team in ::events.getSidesList())
-      queueBoxObj.findObject(team + "_block").show(team == Team.A) //clan queue always symmetric
+      queueBoxObj.findObject($"{team}_block").show(team == Team.A) //clan queue always symmetric
   }
 
   function updateTabContent() {
@@ -323,7 +323,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!queueStats)
       return
 
-    let statsObj = tblObj.findObject(Team.A + "_block")
+    let statsObj = tblObj.findObject($"{Team.A}_block")
     let teamData = ::events.getTeamData(::queues.getQueueEvent(queue), Team.A)
     let playersCountText = loc("events/clans_count") + loc("ui/colon") + queueStats.getClansCount()
     let tableMarkup = this.getClanQueueTableMarkup(queueStats)
@@ -440,14 +440,6 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateScene()
   }
 
-  function onEventQueueClustersChanged(queue) {
-    if (!::queues.isQueuesEqual(queue, this.getCurQueue()))
-      return
-
-    this.build_IA_shop_filters = true
-    this.updateScene()
-  }
-
   function onEventMyStatsUpdated(_params) {
     this.updateScene()
   }
@@ -480,4 +472,6 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let markup = getQueueWaitIconImageMarkup()
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
+
+  onEventQueueStatsClusterAdded = @(_) this.fullUpdate()
 }

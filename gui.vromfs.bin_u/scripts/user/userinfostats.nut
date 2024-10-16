@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_name, clan_get_my_clan_id, clan_get_my_clan_tag, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
 
@@ -310,7 +309,7 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
     : value.tostring()
 
   let row = [
-    { id = textId, text = "#" + config.name, tdalign = "left" },
+    { id = textId, text = $"#{config.name}", tdalign = "left" },
     { text = s, tooltip = diff.getLocName() }
   ]
 
@@ -329,18 +328,18 @@ function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data += ::buildTableRowNoPad("", ["#" + item.name], null,
+      data += ::buildTableRowNoPad("", [$"#{item.name}"], null,
                   format("headerRow:t='%s'; ", idx ? "yes" : "first"))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {
-        let rowId = "row_" + idx + "_" + i
+        let rowId = $"row_{idx}_{i}"
         item.fm = statsFm[i]
         let row = buildProfileSummaryRowData(item, summary, diff, rowId)
         if (!row)
           continue
 
         data += row
-        textsToSet["txt_" + rowId] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
+        textsToSet[$"txt_{rowId}"] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)
@@ -469,7 +468,7 @@ function getProfileInfo() {
   currentUserProfile.pilotId = info.pilotId
   currentUserProfile.icon = avatars.getIconById(info.pilotId)
   currentUserProfile.medals = getNumUnlocked(UNLOCKABLE_MEDAL, true)
-  //dagor.debug("unlocked medals: "+currentUserProfile.medals)
+  //dagor.debug($"unlocked medals: {currentUserProfile.medals}")
 
   //Show the current country in the game when you select an outcast.
   if (currentUserProfile.country == "country_0") {

@@ -386,7 +386,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         })
         if (hotkeys.len())
           hotkeys = "<color=@hotkeyColor>" + loc("ui/parentheses/space", { text = hotkeys }) + "</color>"
-        obj.tooltip = loc("hotkeys/" + obj.id) + hotkeys
+        obj.tooltip = loc($"hotkeys/{obj.id}") + hotkeys
       }
     }
 
@@ -1258,7 +1258,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       if (i == "uid")
         continue
       let val = (i == "state") ? this.playerStateToString(v) : v
-      extra.append(i + " = " + val)
+      extra.append($"{i} = {val}")
     }
     extra.sort()
     return "\n".join(extra, true)

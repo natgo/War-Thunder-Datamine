@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 
@@ -36,7 +35,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   constructor(threadRoomId, dataBlk = null) { //dataBlk from chat response
     this.roomId = threadRoomId
     this.isValid = this.roomId.len() > 0
-    assert(g_chat_room_type.THREAD.checkRoomId(this.roomId), "Chat thread created with not thread id = " + this.roomId)
+    assert(g_chat_room_type.THREAD.checkRoomId(this.roomId), $"Chat thread created with not thread id = {this.roomId}")
     this.langs = []
 
     this.updateInfo(dataBlk)
@@ -61,7 +60,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
        )
       return
 
-    gchat_raw_command("xtmeta " + this.roomId)
+    gchat_raw_command($"xtmeta {this.roomId}")
   }
 
   function updateInfo(dataBlk) {
@@ -149,11 +148,10 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function getRoomTooltipText() {
-    local res = this.getOwnerText(true, "userlogColoredText")
-    res += "\n" + loc("chat/thread/participants") + loc("ui/colon")
-           + colorize("activeTextColor", this.membersAmount)
-    res += "\n\n" + this.getTitle()
-    return res
+    return "".concat(
+      this.getOwnerText(true, "userlogColoredText"),
+      "\n", loc("chat/thread/participants"), loc("ui/colon"),
+      colorize("activeTextColor", this.membersAmount), "\n\n", this.getTitle())
   }
 
   function isJoined() {
@@ -174,7 +172,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function getMembersAmountText() {
-    return loc("chat/thread/participants") + loc("ui/colon") + this.membersAmount
+    return "".concat(loc("chat/thread/participants"), loc("ui/colon"), this.membersAmount)
   }
 
   function showThreadMenu(position = null) {
@@ -216,7 +214,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (updateActionBtn)
       this.setObjValueById(obj, "action_btn", this.getJoinText())
 
-    this.setObjValueById(obj, "ownerName_" + this.roomId, this.getOwnerText())
+    this.setObjValueById(obj,$"ownerName_{this.roomId}", this.getOwnerText())
     this.setObjValueById(obj, "thread_title", this.getTitle())
     this.setObjValueById(obj, "thread_members", this.getMembersAmountText())
     if (::g_chat.canChooseThreadsLang())

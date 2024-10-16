@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -512,7 +511,7 @@ enum bulletsAmountState {
         continue
       let gInfo = bulGroup.gunInfo
       if (!gInfo || !gInfo.notInitedCount) {
-        assert(false, "UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit " + this.unit.name)
+        assert(false,$"UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit {this.unit.name}")
         continue
       }
 

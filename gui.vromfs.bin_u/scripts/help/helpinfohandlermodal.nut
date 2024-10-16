@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -139,7 +138,7 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
           msgObj.setValue(link.text)
       }
       if (objBlock && (link?.highlight ?? true))
-        highlightList.append(objBlock.__merge({ id = "lightObj_" + idx }))
+        highlightList.append(objBlock.__merge({ id = $"lightObj_{idx}" }))
     }
 
     this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions

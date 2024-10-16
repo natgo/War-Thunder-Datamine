@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 
@@ -46,7 +45,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "AircraftsInFirstCountryChoice")
+      return hasFeature($"{countryShort}AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
@@ -77,7 +76,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "TanksInFirstCountryChoice")
+      return hasFeature($"{countryShort}TanksInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["mobility", "protection", "firepower"]
@@ -101,6 +100,7 @@ return {
     missionSettingsAvailabilityFlag = "isShipsAllowed"
     crewUnitType = CUT_SHIP
     hasAiGunners = true
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = function(country = null) {
       if (!this.isAvailable() || !hasFeature("ShipsFirstChoice"))
@@ -108,7 +108,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "ShipsInFirstCountryChoice")
+      return hasFeature($"{countryShort}ShipsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]
@@ -134,6 +134,7 @@ return {
     missionSettingsAvailabilityFlag = "isHelicoptersAllowed"
     isUsedInKillStreaks = true
     crewUnitType = CUT_AIRCRAFT
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = @(_country = null) false
     canUseSeveralBulletsForGun = true
@@ -160,6 +161,7 @@ return {
     isPresentOnMatching = false
     crewUnitType = CUT_SHIP
     hasAiGunners = true
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = function(country = null) {
       if (!this.isAvailable() || !hasFeature("BoatsFirstChoice"))
@@ -167,7 +169,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "BoatsInFirstCountryChoice")
+      return hasFeature($"{countryShort}BoatsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]

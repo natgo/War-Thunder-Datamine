@@ -40,7 +40,7 @@ let Warbond = class {
   constructor(wbId, wbListId) {
     this.id = wbId
     this.listId = wbListId
-    this.blkListPath = "warbonds/" + this.id + "/" + this.listId
+    this.blkListPath = $"warbonds/{this.id}/{this.listId}"
 
     this.awardsList = []
 
@@ -84,7 +84,7 @@ let Warbond = class {
     this.awardsList.clear()
 
     let pBlk = get_price_blk()
-    let config = getBlkValueByPath(pBlk, this.blkListPath + "/shop")
+    let config = getBlkValueByPath(pBlk,$"{this.blkListPath}/shop")
     if (!u.isDataBlock(config))
       return
 

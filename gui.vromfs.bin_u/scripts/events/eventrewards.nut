@@ -36,7 +36,7 @@ function getLeaderboardConditionText(rewardBlk, progress = null) {
   let valueMin = rewardBlk?.valueMin
   let txtValue = valueMin
     ? loc("conditions/position/from_to", { min = valueMin, max = value }) : value
-  local res = loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, { value = txtValue })
+  local res = loc($"conditions/{conditionId}/{rewardBlk.fieldName}", { value = txtValue })
   let progressTxt = progress && valueMin
     ? $"{loc("ui/dot")} {loc("conditions/position/place")}{loc("ui/colon")} {progress}"
     : progress
@@ -190,7 +190,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.trophy.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return value.count + "x " + value.trophy.getName()
+      return $"{value.count}x " + value.trophy.getName()
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.trophy.id) : null
@@ -217,7 +217,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.item.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return value.count + "x " + value.item.getName()
+      return $"{value.count}x " + value.item.getName()
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.item.id) : null
@@ -229,7 +229,7 @@ function initConfigs() {
   foreach (cfg in rewardsConfig) {
     let id = cfg.id
     if (!("locId" in cfg))
-      cfg.locId = "reward/" + id
+      cfg.locId = $"reward/{id}"
     if (!("getValue" in cfg))
       cfg.getValue = @(blk) blk?[id]
     if (!("getIconStyle" in cfg))
@@ -374,14 +374,14 @@ function isRewardReceived(reward_blk, eventEconomicName) {
 
   //field_number rewards does not contain condition name
   if (conditionId != "field_number")
-    ending += conditionId + "_"
+    ending +=$"{conditionId}_"
 
   //every reward has field number
-  ending += reward_blk.fieldName + "_"
+  ending +=$"{reward_blk.fieldName}_"
 
   //handlind rewards with range
   if ("valueMin" in reward_blk)
-    ending += reward_blk.valueMin + "-"
+    ending +=$"{reward_blk.valueMin}-"
 
   //and every raward has value
   ending += reward_blk.value

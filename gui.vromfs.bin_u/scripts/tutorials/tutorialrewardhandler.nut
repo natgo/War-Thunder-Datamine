@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -65,7 +64,7 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let descObj = this.scene.findObject("award_desc")
     descObj["text-align"] = "center"
 
-    let msgText = colorize("activeTextColor", loc("MISSION_SUCCESS") + "\n" + loc("missions/" + this.misName, ""))
+    let msgText = colorize("activeTextColor", loc("MISSION_SUCCESS") + "\n" + loc($"missions/{this.misName}", ""))
     descObj.setValue(msgText)
 
     if (this.rewardMarkup != "") {

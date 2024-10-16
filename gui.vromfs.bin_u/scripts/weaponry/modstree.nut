@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 
@@ -332,7 +331,7 @@ let modsTree = {
       tiersTable[branch[0].tier] <- 1.0 //all items with same tier are side-tiers
       branch[0].guiPosX <- 0.0 //0.5 * (width - 1)
       if (sideBranches.len()) {
-        assert(sideBranches.len() <= 2, "Error: mod " + branch[0].name + " for " + this.air.name + " have more than 2 child modifications with same tier")
+        assert(sideBranches.len() <= 2, $"Error: mod {branch[0].name} for {this.air.name} have more than 2 child modifications with same tier")
         let haveLeft = sideBranches.len() > 1
         let lastRight = haveLeft ? sideBranches.len() - 1 : sideBranches.len()
         for (local i = 0; i < lastRight; i++) {
@@ -431,7 +430,7 @@ let modsTree = {
         let category = type(item[0]) == "string" ? item[0] : ""
         let tooltip = categoryTooltips?[category]() ?? ""
         let block = {
-          name = type(item[0]) == "string" ? loc("modification/category/" + item[0]) : ""
+          name = type(item[0]) == "string" ? loc($"modification/category/{item[0]}") : ""
           width = max(corners[1].guiPosX - corners[0].guiPosX, 1)
           tooltip
           haveTooltip = tooltip != ""
@@ -459,7 +458,7 @@ let modsTree = {
         debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})") // warning disable: -forbidden-function
       else if (type(item) == "array") { //branch
         debugLog($"{addStr}[") // warning disable: -forbidden-function
-        this.debugTree(item, addStr + "  ")
+        this.debugTree(item,$"{addStr}  ")
         debugLog($"{addStr}]") // warning disable: -forbidden-function
       }
       else if (type(item) == "string")
@@ -470,7 +469,7 @@ let modsTree = {
     if (notInTreeMods.len() == 0)
       return
 
-    log("incorrect modification requirements for air " + this.air.name)
+    log($"incorrect modification requirements for air {this.air.name}")
     debugTableData(notInTreeMods)
     foreach (mod in notInTreeMods) {
       local prevName = ""
@@ -488,9 +487,9 @@ let modsTree = {
         res = "is premium"
       else
         res = "have another incorrect requirement"
-      log("modification " + prevName + " required for " + mod.name + " " + res)
+      log($"modification {prevName} required for {mod.name} {res}")
     }
-    assert(false, "Error: found incorrect modifications requirement for air " + this.air.name)
+    assert(false,$"Error: found incorrect modifications requirement for air {this.air.name}")
   }
 }
 

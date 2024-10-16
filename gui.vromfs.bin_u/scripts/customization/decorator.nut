@@ -302,7 +302,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
     if (tagsVisibleBlk && this.tags)
       foreach (tagBlk in tagsVisibleBlk % "i")
         if (this.tags?[tagBlk.tag])
-          res.append(loc("content/tag/" + tagBlk.tag))
+          res.append(loc($"content/tag/{tagBlk.tag}"))
     return res
   }
 
@@ -321,7 +321,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 
   function _tostring() {
     return format("Decorator(%s, %s%s)", toString(this.id), this.decoratorType.name,
-      this.unlockId == "" ? "" : (", unlock=" + this.unlockId))
+      this.unlockId == "" ? "" : ($", unlock={this.unlockId}"))
   }
 
   function getLocParamsDesc() {

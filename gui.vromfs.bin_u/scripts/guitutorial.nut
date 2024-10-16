@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -109,7 +108,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     if (obj instanceof ::DaGuiObject) {
       if (checkObj(obj) && obj.isVisible())
         res = {
-          id = "_" + (obj?.id ?? "null")
+          id = $"_{obj?.id ?? "null"}"
           box = ::GuiBox().setFromDaguiObj(obj)
         }
     }
@@ -133,8 +132,8 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 ::guiTutor.blockToView <- function blockToView(block) {
   let box = block.box
   for (local i = 0; i < 2; i++) {
-    block["pos" + i] <- box.c1[i]
-    block["size" + i] <- box.c2[i] - box.c1[i]
+    block[$"pos{i}"] <- box.c1[i]
+    block[$"size{i}"] <- box.c2[i] - box.c1[i]
   }
   return block
 }
@@ -198,7 +197,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let bottomText = getTblValue("bottomText", stepData, "")
     if (text != "" && bottomText != "")
-      text += "\n\n" + bottomText
+      text = $"{text}\n\n{bottomText}"
 
     msgObj.setValue(text)
 
@@ -233,8 +232,11 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local markup = ""
     if (nextActionShortcut) {
-      markup += showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : ""
-      markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
+      markup = "".concat(
+        markup,
+        showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
+        "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = $"#{nextActionShortcut}" })
+      )
     }
 
     let nextShObj = this.scene.findObject("next_step_shortcut")

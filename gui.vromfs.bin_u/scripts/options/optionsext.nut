@@ -310,7 +310,7 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
   if (!checkArgument(id, value, "integer"))
     return ""
 
-  local data = "id:t = '" + id + "'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "")
+  local data = $"id:t = '{id}'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "")
   data += "on_dbl_click:t = 'onOptionsListboxDblClick'; "
   data += "class:t='" + listClass + "'; "
 
@@ -387,7 +387,7 @@ function create_option_vlistbox(id, items, value, cb, isFull) {
     ++itemNo
   }
 
-  data = "id:t = '" + id + "'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "") + data
+  data = $"id:t = '{id}'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "") + data
 
   if (isFull)
     data = "VericalListBox { " + data + " }"
@@ -536,7 +536,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
 
         if (optionData.needShowValueText)
           elemTxt += format("optionValueText { id:t='%s'; text:t='%s' }",
-            "value_" + optionData.id, optionData.getValueLocText(optionData.value))
+            $"value_{optionData.id}", optionData.getValueLocText(optionData.value))
 
         let optionTitleStyle = isHeader ? "optionBlockHeader" : "optiontext"
         let title = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
@@ -693,7 +693,7 @@ function useropt_takeoff_mode(optionId, descr, _context) {
 function useropt_bullets0(optionId, descr, _context) {
   let aircraft = ::aircraft_for_weapons
   let groupIndex = optionId - USEROPT_BULLETS0
-  descr.id = "bullets" + groupIndex
+  descr.id = $"bullets{groupIndex}"
   descr.items = []
   descr.values = []
   descr.trParams <- "optionWidthInc:t='double';"
@@ -731,14 +731,14 @@ function useropt_content_allowed_preset_arcade(optionId, descr, _context) {
   descr.items = []
   descr.values = []
   foreach (value in contentPreset.getContentPresets()) {
-    descr.items.append(loc("content/tag/" + value))
+    descr.items.append(loc($"content/tag/{value}"))
     descr.values.append(value)
   }
 }
 
 function useropt_bit_countries_team_a(optionId, descr, context) {
   let team = optionId == USEROPT_BIT_COUNTRIES_TEAM_A ? g_team.A : g_team.B
-  descr.id = "countries_team_" + team.id
+  descr.id =$"countries_team_{team.id}"
   descr.sideTag <- team == g_team.A ? "country_allies" : "country_axis"
   descr.controlType = optionControlType.BIT_LIST
   descr.controlName <- "multiselect"
@@ -767,7 +767,7 @@ function useropt_bit_countries_team_a(optionId, descr, context) {
     let country = shopCountriesList[nc]
     let isEnabled = (allowedMask & (1 << nc)) != 0
     descr.items.append({
-      text = "#" + country
+      text = $"#{country}"
       image = getCountryIcon(country, true)
       enabled = isEnabled
       isVisible = isEnabled
@@ -819,8 +819,8 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
   local countries = null
   let sessionInfo = get_mp_session_info()
   if (sessionInfo)
-    countries = ["country_" + sessionInfo.alliesCountry,
-                 "country_" + sessionInfo.axisCountry]
+    countries = [$"country_{sessionInfo.alliesCountry}",
+                 $"country_{sessionInfo.axisCountry}"]
   else if (::mission_settings && ::mission_settings.layout)
     countries = ::get_mission_team_countries(::mission_settings.layout)
 
@@ -836,16 +836,16 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
         continue
       }
 
-      local text = "#" + c
+      local text = $"#{c}"
       local image = getCountryIcon(c, true)
       local enabled = false
       local tooltip = ""
 
       if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
-        let countryId = ::current_campaign.id + "_" + ::current_campaign.countries[i]
+        let countryId = $"{::current_campaign.id}_" + ::current_campaign.countries[i]
         let unlock = getUnlockById(countryId)
         if (unlock == null)
-          assert(false, ("Not found unlock " + countryId))
+          assert(false, ($"Not found unlock {countryId}"))
         else {
           text = "#country_" + ::current_campaign.countries[i]
           image = getCountryIcon($"country_{::current_campaign.countries[i]}", true)
@@ -1898,7 +1898,7 @@ let optionsMap = {
       }
 
       descr.items.append({
-                          text = "#presets/" + suffix + name
+                          text = $"#presets/{suffix}{name}"
                           image = $"#ui/gameuiskin#{imageName}"
                         })
     }
@@ -2812,7 +2812,7 @@ let optionsMap = {
 
     foreach (_idx, diff in g_difficulty.types)
       if (diff.isAvailable()) {
-        descr.items.append("#" + diff.locId)
+        descr.items.append($"#{diff.locId}")
         descr.values.append(diff.name)
         descr.idxValues.append(diff.diffCode)
       }
@@ -2966,8 +2966,8 @@ let optionsMap = {
       let armyLocName = (unitType == unitTypes.SHIP) ? loc("mainmenu/fleet") : unitType.getArmyLocName()
       descr.values.append(unitType.esUnitType)
       descr.items.append({
-        id = "bit_" + unitType.tag
-        text = unitType.fontIcon + " " + armyLocName
+        id =$"bit_{unitType.tag}"
+        text = $"{unitType.fontIcon} {armyLocName}"
         enabled = isVisible
         isVisible = isVisible
       })
@@ -2975,7 +2975,7 @@ let optionsMap = {
 
     if (isKillStreaksOptionAvailable) {
       let killStreaksOptionLocName = loc("options/use_killstreaks")
-      descr.textAfter <- colorize("fadedTextColor", "+ " + killStreaksOptionLocName)
+      descr.textAfter <- colorize("fadedTextColor",$"+ {killStreaksOptionLocName}")
       descr.hint += "\n" + loc("options/advice/disable_option_to_have_more_choices",
         { name = colorize("userlogColoredText", killStreaksOptionLocName) })
     }
@@ -3178,7 +3178,7 @@ let optionsMap = {
     descr.optionCb = "onSectorChange"
     let dynamic_zones = dynamicGetZones()
     for (local i = 0; i < dynamic_zones.len(); i++) {
-      descr.items.append(::mission_settings.layoutName + "/" + dynamic_zones[i])
+      descr.items.append($"{::mission_settings.layoutName}/" + dynamic_zones[i])
       descr.values.append(dynamic_zones[i])
     }
   },
@@ -3396,7 +3396,7 @@ let optionsMap = {
       let enabled = (country == "country_0" || isCountryAvailable(country))
                       && (!event || ::events.isCountryAvailable(event, country))
       descr.items.append({
-        text = "#" + country
+        text = $"#{country}"
         image = getCountryIcon(country, true, !enabled)
         enabled = enabled
       })
@@ -3479,7 +3479,7 @@ let optionsMap = {
     for (local nc = 0; nc < crosshair_colors.len(); nc++) {
       descr.values.append(nc)
       let config = crosshair_colors[nc]
-      let item = { text = "#crosshairColor/" + config.name }
+      let item = { text = $"#crosshairColor/{config.name}" }
       if (config.color)
         item.hueColor <- color4ToDaguiString(config.color)
       descr.items.append(item)
@@ -3494,7 +3494,7 @@ let optionsMap = {
 
     foreach (_idx, diff in g_difficulty.types)
       if (diff.isAvailable()) {
-        descr.items.append("#" + diff.locId)
+        descr.items.append($"#{diff.locId}")
         descr.values.append(diff.diffCode)
       }
 
@@ -3719,7 +3719,7 @@ let optionsMap = {
         })
       else
         descr.items.append({
-          text = "#" + str,
+          text = $"#{str}",
           tooltip = url_radio
         })
     }
@@ -4444,10 +4444,10 @@ function set_useropt_cd(value, descr, optionId) {
       setCdOption(optionId, optionValue)
     }
     else
-      assert(false, "[ERROR] Value '" + value + "' is out of range in type " + optionId)
+      assert(false, $"[ERROR] Value '{value}' is out of range in type {optionId}")
   }
   else
-    assert(false, "[ERROR] No values set for type '" + optionId + "'")
+    assert(false, $"[ERROR] No values set for type '{optionId}'")
   if (optionValue != null && descr.onChangeCb)
     descr.onChangeCb(optionId, optionValue, value)
 }
@@ -4467,7 +4467,7 @@ function set_useropt_bit_countries_team_a(value, descr, optionId) {
     return
 
   set_gui_option(optionId, value)
-  ::mission_settings[descr.sideTag + "_bitmask"] <- value
+  ::mission_settings[$"{descr.sideTag}_bitmask"] <- value
   if (descr.onChangeCb)
     descr.onChangeCb(optionId, value, value)
 }
@@ -4768,10 +4768,10 @@ let optionsSetMap = {
         setLastSkin(air, isAutoSkin ? null : descr.values[value])
       }
       else
-        print("[ERROR] value '" + value + "' is out of range")
+        print($"[ERROR] value '{value}' is out of range")
     }
     else
-      print("[ERROR] No values set for type '" + optionId + "'")
+      print($"[ERROR] No values set for type '{optionId}'")
   },
   [USEROPT_USER_SKIN] = function(value, descr, _optionId) {
     let cdb = get_user_skins_profile_blk()

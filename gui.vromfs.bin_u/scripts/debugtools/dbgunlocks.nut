@@ -57,7 +57,7 @@ function debug_show_all_streaks() {
       foreach (key, _stageId in multiStageLocIdConfig[unlock.id]) {
         let stage = is_numeric(key) ? key : 99
         let data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
-        data.title = unlock.id + " / " + stage
+        data.title = $"{unlock.id} / {stage}"
         awardsList.append(data)
       }
     }
@@ -84,7 +84,7 @@ function gen_all_unlocks_desc(showCost = false) {
 
 function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
   let fullPath = format("%s/unlocks%s.blk", path, getLocalLanguage())
-  dlog("GP: gen all unlocks description to " + fullPath)
+  dlog($"GP: gen all unlocks description to {fullPath}")
 
   let res = DataBlock()
   let params = {

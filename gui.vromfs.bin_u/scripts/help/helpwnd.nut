@@ -318,7 +318,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local scText = ""
 
       if (isHeader) {
-        scTextFull.append([colorize("activeTextColor", loc("hotkeys/" + name))])
+        scTextFull.append([colorize("activeTextColor", loc($"hotkeys/{name}"))])
       }
       else {
         if (isAxis) {
@@ -328,7 +328,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
               if (axisSc.id == "")
                 shortcutNames.append(name)
               else
-                shortcutNames.append(name + "_" + axisSc.id)
+                shortcutNames.append($"{name}_{axisSc.id}")
             }
           }
         }
@@ -379,7 +379,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let kbdObj = this.scene.findObject("keyboard_div")
     foreach (btnName, btn in tipTexts) {
-      let objId = ::stringReplace(btnName, " ", "_")
+      let objId = btnName.replace(" ", "_")
       let tipObj = kbdObj.findObject(objId)
       if (tipObj) {
         tipObj.tooltip = btn.text
@@ -387,7 +387,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           tipObj.mainKey = "yes"
       }
       else {
-        log("tipObj = " + objId + " not found in the scene!")
+        log($"tipObj = {objId} not found in the scene!")
         debugTableData(btn)
       }
     }
@@ -449,7 +449,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateGamepadIcons() {
     foreach (name, _val in gamepadIcons.fullIconsList) {
-      let obj = this.scene.findObject("ctrl_img_" + name)
+      let obj = this.scene.findObject($"ctrl_img_{name}")
       if (checkObj(obj))
         obj["background-image"] = gamepadIcons.getTexture(name)
     }
@@ -513,13 +513,13 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let bullet = "-" + nbsp
+    let bullet =$"-{nbsp}"
     foreach (btnId, actions in joystickButtons) {
       let idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
       if (idSuffix == "")
         continue
 
-      let tObj = this.scene.findObject("joy_" + idSuffix)
+      let tObj = this.scene.findObject($"joy_{idSuffix}")
       if (checkObj(tObj)) {
         local title = ""
         local tooltip = ""
@@ -564,11 +564,11 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         let actionIdX = actionsX.len() ? actionsX[0] : null
         let isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
-        let titleX = (actionIdX && !isIgnoredX) ? loc("controls/" + actionIdX) : "---"
+        let titleX = (actionIdX && !isIgnoredX) ? loc($"controls/{actionIdX}") : "---"
 
         let actionIdY = actionsY.len() ? actionsY[0] : null
         let isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
-        let titleY = (actionIdY && !isIgnoredY) ? loc("controls/" + actionIdY) : "---"
+        let titleY = (actionIdY && !isIgnoredY) ? loc($"controls/{actionIdY}") : "---"
 
         local tooltipX = ""
         for (local a = 0; a < actionsX.len(); a++)
@@ -582,7 +582,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         tooltipY = tooltipY.len() ? tooltipY : loc("controls/unmapped")
         tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + tooltipY
 
-        let title = titleX + " + " + titleY
+        let title = $"{titleX} + {titleY}"
         let tooltip = tooltipX + "\n\n" + tooltipY
         tObj.setValue(title)
         tObj.tooltip = tooltip
@@ -603,7 +603,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let titleX = loc(mouse_aim_x)
       let titleY = loc(mouse_aim_y)
-      let title = titleX + " + " + titleY
+      let title = $"{titleX} + {titleY}"
       let tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + loc(mouse_aim_x)
       let tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + loc(mouse_aim_y)
       let tooltip = tooltipX + "\n\n" + tooltipY
@@ -635,7 +635,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       let rowData = {
-        text = loc("controls/help/" + shortcutId + "_0")
+        text = loc($"controls/help/{shortcutId}_0")
         shortcutMarkup = ::g_shortcut_type.getShortcutMarkup(shortcutId, this.preset)
       }
       view.rows.append(rowData)

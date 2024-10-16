@@ -203,8 +203,8 @@ function _validate(data, name) {
         if (checks & validationCheckBitMask.INVALIDATE)
           foreach (key, _val in keys)
             if (key in item)
-              itemDebug.append(key + "=" + item[key])
-      itemDebug.append(isItemValid ? ("err=" + itemErrors) : "INVALID")
+              itemDebug.append($"{key}=" + item[key])
+      itemDebug.append(isItemValid ? ($"err={itemErrors}") : "INVALID")
       itemDebug.append(u.isTable(item) ? ("len=" + item.len()) : ("var=" + type(item)))
 
       itemsBroken.append(",".join(itemDebug, true))
@@ -297,7 +297,7 @@ let class InventoryClient {
     if (!url)
       return null
 
-    return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
+    return $"auto_login auto_local sso_service=any {url}" + "?a=" + APP_ID +
       (steam_is_running() ? $"&app_id={steam_get_app_id()}&steam_id={steam_get_my_id()}" : "")
   }
 
@@ -458,7 +458,7 @@ let class InventoryClient {
       return requestData.fireCb()
 
     let itemdefidsString = ",".join(itemdefidsRequest, true)
-    log("Request itemdefs " + itemdefidsString)
+    log($"Request itemdefs {itemdefidsString}")
 
     this.lastItemdefsRequestTime = get_time_msec()
     let steamLanguage = getCurrentSteamLanguage()

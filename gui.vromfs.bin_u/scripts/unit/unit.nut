@@ -366,8 +366,8 @@ local Unit = class {
 
     let isSpecial = isUnitSpecial(this)
     let premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
-    let mul = (uWpCost?["rewardMul" + mode] ?? 1.0) *
-      (warpoints?.rewardMulVisual?["rewardMulVisual" + mode] ?? 1.0)
+    let mul = (uWpCost?[$"rewardMul{mode}"] ?? 1.0) *
+      (warpoints?.rewardMulVisual?[$"rewardMulVisual{mode}"] ?? 1.0)
     let timedAward = uWpCost?[$"timedAward{mode}"] ?? 0
 
     return {
@@ -438,7 +438,7 @@ local Unit = class {
     if (!this.previewSkinId) {
       this.previewSkinId = ""
       foreach (skin in this.getSkins())
-        if (getDecorator(this.name + "/" + skin.name, decoratorTypes.SKINS)?.blk?.useByDefault)
+        if (getDecorator($"{this.name}/{skin.name}", decoratorTypes.SKINS)?.blk?.useByDefault)
           this.previewSkinId = skin.name
     }
     return this.previewSkinId

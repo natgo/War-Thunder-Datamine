@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -162,7 +161,7 @@ local SeenList = class {
       this.save()
   }
 
-  getSaveId = @() "seen/" + this.id
+  getSaveId = @() $"seen/{this.id}"
 
   function save() {
     local saveBlk = null

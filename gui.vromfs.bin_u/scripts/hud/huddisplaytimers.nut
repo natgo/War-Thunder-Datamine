@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -282,7 +281,7 @@ let g_hud_display_timers = {
     if (!("state" in newStateData))
       return
 
-    let placeObj = this.scene.findObject(memberId + "_status")
+    let placeObj = this.scene.findObject($"{memberId}_status")
     if (!checkObj(placeObj))
       return
 
@@ -310,7 +309,7 @@ let g_hud_display_timers = {
     if (!("state" in newStateData))
       return
 
-    let placeObj = this.scene.findObject(memberId + "_status")
+    let placeObj = this.scene.findObject($"{memberId}_status")
     if (!checkObj(placeObj))
       return
 

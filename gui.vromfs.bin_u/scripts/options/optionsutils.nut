@@ -20,7 +20,7 @@ let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
     return true
 
-  local msg = "[ERROR] Wrong argument type supplied for option item '" + id + ".\n"
+  local msg = $"[ERROR] Wrong argument type supplied for option item '{id}" + ".\n"
   msg += "Value = " + toString(arg) + ".\n"
   msg += "Expected '" + varType + "' found '" + type(arg) + "'."
 
@@ -32,8 +32,8 @@ let createDefaultOption = function() {
   return {
     type = -1
     id = ""
-    title = null //"options/" + descr.id
-    hint = null  //"guiHints/" + descr.id
+    title = null //$"options/{descr.id}"
+    hint = null  //$"guiHints/{descr.id}"
     value = null
     controlType = optionControlType.LIST
     hasWarningIcon = false
@@ -48,9 +48,9 @@ let createDefaultOption = function() {
     defaultValue = null
     prevValue = null
 
-    getTrId = @() this.id + "_tr"
+    getTrId = @() $"{this.id}_tr"
 
-    getTitle = @() this.title || loc("options/" + this.id)
+    getTitle = @() this.title || loc($"options/{this.id}")
 
     getCurrentValueLocText = @() this.getValueLocText(this.value)
 
@@ -218,14 +218,14 @@ let fillDynMapOption = function(descr) {
           }
         if (!found) {
           skip = true
-          log("SKIP " + layout.name + " because of tag " + tag)
+          log($"SKIP {layout.name} because of tag {tag}")
           break
         }
       }
       if (skip)
         continue
     }
-    descr.items.append("#dynamic/" + layout.name)
+    descr.items.append($"#dynamic/{layout.name}")
     let map = layout.mis_file
     descr.values.append(map)
     if (map == curMap)

@@ -97,14 +97,14 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       local isAnyYearUnlocked = false
       local lockReason = ""
       foreach (_idx, country in misDescr.countries) {
-        let countryId = misDescr.id + "_" + country
+        let countryId = $"{misDescr.id}_{country}"
         local isCountryUnlocked = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
         if (!isCountryUnlocked)
           lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
         else {
           foreach (year in this.yearsArray) {
             local is_unlocked = false
-            let yearId = "country_" + country + "_" + year
+            let yearId = $"country_{country}_{year}"
             if (isUnlockOpened(yearId, UNLOCKABLE_YEAR)) {
               isAnyYearUnlocked = true
               is_unlocked = true
@@ -121,7 +121,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         misDescr.unlocks.country[countryId] <- isCountryUnlocked
       }
 
-      let nameId = "dynamic/" + misDescr.id
+      let nameId =$"dynamic/{misDescr.id}"
       misDescr.unlockText <- lockReason
       misDescr.progress <- isAnyCountryUnlocked ? get_mission_progress(nameId) : -1
 
@@ -161,7 +161,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         itemIcon = medalIcon
         id = mission.id
         isSelected = idx == 0
-        itemText = "#" + nameId
+        itemText = $"#{nameId}"
         isNeedOnHover = showConsoleButtons.value
       })
     }
@@ -185,7 +185,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       config.name <- loc(missionBlock.locName)
       local reqText = missionBlock.unlockText
       foreach (_idx, country in missionBlock.countries) {
-        let countryUnlocked = this.checkCountry(country) && missionBlock.unlocks.country[missionBlock.id + "_" + country]
+        let countryUnlocked = this.checkCountry(country) && missionBlock.unlocks.country[$"{missionBlock.id}_{country}"]
         config.countries += format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
           getCountryIcon($"country_{country}", true), countryUnlocked ? "yes" : "no")
 
@@ -203,9 +203,9 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
 
   function checkCountry(country) {
     let missionBlock = this.missions[this.getSelectedMission()]
-    let countryId = missionBlock.id + "_" + country
+    let countryId = $"{missionBlock.id}_{country}"
     if (!(countryId in missionBlock.unlocks.country)) {
-      assert(false, "Not found unlock " + countryId)
+      assert(false,$"Not found unlock {countryId}")
       debugTableData(missionBlock.countries)
       return false
     }
@@ -392,7 +392,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   foreach (cTag in ["country_allies", "country_axis"]) {
     local c = mBlk?[cTag] ?? "ussr"
     if (!checkDynamic || ::is_dynamic_country_allowed(c))
-      c = "country_" + c
+      c = $"country_{c}"
     else
       c = null
     res.append(c)

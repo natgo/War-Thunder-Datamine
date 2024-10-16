@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, set_allowed_controls_mask, get_dagui_pre_include_css_str, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -60,7 +59,7 @@ let sceneBgBlurDefaults = {
 function generateCssString(config) {
   local res = ""
   foreach (cfg in config)
-    res += format("@const %s:%s;", cfg.name, cfg.value)
+    res = "".concat(res, format("@const %s:%s;", cfg.name, cfg.value))
   return res
 }
 
@@ -101,15 +100,15 @@ function generateColorConstantsConfig() {
     cssConfig.append(
       {
         name = "mainPlayerColor"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       },
       {
         name = "chatSenderMeColor"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       },
       {
         name = "hudColorHero"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       }
     )
   }
@@ -142,7 +141,7 @@ function generateColorConstantsConfig() {
     foreach (name in cfg.names)
       cssConfig.append({
         name = name,
-        value = "#" + color
+        value = $"#{color}"
       })
   }
 
@@ -279,7 +278,7 @@ handlersManager.__update({
     }
     setCurrentFont(font)
 
-    let cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
+    let cssStringPre = "".concat(font.genCssString(), "\n", generatePreLoadCssString(), "\n", gamepadIcons.getCssString())
     if (get_dagui_pre_include_css_str() != cssStringPre) {
       let safearea = safeAreaHud.getSafearea()
       set_dagui_pre_include_css_str(cssStringPre)
