@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
@@ -24,7 +23,7 @@ let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
-let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
+let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
@@ -138,7 +137,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 )
       local text = loc("mainmenu/savePassword")
       if (!isPlatformShieldTv())
-        text += " " + loc("mainmenu/savePassword/unsecure")
+        text = " ".concat(text, loc("mainmenu/savePassword/unsecure"))
       spObj.findObject("loginbox_autosave_password_text").setValue(text)
     }
 
@@ -302,7 +301,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (checkObj(objLangLabel)) {
       local title = loc("profile/language")
       let titleEn = loc("profile/language/en")
-      title += (title == titleEn ? "" : loc("ui/parentheses/space", { text = titleEn })) + ":"
+      title = "".concat(title, title == titleEn ? "" : loc("ui/parentheses/space", { text = titleEn }), ":")
       objLangLabel.setValue(title)
     }
     let objLangIcon = this.scene.findObject("btn_language_icon")
@@ -720,11 +719,11 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       maxLen = 16
       validateFunc = @(nick) validateNickRegexp.replace("", nick)
       editboxWarningTooltip = loc("invalid_nickname")
-      checkWarningFunc = isPhrasePassing
+      checkWarningFunc = isNamePassing
       canCancel = true
       owner = this
       function okFunc(nick) {
-        if (!isPhrasePassing(nick)) {
+        if (!isNamePassing(nick)) {
           bqSendNoAuth("guest:bad_nick")
           showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
           return

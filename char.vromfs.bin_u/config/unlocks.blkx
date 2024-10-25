@@ -146,6 +146,16 @@
       }
     },
     {
+      "id": "promo_quest_achieved_air_level",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 2
+      }
+    },
+    {
       "id": "gift_cardicon_tanker_us_p_trophy",
       "userLogId": "cardicon_tanker_us_p_trophy",
       "type": "trophy",
@@ -4536,6 +4546,11 @@
     },
     {
       "id": "cardicon_richard_bong",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_luftwaffe_pilot",
       "type": "pilot",
       "hideUntilUnlocked": true
     },
@@ -11456,6 +11471,126 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "ussr_kv_7_u13/ussr_camo_desert_yellow_brown",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_ussr",
+      "mode": {
+        "type": "killedPlayersScore",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/killedPlayersScore/desc",
+        "mulArcade": 5,
+        "mulRealistic": 5,
+        "mulHardcore": 5,
+        "num": 130,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_kv_7_u13"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ussr_kv_7_u13/winter",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_ussr",
+      "mode": {
+        "type": "killedPlayersScore",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/killedPlayersScore/desc",
+        "mulArcade": 5,
+        "mulRealistic": 5,
+        "mulHardcore": 5,
+        "num": 270,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_kv_7_u13"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ussr_kv_7_u13/forest",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_ussr",
+      "mode": {
+        "type": "killedPlayersScore",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/killedPlayersScore/desc",
+        "mulArcade": 5,
+        "mulRealistic": 5,
+        "mulHardcore": 5,
+        "num": 410,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_kv_7_u13"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ussr_cruiser_omaha_class_murmansk/ussr_camo_navy_purple",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_ussr",
+      "mode": {
+        "type": "awardDamage",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/awardDamage/desc",
+        "mulArcade": 2,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 126000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_cruiser_omaha_class_murmansk"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ussr_cruiser_omaha_class_murmansk/ussr_camo_arcticfleet",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_ussr",
+      "mode": {
+        "type": "awardDamage",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/awardDamage/desc",
+        "mulArcade": 2,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 253000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_cruiser_omaha_class_murmansk"
+          }
+        ]
       }
     },
     {
@@ -162879,6 +163014,33 @@
       }
     },
     {
+      "id": "one_minute_to_midnight",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 5000,
+      "isAfterFlight": true,
+      "showEnemy": false,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerTag",
+            "tag": "nuclear_bomber",
+            "controlled": true
+          },
+          {
+            "type": "playerHasSecondaryWeapon",
+            "hasWeapon": true,
+            "needCheckInWorld": true
+          }
+        ]
+      }
+    },
+    {
       "id": "peaceful_atom",
       "type": "streak",
       "amount_exp": 0,
@@ -162899,6 +163061,31 @@
           {
             "type": "targetHasSecondaryWeapon",
             "hasWeapon": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "the_end_is_near",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 1500,
+      "isAfterFlight": false,
+      "showEnemy": false,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetTag",
+            "tag": "nuclear_bomber"
+          },
+          {
+            "type": "targetHasSecondaryWeapon",
+            "hasWeapon": false
           }
         ]
       }
@@ -173673,12 +173860,12 @@
         "condition": [
           {
             "type": "battlepassSeason",
-            "season": 15
+            "season": 16
           },
           {
             "type": "char_time_range",
-            "beginDate": "2024-07-24 12:00:00",
-            "endDate": "2024-10-23 11:59:00"
+            "beginDate": "2024-10-23 12:00:00",
+            "endDate": "2025-01-22 11:59:00"
           }
         ]
       }
@@ -174779,6 +174966,67 @@
       }
     },
     {
+      "id": "battlepass_season17_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    },
+    {
+      "id": "battlepass_season17_purchased_entitlement",
+      "userLogId": "battlepass_season17_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season17_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season17_purchased_item",
+      "type": "inventory",
+      "userLogId": "730015",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season17_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season17_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season17_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season17_allow_skip_all_stages",
+            "invertResult": true
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason17Purchased"
+          },
+          {
+            "type": "char_time_range",
+            "beginDate": "2024-11-20 12:00:00",
+            "endDate": "2025-01-22 12:00:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "tutorialB_fighter_completed",
       "type": "achievement",
       "hidden": true,
@@ -175370,6 +175618,11 @@
     },
     {
       "id": "loading_screen_sholef",
+      "type": "award",
+      "hidden": false
+    },
+    {
+      "id": "loading_screen_he_177a_3",
       "type": "award",
       "hidden": false
     },
@@ -177268,6 +177521,78 @@
       "chapter": "ship_flags",
       "group": "national",
       "costGold": 500
+    },
+    {
+      "id": "favorite_mode",
+      "type": "showcase_type",
+      "hidden": true
+    },
+    {
+      "id": "unit_collector",
+      "type": "showcase_type",
+      "hidden": true,
+      "mode": {
+        "type": "char_aircrafts_count",
+        "num": 1500
+      }
+    },
+    {
+      "id": "atomic_ace",
+      "type": "showcase_type",
+      "hidden": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 1,
+        "unlock": "killStreak_bomber_nuclear_success"
+      }
+    },
+    {
+      "id": "profile_showcase__atomic_ace__counter",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 2147483646,
+        "unlock": "killStreak_bomber_nuclear_success"
+      },
+      "showcase": {
+        "atomic_ace": "atomic_ace__counter"
+      }
+    },
+    {
+      "id": "peacemaker",
+      "type": "showcase_type",
+      "hidden": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 1,
+        "unlock": "peaceful_atom"
+      }
+    },
+    {
+      "id": "profile_showcase__peacemaker__counter",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 2147483646,
+        "unlock": "peaceful_atom"
+      },
+      "showcase": {
+        "peacemaker": "peacemaker__counter"
+      }
+    },
+    {
+      "id": "battle_hardened",
+      "type": "showcase_type",
+      "hidden": true,
+      "costGold": 1000
+    },
+    {
+      "id": "favorite_unit",
+      "type": "showcase_type",
+      "hidden": true,
+      "costGold": 1000
     },
     {
       "id": "end_of_file",
